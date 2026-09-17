@@ -14,7 +14,7 @@ data class OptionResponse(
     val text: String
 ) {
     companion object {
-        fun from(option: QuestionOption) = OptionResponse(option.idText(), option.text)
+        fun from(option: QuestionOption) = OptionResponse(option.idText, option.text)
     }
 }
 
@@ -27,11 +27,11 @@ data class PublicQuestionResponse(
 ) {
     companion object {
         fun from(question: QuestionPublic) = PublicQuestionResponse(
-            id = question.idText(),
+            id = question.idText,
             statement = question.statement,
             options = question.options.map(OptionResponse::from),
-            category = question.categoryName(),
-            difficulty = question.difficultyName()
+            category = question.categoryName,
+            difficulty = question.difficultyName
         )
     }
 }
@@ -50,16 +50,16 @@ data class GameResponse(
 ) {
     companion object {
         fun from(game: Game) = GameResponse(
-            id = game.idText(),
-            status = game.statusName(),
-            currentQuestionIndex = game.currentQuestionIndex(),
-            totalQuestions = game.totalQuestions(),
-            remainingQuestions = game.remainingQuestions(),
-            score = game.score(),
-            correctAnswers = game.correctAnswersCount(),
-            wrongAnswers = game.wrongAnswersCount(),
+            id = game.idText,
+            status = game.statusName,
+            currentQuestionIndex = game.currentQuestionIndex,
+            totalQuestions = game.totalQuestions,
+            remainingQuestions = game.remainingQuestions,
+            score = game.score,
+            correctAnswers = game.correctAnswers,
+            wrongAnswers = game.wrongAnswers,
             startedAt = game.startedAt,
-            completedAt = game.completedAt()
+            completedAt = game.completedAt
         )
     }
 }
@@ -86,8 +86,8 @@ data class AnswerResponse(
     companion object {
         fun from(result: AnswerResult) = AnswerResponse(
             correct = result.record.correct,
-            chosenOption = result.record.chosenOptionText(),
-            correctOption = result.question.correctOptionText(),
+            chosenOption = result.record.chosenOptionText,
+            correctOption = result.question.correctOptionText,
             explanation = result.question.explanation,
             earnedPoints = result.record.earnedPoints,
             currentScore = result.currentScore,

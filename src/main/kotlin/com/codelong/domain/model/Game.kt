@@ -1,7 +1,6 @@
 package com.codelong.domain.model
 
 import com.codelong.domain.exception.Errors
-
 import com.codelong.domain.valueobject.AnswerEval
 import com.codelong.domain.valueobject.AnswerRecord
 import com.codelong.domain.valueobject.GameId
@@ -17,43 +16,52 @@ class Game private constructor(
     val id: GameId,
     val userId: UserId,
     val username: String,
-    private var status: GameStatus,
+    status: GameStatus,
     val startedAt: Instant,
-    private var completedAt: Instant?,
-    private var currentQuestionIndex: Int,
-    private val questions: List<GameQuestion>,
-    private val answers: MutableList<AnswerRecord>,
-    private var score: Int,
-    private var correctAnswers: Int,
-    private var wrongAnswers: Int,
+    completedAt: Instant?,
+    currentQuestionIndex: Int,
+    val questions: List<GameQuestion>,
+    answerRecords: MutableList<AnswerRecord>,
+    score: Int,
+    correctAnswerCount: Int,
+    wrongAnswerCount: Int,
     var version: Long
 ) {
 
-    fun status(): GameStatus = status
+    var status: GameStatus = status
+        private set
 
-    fun idText(): String = id.value
+    var completedAt: Instant? = completedAt
+        private set
 
-    fun statusName(): String = status.name
+    var currentQuestionIndex: Int = currentQuestionIndex
+        private set
 
-    fun completedAt(): Instant? = completedAt
+    var score: Int = score
+        private set
 
-    fun currentQuestionIndex(): Int = currentQuestionIndex
+    var correctAnswers: Int = correctAnswerCount
+        private set
 
-    fun questions(): List<GameQuestion> = questions
+    var wrongAnswers: Int = wrongAnswerCount
+        private set
 
-    fun answers(): List<AnswerRecord> = answers.toList()
+    private val answerRecords: MutableList<AnswerRecord> = answerRecords
 
-    fun score(): Int = score
+    val answers: List<AnswerRecord> get() = answerRecords.toList()
 
-    fun correctAnswersCount(): Int = correctAnswers
+    val totalQuestions: Int get() = questions.size
 
-    fun wrongAnswersCount(): Int = wrongAnswers
+    /** Quantidade de perguntas restantes incluindo a atual. */
+    val remainingQuestions: Int get() = questions.size - currentQuestionIndex
 
-    fun totalQuestions(): Int = questions.size
+    val isInProgress: Boolean get() = status == GameStatus.IN_PROGRESS
 
-    fun isInProgress(): Boolean = status == GameStatus.IN_PROGRESS
+    val isCompleted: Boolean get() = status == GameStatus.COMPLETED
 
-    fun isCompleted(): Boolean = status == GameStatus.COMPLETED
+    val idText: String get() = id.value
+
+    val statusName: String get() = status.name
 
     fun isOwnedBy(actor: UserId): Boolean = userId == actor
 
@@ -68,10 +76,7 @@ class Game private constructor(
         return questions[currentQuestionIndex]
     }
 
-    /** Quantidade de perguntas restantes incluindo a atual. */
-    fun remainingQuestions(): Int = questions.size - currentQuestionIndex
-
-    fun answered(questionIndex: Int): Boolean = answers.any { it.questionIndex == questionIndex }
+    fun answered(questionIndex: Int): Boolean = answerRecords.any { it.questionIndex == questionIndex }
 
     /**
      * Processa uma resposta para a pergunta atual.
@@ -90,8 +95,8 @@ class Game private constructor(
         }
 
         val correct = question.isCorrect(optionId)
-        val earnedPoints = question.pointsForCorrect().takeIf { correct } ?: 0
-        answers.add(
+        val earnedPoints = question.pointsForCorrect.takeIf { correct } ?: 0
+        answerRecords.add(
             AnswerRecord(
                 questionIndex = currentQuestionIndex,
                 questionId = question.id,
@@ -117,12 +122,12 @@ class Game private constructor(
         }
 
         return AnswerEval(
-            record = answers.last(),
+            record = answerRecords.last(),
             question = question,
             currentScore = score,
             correctAnswers = correctAnswers,
             wrongAnswers = wrongAnswers,
-            gameCompleted = status == GameStatus.COMPLETED,
+            gameCompleted = isCompleted,
             questionIndex = answeredIndex,
             totalQuestions = questions.size
         )
@@ -143,7 +148,7 @@ class Game private constructor(
         completedAt = completedAt,
         currentQuestionIndex = currentQuestionIndex,
         questions = questions,
-        answers = answers.toList(),
+        answers = answers,
         score = score,
         correctAnswers = correctAnswers,
         wrongAnswers = wrongAnswers,
@@ -166,10 +171,10 @@ class Game private constructor(
             completedAt = null,
             currentQuestionIndex = 0,
             questions = setup.questions,
-            answers = mutableListOf(),
+            answerRecords = mutableListOf(),
             score = 0,
-            correctAnswers = 0,
-            wrongAnswers = 0,
+            correctAnswerCount = 0,
+            wrongAnswerCount = 0,
             version = 0L
         )
 
@@ -182,10 +187,10 @@ class Game private constructor(
             completedAt = state.completedAt,
             currentQuestionIndex = state.currentQuestionIndex,
             questions = state.questions,
-            answers = state.answers.toMutableList(),
+            answerRecords = state.answers.toMutableList(),
             score = state.score,
-            correctAnswers = state.correctAnswers,
-            wrongAnswers = state.wrongAnswers,
+            correctAnswerCount = state.correctAnswers,
+            wrongAnswerCount = state.wrongAnswers,
             version = state.version
         )
     }

@@ -28,10 +28,10 @@ class LoginUserUseCaseImpl(
         val user = resolveUser(command.identifier)
             ?: throw Errors.invalidCredentials()
 
-        passwordEncoder.matches(command.password, user.passwordHash()).takeUnless { it }?.let {
+        passwordEncoder.matches(command.password, user.passwordHash).takeUnless { it }?.let {
             throw Errors.invalidCredentials()
         }
-        user.isActive().takeUnless { it }?.let {
+        user.isActive.takeUnless { it }?.let {
             throw Errors.accountInactiveUnauthorized()
         }
 

@@ -25,7 +25,7 @@ class DefaultGameFactory(
         val sequence = sequencer.sequence(activeQuestions)
         val setup = GameSetup(
             userId = user.id,
-            username = user.usernameText(),
+            username = user.usernameText,
             questions = sequence
         )
         return Game.newGame(Ids.newGameId(), setup, clock.instant())

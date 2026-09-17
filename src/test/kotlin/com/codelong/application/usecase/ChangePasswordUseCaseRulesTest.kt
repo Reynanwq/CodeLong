@@ -38,22 +38,22 @@ class ChangePasswordUseCaseRulesTest {
     fun `troca a senha com sucesso`() {
         val user = useCase.change(ChangePasswordCommand("secret123", "novasenha123"), UserId("u-1"))
 
-        assertEquals(PasswordHash("hashed:novasenha123"), user.passwordHash())
+        assertEquals(PasswordHash("hashed:novasenha123"), user.passwordHash)
     }
 
     @Test
     fun `a senha antiga deixa de funcionar`() {
         useCase.change(ChangePasswordCommand("secret123", "novasenha123"), UserId("u-1"))
 
-        assertEquals(false, encoder.matches("secret123", repository.findById(UserId("u-1"))!!.passwordHash()))
-        assertEquals(true, encoder.matches("novasenha123", repository.findById(UserId("u-1"))!!.passwordHash()))
+        assertEquals(false, encoder.matches("secret123", repository.findById(UserId("u-1"))!!.passwordHash))
+        assertEquals(true, encoder.matches("novasenha123", repository.findById(UserId("u-1"))!!.passwordHash))
     }
 
     @Test
     fun `atualiza a data de modificacao`() {
         val user = useCase.change(ChangePasswordCommand("secret123", "novasenha123"), UserId("u-1"))
 
-        assertEquals(Fixtures.NOW, user.updatedAt())
+        assertEquals(Fixtures.NOW, user.updatedAt)
         assertEquals(Fixtures.NOW, user.createdAt)
     }
 
@@ -61,7 +61,7 @@ class ChangePasswordUseCaseRulesTest {
     fun `persiste o novo hash`() {
         useCase.change(ChangePasswordCommand("secret123", "novasenha123"), UserId("u-1"))
 
-        assertEquals(PasswordHash("hashed:novasenha123"), repository.findById(UserId("u-1"))!!.passwordHash())
+        assertEquals(PasswordHash("hashed:novasenha123"), repository.findById(UserId("u-1"))!!.passwordHash)
     }
 
     @Test
@@ -89,7 +89,7 @@ class ChangePasswordUseCaseRulesTest {
             useCase.change(ChangePasswordCommand("errada123", "novasenha123"), UserId("u-1"))
         }
 
-        assertEquals(PasswordHash("hashed:secret123"), repository.findById(UserId("u-1"))!!.passwordHash())
+        assertEquals(PasswordHash("hashed:secret123"), repository.findById(UserId("u-1"))!!.passwordHash)
     }
 
     @Test
@@ -136,7 +136,7 @@ class ChangePasswordUseCaseRulesTest {
 
         val user = useCase.change(ChangePasswordCommand("secret123", "novasenha123"), UserId("u-1"))
 
-        assertEquals(PasswordHash("hashed:novasenha123"), user.passwordHash())
+        assertEquals(PasswordHash("hashed:novasenha123"), user.passwordHash)
     }
 
     @Test
@@ -144,7 +144,7 @@ class ChangePasswordUseCaseRulesTest {
         useCase.change(ChangePasswordCommand("secret123", "novasenha123"), UserId("u-1"))
         useCase.change(ChangePasswordCommand("novasenha123", "terceirasenha123"), UserId("u-1"))
 
-        assertEquals(PasswordHash("hashed:terceirasenha123"), repository.findById(UserId("u-1"))!!.passwordHash())
+        assertEquals(PasswordHash("hashed:terceirasenha123"), repository.findById(UserId("u-1"))!!.passwordHash)
     }
 
     @Test
@@ -153,6 +153,6 @@ class ChangePasswordUseCaseRulesTest {
 
         assertEquals("alice", user.username.value)
         assertEquals(Fixtures.user().role, user.role)
-        assertNotEquals(PasswordHash("hashed:secret123"), user.passwordHash())
+        assertNotEquals(PasswordHash("hashed:secret123"), user.passwordHash)
     }
 }

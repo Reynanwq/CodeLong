@@ -14,15 +14,15 @@ data class UserState(
     val createdAt: Instant,
     val updatedAt: Instant
 ) {
-    fun idText(): String = id.value
+    val idText: String get() = id.value
 
-    fun usernameText(): String = profile.usernameText()
+    val usernameText: String get() = profile.usernameText
 
-    fun emailText(): String = profile.emailText()
+    val emailText: String get() = profile.emailText
 
-    fun passwordHashText(): String = profile.passwordHashText()
+    val passwordHashText: String get() = profile.passwordHashText
 
-    fun roleName(): String = profile.roleName()
+    val roleName: String get() = profile.roleName
 
-    fun statusName(): String = status.name
+    val statusName: String get() = status.name
 }

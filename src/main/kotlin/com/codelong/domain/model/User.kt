@@ -13,10 +13,16 @@ import java.time.Instant
 class User private constructor(
     val id: UserId,
     private var profile: UserProfile,
-    private var status: AccountStatus,
+    status: AccountStatus,
     val createdAt: Instant,
-    private var updatedAt: Instant
+    updatedAt: Instant
 ) {
+
+    var status: AccountStatus = status
+        private set
+
+    var updatedAt: Instant = updatedAt
+        private set
 
     val username: Username get() = profile.username
 
@@ -24,21 +30,21 @@ class User private constructor(
 
     val role: Role get() = profile.role
 
-    fun passwordHash(): PasswordHash = profile.passwordHash
+    val passwordHash: PasswordHash get() = profile.passwordHash
 
-    fun idText(): String = id.value
+    val idText: String get() = id.value
 
-    fun usernameText(): String = profile.usernameText()
+    val usernameText: String get() = profile.usernameText
 
-    fun emailText(): String = profile.emailText()
+    val emailText: String get() = profile.emailText
 
-    fun roleName(): String = profile.roleName()
+    val roleName: String get() = profile.roleName
 
-    fun statusName(): String = status.name
+    val statusName: String get() = status.name
 
-    fun status(): AccountStatus = status
+    val isActive: Boolean get() = status == AccountStatus.ACTIVE
 
-    fun updatedAt(): Instant = updatedAt
+    val isAdmin: Boolean get() = role == Role.ADMIN
 
     fun changePassword(newHash: PasswordHash, now: Instant): User = apply {
         profile = profile.withPasswordHash(newHash)
@@ -60,10 +66,6 @@ class User private constructor(
         status = AccountStatus.of(active)
         updatedAt = now
     }
-
-    fun isActive(): Boolean = status == AccountStatus.ACTIVE
-
-    fun isAdmin(): Boolean = role == Role.ADMIN
 
     fun matchesIdentity(identifier: String): Boolean =
         username.value.equals(identifier, ignoreCase = true) ||

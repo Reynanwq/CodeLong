@@ -101,16 +101,16 @@ data class QuestionResponse(
 ) {
     companion object {
         fun from(question: Question) = QuestionResponse(
-            id = question.idText(),
-            statement = question.statement(),
-            options = question.options().map(OptionResponse::from),
-            correctOption = question.correctOptionText(),
-            explanation = question.explanation(),
-            category = question.categoryName(),
-            difficulty = question.difficultyName(),
-            status = question.statusName(),
+            id = question.idText,
+            statement = question.statement,
+            options = question.options.map(OptionResponse::from),
+            correctOption = question.correctOptionText,
+            explanation = question.explanation,
+            category = question.categoryName,
+            difficulty = question.difficultyName,
+            status = question.statusName,
             createdAt = question.createdAt,
-            updatedAt = question.updatedAt()
+            updatedAt = question.updatedAt
         )
     }
 }

@@ -137,8 +137,8 @@ class MongoGameRepositoryAdapterTest {
 
         val page = adapter.search(GameSearch(userId = UserId("u-1")))
 
-        assertEquals(GameStatus.COMPLETED, page.items.first().status())
-        assertEquals(Difficulty.EASY.points, page.items.first().score())
+        assertEquals(GameStatus.COMPLETED, page.items.first().status)
+        assertEquals(Difficulty.EASY.points, page.items.first().score)
     }
 
     @Test

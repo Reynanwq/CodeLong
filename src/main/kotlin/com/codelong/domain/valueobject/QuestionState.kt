@@ -13,19 +13,19 @@ data class QuestionState(
     val createdAt: Instant,
     val updatedAt: Instant
 ) {
-    fun idText(): String = id.value
+    val idText: String get() = id.value
 
-    fun statementText(): String = content.statementText()
+    val statementText: String get() = content.statementText
 
-    fun options(): List<QuestionOption> = content.options
+    val options: List<QuestionOption> get() = content.options
 
-    fun correctOptionText(): String = content.correctOptionText()
+    val correctOptionText: String get() = content.correctOptionText
 
-    fun explanationText(): String = content.explanationText()
+    val explanationText: String get() = content.explanationText
 
-    fun categoryName(): String = content.categoryName()
+    val categoryName: String get() = content.categoryName
 
-    fun difficultyName(): String = content.difficultyName()
+    val difficultyName: String get() = content.difficultyName
 
-    fun statusName(): String = status.name
+    val statusName: String get() = status.name
 }

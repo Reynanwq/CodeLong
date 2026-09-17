@@ -50,18 +50,18 @@ class CreateQuestionUseCaseTest {
     fun `cria pergunta ativa`() {
         val question = useCase.create(command())
 
-        assertEquals(QuestionStatus.ACTIVE, question.status())
-        assertTrue(question.isActive())
+        assertEquals(QuestionStatus.ACTIVE, question.status)
+        assertTrue(question.isActive)
     }
 
     @Test
     fun `cria pergunta com os dados informados`() {
         val question = useCase.create(command(statement = "Enunciado?", category = Category.SOLID))
 
-        assertEquals("Enunciado?", question.statement())
-        assertEquals(Category.SOLID, question.category())
-        assertEquals(OptionId("a"), question.correctOption())
-        assertEquals(2, question.options().size)
+        assertEquals("Enunciado?", question.statement)
+        assertEquals(Category.SOLID, question.category)
+        assertEquals(OptionId("a"), question.correctOption)
+        assertEquals(2, question.options.size)
     }
 
     @Test
@@ -69,7 +69,7 @@ class CreateQuestionUseCaseTest {
         val question = useCase.create(command())
 
         assertEquals(com.codelong.support.Fixtures.NOW, question.createdAt)
-        assertEquals(com.codelong.support.Fixtures.NOW, question.updatedAt())
+        assertEquals(com.codelong.support.Fixtures.NOW, question.updatedAt)
     }
 
     @Test
@@ -90,8 +90,8 @@ class CreateQuestionUseCaseTest {
     fun `remove espacos do enunciado e da explicacao`() {
         val question = useCase.create(command(statement = "  Com espacos  "))
 
-        assertEquals("Com espacos", question.statement())
-        assertEquals("Interfaces definem contratos.", question.explanation())
+        assertEquals("Com espacos", question.statement)
+        assertEquals("Interfaces definem contratos.", question.explanation)
     }
 
     @Test
@@ -113,7 +113,7 @@ class CreateQuestionUseCaseTest {
     fun `aceita todos os niveis de dificuldade`(difficulty: Difficulty) {
         val question = useCase.create(command(difficulty = difficulty))
 
-        assertEquals(difficulty, question.difficulty())
+        assertEquals(difficulty, question.difficulty)
     }
 
     @ParameterizedTest
@@ -121,7 +121,7 @@ class CreateQuestionUseCaseTest {
     fun `aceita todas as categorias`(category: Category) {
         val question = useCase.create(command(category = category))
 
-        assertEquals(category, question.category())
+        assertEquals(category, question.category)
     }
 
     @Test

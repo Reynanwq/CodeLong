@@ -54,12 +54,12 @@ class UpdateQuestionUseCaseTest {
 
         val updated = useCase.update(command())
 
-        assertEquals("Enunciado atualizado?", updated.statement())
-        assertEquals(2, updated.options().size)
-        assertEquals(OptionId("a"), updated.correctOption())
-        assertEquals("Explicacao atualizada.", updated.explanation())
-        assertEquals(Category.KOTLIN, updated.category())
-        assertEquals(Difficulty.MASTER, updated.difficulty())
+        assertEquals("Enunciado atualizado?", updated.statement)
+        assertEquals(2, updated.options.size)
+        assertEquals(OptionId("a"), updated.correctOption)
+        assertEquals("Explicacao atualizada.", updated.explanation)
+        assertEquals(Category.KOTLIN, updated.category)
+        assertEquals(Difficulty.MASTER, updated.difficulty)
     }
 
     @Test
@@ -68,7 +68,7 @@ class UpdateQuestionUseCaseTest {
 
         val updated = useCase.update(command())
 
-        assertEquals(Fixtures.NOW, updated.updatedAt())
+        assertEquals(Fixtures.NOW, updated.updatedAt)
         assertEquals(Fixtures.NOW, updated.createdAt)
     }
 
@@ -80,8 +80,8 @@ class UpdateQuestionUseCaseTest {
 
         val stored = repository.findById(QuestionId("q-1"))
         assertNotNull(stored)
-        assertEquals("Persistido?", stored!!.statement())
-        assertEquals(Difficulty.MASTER, stored.difficulty())
+        assertEquals("Persistido?", stored!!.statement)
+        assertEquals(Difficulty.MASTER, stored.difficulty)
     }
 
     @Test
@@ -90,14 +90,14 @@ class UpdateQuestionUseCaseTest {
 
         val updated = useCase.update(command())
 
-        assertEquals(QuestionStatus.INACTIVE, updated.status())
+        assertEquals(QuestionStatus.INACTIVE, updated.status)
     }
 
     @Test
     fun `preserva o status ativo`() {
         repository.save(Fixtures.question(id = "q-1"))
 
-        assertEquals(QuestionStatus.ACTIVE, useCase.update(command()).status())
+        assertEquals(QuestionStatus.ACTIVE, useCase.update(command()).status)
     }
 
     @Test
@@ -114,7 +114,7 @@ class UpdateQuestionUseCaseTest {
 
         assertThrows<DomainException> { useCase.update(command(statement = "   ")) }
 
-        assertEquals("O que e polimorfismo?", repository.findById(QuestionId("q-1"))!!.statement())
+        assertEquals("O que e polimorfismo?", repository.findById(QuestionId("q-1"))!!.statement)
     }
 
     @Test
@@ -132,7 +132,7 @@ class UpdateQuestionUseCaseTest {
 
         val updated = useCase.update(command(statement = "  Com espacos  "))
 
-        assertEquals("Com espacos", updated.statement())
-        assertEquals("Alternativa A", updated.options().first().text)
+        assertEquals("Com espacos", updated.statement)
+        assertEquals("Alternativa A", updated.options.first().text)
     }
 }

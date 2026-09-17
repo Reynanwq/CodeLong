@@ -59,13 +59,13 @@ class UserManagementUseCaseTest {
             ChangeUserStatusCommand(UserId("user-1"), false),
             UserId("admin-1")
         )
-        assertEquals(AccountStatus.INACTIVE, deactivated.status())
+        assertEquals(AccountStatus.INACTIVE, deactivated.status)
 
         val reactivated = changeStatusUseCase.change(
             ChangeUserStatusCommand(UserId("user-1"), true),
             UserId("admin-1")
         )
-        assertEquals(AccountStatus.ACTIVE, reactivated.status())
+        assertEquals(AccountStatus.ACTIVE, reactivated.status)
     }
 
     @Test
@@ -78,7 +78,7 @@ class UserManagementUseCaseTest {
         }
 
         assertEquals("user.deactivate.self", error.code)
-        assertEquals(AccountStatus.ACTIVE, repository.findById(UserId("admin-1"))?.status())
+        assertEquals(AccountStatus.ACTIVE, repository.findById(UserId("admin-1"))?.status)
     }
 
     @Test

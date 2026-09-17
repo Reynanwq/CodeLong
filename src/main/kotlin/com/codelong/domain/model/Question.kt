@@ -14,38 +14,40 @@ import java.time.Instant
 class Question private constructor(
     val id: QuestionId,
     private var content: QuestionContent,
-    private var status: QuestionStatus,
+    status: QuestionStatus,
     val createdAt: Instant,
-    private var updatedAt: Instant
+    updatedAt: Instant
 ) {
 
-    fun statement(): String = content.statement
+    var status: QuestionStatus = status
+        private set
 
-    fun options(): List<QuestionOption> = content.options
+    var updatedAt: Instant = updatedAt
+        private set
 
-    fun correctOption(): OptionId = content.correctOption
+    val statement: String get() = content.statementText
 
-    fun explanation(): String = content.explanation
+    val options: List<QuestionOption> get() = content.options
 
-    fun category(): Category = content.category
+    val correctOption: OptionId get() = content.correctOption
 
-    fun difficulty(): Difficulty = content.difficulty
+    val explanation: String get() = content.explanationText
 
-    fun status(): QuestionStatus = status
+    val category: Category get() = content.category
 
-    fun idText(): String = id.value
+    val difficulty: Difficulty get() = content.difficulty
 
-    fun correctOptionText(): String = content.correctOptionText()
+    val isActive: Boolean get() = status == QuestionStatus.ACTIVE
 
-    fun categoryName(): String = content.categoryName()
+    val idText: String get() = id.value
 
-    fun difficultyName(): String = content.difficultyName()
+    val correctOptionText: String get() = content.correctOptionText
 
-    fun statusName(): String = status.name
+    val categoryName: String get() = content.categoryName
 
-    fun updatedAt(): Instant = updatedAt
+    val difficultyName: String get() = content.difficultyName
 
-    fun isActive(): Boolean = status == QuestionStatus.ACTIVE
+    val statusName: String get() = status.name
 
     fun hasOption(optionId: OptionId): Boolean = content.hasOption(optionId)
 

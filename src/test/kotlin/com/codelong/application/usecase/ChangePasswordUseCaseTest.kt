@@ -40,7 +40,7 @@ class ChangePasswordUseCaseTest {
             UserId("user-1")
         )
 
-        assertEquals("hashed:novasenha123", updated.passwordHash().value)
+        assertEquals("hashed:novasenha123", updated.passwordHash.value)
     }
 
     @Test

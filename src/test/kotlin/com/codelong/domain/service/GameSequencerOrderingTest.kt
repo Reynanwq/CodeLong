@@ -35,8 +35,8 @@ class GameSequencerOrderingTest {
 
         assertEquals(1, sequence.size)
         assertEquals(question.id, sequence.first().id)
-        assertEquals(question.difficulty(), sequence.first().difficulty)
-        assertEquals(question.options(), sequence.first().options)
+        assertEquals(question.difficulty, sequence.first().difficulty)
+        assertEquals(question.options, sequence.first().options)
     }
 
     @Test

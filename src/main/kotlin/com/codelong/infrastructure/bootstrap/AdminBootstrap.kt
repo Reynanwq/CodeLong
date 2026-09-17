@@ -36,7 +36,7 @@ class AdminBootstrap(
             .takeUnless { userRepository.existsByUsername(it) }
             ?.let { value ->
                 userRepository.save(
-                    userFactory.createAdmin(value, Email.of(username + ADMIN_EMAIL_SUFFIX), password)
+                    userFactory.createAdmin(value, Email.of("$username$ADMIN_EMAIL_SUFFIX"), password)
                 )
             }
     }

@@ -35,7 +35,7 @@ class GetCurrentUserUseCaseTest {
         assertEquals("alice", user.username.value)
         assertEquals("alice@codelong.dev", user.email.value)
         assertEquals(Role.USER, user.role)
-        assertEquals(AccountStatus.ACTIVE, user.status())
+        assertEquals(AccountStatus.ACTIVE, user.status)
     }
 
     @Test
@@ -57,7 +57,7 @@ class GetCurrentUserUseCaseTest {
     fun `devolve usuario inativo`() {
         repository.save(Fixtures.user(id = "u-1").deactivate(TestClock.fixed.instant()))
 
-        assertEquals(AccountStatus.INACTIVE, useCase.get(UserId("u-1")).status())
+        assertEquals(AccountStatus.INACTIVE, useCase.get(UserId("u-1")).status)
     }
 
     @Test

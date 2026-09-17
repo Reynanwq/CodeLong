@@ -31,8 +31,8 @@ class GetCurrentQuestionUseCaseTest {
 
         val question = useCase.current(GameId("g-1"), UserId("u-1"))
 
-        assertEquals(game.questions().first().id, question.id)
-        assertEquals(game.questions().first().statement, question.statement)
+        assertEquals(game.questions.first().id, question.id)
+        assertEquals(game.questions.first().statement, question.statement)
         assertEquals(Difficulty.EASY, question.difficulty)
     }
 

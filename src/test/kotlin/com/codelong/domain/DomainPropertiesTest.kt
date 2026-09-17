@@ -105,10 +105,10 @@ class DomainPropertiesTest {
             game.answer(game.currentQuestion().correctOption, Fixtures.NOW)
         }
 
-        assertEquals(difficulties.sumOf { it.points }, game.score())
-        assertEquals(difficulties.size, game.correctAnswersCount())
-        assertEquals(0, game.wrongAnswersCount())
-        assertTrue(game.isCompleted())
+        assertEquals(difficulties.sumOf { it.points }, game.score)
+        assertEquals(difficulties.size, game.correctAnswers)
+        assertEquals(0, game.wrongAnswers)
+        assertTrue(game.isCompleted)
     }
 
     @Property
@@ -131,8 +131,8 @@ class DomainPropertiesTest {
             game.answer(wrong, Fixtures.NOW)
         }
 
-        assertEquals(0, game.score())
-        assertEquals(levels.size, game.wrongAnswersCount())
+        assertEquals(0, game.score)
+        assertEquals(levels.size, game.wrongAnswers)
     }
 
     @Property
@@ -149,10 +149,10 @@ class DomainPropertiesTest {
             startedAt = Fixtures.NOW
         )
 
-        assertTrue(game.remainingQuestions() >= 0)
+        assertTrue(game.remainingQuestions >= 0)
         repeat(levels.size) {
             game.answer(game.currentQuestion().correctOption, Fixtures.NOW)
-            assertTrue(game.remainingQuestions() >= 0)
+            assertTrue(game.remainingQuestions >= 0)
         }
     }
 
@@ -235,10 +235,10 @@ class DomainPropertiesTest {
 
         val restored = Game.reconstitute(game.state())
 
-        assertEquals(game.score(), restored.score())
-        assertEquals(game.currentQuestionIndex(), restored.currentQuestionIndex())
-        assertEquals(game.status(), restored.status())
-        assertEquals(game.answers().size, restored.answers().size)
+        assertEquals(game.score, restored.score)
+        assertEquals(game.currentQuestionIndex, restored.currentQuestionIndex)
+        assertEquals(game.status, restored.status)
+        assertEquals(game.answers.size, restored.answers.size)
     }
 
     private fun normalizeLevel(value: Int): Int = Math.floorMod(value, 10) + 1

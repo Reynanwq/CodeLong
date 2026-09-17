@@ -120,15 +120,15 @@ class QuestionDtosTest {
         val response = QuestionResponse.from(question)
 
         assertEquals("q-1", response.id)
-        assertEquals(question.statement(), response.statement)
+        assertEquals(question.statement, response.statement)
         assertEquals(3, response.options.size)
-        assertEquals(question.correctOption().value, response.correctOption)
-        assertEquals(question.explanation(), response.explanation)
+        assertEquals(question.correctOption.value, response.correctOption)
+        assertEquals(question.explanation, response.explanation)
         assertEquals("TESTING", response.category)
         assertEquals("MEDIUM", response.difficulty)
         assertEquals("ACTIVE", response.status)
         assertEquals(question.createdAt, response.createdAt)
-        assertEquals(question.updatedAt(), response.updatedAt)
+        assertEquals(question.updatedAt, response.updatedAt)
     }
 
     @Test

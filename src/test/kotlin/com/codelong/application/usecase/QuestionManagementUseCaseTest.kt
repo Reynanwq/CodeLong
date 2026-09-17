@@ -49,9 +49,9 @@ class QuestionManagementUseCaseTest {
     fun `cria pergunta ativa e persiste`() {
         val created = createUseCase.create(command())
 
-        assertTrue(created.isActive())
-        assertEquals(Category.SOLID, created.category())
-        assertEquals(Difficulty.EASY_PLUS, created.difficulty())
+        assertTrue(created.isActive)
+        assertEquals(Category.SOLID, created.category)
+        assertEquals(Difficulty.EASY_PLUS, created.difficulty)
         assertEquals(1L, repository.countActive())
     }
 
@@ -74,11 +74,11 @@ class QuestionManagementUseCaseTest {
         val created = createUseCase.create(command())
 
         val deactivated = changeStatusUseCase.change(ChangeQuestionStatusCommand(created.id, false))
-        assertFalse(deactivated.isActive())
+        assertFalse(deactivated.isActive)
         assertEquals(0L, repository.countActive())
 
         val reactivated = changeStatusUseCase.change(ChangeQuestionStatusCommand(created.id, true))
-        assertTrue(reactivated.isActive())
+        assertTrue(reactivated.isActive)
         assertEquals(1L, repository.countActive())
     }
 

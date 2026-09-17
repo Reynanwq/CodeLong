@@ -29,7 +29,7 @@ class CreateGameUseCaseImpl(
         val user = userRepository.findById(actorId)
             ?: throw Errors.userNotFound()
 
-        user.isActive().takeUnless { it }?.let {
+        user.isActive.takeUnless { it }?.let {
             throw Errors.accountInactiveForbidden()
         }
 

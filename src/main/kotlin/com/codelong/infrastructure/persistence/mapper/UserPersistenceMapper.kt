@@ -16,12 +16,12 @@ object UserPersistenceMapper {
     fun toDocument(user: User): UserDocument {
         val state = user.state()
         return UserDocument(
-            id = state.idText(),
-            username = state.usernameText(),
-            email = state.emailText(),
-            passwordHash = state.passwordHashText(),
-            role = state.roleName(),
-            status = state.statusName(),
+            id = state.idText,
+            username = state.usernameText,
+            email = state.emailText,
+            passwordHash = state.passwordHashText,
+            role = state.roleName,
+            status = state.statusName,
             createdAt = state.createdAt,
             updatedAt = state.updatedAt
         )

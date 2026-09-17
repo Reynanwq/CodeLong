@@ -17,8 +17,8 @@ class GameSequencer(private val random: Random) {
     fun sequence(activeQuestions: List<Question>): List<GameQuestion> {
         return activeQuestions
             .asSequence()
-            .filter { it.isActive() }
-            .groupBy { it.difficulty() }
+            .filter { it.isActive }
+            .groupBy { it.difficulty }
             .toSortedMap()
             .values
             .flatMap { questionsOfSameLevel ->

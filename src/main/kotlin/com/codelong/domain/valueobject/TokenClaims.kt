@@ -11,7 +11,7 @@ data class TokenClaims(
     val issuedAt: Instant,
     val expiresAt: Instant
 ) {
-    fun userIdText(): String = userId.value
+    val userIdText: String get() = userId.value
 
-    fun roleName(): String = role.name
+    val roleName: String get() = role.name
 }

@@ -30,7 +30,7 @@ class GetQuestionUseCaseTest {
         val question = useCase.get(QuestionId("q-1"))
 
         assertEquals("q-1", question.id.value)
-        assertEquals(Difficulty.HARD, question.difficulty())
+        assertEquals(Difficulty.HARD, question.difficulty)
     }
 
     @Test
@@ -44,7 +44,7 @@ class GetQuestionUseCaseTest {
     fun `devolve pergunta inativa para consulta administrativa`() {
         repository.save(Fixtures.question(id = "q-1").deactivate(Fixtures.NOW))
 
-        assertEquals(false, useCase.get(QuestionId("q-1")).isActive())
+        assertEquals(false, useCase.get(QuestionId("q-1")).isActive)
     }
 
     @Test

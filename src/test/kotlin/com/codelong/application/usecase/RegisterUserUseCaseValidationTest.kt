@@ -65,8 +65,8 @@ class RegisterUserUseCaseValidationTest {
     fun `armazena apenas o hash da senha`() {
         val result = useCase.register(RegisterUserCommand("alice", "alice@codelong.dev", "secret123"))
 
-        assertEquals("hashed:secret123", result.user.passwordHash().value)
-        assertFalse(result.user.passwordHash().value == "secret123")
+        assertEquals("hashed:secret123", result.user.passwordHash.value)
+        assertFalse(result.user.passwordHash.value == "secret123")
     }
 
     @Test
@@ -196,6 +196,6 @@ class RegisterUserUseCaseValidationTest {
     fun `nao cadastra administrador pelo fluxo publico`() {
         val result = useCase.register(RegisterUserCommand("alice", "alice@codelong.dev", "secret123"))
 
-        assertFalse(result.user.isAdmin())
+        assertFalse(result.user.isAdmin)
     }
 }

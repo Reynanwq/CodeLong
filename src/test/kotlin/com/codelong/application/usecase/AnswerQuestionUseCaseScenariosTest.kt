@@ -57,7 +57,7 @@ class AnswerQuestionUseCaseScenariosTest {
         val game = repository.save(
             Fixtures.game(userId = "u-1", difficulties = listOf(Difficulty.EASY, Difficulty.HARD))
         )
-        val expectedNext = game.questions()[1]
+        val expectedNext = game.questions[1]
 
         val result = useCase.answer(AnswerQuestionCommand(game.id, game.currentQuestion().correctOption), actor)
 
@@ -170,7 +170,7 @@ class AnswerQuestionUseCaseScenariosTest {
         val result = useCase.answer(AnswerQuestionCommand(game.id, wrongOptionOf(game)), actor)
 
         assertEquals(0, result.record.earnedPoints)
-        assertEquals(1, repository.findById(GameId("g-1"))!!.answers().size)
+        assertEquals(1, repository.findById(GameId("g-1"))!!.answers.size)
     }
 
     @Test
@@ -182,8 +182,8 @@ class AnswerQuestionUseCaseScenariosTest {
         useCase.answer(AnswerQuestionCommand(game.id, game.currentQuestion().correctOption), actor)
 
         val stored = repository.findById(game.id)!!
-        assertEquals(1, stored.currentQuestionIndex())
-        assertEquals(1, stored.answers().size)
-        assertTrue(stored.isInProgress())
+        assertEquals(1, stored.currentQuestionIndex)
+        assertEquals(1, stored.answers.size)
+        assertTrue(stored.isInProgress)
     }
 }

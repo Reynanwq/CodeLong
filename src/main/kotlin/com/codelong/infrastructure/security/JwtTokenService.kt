@@ -24,8 +24,8 @@ class JwtTokenService(
 
     override fun generate(claims: TokenClaims): String =
         Jwts.builder()
-            .subject(claims.userIdText())
-            .claim(ROLE_CLAIM, claims.roleName())
+            .subject(claims.userIdText)
+            .claim(ROLE_CLAIM, claims.roleName)
             .issuedAt(Date.from(claims.issuedAt))
             .expiration(Date.from(claims.expiresAt))
             .signWith(key)

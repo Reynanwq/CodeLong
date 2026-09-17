@@ -67,8 +67,8 @@ class AdminBootstrapTest {
         val admin = repository.all().single()
         assertEquals("admin", admin.username.value)
         assertEquals(Role.ADMIN, admin.role)
-        assertTrue(admin.isAdmin())
-        assertTrue(admin.isActive())
+        assertTrue(admin.isAdmin)
+        assertTrue(admin.isActive)
     }
 
     @Test
@@ -82,7 +82,7 @@ class AdminBootstrapTest {
     fun `admin criado usa o hash da senha`() {
         bootstrap("admin", "admin12345").run(args)
 
-        assertEquals("hashed:admin12345", repository.all().single().passwordHash().value)
+        assertEquals("hashed:admin12345", repository.all().single().passwordHash.value)
     }
 
     @Test
@@ -100,7 +100,7 @@ class AdminBootstrapTest {
         bootstrap("admin", "admin12345").run(args)
 
         assertEquals(1, repository.all().size)
-        assertEquals("hashed:outra-senha", repository.all().single().passwordHash().value)
+        assertEquals("hashed:outra-senha", repository.all().single().passwordHash.value)
     }
 
     @Test

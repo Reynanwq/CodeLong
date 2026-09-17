@@ -7,5 +7,5 @@ data class QuestionOption(
     val id: OptionId,
     val text: String
 ) {
-    fun idText(): String = id.value
+    val idText: String get() = id.value
 }

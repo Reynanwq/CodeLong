@@ -14,5 +14,5 @@ data class RankEntry(
     val achievedAt: Instant,
     val position: Int? = null
 ) {
-    fun userIdText(): String = userId.value
+    val userIdText: String get() = userId.value
 }

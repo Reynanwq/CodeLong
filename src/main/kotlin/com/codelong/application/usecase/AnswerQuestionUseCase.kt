@@ -28,15 +28,15 @@ class AnswerQuestionUseCaseImpl(
         val evaluation = game.answer(command.optionId, clock.instant())
 
         val saved = gameRepository.save(game)
-        val nextQuestion = saved.takeIf { it.isInProgress() }?.currentQuestion()?.publicView()
+        val nextQuestion = saved.takeIf { it.isInProgress }?.currentQuestion()?.publicView()
 
         return AnswerResult(
             record = evaluation.record,
             question = evaluation.question,
-            currentScore = saved.score(),
-            correctAnswers = saved.correctAnswersCount(),
-            wrongAnswers = saved.wrongAnswersCount(),
-            gameCompleted = saved.isCompleted(),
+            currentScore = saved.score,
+            correctAnswers = saved.correctAnswers,
+            wrongAnswers = saved.wrongAnswers,
+            gameCompleted = saved.isCompleted,
             questionIndex = evaluation.questionIndex,
             totalQuestions = evaluation.totalQuestions,
             nextQuestion = nextQuestion

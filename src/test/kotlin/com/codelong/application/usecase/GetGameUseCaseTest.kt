@@ -34,7 +34,7 @@ class GetGameUseCaseTest {
         assertEquals(GameId("g-1"), found.id)
         assertEquals(UserId("u-1"), found.userId)
         assertEquals("alice", found.username)
-        assertEquals(GameStatus.IN_PROGRESS, found.status())
+        assertEquals(GameStatus.IN_PROGRESS, found.status)
     }
 
     @Test
@@ -74,8 +74,8 @@ class GetGameUseCaseTest {
 
         val found = useCase.get(GameId("g-1"), UserId("u-1"))
 
-        assertEquals(GameStatus.COMPLETED, found.status())
-        assertEquals(Difficulty.EASY.points, found.score())
+        assertEquals(GameStatus.COMPLETED, found.status)
+        assertEquals(Difficulty.EASY.points, found.score)
     }
 
     @Test
@@ -84,7 +84,7 @@ class GetGameUseCaseTest {
         game.abandon(Fixtures.NOW)
         repository.save(game)
 
-        assertEquals(GameStatus.ABANDONED, useCase.get(GameId("g-1"), UserId("u-1")).status())
+        assertEquals(GameStatus.ABANDONED, useCase.get(GameId("g-1"), UserId("u-1")).status)
     }
 
     @Test

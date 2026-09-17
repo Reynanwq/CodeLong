@@ -17,14 +17,14 @@ object QuestionPersistenceMapper {
     fun toDocument(question: Question): QuestionDocument {
         val state = question.state()
         return QuestionDocument(
-            id = state.idText(),
-            statement = state.statementText(),
-            options = state.options().map { OptionDocument(it.idText(), it.text) },
-            correctOption = state.correctOptionText(),
-            explanation = state.explanationText(),
-            category = state.categoryName(),
-            difficulty = state.difficultyName(),
-            status = state.statusName(),
+            id = state.idText,
+            statement = state.statementText,
+            options = state.options.map { OptionDocument(it.idText, it.text) },
+            correctOption = state.correctOptionText,
+            explanation = state.explanationText,
+            category = state.categoryName,
+            difficulty = state.difficultyName,
+            status = state.statusName,
             createdAt = state.createdAt,
             updatedAt = state.updatedAt
         )

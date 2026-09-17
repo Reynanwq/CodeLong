@@ -44,8 +44,8 @@ class RegisterUserUseCaseTest {
         val result = useCase.register(RegisterUserCommand("dev", "dev@codelong.dev", "secret123"))
 
         assertEquals("dev", result.user.username.value)
-        assertEquals("hashed:secret123", result.user.passwordHash().value)
-        assertTrue(result.user.isActive())
+        assertEquals("hashed:secret123", result.user.passwordHash.value)
+        assertTrue(result.user.isActive)
         assertTrue(result.token.startsWith("token-"))
         assertEquals(1, repository.all().size)
     }

@@ -44,8 +44,8 @@ class MongoQuestionRepositoryAdapterTest {
         val saved = adapter.save(question)
 
         assertEquals(question.id, saved.id)
-        assertEquals(question.statement(), saved.statement())
-        assertEquals(question.difficulty(), saved.difficulty())
+        assertEquals(question.statement, saved.statement)
+        assertEquals(question.difficulty, saved.difficulty)
     }
 
     @Test

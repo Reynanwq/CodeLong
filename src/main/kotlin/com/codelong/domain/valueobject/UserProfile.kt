@@ -11,11 +11,11 @@ data class UserProfile(
 ) {
     fun withPasswordHash(newHash: PasswordHash): UserProfile = copy(passwordHash = newHash)
 
-    fun usernameText(): String = username.value
+    val usernameText: String get() = username.value
 
-    fun emailText(): String = email.value
+    val emailText: String get() = email.value
 
-    fun passwordHashText(): String = passwordHash.value
+    val passwordHashText: String get() = passwordHash.value
 
-    fun roleName(): String = role.name
+    val roleName: String get() = role.name
 }

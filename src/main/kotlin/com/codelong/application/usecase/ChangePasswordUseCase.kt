@@ -35,13 +35,13 @@ class ChangePasswordUseCaseImpl(
         val user = userRepository.findById(actorId)
             ?: throw Errors.userNotFound()
 
-        passwordEncoder.matches(command.currentPassword, user.passwordHash()).takeUnless { it }?.let {
+        passwordEncoder.matches(command.currentPassword, user.passwordHash).takeUnless { it }?.let {
             throw Errors.invalidCurrentPassword()
         }
 
         passwordPolicy.requireStrong(command.newPassword)
 
-        passwordEncoder.matches(command.newPassword, user.passwordHash()).takeIf { it }?.let {
+        passwordEncoder.matches(command.newPassword, user.passwordHash).takeIf { it }?.let {
             throw Errors.passwordUnchanged()
         }
 

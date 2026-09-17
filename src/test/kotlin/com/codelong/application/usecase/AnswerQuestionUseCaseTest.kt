@@ -63,7 +63,7 @@ class AnswerQuestionUseCaseTest {
         assertNull(result.nextQuestion)
         assertEquals(0, result.questionIndex)
         assertEquals(1, result.totalQuestions)
-        assertTrue(repository.findById(game.id)!!.isCompleted())
+        assertTrue(repository.findById(game.id)!!.isCompleted)
     }
 
     @Test
@@ -75,8 +75,8 @@ class AnswerQuestionUseCaseTest {
         useCase.answer(AnswerQuestionCommand(game.id, game.currentQuestion().correctOption), actor)
 
         val stored = repository.findById(game.id)!!
-        assertEquals(1, stored.currentQuestionIndex())
-        assertEquals(Difficulty.EASY.points, stored.score())
+        assertEquals(1, stored.currentQuestionIndex)
+        assertEquals(Difficulty.EASY.points, stored.score)
     }
 
     @Test

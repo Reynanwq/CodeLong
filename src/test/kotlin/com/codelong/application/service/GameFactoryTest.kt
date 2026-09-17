@@ -29,10 +29,10 @@ class GameFactoryTest {
 
         assertEquals(UserId("u-1"), game.userId)
         assertEquals("alice", game.username)
-        assertEquals(GameStatus.IN_PROGRESS, game.status())
+        assertEquals(GameStatus.IN_PROGRESS, game.status)
         assertEquals(Fixtures.NOW, game.startedAt)
-        assertEquals(0, game.currentQuestionIndex())
-        assertEquals(0, game.score())
+        assertEquals(0, game.currentQuestionIndex)
+        assertEquals(0, game.score)
         assertEquals(0L, game.version)
     }
 
@@ -43,10 +43,10 @@ class GameFactoryTest {
 
         val game = factory.start(user, questions)
 
-        assertEquals(1, game.totalQuestions())
-        assertEquals(questions.first().id, game.questions().first().id)
-        assertEquals(questions.first().statement(), game.questions().first().statement)
-        assertEquals(questions.first().correctOption(), game.questions().first().correctOption)
+        assertEquals(1, game.totalQuestions)
+        assertEquals(questions.first().id, game.questions.first().id)
+        assertEquals(questions.first().statement, game.questions.first().statement)
+        assertEquals(questions.first().correctOption, game.questions.first().correctOption)
     }
 
     @Test
@@ -62,7 +62,7 @@ class GameFactoryTest {
 
         assertEquals(
             listOf(Difficulty.EASY, Difficulty.MEDIUM, Difficulty.MASTER),
-            game.questions().map { it.difficulty }
+            game.questions.map { it.difficulty }
         )
     }
 
@@ -76,16 +76,16 @@ class GameFactoryTest {
 
         val game = factory.start(user, questions)
 
-        assertEquals(1, game.totalQuestions())
+        assertEquals(1, game.totalQuestions)
     }
 
     @Test
     fun `start sem perguntas gera partida vazia`() {
         val game = factory.start(Fixtures.user(), emptyList())
 
-        assertEquals(0, game.totalQuestions())
-        assertEquals(0, game.remainingQuestions())
-        assertTrue(game.isInProgress())
+        assertEquals(0, game.totalQuestions)
+        assertEquals(0, game.remainingQuestions)
+        assertTrue(game.isInProgress)
     }
 
     @Test
@@ -105,8 +105,8 @@ class GameFactoryTest {
 
         factory.start(user, listOf(question))
 
-        assertTrue(question.isActive())
-        assertEquals("O que e polimorfismo?", question.statement())
+        assertTrue(question.isActive)
+        assertEquals("O que e polimorfismo?", question.statement)
     }
 
     @Test

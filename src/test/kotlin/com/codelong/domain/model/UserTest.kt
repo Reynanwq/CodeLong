@@ -25,30 +25,30 @@ class UserTest {
         assertEquals("alice", user.username.value)
         assertEquals("alice@codelong.dev", user.email.value)
         assertEquals(Role.USER, user.role)
-        assertEquals(AccountStatus.ACTIVE, user.status())
+        assertEquals(AccountStatus.ACTIVE, user.status)
         assertEquals(now, user.createdAt)
-        assertEquals(now, user.updatedAt())
-        assertTrue(user.isActive())
+        assertEquals(now, user.updatedAt)
+        assertTrue(user.isActive)
     }
 
     @Test
     fun `create com papel ADMIN resulta em isAdmin`() {
         val admin = Fixtures.user(id = "a-1", username = "admin", role = Role.ADMIN)
 
-        assertTrue(admin.isAdmin())
+        assertTrue(admin.isAdmin)
         assertEquals(Role.ADMIN, admin.role)
     }
 
     @Test
     fun `usuario comum nao e admin`() {
-        assertFalse(Fixtures.user().isAdmin())
+        assertFalse(Fixtures.user().isAdmin)
     }
 
     @Test
     fun `passwordHash retorna o hash do perfil`() {
         val user = Fixtures.user()
 
-        assertEquals(PasswordHash("hashed:secret123"), user.passwordHash())
+        assertEquals(PasswordHash("hashed:secret123"), user.passwordHash)
     }
 
     @Test
@@ -58,8 +58,8 @@ class UserTest {
         val returned = user.changePassword(PasswordHash("novo-hash"), later)
 
         assertSame(user, returned)
-        assertEquals(PasswordHash("novo-hash"), user.passwordHash())
-        assertEquals(later, user.updatedAt())
+        assertEquals(PasswordHash("novo-hash"), user.passwordHash)
+        assertEquals(later, user.updatedAt)
         assertEquals(now, user.createdAt)
     }
 
@@ -70,9 +70,9 @@ class UserTest {
         val returned = user.deactivate(later)
 
         assertSame(user, returned)
-        assertEquals(AccountStatus.INACTIVE, user.status())
-        assertFalse(user.isActive())
-        assertEquals(later, user.updatedAt())
+        assertEquals(AccountStatus.INACTIVE, user.status)
+        assertFalse(user.isActive)
+        assertEquals(later, user.updatedAt)
     }
 
     @Test
@@ -82,9 +82,9 @@ class UserTest {
         val returned = user.activate(later)
 
         assertSame(user, returned)
-        assertEquals(AccountStatus.ACTIVE, user.status())
-        assertTrue(user.isActive())
-        assertEquals(later, user.updatedAt())
+        assertEquals(AccountStatus.ACTIVE, user.status)
+        assertTrue(user.isActive)
+        assertEquals(later, user.updatedAt)
     }
 
     @Test
@@ -93,8 +93,8 @@ class UserTest {
 
         user.deactivate(later.plusSeconds(60))
 
-        assertEquals(AccountStatus.INACTIVE, user.status())
-        assertEquals(later.plusSeconds(60), user.updatedAt())
+        assertEquals(AccountStatus.INACTIVE, user.status)
+        assertEquals(later.plusSeconds(60), user.updatedAt)
     }
 
     @Test
@@ -150,11 +150,11 @@ class UserTest {
         assertEquals(original.username, restored.username)
         assertEquals(original.email, restored.email)
         assertEquals(original.role, restored.role)
-        assertEquals(PasswordHash("hash-novo"), restored.passwordHash())
-        assertEquals(AccountStatus.INACTIVE, restored.status())
+        assertEquals(PasswordHash("hash-novo"), restored.passwordHash)
+        assertEquals(AccountStatus.INACTIVE, restored.status)
         assertEquals(original.createdAt, restored.createdAt)
-        assertEquals(original.updatedAt(), restored.updatedAt())
-        assertFalse(restored.isActive())
+        assertEquals(original.updatedAt, restored.updatedAt)
+        assertFalse(restored.isActive)
     }
 
     @Test

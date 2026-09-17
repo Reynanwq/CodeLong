@@ -50,10 +50,10 @@ class CreateGameUseCaseTest {
         val game = result.game
 
         assertTrue(result.created)
-        assertTrue(game.isInProgress())
+        assertTrue(game.isInProgress)
         assertEquals(UserId("u-1"), game.userId)
-        assertEquals(2, game.totalQuestions())
-        assertEquals(0, game.currentQuestionIndex())
+        assertEquals(2, game.totalQuestions)
+        assertEquals(0, game.currentQuestionIndex)
         assertEquals(1L, game.version)
         assertEquals(1, gameRepository.all().size)
     }
@@ -82,7 +82,7 @@ class CreateGameUseCaseTest {
 
         val game = useCase.create(UserId("u-1")).game
 
-        assertEquals(1, game.totalQuestions())
+        assertEquals(1, game.totalQuestions)
     }
 
     @Test

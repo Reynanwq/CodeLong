@@ -32,8 +32,8 @@ class ChangeQuestionStatusUseCaseTest {
 
         val question = useCase.change(ChangeQuestionStatusCommand(QuestionId("q-1"), active = false))
 
-        assertEquals(QuestionStatus.INACTIVE, question.status())
-        assertFalse(question.isActive())
+        assertEquals(QuestionStatus.INACTIVE, question.status)
+        assertFalse(question.isActive)
     }
 
     @Test
@@ -42,8 +42,8 @@ class ChangeQuestionStatusUseCaseTest {
 
         val question = useCase.change(ChangeQuestionStatusCommand(QuestionId("q-1"), active = true))
 
-        assertEquals(QuestionStatus.ACTIVE, question.status())
-        assertTrue(question.isActive())
+        assertEquals(QuestionStatus.ACTIVE, question.status)
+        assertTrue(question.isActive)
     }
 
     @Test
@@ -52,7 +52,7 @@ class ChangeQuestionStatusUseCaseTest {
 
         val question = useCase.change(ChangeQuestionStatusCommand(QuestionId("q-1"), active = false))
 
-        assertEquals(Fixtures.NOW, question.updatedAt())
+        assertEquals(Fixtures.NOW, question.updatedAt)
         assertEquals(Fixtures.NOW, question.createdAt)
     }
 
@@ -62,7 +62,7 @@ class ChangeQuestionStatusUseCaseTest {
 
         useCase.change(ChangeQuestionStatusCommand(QuestionId("q-1"), active = false))
 
-        assertEquals(QuestionStatus.INACTIVE, repository.findById(QuestionId("q-1"))!!.status())
+        assertEquals(QuestionStatus.INACTIVE, repository.findById(QuestionId("q-1"))!!.status)
         assertEquals(0L, repository.countActive())
     }
 
@@ -82,7 +82,7 @@ class ChangeQuestionStatusUseCaseTest {
         useCase.change(ChangeQuestionStatusCommand(QuestionId("q-1"), active = false))
         val question = useCase.change(ChangeQuestionStatusCommand(QuestionId("q-1"), active = false))
 
-        assertEquals(QuestionStatus.INACTIVE, question.status())
+        assertEquals(QuestionStatus.INACTIVE, question.status)
     }
 
     @Test
@@ -91,7 +91,7 @@ class ChangeQuestionStatusUseCaseTest {
 
         val question = useCase.change(ChangeQuestionStatusCommand(QuestionId("q-1"), active = true))
 
-        assertEquals(QuestionStatus.ACTIVE, question.status())
+        assertEquals(QuestionStatus.ACTIVE, question.status)
     }
 
     @Test
@@ -101,6 +101,6 @@ class ChangeQuestionStatusUseCaseTest {
 
         useCase.change(ChangeQuestionStatusCommand(QuestionId("q-1"), active = false))
 
-        assertEquals(QuestionStatus.ACTIVE, repository.findById(QuestionId("q-2"))!!.status())
+        assertEquals(QuestionStatus.ACTIVE, repository.findById(QuestionId("q-2"))!!.status)
     }
 }

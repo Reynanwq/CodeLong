@@ -30,7 +30,7 @@ class UserFactoryTest {
         assertEquals(Role.USER, user.role)
         assertEquals("alice", user.username.value)
         assertEquals("alice@codelong.dev", user.email.value)
-        assertTrue(user.isActive())
+        assertTrue(user.isActive)
     }
 
     @Test
@@ -42,14 +42,14 @@ class UserFactoryTest {
         )
 
         assertEquals(Role.ADMIN, admin.role)
-        assertTrue(admin.isAdmin())
+        assertTrue(admin.isAdmin)
     }
 
     @Test
     fun `senha e armazenada apenas como hash`() {
         val user = factory.createUser(Username.of("alice"), Email.of("alice@codelong.dev"), "secret123")
 
-        assertEquals(PasswordHash("hashed:secret123"), user.passwordHash())
+        assertEquals(PasswordHash("hashed:secret123"), user.passwordHash)
     }
 
     @Test
@@ -57,7 +57,7 @@ class UserFactoryTest {
         val user = factory.createUser(Username.of("alice"), Email.of("alice@codelong.dev"), "secret123")
 
         assertEquals(Fixtures.NOW, user.createdAt)
-        assertEquals(Fixtures.NOW, user.updatedAt())
+        assertEquals(Fixtures.NOW, user.updatedAt)
     }
 
     @Test

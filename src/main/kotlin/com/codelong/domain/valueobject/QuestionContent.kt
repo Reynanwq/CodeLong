@@ -26,15 +26,15 @@ data class QuestionContent(
 
     fun isCorrect(optionId: OptionId): Boolean = correctOption == optionId
 
-    fun statementText(): String = statement
+    val statementText: String get() = statement
 
-    fun explanationText(): String = explanation
+    val explanationText: String get() = explanation
 
-    fun correctOptionText(): String = correctOption.value
+    val correctOptionText: String get() = correctOption.value
 
-    fun categoryName(): String = category.name
+    val categoryName: String get() = category.name
 
-    fun difficultyName(): String = difficulty.name
+    val difficultyName: String get() = difficulty.name
 
     private fun validate() {
         when {

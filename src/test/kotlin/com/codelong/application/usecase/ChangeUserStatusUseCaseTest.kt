@@ -37,8 +37,8 @@ class ChangeUserStatusUseCaseTest {
             actorId = UserId("admin-1")
         )
 
-        assertEquals(AccountStatus.INACTIVE, user.status())
-        assertFalse(user.isActive())
+        assertEquals(AccountStatus.INACTIVE, user.status)
+        assertFalse(user.isActive)
     }
 
     @Test
@@ -50,8 +50,8 @@ class ChangeUserStatusUseCaseTest {
             actorId = UserId("admin-1")
         )
 
-        assertEquals(AccountStatus.ACTIVE, user.status())
-        assertTrue(user.isActive())
+        assertEquals(AccountStatus.ACTIVE, user.status)
+        assertTrue(user.isActive)
     }
 
     @Test
@@ -63,7 +63,7 @@ class ChangeUserStatusUseCaseTest {
             actorId = UserId("admin-1")
         )
 
-        assertEquals(Fixtures.NOW, user.updatedAt())
+        assertEquals(Fixtures.NOW, user.updatedAt)
         assertEquals(Fixtures.NOW, user.createdAt)
     }
 
@@ -73,7 +73,7 @@ class ChangeUserStatusUseCaseTest {
 
         useCase.change(ChangeUserStatusCommand(UserId("u-1"), active = false), actorId = UserId("admin-1"))
 
-        assertEquals(AccountStatus.INACTIVE, repository.findById(UserId("u-1"))!!.status())
+        assertEquals(AccountStatus.INACTIVE, repository.findById(UserId("u-1"))!!.status)
     }
 
     @Test
@@ -97,7 +97,7 @@ class ChangeUserStatusUseCaseTest {
             actorId = UserId("admin-1")
         )
 
-        assertEquals(AccountStatus.ACTIVE, user.status())
+        assertEquals(AccountStatus.ACTIVE, user.status)
     }
 
     @Test
@@ -116,7 +116,7 @@ class ChangeUserStatusUseCaseTest {
 
         useCase.change(ChangeUserStatusCommand(UserId("u-1"), active = false), actorId = UserId("admin-1"))
 
-        assertEquals(AccountStatus.ACTIVE, repository.findById(UserId("u-2"))!!.status())
+        assertEquals(AccountStatus.ACTIVE, repository.findById(UserId("u-2"))!!.status)
     }
 
     @Test
@@ -128,7 +128,7 @@ class ChangeUserStatusUseCaseTest {
             actorId = UserId("admin-1")
         )
 
-        assertEquals(AccountStatus.INACTIVE, user.status())
+        assertEquals(AccountStatus.INACTIVE, user.status)
     }
 
     @Test

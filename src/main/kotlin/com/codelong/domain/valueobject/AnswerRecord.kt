@@ -13,7 +13,7 @@ data class AnswerRecord(
     val earnedPoints: Int,
     val answeredAt: Instant
 ) {
-    fun questionIdText(): String = questionId.value
+    val questionIdText: String get() = questionId.value
 
-    fun chosenOptionText(): String = chosenOption.value
+    val chosenOptionText: String get() = chosenOption.value
 }
