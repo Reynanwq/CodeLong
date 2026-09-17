@@ -1,0 +1,23 @@
+package com.codelong.application.usecase
+
+import com.codelong.application.command.ChangeQuestionStatusCommand
+import com.codelong.domain.exception.NotFoundException
+import com.codelong.domain.model.Question
+import com.codelong.domain.port.QuestionRepository
+import java.time.Clock
+
+class ChangeQuestionStatusUseCase(
+    private val questionRepository: QuestionRepository,
+    private val clock: Clock
+) {
+
+    fun change(command: ChangeQuestionStatusCommand): Question {
+        val question = questionRepository.findById(command.questionId)
+            ?: throw NotFoundException("QUESTION_NOT_FOUND", "Question not found")
+
+        val now = clock.instant()
+        if (command.active) question.activate(now) else question.deactivate(now)
+
+        return questionRepository.save(question)
+    }
+}

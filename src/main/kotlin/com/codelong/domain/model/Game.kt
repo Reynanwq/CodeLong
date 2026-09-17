@@ -7,6 +7,8 @@ import com.codelong.domain.valueobject.AnswerEval
 import com.codelong.domain.valueobject.AnswerRecord
 import com.codelong.domain.valueobject.GameId
 import com.codelong.domain.valueobject.GameQuestion
+import com.codelong.domain.valueobject.GameSetup
+import com.codelong.domain.valueobject.GameState
 import com.codelong.domain.valueobject.GameStatus
 import com.codelong.domain.valueobject.OptionId
 import com.codelong.domain.valueobject.UserId
@@ -44,27 +46,17 @@ class Game private constructor(
 
     fun wrongAnswersCount(): Int = wrongAnswers
 
-    fun isFinished(): Boolean = status != GameStatus.IN_PROGRESS
+    fun totalQuestions(): Int = questions.size
 
     fun isInProgress(): Boolean = status == GameStatus.IN_PROGRESS
+
+    fun isCompleted(): Boolean = status == GameStatus.COMPLETED
 
     fun isOwnedBy(actor: UserId): Boolean = userId == actor
 
     fun requireOwner(actor: UserId) {
         if (!isOwnedBy(actor)) {
-            throw ForbiddenException(
-                "GAME_ACCESS_DENIED",
-                "You do not have access to this game"
-            )
-        }
-    }
-
-    private fun requireInProgress() {
-        if (status != GameStatus.IN_PROGRESS) {
-            throw ConflictException(
-                "GAME_FINISHED",
-                "This game is already finished and cannot receive new answers"
-            )
+            throw ForbiddenException("GAME_ACCESS_DENIED", "You do not have access to this game")
         }
     }
 
@@ -76,12 +68,14 @@ class Game private constructor(
     /** Quantidade de perguntas restantes incluindo a atual. */
     fun remainingQuestions(): Int = questions.size - currentQuestionIndex
 
+    fun answered(questionIndex: Int): Boolean = answers.any { it.questionIndex == questionIndex }
+
     /**
      * Processa uma resposta para a pergunta atual.
      *
-     * Regra de concorrencia/duplicidade: o avanco de [currentQuestionIndex]
-     * acontece dentro deste metodo. Duas requisicoes concorrentes que leiam o
-     * mesmo estado persistem apenas se uma delas venceu o optimistic lock
+     * O avanco de [currentQuestionIndex] e a contabilizacao da pontuacao
+     * acontecem aqui, dentro do dominio. Duas requisicoes concorrentes que
+     * leiam o mesmo estado so persistem se uma delas vencer o optimistic lock
      * (campo [version]); a perdedora e rejeitada na persistencia.
      */
     fun answer(optionId: OptionId, answeredAt: Instant): AnswerEval {
@@ -97,21 +91,22 @@ class Game private constructor(
 
         val correct = question.isCorrect(optionId)
         val earnedPoints = if (correct) question.difficulty.points else 0
-        val record = AnswerRecord(
-            questionIndex = currentQuestionIndex,
-            questionId = question.id,
-            chosenOption = optionId,
-            correct = correct,
-            earnedPoints = earnedPoints,
-            answeredAt = answeredAt
+        answers.add(
+            AnswerRecord(
+                questionIndex = currentQuestionIndex,
+                questionId = question.id,
+                chosenOption = optionId,
+                correct = correct,
+                earnedPoints = earnedPoints,
+                answeredAt = answeredAt
+            )
         )
-        answers.add(record)
 
         score += earnedPoints
         if (correct) correctAnswers++ else wrongAnswers++
 
-        val answerIndex = currentQuestionIndex
-        val isLast = answerIndex >= questions.size - 1
+        val answeredIndex = currentQuestionIndex
+        val isLast = answeredIndex >= questions.size - 1
         currentQuestionIndex++
 
         if (isLast) {
@@ -120,13 +115,13 @@ class Game private constructor(
         }
 
         return AnswerEval(
-            record = record,
+            record = answers.last(),
             question = question,
             currentScore = score,
             correctAnswers = correctAnswers,
             wrongAnswers = wrongAnswers,
             gameCompleted = status == GameStatus.COMPLETED,
-            questionIndex = answerIndex,
+            questionIndex = answeredIndex,
             totalQuestions = questions.size
         )
     }
@@ -137,29 +132,62 @@ class Game private constructor(
         completedAt = now
     }
 
-    fun answered(questionIndex: Int): Boolean = answers.any { it.questionIndex == questionIndex }
+    fun state(): GameState = GameState(
+        id = id,
+        userId = userId,
+        username = username,
+        status = status,
+        startedAt = startedAt,
+        completedAt = completedAt,
+        currentQuestionIndex = currentQuestionIndex,
+        questions = questions,
+        answers = answers.toList(),
+        score = score,
+        correctAnswers = correctAnswers,
+        wrongAnswers = wrongAnswers,
+        version = version
+    )
+
+    private fun requireInProgress() {
+        if (status != GameStatus.IN_PROGRESS) {
+            throw ConflictException(
+                "GAME_FINISHED",
+                "This game is already finished and cannot receive new answers"
+            )
+        }
+    }
 
     companion object {
-        fun newGame(
-            id: GameId,
-            userId: UserId,
-            username: String,
-            questions: List<GameQuestion>,
-            startedAt: Instant
-        ): Game = Game(
+        fun newGame(id: GameId, setup: GameSetup, startedAt: Instant): Game = Game(
             id = id,
-            userId = userId,
-            username = username,
+            userId = setup.userId,
+            username = setup.username,
             status = GameStatus.IN_PROGRESS,
             startedAt = startedAt,
             completedAt = null,
             currentQuestionIndex = 0,
-            questions = questions,
+            questions = setup.questions,
             answers = mutableListOf(),
             score = 0,
             correctAnswers = 0,
             wrongAnswers = 0,
             version = 0L
+        )
+
+        fun reconstitute(state: GameState): Game = Game(
+            id = state.id,
+            userId = state.userId,
+            username = state.username,
+            status = state.status,
+            startedAt = state.startedAt,
+            completedAt = state.completedAt,
+            currentQuestionIndex = state.currentQuestionIndex,
+            questions = state.questions,
+            answers = state.answers.toMutableList(),
+            score = state.score,
+            correctAnswers = state.correctAnswers,
+            wrongAnswers = state.wrongAnswers,
+            version = state.version
         )
     }
 }
