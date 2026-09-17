@@ -64,7 +64,7 @@ class ApiExceptionHandler {
         is InvalidInputException -> HttpStatus.BAD_REQUEST
         is ForbiddenException -> HttpStatus.FORBIDDEN
         is UnauthorizedException -> HttpStatus.UNAUTHORIZED
-        else -> HttpStatus.UNPROCESSABLE_ENTITY
+        else -> HttpStatus.UNPROCESSABLE_CONTENT
     }
 
     private fun build(status: HttpStatus, code: String, message: String): ResponseEntity<ApiErrorResponse> =

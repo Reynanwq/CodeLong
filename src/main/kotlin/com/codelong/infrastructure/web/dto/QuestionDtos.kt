@@ -29,8 +29,7 @@ data class CreateQuestionRequest(
 
     @field:NotEmpty(message = "options are required")
     @field:Size(min = 2, message = "a question must have at least 2 options")
-    @field:Valid
-    val options: List<OptionRequest>,
+    val options: List<@Valid OptionRequest>,
 
     @field:NotBlank(message = "correctOption is required")
     val correctOption: String,
@@ -53,8 +52,7 @@ data class UpdateQuestionRequest(
 
     @field:NotEmpty(message = "options are required")
     @field:Size(min = 2, message = "a question must have at least 2 options")
-    @field:Valid
-    val options: List<OptionRequest>,
+    val options: List<@Valid OptionRequest>,
 
     @field:NotBlank(message = "correctOption is required")
     val correctOption: String,
