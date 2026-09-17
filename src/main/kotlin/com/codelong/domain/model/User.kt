@@ -40,6 +40,11 @@ class User private constructor(
         updatedAt = now
     }
 
+    fun activate(now: Instant): User = apply {
+        status = AccountStatus.ACTIVE
+        updatedAt = now
+    }
+
     fun isActive(): Boolean = status == AccountStatus.ACTIVE
 
     fun isAdmin(): Boolean = role == Role.ADMIN

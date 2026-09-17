@@ -6,6 +6,7 @@ import com.codelong.application.service.UserFactory
 import com.codelong.application.usecase.AbandonGameUseCase
 import com.codelong.application.usecase.AnswerQuestionUseCase
 import com.codelong.application.usecase.ChangeQuestionStatusUseCase
+import com.codelong.application.usecase.ChangeUserStatusUseCase
 import com.codelong.application.usecase.CreateGameUseCase
 import com.codelong.application.usecase.CreateQuestionUseCase
 import com.codelong.application.usecase.DeleteQuestionUseCase
@@ -16,6 +17,7 @@ import com.codelong.application.usecase.GetMyRankingUseCase
 import com.codelong.application.usecase.GetQuestionUseCase
 import com.codelong.application.usecase.GetRankingUseCase
 import com.codelong.application.usecase.ListQuestionsUseCase
+import com.codelong.application.usecase.ListUsersUseCase
 import com.codelong.application.usecase.LoginUserUseCase
 import com.codelong.application.usecase.RegisterUserUseCase
 import com.codelong.application.usecase.UpdateQuestionUseCase
@@ -77,6 +79,14 @@ class UseCaseConfig {
     @Bean
     fun getCurrentUserUseCase(userRepository: UserRepository) =
         GetCurrentUserUseCase(userRepository)
+
+    @Bean
+    fun listUsersUseCase(userRepository: UserRepository) =
+        ListUsersUseCase(userRepository)
+
+    @Bean
+    fun changeUserStatusUseCase(userRepository: UserRepository, clock: Clock) =
+        ChangeUserStatusUseCase(userRepository, clock)
 
     @Bean
     fun createGameUseCase(

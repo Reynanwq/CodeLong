@@ -219,6 +219,8 @@ Cabeçalho autenticado: `Authorization: Bearer <token>`.
 | PUT | `/api/admin/questions/{id}` | ADMIN | Atualiza pergunta |
 | PATCH | `/api/admin/questions/{id}/status` | ADMIN | Ativa/inativa pergunta |
 | DELETE | `/api/admin/questions/{id}` | ADMIN | Remove pergunta |
+| GET | `/api/admin/users` | ADMIN | Lista paginada/filtrada de usuários (`status`, `role`) |
+| PATCH | `/api/admin/users/{userId}/status` | ADMIN | Ativa/desativa conta |
 
 Swagger UI: `/swagger-ui.html` · OpenAPI JSON: `/v3/api-docs`.
 

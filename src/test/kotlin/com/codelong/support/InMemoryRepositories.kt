@@ -9,7 +9,9 @@ import com.codelong.domain.port.QuestionPage
 import com.codelong.domain.port.QuestionRepository
 import com.codelong.domain.port.QuestionSearch
 import com.codelong.domain.port.RankingRepository
+import com.codelong.domain.port.UserPage
 import com.codelong.domain.port.UserRepository
+import com.codelong.domain.port.UserSearch
 import com.codelong.domain.service.RankingPolicy
 import com.codelong.domain.valueobject.Email
 import com.codelong.domain.valueobject.GameId
@@ -40,6 +42,20 @@ class InMemoryUserRepository : UserRepository {
 
     override fun existsByEmail(email: Email): Boolean =
         store.values.any { it.email == email }
+
+    override fun search(search: UserSearch): UserPage {
+        val filtered = store.values
+            .filter { search.status == null || it.status() == search.status }
+            .filter { search.role == null || it.role == search.role }
+            .sortedBy { it.username.value }
+        val from = search.page * search.size
+        return UserPage(
+            items = filtered.drop(from).take(search.size),
+            totalElements = filtered.size.toLong(),
+            page = search.page,
+            size = search.size
+        )
+    }
 
     fun all(): List<User> = store.values.toList()
 }

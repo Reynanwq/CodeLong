@@ -246,6 +246,43 @@ class ApiEndToEndIntegrationTest {
         assertEquals(404, api.get("/api/admin/questions/$questionId", adminToken).status)
     }
 
+    @Test
+    fun `admin gerencia o ciclo de vida do usuario`() {
+        val adminToken = loginAdmin()
+        registerPlayer("alice")
+
+        val listed = api.get("/api/admin/users?page=0&size=10", adminToken)
+        assertEquals(200, listed.status)
+        assertEquals(2L, listed.json().long("totalElements"))
+
+        val aliceId = listed.json().arr("items").first { it.str("username") == "alice" }.str("id")
+
+        val deactivated = api.patch("/api/admin/users/$aliceId/status", mapOf("active" to false), adminToken)
+        assertEquals(200, deactivated.status)
+        assertEquals("INACTIVE", deactivated.json().str("status"))
+
+        val blocked = api.post("/api/auth/login", mapOf("identifier" to "alice", "password" to "secret123"))
+        assertEquals(401, blocked.status)
+        assertEquals("ACCOUNT_INACTIVE", blocked.json().str("code"))
+
+        val byStatus = api.get("/api/admin/users?status=INACTIVE", adminToken)
+        assertEquals(1L, byStatus.json().long("totalElements"))
+
+        val reactivated = api.patch("/api/admin/users/$aliceId/status", mapOf("active" to true), adminToken)
+        assertEquals(200, reactivated.status)
+        assertEquals("ACTIVE", reactivated.json().str("status"))
+
+        assertEquals(
+            200,
+            api.post("/api/auth/login", mapOf("identifier" to "alice", "password" to "secret123")).status
+        )
+
+        val adminId = api.get("/api/users/me", adminToken).json().str("id")
+        val self = api.patch("/api/admin/users/$adminId/status", mapOf("active" to false), adminToken)
+        assertEquals(400, self.status)
+        assertEquals("user.deactivate.self", self.json().str("code"))
+    }
+
     private fun credentials(username: String, email: String, password: String): Map<String, String> =
         mapOf("username" to username, "email" to email, "password" to password)
 
