@@ -35,8 +35,10 @@ data class RankingResponse(
 ) {
     companion object {
         fun from(result: RankingPage): RankingResponse {
-            val totalPages = if (result.size <= 0) 0
-            else ((result.totalElements + result.size - 1) / result.size).toInt()
+            val totalPages = result.size
+                .takeIf { it > 0 }
+                ?.let { ((result.totalElements + it - 1) / it).toInt() }
+                ?: 0
             return RankingResponse(
                 entries = result.entries.map(RankingEntryResponse::from),
                 totalElements = result.totalElements,

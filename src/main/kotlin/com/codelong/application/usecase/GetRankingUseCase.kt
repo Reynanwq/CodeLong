@@ -10,10 +10,10 @@ class GetRankingUseCase(
 ) {
 
     fun ranking(page: Int, size: Int): RankingPage {
-        if (page < 0) {
+        (page < 0).takeIf { it }?.let {
             throw DomainException.invalidInput("pagination.page.invalid", "Page must be greater than or equal to 0")
         }
-        if (size !in MIN_SIZE..MAX_SIZE) {
+        (size !in MIN_SIZE..MAX_SIZE).takeIf { it }?.let {
             throw DomainException.invalidInput(
                 "pagination.size.invalid",
                 "Page size must be between $MIN_SIZE and $MAX_SIZE"

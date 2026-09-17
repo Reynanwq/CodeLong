@@ -21,7 +21,7 @@ class AnswerQuestionUseCase(
         val evaluation = game.answer(command.optionId, clock.instant())
 
         val saved = gameRepository.save(game)
-        val nextQuestion = if (saved.isInProgress()) saved.currentQuestion().publicView() else null
+        val nextQuestion = saved.takeIf { it.isInProgress() }?.currentQuestion()?.publicView()
 
         return AnswerResult(
             record = evaluation.record,

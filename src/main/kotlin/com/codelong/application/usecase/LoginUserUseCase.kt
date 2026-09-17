@@ -19,11 +19,12 @@ class LoginUserUseCase(
 
     fun login(command: LoginCommand): AuthenticationResult {
         val user = resolveUser(command.identifier)
+            ?: throw DomainException.unauthorized("INVALID_CREDENTIALS", "Invalid credentials")
 
-        if (user == null || !passwordEncoder.matches(command.password, user.passwordHash())) {
+        passwordEncoder.matches(command.password, user.passwordHash()).takeUnless { it }?.let {
             throw DomainException.unauthorized("INVALID_CREDENTIALS", "Invalid credentials")
         }
-        if (!user.isActive()) {
+        user.isActive().takeUnless { it }?.let {
             throw DomainException.unauthorized("ACCOUNT_INACTIVE", "This account is not active")
         }
 
@@ -33,7 +34,8 @@ class LoginUserUseCase(
     private fun resolveUser(identifier: String): User? =
         when {
             identifier.contains('@') -> Email.isValid(identifier)
-                .let { if (it) userRepository.findByEmail(Email.of(identifier)) else null }
+                .takeIf { it }
+                ?.let { userRepository.findByEmail(Email.of(identifier)) }
 
             Username.isValid(identifier) -> userRepository.findByUsername(Username.of(identifier))
             else -> null

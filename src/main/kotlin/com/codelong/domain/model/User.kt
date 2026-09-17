@@ -45,6 +45,12 @@ class User private constructor(
         updatedAt = now
     }
 
+    /** Aplica o status correspondente a [active] em uma unica operacao. */
+    fun changeStatus(active: Boolean, now: Instant): User = apply {
+        status = AccountStatus.of(active)
+        updatedAt = now
+    }
+
     fun isActive(): Boolean = status == AccountStatus.ACTIVE
 
     fun isAdmin(): Boolean = role == Role.ADMIN

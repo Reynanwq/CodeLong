@@ -28,7 +28,7 @@ class ChangePasswordUseCase(
         val user = userRepository.findById(actorId)
             ?: throw DomainException.notFound("USER_NOT_FOUND", "User not found")
 
-        if (!passwordEncoder.matches(command.currentPassword, user.passwordHash())) {
+        passwordEncoder.matches(command.currentPassword, user.passwordHash()).takeUnless { it }?.let {
             throw DomainException.unauthorized(
                 "INVALID_CURRENT_PASSWORD",
                 "The current password is incorrect"
@@ -37,7 +37,7 @@ class ChangePasswordUseCase(
 
         passwordPolicy.requireStrong(command.newPassword)
 
-        if (passwordEncoder.matches(command.newPassword, user.passwordHash())) {
+        passwordEncoder.matches(command.newPassword, user.passwordHash()).takeIf { it }?.let {
             throw DomainException.invalidInput(
                 "password.unchanged",
                 "The new password must differ from the current one"

@@ -42,11 +42,12 @@ class GameController(
     private val getInProgressGameUseCase: GetInProgressGameUseCase
 ) {
 
+    private val statusByCreation = mapOf(true to HttpStatus.CREATED, false to HttpStatus.OK)
+
     @PostMapping
     fun create(@AuthenticationPrincipal principal: AuthenticatedUser): ResponseEntity<GameResponse> {
         val result = createGameUseCase.create(principal.userId)
-        val status = if (result.created) HttpStatus.CREATED else HttpStatus.OK
-        return ResponseEntity.status(status).body(GameResponse.from(result.game))
+        return ResponseEntity.status(statusByCreation.getValue(result.created)).body(GameResponse.from(result.game))
     }
 
     @GetMapping

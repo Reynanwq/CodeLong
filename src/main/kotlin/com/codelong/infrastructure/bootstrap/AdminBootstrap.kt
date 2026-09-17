@@ -26,16 +26,20 @@ class AdminBootstrap(
     override fun run(args: ApplicationArguments) {
         val username = properties.admin.username.trim()
         val password = properties.admin.password
-        if (username.isEmpty() || password.isEmpty()) {
-            return
-        }
 
-        val value = Username.of(username)
-        if (userRepository.existsByUsername(value)) {
-            return
+        (username.isNotEmpty() && password.isNotEmpty()).takeIf { it }?.let {
+            bootstrap(username, password)
         }
+    }
 
-        userRepository.save(userFactory.createAdmin(value, Email.of("$username@codelong.local"), password))
-        logger.info("Admin bootstrap: usuario '{}' criado", username)
+    private fun bootstrap(username: String, password: String) {
+        Username.of(username)
+            .takeUnless { userRepository.existsByUsername(it) }
+            ?.let { value ->
+                userRepository.save(
+                    userFactory.createAdmin(value, Email.of("$username@codelong.local"), password)
+                )
+                logger.info("Admin bootstrap: usuario '{}' criado", username)
+            }
     }
 }

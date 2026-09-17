@@ -25,7 +25,7 @@ class CreateGameUseCase(
         val user = userRepository.findById(actorId)
             ?: throw DomainException.notFound("USER_NOT_FOUND", "User not found")
 
-        if (!user.isActive()) {
+        user.isActive().takeUnless { it }?.let {
             throw DomainException.forbidden("ACCOUNT_INACTIVE", "This account is not active")
         }
 
@@ -34,7 +34,7 @@ class CreateGameUseCase(
         }
 
         val activeQuestions = questionRepository.findAllActive()
-        if (activeQuestions.isEmpty()) {
+        activeQuestions.isEmpty().takeIf { it }?.let {
             throw DomainException.conflict(
                 "NO_ACTIVE_QUESTIONS",
                 "There are no active questions available to start a game"

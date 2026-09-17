@@ -26,32 +26,29 @@ data class QuestionContent(
     fun isCorrect(optionId: OptionId): Boolean = correctOption == optionId
 
     private fun validate() {
-        if (statement.isBlank() || statement.length > MAX_STATEMENT) {
-            throw DomainException.invalidInput(
+        when {
+            statement.isBlank() || statement.length > MAX_STATEMENT -> throw DomainException.invalidInput(
                 "question.statement.invalid",
                 "Statement must not be blank and at most $MAX_STATEMENT characters"
             )
-        }
-        if (options.size < MIN_OPTIONS) {
-            throw DomainException.invalidInput(
+
+            options.size < MIN_OPTIONS -> throw DomainException.invalidInput(
                 "question.options.invalid",
                 "A question must have at least $MIN_OPTIONS options"
             )
-        }
-        if (options.any { it.text.isBlank() }) {
-            throw DomainException.invalidInput("question.options.invalid", "Option text must not be blank")
-        }
-        if (options.map { it.id }.distinct().size != options.size) {
-            throw DomainException.invalidInput("question.options.invalid", "Option ids must be unique")
-        }
-        if (!hasOption(correctOption)) {
-            throw DomainException.invalidInput(
+
+            options.any { it.text.isBlank() } ->
+                throw DomainException.invalidInput("question.options.invalid", "Option text must not be blank")
+
+            options.map { it.id }.distinct().size != options.size ->
+                throw DomainException.invalidInput("question.options.invalid", "Option ids must be unique")
+
+            !hasOption(correctOption) -> throw DomainException.invalidInput(
                 "question.correctOption.invalid",
                 "The correct option must be one of the options"
             )
-        }
-        if (explanation.isBlank() || explanation.length > MAX_EXPLANATION) {
-            throw DomainException.invalidInput(
+
+            explanation.isBlank() || explanation.length > MAX_EXPLANATION -> throw DomainException.invalidInput(
                 "question.explanation.invalid",
                 "Explanation must not be blank and at most $MAX_EXPLANATION characters"
             )

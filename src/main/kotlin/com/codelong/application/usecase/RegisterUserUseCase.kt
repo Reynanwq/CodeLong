@@ -24,10 +24,10 @@ class RegisterUserUseCase(
         val username = Username.of(command.username)
         val email = Email.of(command.email)
 
-        if (userRepository.existsByUsername(username)) {
+        userRepository.existsByUsername(username).takeIf { it }?.let {
             throw DomainException.conflict("USERNAME_ALREADY_EXISTS", "This username is already taken")
         }
-        if (userRepository.existsByEmail(email)) {
+        userRepository.existsByEmail(email).takeIf { it }?.let {
             throw DomainException.conflict("EMAIL_ALREADY_EXISTS", "This email is already registered")
         }
 

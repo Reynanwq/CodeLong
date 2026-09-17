@@ -17,7 +17,7 @@ class ChangeQuestionStatusUseCase(
             ?: throw DomainException.notFound("QUESTION_NOT_FOUND", "Question not found")
 
         val now = clock.instant()
-        if (command.active) question.activate(now) else question.deactivate(now)
+        question.changeStatus(command.active, now)
 
         return questionRepository.save(question)
     }

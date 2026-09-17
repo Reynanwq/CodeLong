@@ -19,7 +19,7 @@ class ChangeUserStatusUseCase(
 ) {
 
     fun change(command: ChangeUserStatusCommand, actorId: UserId): User {
-        if (!command.active && command.userId == actorId) {
+        (!command.active && command.userId == actorId).takeIf { it }?.let {
             throw DomainException.invalidInput(
                 "user.deactivate.self",
                 "An administrator cannot deactivate their own account"
@@ -30,7 +30,7 @@ class ChangeUserStatusUseCase(
             ?: throw DomainException.notFound("USER_NOT_FOUND", "User not found")
 
         val now = clock.instant()
-        if (command.active) user.activate(now) else user.deactivate(now)
+        user.changeStatus(command.active, now)
 
         return userRepository.save(user)
     }

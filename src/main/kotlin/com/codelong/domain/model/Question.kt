@@ -51,6 +51,12 @@ class Question private constructor(
         updatedAt = now
     }
 
+    /** Aplica o status correspondente a [active] em uma unica operacao. */
+    fun changeStatus(active: Boolean, now: Instant): Question = apply {
+        status = QuestionStatus.of(active)
+        updatedAt = now
+    }
+
     fun update(newContent: QuestionContent, now: Instant): Question = apply {
         content = newContent
         updatedAt = now

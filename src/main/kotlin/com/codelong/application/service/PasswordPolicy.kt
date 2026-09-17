@@ -15,14 +15,13 @@ class PasswordPolicy(
 ) {
 
     fun requireStrong(plainPassword: String) {
-        if (plainPassword.length < minLength) {
-            throw DomainException.invalidInput(
+        when {
+            plainPassword.length < minLength -> throw DomainException.invalidInput(
                 "password.tooWeak",
                 "Password must have at least $minLength characters"
             )
-        }
-        if (plainPassword.length > maxLength) {
-            throw DomainException.invalidInput(
+
+            plainPassword.length > maxLength -> throw DomainException.invalidInput(
                 "password.tooWeak",
                 "Password must have at most $maxLength characters"
             )

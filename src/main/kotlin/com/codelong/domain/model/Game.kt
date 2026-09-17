@@ -53,7 +53,7 @@ class Game private constructor(
     fun isOwnedBy(actor: UserId): Boolean = userId == actor
 
     fun requireOwner(actor: UserId) {
-        if (!isOwnedBy(actor)) {
+        isOwnedBy(actor).takeUnless { it }?.let {
             throw DomainException.forbidden("GAME_ACCESS_DENIED", "You do not have access to this game")
         }
     }
@@ -80,7 +80,7 @@ class Game private constructor(
         requireInProgress()
 
         val question = questions[currentQuestionIndex]
-        if (!question.hasOption(optionId)) {
+        question.hasOption(optionId).takeUnless { it }?.let {
             throw DomainException.invalidInput(
                 "answer.option.invalid",
                 "The chosen option is not valid for the current question"
@@ -88,7 +88,7 @@ class Game private constructor(
         }
 
         val correct = question.isCorrect(optionId)
-        val earnedPoints = if (correct) question.difficulty.points else 0
+        val earnedPoints = question.difficulty.points.takeIf { correct } ?: 0
         answers.add(
             AnswerRecord(
                 questionIndex = currentQuestionIndex,
@@ -101,13 +101,15 @@ class Game private constructor(
         )
 
         score += earnedPoints
-        if (correct) correctAnswers++ else wrongAnswers++
+        val increments = mapOf(true to 1, false to 0)
+        correctAnswers += increments.getValue(correct)
+        wrongAnswers += increments.getValue(!correct)
 
         val answeredIndex = currentQuestionIndex
         val isLast = answeredIndex >= questions.size - 1
         currentQuestionIndex++
 
-        if (isLast) {
+        isLast.takeIf { it }?.let {
             status = GameStatus.COMPLETED
             completedAt = answeredAt
         }
@@ -147,7 +149,7 @@ class Game private constructor(
     )
 
     private fun requireInProgress() {
-        if (status != GameStatus.IN_PROGRESS) {
+        status.takeUnless { it == GameStatus.IN_PROGRESS }?.let {
             throw DomainException.conflict(
                 "GAME_FINISHED",
                 "This game is already finished and cannot receive new answers"
