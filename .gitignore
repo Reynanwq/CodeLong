@@ -5,6 +5,8 @@ target/
 *.log
 .env
 .env.local
+.env.*
+!.env.example
 .attach_pid*
 .mvn/settings.xml
 .jqwik-database
