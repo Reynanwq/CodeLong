@@ -26,6 +26,16 @@ class User private constructor(
 
     fun passwordHash(): PasswordHash = profile.passwordHash
 
+    fun idText(): String = id.value
+
+    fun usernameText(): String = profile.usernameText()
+
+    fun emailText(): String = profile.emailText()
+
+    fun roleName(): String = profile.roleName()
+
+    fun statusName(): String = status.name
+
     fun status(): AccountStatus = status
 
     fun updatedAt(): Instant = updatedAt

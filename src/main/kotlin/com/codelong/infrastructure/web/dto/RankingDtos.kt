@@ -16,7 +16,7 @@ data class RankingEntryResponse(
     companion object {
         fun from(entry: RankEntry) = RankingEntryResponse(
             position = entry.position,
-            userId = entry.userId.value,
+            userId = entry.userIdText(),
             username = entry.username,
             score = entry.score,
             correctAnswers = entry.correctAnswers,

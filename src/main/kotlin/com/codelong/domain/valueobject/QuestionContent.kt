@@ -26,6 +26,16 @@ data class QuestionContent(
 
     fun isCorrect(optionId: OptionId): Boolean = correctOption == optionId
 
+    fun statementText(): String = statement
+
+    fun explanationText(): String = explanation
+
+    fun correctOptionText(): String = correctOption.value
+
+    fun categoryName(): String = category.name
+
+    fun difficultyName(): String = difficulty.name
+
     private fun validate() {
         when {
             statement.isBlank() || statement.length > MAX_STATEMENT -> throw Errors.statementInvalid(MAX_STATEMENT)

@@ -41,7 +41,7 @@ class JwtAuthenticationFilter(
         try {
             val claims = tokenService.parse(token)
             val principal = AuthenticatedUser(claims.userId, claims.role)
-            val authorities = listOf(SimpleGrantedAuthority(ROLE_PREFIX + claims.role.name))
+            val authorities = listOf(SimpleGrantedAuthority(ROLE_PREFIX + claims.roleName()))
             SecurityContextHolder.getContext().authentication =
                 UsernamePasswordAuthenticationToken(principal, null, authorities)
         } catch (_: JwtException) {

@@ -20,4 +20,10 @@ data class GameState(
     val correctAnswers: Int,
     val wrongAnswers: Int,
     val version: Long
-)
+) {
+    fun idText(): String = id.value
+
+    fun userIdText(): String = userId.value
+
+    fun statusName(): String = status.name
+}

@@ -56,10 +56,10 @@ data class UserResponse(
 ) {
     companion object {
         fun from(user: User) = UserResponse(
-            id = user.id.value,
-            username = user.username.value,
-            email = user.email.value,
-            role = user.role.name,
+            id = user.idText(),
+            username = user.usernameText(),
+            email = user.emailText(),
+            role = user.roleName(),
             createdAt = user.createdAt
         )
     }

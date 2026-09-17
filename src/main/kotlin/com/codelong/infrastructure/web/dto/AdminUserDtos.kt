@@ -18,11 +18,11 @@ data class AdminUserResponse(
 ) {
     companion object {
         fun from(user: User) = AdminUserResponse(
-            id = user.id.value,
-            username = user.username.value,
-            email = user.email.value,
-            role = user.role.name,
-            status = user.status().name,
+            id = user.idText(),
+            username = user.usernameText(),
+            email = user.emailText(),
+            role = user.roleName(),
+            status = user.statusName(),
             createdAt = user.createdAt,
             updatedAt = user.updatedAt()
         )

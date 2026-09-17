@@ -31,6 +31,10 @@ class Game private constructor(
 
     fun status(): GameStatus = status
 
+    fun idText(): String = id.value
+
+    fun statusName(): String = status.name
+
     fun completedAt(): Instant? = completedAt
 
     fun currentQuestionIndex(): Int = currentQuestionIndex
@@ -86,7 +90,7 @@ class Game private constructor(
         }
 
         val correct = question.isCorrect(optionId)
-        val earnedPoints = question.difficulty.points.takeIf { correct } ?: 0
+        val earnedPoints = question.pointsForCorrect().takeIf { correct } ?: 0
         answers.add(
             AnswerRecord(
                 questionIndex = currentQuestionIndex,

@@ -10,4 +10,8 @@ data class TokenClaims(
     val role: Role,
     val issuedAt: Instant,
     val expiresAt: Instant
-)
+) {
+    fun userIdText(): String = userId.value
+
+    fun roleName(): String = role.name
+}

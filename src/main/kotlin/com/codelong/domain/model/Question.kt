@@ -33,6 +33,16 @@ class Question private constructor(
 
     fun status(): QuestionStatus = status
 
+    fun idText(): String = id.value
+
+    fun correctOptionText(): String = content.correctOptionText()
+
+    fun categoryName(): String = content.categoryName()
+
+    fun difficultyName(): String = content.difficultyName()
+
+    fun statusName(): String = status.name
+
     fun updatedAt(): Instant = updatedAt
 
     fun isActive(): Boolean = status == QuestionStatus.ACTIVE

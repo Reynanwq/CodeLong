@@ -6,4 +6,6 @@ package com.codelong.domain.valueobject
 data class QuestionOption(
     val id: OptionId,
     val text: String
-)
+) {
+    fun idText(): String = id.value
+}

@@ -21,6 +21,16 @@ data class GameQuestion(
 
     fun hasOption(optionId: OptionId): Boolean = options.any { it.id == optionId }
 
+    fun idText(): String = id.value
+
+    fun correctOptionText(): String = correctOption.value
+
+    fun pointsForCorrect(): Int = difficulty.points
+
+    fun categoryName(): String = category.name
+
+    fun difficultyName(): String = difficulty.name
+
     /** Visao publica: sem a resposta correta e sem a explicacao. */
     fun publicView(): QuestionPublic {
         return QuestionPublic(
@@ -39,4 +49,10 @@ data class QuestionPublic(
     val options: List<QuestionOption>,
     val category: Category,
     val difficulty: Difficulty
-)
+) {
+    fun idText(): String = id.value
+
+    fun categoryName(): String = category.name
+
+    fun difficultyName(): String = difficulty.name
+}

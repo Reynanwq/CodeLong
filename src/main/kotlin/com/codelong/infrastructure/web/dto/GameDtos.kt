@@ -14,7 +14,7 @@ data class OptionResponse(
     val text: String
 ) {
     companion object {
-        fun from(option: QuestionOption) = OptionResponse(option.id.value, option.text)
+        fun from(option: QuestionOption) = OptionResponse(option.idText(), option.text)
     }
 }
 
@@ -27,11 +27,11 @@ data class PublicQuestionResponse(
 ) {
     companion object {
         fun from(question: QuestionPublic) = PublicQuestionResponse(
-            id = question.id.value,
+            id = question.idText(),
             statement = question.statement,
             options = question.options.map(OptionResponse::from),
-            category = question.category.name,
-            difficulty = question.difficulty.name
+            category = question.categoryName(),
+            difficulty = question.difficultyName()
         )
     }
 }
@@ -50,8 +50,8 @@ data class GameResponse(
 ) {
     companion object {
         fun from(game: Game) = GameResponse(
-            id = game.id.value,
-            status = game.status().name,
+            id = game.idText(),
+            status = game.statusName(),
             currentQuestionIndex = game.currentQuestionIndex(),
             totalQuestions = game.totalQuestions(),
             remainingQuestions = game.remainingQuestions(),
@@ -86,8 +86,8 @@ data class AnswerResponse(
     companion object {
         fun from(result: AnswerResult) = AnswerResponse(
             correct = result.record.correct,
-            chosenOption = result.record.chosenOption.value,
-            correctOption = result.question.correctOption.value,
+            chosenOption = result.record.chosenOptionText(),
+            correctOption = result.question.correctOptionText(),
             explanation = result.question.explanation,
             earnedPoints = result.record.earnedPoints,
             currentScore = result.currentScore,
