@@ -42,7 +42,7 @@ class MongoRankingRepositoryAdapter(
                 .addField("totalTimeMillis")
                 .withValue(Document("\$subtract", listOf("\$completedAt", "\$startedAt")))
                 .build(),
-            Aggregation.sort(PRE_GROUP_SORT),
+            Aggregation.sort(preGroupSort()),
             Aggregation.group("userId")
                 .first("userId").`as`("userId")
                 .first("username").`as`("username")
@@ -50,7 +50,7 @@ class MongoRankingRepositoryAdapter(
                 .first("correctAnswers").`as`("correctAnswers")
                 .first("totalTimeMillis").`as`("totalTimeMillis")
                 .first("completedAt").`as`("achievedAt"),
-            Aggregation.sort(POST_GROUP_SORT)
+            Aggregation.sort(postGroupSort())
         )
 
         return mongoTemplate
@@ -63,19 +63,17 @@ class MongoRankingRepositoryAdapter(
             .map(RankingPersistenceMapper::toDomain)
     }
 
-    private companion object {
-        val PRE_GROUP_SORT: Sort = Sort.by(
-            Sort.Order.desc("score"),
-            Sort.Order.desc("correctAnswers"),
-            Sort.Order.asc("totalTimeMillis"),
-            Sort.Order.asc("completedAt")
-        )
+    private fun preGroupSort(): Sort = Sort.by(
+        Sort.Order.desc("score"),
+        Sort.Order.desc("correctAnswers"),
+        Sort.Order.asc("totalTimeMillis"),
+        Sort.Order.asc("completedAt")
+    )
 
-        val POST_GROUP_SORT: Sort = Sort.by(
-            Sort.Order.desc("score"),
-            Sort.Order.desc("correctAnswers"),
-            Sort.Order.asc("totalTimeMillis"),
-            Sort.Order.asc("achievedAt")
-        )
-    }
+    private fun postGroupSort(): Sort = Sort.by(
+        Sort.Order.desc("score"),
+        Sort.Order.desc("correctAnswers"),
+        Sort.Order.asc("totalTimeMillis"),
+        Sort.Order.asc("achievedAt")
+    )
 }
