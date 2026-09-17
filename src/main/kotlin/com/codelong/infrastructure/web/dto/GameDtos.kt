@@ -1,0 +1,100 @@
+package com.codelong.infrastructure.web.dto
+
+import com.codelong.domain.model.Game
+import com.codelong.domain.valueobject.AnswerResult
+import com.codelong.domain.valueobject.QuestionOption
+import com.codelong.domain.valueobject.QuestionPublic
+import jakarta.validation.constraints.NotBlank
+import java.time.Instant
+
+data class OptionResponse(
+    val id: String,
+    val text: String
+) {
+    companion object {
+        fun from(option: QuestionOption) = OptionResponse(option.id.value, option.text)
+    }
+}
+
+data class PublicQuestionResponse(
+    val id: String,
+    val statement: String,
+    val options: List<OptionResponse>,
+    val category: String,
+    val difficulty: String
+) {
+    companion object {
+        fun from(question: QuestionPublic) = PublicQuestionResponse(
+            id = question.id.value,
+            statement = question.statement,
+            options = question.options.map(OptionResponse::from),
+            category = question.category.name,
+            difficulty = question.difficulty.name
+        )
+    }
+}
+
+data class GameResponse(
+    val id: String,
+    val status: String,
+    val currentQuestionIndex: Int,
+    val totalQuestions: Int,
+    val remainingQuestions: Int,
+    val score: Int,
+    val correctAnswers: Int,
+    val wrongAnswers: Int,
+    val startedAt: Instant,
+    val completedAt: Instant?
+) {
+    companion object {
+        fun from(game: Game) = GameResponse(
+            id = game.id.value,
+            status = game.status().name,
+            currentQuestionIndex = game.currentQuestionIndex(),
+            totalQuestions = game.totalQuestions(),
+            remainingQuestions = game.remainingQuestions(),
+            score = game.score(),
+            correctAnswers = game.correctAnswersCount(),
+            wrongAnswers = game.wrongAnswersCount(),
+            startedAt = game.startedAt,
+            completedAt = game.completedAt()
+        )
+    }
+}
+
+data class AnswerRequest(
+    @field:NotBlank(message = "optionId is required")
+    val optionId: String
+)
+
+data class AnswerResponse(
+    val correct: Boolean,
+    val chosenOption: String,
+    val correctOption: String,
+    val explanation: String,
+    val earnedPoints: Int,
+    val currentScore: Int,
+    val correctAnswers: Int,
+    val wrongAnswers: Int,
+    val gameCompleted: Boolean,
+    val questionIndex: Int,
+    val totalQuestions: Int,
+    val nextQuestion: PublicQuestionResponse?
+) {
+    companion object {
+        fun from(result: AnswerResult) = AnswerResponse(
+            correct = result.record.correct,
+            chosenOption = result.record.chosenOption.value,
+            correctOption = result.question.correctOption.value,
+            explanation = result.question.explanation,
+            earnedPoints = result.record.earnedPoints,
+            currentScore = result.currentScore,
+            correctAnswers = result.correctAnswers,
+            wrongAnswers = result.wrongAnswers,
+            gameCompleted = result.gameCompleted,
+            questionIndex = result.questionIndex,
+            totalQuestions = result.totalQuestions,
+            nextQuestion = result.nextQuestion?.let(PublicQuestionResponse::from)
+        )
+    }
+}
