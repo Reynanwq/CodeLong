@@ -6,3 +6,4 @@ target/
 .env
 .env.local
 .attach_pid*
+.mvn/settings.xml
