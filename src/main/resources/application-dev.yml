@@ -3,6 +3,14 @@ spring:
     mongodb:
       uri: ${CODELONG_MONGO_URI:mongodb://localhost:27017/codelong}
 
+codelong:
+  jwt:
+    # Valor apenas para desenvolvimento local. Em producao use CODELONG_JWT_SECRET.
+    secret: ${CODELONG_JWT_SECRET:dev-only-secret-change-me-0123456789abcdef}
+  admin:
+    username: ${CODELONG_ADMIN_USERNAME:admin}
+    password: ${CODELONG_ADMIN_PASSWORD:admin12345}
+
 logging:
   level:
     com.codelong: DEBUG
