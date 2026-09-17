@@ -36,7 +36,7 @@ class MongoQuestionRepositoryAdapter(
 
     override fun search(search: QuestionSearch): QuestionPage {
         val criteria = buildCriteria(search)
-        val pageable = PageRequest.of(search.page, search.size, DEFAULT_SORT)
+        val pageable = PageRequest.of(search.page, search.size, defaultSort())
 
         val items = mongoTemplate
             .find(Query(criteria).with(pageable), QuestionDocument::class.java)
@@ -61,7 +61,5 @@ class MongoQuestionRepositoryAdapter(
         return criteria
     }
 
-    private companion object {
-        val DEFAULT_SORT: Sort = Sort.by(Sort.Direction.DESC, "createdAt")
-    }
+    private fun defaultSort(): Sort = Sort.by(Sort.Direction.DESC, "createdAt")
 }
