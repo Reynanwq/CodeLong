@@ -27,26 +27,30 @@ class JwtAuthenticationFilter(
     ) {
         request.getHeader(HttpHeaders.AUTHORIZATION)
             ?.takeIf { it.startsWith(BEARER_PREFIX) }
-            ?.let { authenticate(it.substring(BEARER_PREFIX.length).trim()) }
+            ?.let(::bearerToken)
+            ?.let(::authenticate)
 
         filterChain.doFilter(request, response)
     }
+
+    /** Extrai o token do header, devolvendo `null` quando ele nao tem conteudo util. */
+    private fun bearerToken(header: String): String? =
+        header.removePrefix(BEARER_PREFIX).trim().takeIf { it.isNotEmpty() }
 
     private fun authenticate(token: String) {
         try {
             val claims = tokenService.parse(token)
             val principal = AuthenticatedUser(claims.userId, claims.role)
-            val authorities = listOf(SimpleGrantedAuthority("ROLE_${claims.role.name}"))
-            val authentication = UsernamePasswordAuthenticationToken(principal, null, authorities)
-            SecurityContextHolder.getContext().authentication = authentication
-        } catch (ex: JwtException) {
-            SecurityContextHolder.clearContext()
-        } catch (ex: IllegalArgumentException) {
+            val authorities = listOf(SimpleGrantedAuthority(ROLE_PREFIX + claims.role.name))
+            SecurityContextHolder.getContext().authentication =
+                UsernamePasswordAuthenticationToken(principal, null, authorities)
+        } catch (_: JwtException) {
             SecurityContextHolder.clearContext()
         }
     }
 
     private companion object {
         const val BEARER_PREFIX = "Bearer "
+        const val ROLE_PREFIX = "ROLE_"
     }
 }
