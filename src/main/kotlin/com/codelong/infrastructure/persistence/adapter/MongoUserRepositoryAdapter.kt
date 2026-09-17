@@ -43,7 +43,7 @@ class MongoUserRepositoryAdapter(
 
     override fun search(search: UserSearch): UserPage {
         val criteria = buildCriteria(search)
-        val pageable = PageRequest.of(search.page, search.size, DEFAULT_SORT)
+        val pageable = PageRequest.of(search.page, search.size, defaultSort())
 
         val items = mongoTemplate
             .find(Query(criteria).with(pageable), UserDocument::class.java)
@@ -65,7 +65,5 @@ class MongoUserRepositoryAdapter(
         return criteria
     }
 
-    private companion object {
-        val DEFAULT_SORT: Sort = Sort.by(Sort.Direction.ASC, "username")
-    }
+    private fun defaultSort(): Sort = Sort.by(Sort.Direction.ASC, "username")
 }
