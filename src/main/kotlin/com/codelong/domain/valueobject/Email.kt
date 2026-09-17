@@ -1,13 +1,14 @@
 package com.codelong.domain.valueobject
 
-import com.codelong.domain.exception.InvalidInputException
+import com.codelong.domain.exception.DomainException
+
 
 @JvmInline
 value class Email private constructor(val value: String) {
 
     init {
         require(isValid(value)) {
-            throw InvalidInputException("email.invalid", "The email address is invalid")
+            throw DomainException.invalidInput("email.invalid", "The email address is invalid")
         }
     }
 

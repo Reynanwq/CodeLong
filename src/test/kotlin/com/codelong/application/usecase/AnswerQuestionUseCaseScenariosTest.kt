@@ -1,7 +1,8 @@
 package com.codelong.application.usecase
 
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.application.command.AnswerQuestionCommand
-import com.codelong.domain.exception.ConflictException
 import com.codelong.domain.valueobject.Difficulty
 import com.codelong.domain.valueobject.GameId
 import com.codelong.domain.valueobject.OptionId
@@ -125,7 +126,7 @@ class AnswerQuestionUseCaseScenariosTest {
         )
         useCase.answer(AnswerQuestionCommand(game.id, game.currentQuestion().correctOption), actor)
 
-        val error = assertThrows<ConflictException> {
+        val error = assertThrows<DomainException> {
             useCase.answer(AnswerQuestionCommand(game.id, OptionId("opt-0")), actor)
         }
 
@@ -138,7 +139,7 @@ class AnswerQuestionUseCaseScenariosTest {
         game.abandon(TestClock.fixed.instant())
         repository.save(game)
 
-        val error = assertThrows<ConflictException> {
+        val error = assertThrows<DomainException> {
             useCase.answer(AnswerQuestionCommand(game.id, OptionId("opt-0")), actor)
         }
 

@@ -1,11 +1,11 @@
 package com.codelong.application.usecase
 
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.application.command.RegisterUserCommand
 import com.codelong.application.service.PasswordPolicy
 import com.codelong.application.service.TokenIssuer
 import com.codelong.application.service.UserFactory
-import com.codelong.domain.exception.ConflictException
-import com.codelong.domain.exception.InvalidInputException
 import com.codelong.support.FakePasswordEncoder
 import com.codelong.support.FakeTokenService
 import com.codelong.support.InMemoryUserRepository
@@ -48,7 +48,7 @@ class RegisterUserUseCaseTest {
     fun `rejeita username duplicado`() {
         useCase.register(RegisterUserCommand("dev", "dev@codelong.dev", "secret123"))
 
-        val error = assertThrows<ConflictException> {
+        val error = assertThrows<DomainException> {
             useCase.register(RegisterUserCommand("dev", "outro@codelong.dev", "secret123"))
         }
 
@@ -59,7 +59,7 @@ class RegisterUserUseCaseTest {
     fun `rejeita email duplicado`() {
         useCase.register(RegisterUserCommand("dev", "dev@codelong.dev", "secret123"))
 
-        val error = assertThrows<ConflictException> {
+        val error = assertThrows<DomainException> {
             useCase.register(RegisterUserCommand("dev2", "dev@codelong.dev", "secret123"))
         }
 
@@ -68,7 +68,7 @@ class RegisterUserUseCaseTest {
 
     @Test
     fun `rejeita senha fraca`() {
-        val error = assertThrows<InvalidInputException> {
+        val error = assertThrows<DomainException> {
             useCase.register(RegisterUserCommand("dev", "dev@codelong.dev", "curta"))
         }
 

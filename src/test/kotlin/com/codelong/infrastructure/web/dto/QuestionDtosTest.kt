@@ -1,6 +1,7 @@
 package com.codelong.infrastructure.web.dto
 
-import com.codelong.domain.exception.InvalidInputException
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.domain.valueobject.Category
 import com.codelong.domain.valueobject.Difficulty
 import com.codelong.domain.valueobject.OptionId
@@ -90,7 +91,7 @@ class QuestionDtosTest {
     @ParameterizedTest
     @ValueSource(strings = ["INVALIDO", "", " ", "nivel-1", "10", "FACIL", "unknown"])
     fun `difficulty invalido gera erro`(raw: String) {
-        val error = assertThrows<InvalidInputException> { createRequest(difficulty = raw).toCommand() }
+        val error = assertThrows<DomainException> { createRequest(difficulty = raw).toCommand() }
 
         assertEquals("difficulty.invalid", error.code)
     }
@@ -102,7 +103,7 @@ class QuestionDtosTest {
 
     @Test
     fun `categoria invalida gera erro`() {
-        val error = assertThrows<InvalidInputException> { createRequest(category = "JAVASCRIPT").toCommand() }
+        val error = assertThrows<DomainException> { createRequest(category = "JAVASCRIPT").toCommand() }
 
         assertEquals("category.invalid", error.code)
     }

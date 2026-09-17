@@ -1,11 +1,12 @@
 package com.codelong.application.usecase
 
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.application.command.RegisterUserCommand
 import com.codelong.application.command.LoginCommand
 import com.codelong.application.service.PasswordPolicy
 import com.codelong.application.service.TokenIssuer
 import com.codelong.application.service.UserFactory
-import com.codelong.domain.exception.UnauthorizedException
 import com.codelong.support.FakePasswordEncoder
 import com.codelong.support.FakeTokenService
 import com.codelong.support.InMemoryUserRepository
@@ -59,7 +60,7 @@ class LoginUserUseCaseTest {
     fun `rejeita senha incorreta`() {
         registerUseCase.register(RegisterUserCommand("dev", "dev@codelong.dev", "secret123"))
 
-        val error = assertThrows<UnauthorizedException> {
+        val error = assertThrows<DomainException> {
             loginUseCase.login(LoginCommand("dev", "senha-errada"))
         }
 
@@ -68,7 +69,7 @@ class LoginUserUseCaseTest {
 
     @Test
     fun `rejeita usuario inexistente`() {
-        val error = assertThrows<UnauthorizedException> {
+        val error = assertThrows<DomainException> {
             loginUseCase.login(LoginCommand("ninguem", "secret123"))
         }
 
@@ -81,7 +82,7 @@ class LoginUserUseCaseTest {
         val stored = repository.all().single()
         repository.save(stored.deactivate(TestClock.fixed.instant()))
 
-        val error = assertThrows<UnauthorizedException> {
+        val error = assertThrows<DomainException> {
             loginUseCase.login(LoginCommand("dev", "secret123"))
         }
 

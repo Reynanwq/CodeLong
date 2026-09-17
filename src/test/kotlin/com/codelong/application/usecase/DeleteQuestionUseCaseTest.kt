@@ -1,6 +1,7 @@
 package com.codelong.application.usecase
 
-import com.codelong.domain.exception.NotFoundException
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.domain.valueobject.QuestionId
 import com.codelong.support.Fixtures
 import com.codelong.support.InMemoryQuestionRepository
@@ -32,7 +33,7 @@ class DeleteQuestionUseCaseTest {
 
     @Test
     fun `pergunta inexistente gera erro`() {
-        val error = assertThrows<NotFoundException> { useCase.delete(QuestionId("nao-existe")) }
+        val error = assertThrows<DomainException> { useCase.delete(QuestionId("nao-existe")) }
 
         assertEquals("QUESTION_NOT_FOUND", error.code)
         assertEquals("Question not found", error.message)
@@ -55,7 +56,7 @@ class DeleteQuestionUseCaseTest {
 
         useCase.delete(QuestionId("q-1"))
 
-        assertThrows<NotFoundException> { useCase.delete(QuestionId("q-1")) }
+        assertThrows<DomainException> { useCase.delete(QuestionId("q-1")) }
     }
 
     @Test

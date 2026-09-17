@@ -2,9 +2,7 @@ package com.codelong.application.usecase
 
 import com.codelong.application.result.GameCreationResult
 import com.codelong.application.service.GameFactory
-import com.codelong.domain.exception.ConflictException
-import com.codelong.domain.exception.ForbiddenException
-import com.codelong.domain.exception.NotFoundException
+import com.codelong.domain.exception.DomainException
 import com.codelong.domain.port.GameRepository
 import com.codelong.domain.port.QuestionRepository
 import com.codelong.domain.port.UserRepository
@@ -25,10 +23,10 @@ class CreateGameUseCase(
 
     fun create(actorId: UserId): GameCreationResult {
         val user = userRepository.findById(actorId)
-            ?: throw NotFoundException("USER_NOT_FOUND", "User not found")
+            ?: throw DomainException.notFound("USER_NOT_FOUND", "User not found")
 
         if (!user.isActive()) {
-            throw ForbiddenException("ACCOUNT_INACTIVE", "This account is not active")
+            throw DomainException.forbidden("ACCOUNT_INACTIVE", "This account is not active")
         }
 
         gameRepository.findInProgressByUserId(actorId)?.let {
@@ -37,7 +35,7 @@ class CreateGameUseCase(
 
         val activeQuestions = questionRepository.findAllActive()
         if (activeQuestions.isEmpty()) {
-            throw ConflictException(
+            throw DomainException.conflict(
                 "NO_ACTIVE_QUESTIONS",
                 "There are no active questions available to start a game"
             )

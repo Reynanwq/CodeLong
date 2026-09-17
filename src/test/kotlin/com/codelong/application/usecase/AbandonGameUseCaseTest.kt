@@ -1,8 +1,6 @@
 package com.codelong.application.usecase
 
-import com.codelong.domain.exception.ConflictException
-import com.codelong.domain.exception.ForbiddenException
-import com.codelong.domain.exception.NotFoundException
+import com.codelong.domain.exception.DomainException
 import com.codelong.domain.valueobject.Difficulty
 import com.codelong.domain.valueobject.GameId
 import com.codelong.domain.valueobject.GameStatus
@@ -52,7 +50,7 @@ class AbandonGameUseCaseTest {
 
     @Test
     fun `partida inexistente gera erro`() {
-        val error = assertThrows<NotFoundException> {
+        val error = assertThrows<DomainException> {
             useCase.abandon(GameId("nao-existe"), UserId("u-1"))
         }
 
@@ -64,7 +62,7 @@ class AbandonGameUseCaseTest {
     fun `outro usuario nao pode abandonar a partida`() {
         repository.save(Fixtures.game(id = "g-1", userId = "u-1"))
 
-        val error = assertThrows<ForbiddenException> {
+        val error = assertThrows<DomainException> {
             useCase.abandon(GameId("g-1"), UserId("u-2"))
         }
 
@@ -77,7 +75,7 @@ class AbandonGameUseCaseTest {
         repository.save(Fixtures.game(id = "g-1", userId = "u-1"))
         useCase.abandon(GameId("g-1"), UserId("u-1"))
 
-        val error = assertThrows<ConflictException> {
+        val error = assertThrows<DomainException> {
             useCase.abandon(GameId("g-1"), UserId("u-1"))
         }
 
@@ -90,7 +88,7 @@ class AbandonGameUseCaseTest {
         game.answer(game.currentQuestion().correctOption, Fixtures.NOW)
         repository.save(game)
 
-        val error = assertThrows<ConflictException> {
+        val error = assertThrows<DomainException> {
             useCase.abandon(GameId("g-1"), UserId("u-1"))
         }
 

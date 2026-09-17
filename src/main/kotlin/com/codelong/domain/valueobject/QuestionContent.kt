@@ -1,6 +1,7 @@
 package com.codelong.domain.valueobject
 
-import com.codelong.domain.exception.InvalidInputException
+import com.codelong.domain.exception.DomainException
+
 
 /**
  * Conteudo imutavel de uma pergunta. Agrupa os dados que definem uma pergunta
@@ -26,31 +27,31 @@ data class QuestionContent(
 
     private fun validate() {
         if (statement.isBlank() || statement.length > MAX_STATEMENT) {
-            throw InvalidInputException(
+            throw DomainException.invalidInput(
                 "question.statement.invalid",
                 "Statement must not be blank and at most $MAX_STATEMENT characters"
             )
         }
         if (options.size < MIN_OPTIONS) {
-            throw InvalidInputException(
+            throw DomainException.invalidInput(
                 "question.options.invalid",
                 "A question must have at least $MIN_OPTIONS options"
             )
         }
         if (options.any { it.text.isBlank() }) {
-            throw InvalidInputException("question.options.invalid", "Option text must not be blank")
+            throw DomainException.invalidInput("question.options.invalid", "Option text must not be blank")
         }
         if (options.map { it.id }.distinct().size != options.size) {
-            throw InvalidInputException("question.options.invalid", "Option ids must be unique")
+            throw DomainException.invalidInput("question.options.invalid", "Option ids must be unique")
         }
         if (!hasOption(correctOption)) {
-            throw InvalidInputException(
+            throw DomainException.invalidInput(
                 "question.correctOption.invalid",
                 "The correct option must be one of the options"
             )
         }
         if (explanation.isBlank() || explanation.length > MAX_EXPLANATION) {
-            throw InvalidInputException(
+            throw DomainException.invalidInput(
                 "question.explanation.invalid",
                 "Explanation must not be blank and at most $MAX_EXPLANATION characters"
             )

@@ -1,6 +1,7 @@
 package com.codelong.integration
 
-import com.codelong.domain.exception.ConcurrentGameModificationException
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.domain.port.GameRepository
 import com.codelong.domain.port.QuestionRepository
 import com.codelong.domain.port.QuestionSearch
@@ -170,7 +171,7 @@ class PersistenceIntegrationTest {
         assertTrue(savedA.version > created.version, "a versao deve avancar a cada gravacao")
 
         copyB.answer(copyB.currentQuestion().correctOption, Fixtures.NOW)
-        assertThrows<ConcurrentGameModificationException> {
+        assertThrows<DomainException> {
             gameRepository.save(copyB)
         }
     }

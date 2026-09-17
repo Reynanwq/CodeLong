@@ -1,9 +1,10 @@
 package com.codelong.infrastructure.web.dto
 
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.application.command.CreateQuestionCommand
 import com.codelong.application.command.QuestionOptionCommand
 import com.codelong.application.command.UpdateQuestionCommand
-import com.codelong.domain.exception.InvalidInputException
 import com.codelong.domain.model.Question
 import com.codelong.domain.valueobject.Category
 import com.codelong.domain.valueobject.Difficulty
@@ -122,5 +123,5 @@ fun UpdateQuestionRequest.toCommand(questionId: QuestionId): UpdateQuestionComma
 private fun difficultyOf(value: String): Difficulty {
     val normalized = value.trim().uppercase()
     return Difficulty.entries.firstOrNull { it.name == normalized }
-        ?: throw InvalidInputException("difficulty.invalid", "Unknown difficulty: $value")
+        ?: throw DomainException.invalidInput("difficulty.invalid", "Unknown difficulty: $value")
 }

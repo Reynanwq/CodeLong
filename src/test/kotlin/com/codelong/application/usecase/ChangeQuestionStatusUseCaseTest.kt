@@ -1,7 +1,8 @@
 package com.codelong.application.usecase
 
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.application.command.ChangeQuestionStatusCommand
-import com.codelong.domain.exception.NotFoundException
 import com.codelong.domain.valueobject.QuestionId
 import com.codelong.domain.valueobject.QuestionStatus
 import com.codelong.support.Fixtures
@@ -67,7 +68,7 @@ class ChangeQuestionStatusUseCaseTest {
 
     @Test
     fun `pergunta inexistente gera erro`() {
-        val error = assertThrows<NotFoundException> {
+        val error = assertThrows<DomainException> {
             useCase.change(ChangeQuestionStatusCommand(QuestionId("nao-existe"), active = true))
         }
 

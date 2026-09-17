@@ -1,6 +1,7 @@
 package com.codelong.application.usecase
 
-import com.codelong.domain.exception.NotFoundException
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.domain.model.User
 import com.codelong.domain.port.UserRepository
 import com.codelong.domain.valueobject.UserId
@@ -11,5 +12,5 @@ class GetCurrentUserUseCase(
 
     fun get(userId: UserId): User =
         userRepository.findById(userId)
-            ?: throw NotFoundException("USER_NOT_FOUND", "User not found")
+            ?: throw DomainException.notFound("USER_NOT_FOUND", "User not found")
 }

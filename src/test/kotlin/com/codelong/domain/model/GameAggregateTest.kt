@@ -1,6 +1,7 @@
 package com.codelong.domain.model
 
-import com.codelong.domain.exception.ConflictException
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.domain.valueobject.Difficulty
 import com.codelong.domain.valueobject.GameId
 import com.codelong.domain.valueobject.GameStatus
@@ -130,7 +131,7 @@ class GameAggregateTest {
         val game = Fixtures.game(difficulties = listOf(Difficulty.EASY))
         game.answer(game.currentQuestion().correctOption, Fixtures.NOW)
 
-        assertThrows<ConflictException> { game.currentQuestion() }
+        assertThrows<DomainException> { game.currentQuestion() }
     }
 
     @Test
@@ -138,7 +139,7 @@ class GameAggregateTest {
         val game = Fixtures.game()
         game.abandon(Fixtures.NOW)
 
-        assertThrows<ConflictException> { game.currentQuestion() }
+        assertThrows<DomainException> { game.currentQuestion() }
     }
 
     @Test
@@ -159,7 +160,7 @@ class GameAggregateTest {
         val game = Fixtures.game()
         game.abandon(Fixtures.NOW)
 
-        assertThrows<ConflictException> { game.abandon(Fixtures.NOW.plusSeconds(1)) }
+        assertThrows<DomainException> { game.abandon(Fixtures.NOW.plusSeconds(1)) }
     }
 
     @Test
@@ -194,7 +195,7 @@ class GameAggregateTest {
         assertEquals(original.score(), restored.score())
         assertEquals(original.answers().size, restored.answers().size)
         assertEquals(Fixtures.NOW, restored.completedAt())
-        assertThrows<ConflictException> { restored.answer(OptionId("opt-0"), Fixtures.NOW) }
+        assertThrows<DomainException> { restored.answer(OptionId("opt-0"), Fixtures.NOW) }
     }
 
     @Test
@@ -222,7 +223,7 @@ class GameAggregateTest {
 
         game.requireOwner(UserId("u-1"))
 
-        assertThrows<com.codelong.domain.exception.ForbiddenException> {
+        assertThrows<com.codelong.domain.exception.DomainException> {
             game.requireOwner(UserId("u-2"))
         }
     }

@@ -1,11 +1,12 @@
 package com.codelong.application.usecase
 
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.application.command.LoginCommand
 import com.codelong.application.command.RegisterUserCommand
 import com.codelong.application.service.PasswordPolicy
 import com.codelong.application.service.TokenIssuer
 import com.codelong.application.service.UserFactory
-import com.codelong.domain.exception.UnauthorizedException
 import com.codelong.support.FakePasswordEncoder
 import com.codelong.support.FakeTokenService
 import com.codelong.support.InMemoryUserRepository
@@ -55,7 +56,7 @@ class LoginUserIdentifierTest {
 
     @Test
     fun `username em caixa alta nao encontra o usuario`() {
-        val error = assertThrows<UnauthorizedException> {
+        val error = assertThrows<DomainException> {
             loginUseCase.login(LoginCommand("DEV", "secret123"))
         }
 
@@ -78,7 +79,7 @@ class LoginUserIdentifierTest {
         ]
     )
     fun `identificador invalido resulta em credenciais invalidas`(identifier: String) {
-        val error = assertThrows<UnauthorizedException> {
+        val error = assertThrows<DomainException> {
             loginUseCase.login(LoginCommand(identifier, "secret123"))
         }
 
@@ -87,7 +88,7 @@ class LoginUserIdentifierTest {
 
     @Test
     fun `email inexistente resulta em credenciais invalidas`() {
-        val error = assertThrows<UnauthorizedException> {
+        val error = assertThrows<DomainException> {
             loginUseCase.login(LoginCommand("outro@codelong.dev", "secret123"))
         }
 
@@ -96,7 +97,7 @@ class LoginUserIdentifierTest {
 
     @Test
     fun `username valido inexistente resulta em credenciais invalidas`() {
-        val error = assertThrows<UnauthorizedException> {
+        val error = assertThrows<DomainException> {
             loginUseCase.login(LoginCommand("outro-dev", "secret123"))
         }
 
@@ -105,7 +106,7 @@ class LoginUserIdentifierTest {
 
     @Test
     fun `senha vazia nao autentica`() {
-        val error = assertThrows<UnauthorizedException> {
+        val error = assertThrows<DomainException> {
             loginUseCase.login(LoginCommand("dev", ""))
         }
 
@@ -114,7 +115,7 @@ class LoginUserIdentifierTest {
 
     @Test
     fun `identificador de email invalido nao consulta o repositorio`() {
-        val error = assertThrows<UnauthorizedException> {
+        val error = assertThrows<DomainException> {
             loginUseCase.login(LoginCommand("invalido@", "secret123"))
         }
 

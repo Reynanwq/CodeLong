@@ -1,8 +1,6 @@
 package com.codelong.domain.model
 
-import com.codelong.domain.exception.ConflictException
-import com.codelong.domain.exception.ForbiddenException
-import com.codelong.domain.exception.InvalidInputException
+import com.codelong.domain.exception.DomainException
 import com.codelong.domain.valueobject.AnswerEval
 import com.codelong.domain.valueobject.AnswerRecord
 import com.codelong.domain.valueobject.GameId
@@ -56,7 +54,7 @@ class Game private constructor(
 
     fun requireOwner(actor: UserId) {
         if (!isOwnedBy(actor)) {
-            throw ForbiddenException("GAME_ACCESS_DENIED", "You do not have access to this game")
+            throw DomainException.forbidden("GAME_ACCESS_DENIED", "You do not have access to this game")
         }
     }
 
@@ -83,7 +81,7 @@ class Game private constructor(
 
         val question = questions[currentQuestionIndex]
         if (!question.hasOption(optionId)) {
-            throw InvalidInputException(
+            throw DomainException.invalidInput(
                 "answer.option.invalid",
                 "The chosen option is not valid for the current question"
             )
@@ -150,7 +148,7 @@ class Game private constructor(
 
     private fun requireInProgress() {
         if (status != GameStatus.IN_PROGRESS) {
-            throw ConflictException(
+            throw DomainException.conflict(
                 "GAME_FINISHED",
                 "This game is already finished and cannot receive new answers"
             )

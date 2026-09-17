@@ -1,7 +1,6 @@
 package com.codelong.application.usecase
 
-import com.codelong.domain.exception.ForbiddenException
-import com.codelong.domain.exception.NotFoundException
+import com.codelong.domain.exception.DomainException
 import com.codelong.domain.valueobject.Difficulty
 import com.codelong.domain.valueobject.GameId
 import com.codelong.domain.valueobject.GameStatus
@@ -48,7 +47,7 @@ class GetGameUseCaseTest {
 
     @Test
     fun `partida inexistente gera erro`() {
-        val error = assertThrows<NotFoundException> {
+        val error = assertThrows<DomainException> {
             useCase.get(GameId("nao-existe"), UserId("u-1"))
         }
 
@@ -60,7 +59,7 @@ class GetGameUseCaseTest {
     fun `outro usuario nao acessa a partida`() {
         repository.save(Fixtures.game(id = "g-1", userId = "u-1"))
 
-        val error = assertThrows<ForbiddenException> {
+        val error = assertThrows<DomainException> {
             useCase.get(GameId("g-1"), UserId("u-2"))
         }
 
@@ -93,6 +92,6 @@ class GetGameUseCaseTest {
         repository.save(Fixtures.game(id = "g-1", userId = "u-1"))
         repository.save(Fixtures.game(id = "g-2", userId = "u-2"))
 
-        assertThrows<ForbiddenException> { useCase.get(GameId("g-2"), UserId("u-1")) }
+        assertThrows<DomainException> { useCase.get(GameId("g-2"), UserId("u-1")) }
     }
 }

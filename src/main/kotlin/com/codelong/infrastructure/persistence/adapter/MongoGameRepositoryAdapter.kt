@@ -1,6 +1,7 @@
 package com.codelong.infrastructure.persistence.adapter
 
-import com.codelong.domain.exception.ConcurrentGameModificationException
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.domain.model.Game
 import com.codelong.domain.port.GamePage
 import com.codelong.domain.port.GameRepository
@@ -30,7 +31,7 @@ class MongoGameRepositoryAdapter(
         val saved = try {
             repository.save(document)
         } catch (ex: OptimisticLockingFailureException) {
-            throw ConcurrentGameModificationException()
+            throw DomainException.concurrentModification()
         }
         return GamePersistenceMapper.toDomain(saved)
     }

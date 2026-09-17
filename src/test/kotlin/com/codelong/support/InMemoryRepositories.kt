@@ -1,6 +1,7 @@
 package com.codelong.support
 
-import com.codelong.domain.exception.ConcurrentGameModificationException
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.domain.model.Game
 import com.codelong.domain.model.Question
 import com.codelong.domain.model.User
@@ -105,7 +106,7 @@ class InMemoryGameRepository : GameRepository {
         val state = game.state()
         val stored = store[state.id.value]
         if (stored != null && stored.state().version != state.version) {
-            throw ConcurrentGameModificationException()
+            throw DomainException.concurrentModification()
         }
         val newVersion = if (stored == null) 1L else state.version + 1
         val saved = Game.reconstitute(state.copy(version = newVersion))

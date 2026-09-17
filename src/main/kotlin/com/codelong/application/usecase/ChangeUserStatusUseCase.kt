@@ -1,8 +1,8 @@
 package com.codelong.application.usecase
 
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.application.command.ChangeUserStatusCommand
-import com.codelong.domain.exception.InvalidInputException
-import com.codelong.domain.exception.NotFoundException
 import com.codelong.domain.model.User
 import com.codelong.domain.port.UserRepository
 import com.codelong.domain.valueobject.UserId
@@ -20,14 +20,14 @@ class ChangeUserStatusUseCase(
 
     fun change(command: ChangeUserStatusCommand, actorId: UserId): User {
         if (!command.active && command.userId == actorId) {
-            throw InvalidInputException(
+            throw DomainException.invalidInput(
                 "user.deactivate.self",
                 "An administrator cannot deactivate their own account"
             )
         }
 
         val user = userRepository.findById(command.userId)
-            ?: throw NotFoundException("USER_NOT_FOUND", "User not found")
+            ?: throw DomainException.notFound("USER_NOT_FOUND", "User not found")
 
         val now = clock.instant()
         if (command.active) user.activate(now) else user.deactivate(now)

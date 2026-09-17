@@ -1,8 +1,8 @@
 package com.codelong.application.usecase
 
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.application.command.ChangeUserStatusCommand
-import com.codelong.domain.exception.InvalidInputException
-import com.codelong.domain.exception.NotFoundException
 import com.codelong.domain.valueobject.AccountStatus
 import com.codelong.domain.valueobject.Role
 import com.codelong.domain.valueobject.UserId
@@ -80,7 +80,7 @@ class ChangeUserStatusUseCaseTest {
     fun `admin nao pode desativar a propria conta`() {
         repository.save(Fixtures.user(id = "admin-1", username = "admin", role = Role.ADMIN))
 
-        val error = assertThrows<InvalidInputException> {
+        val error = assertThrows<DomainException> {
             useCase.change(ChangeUserStatusCommand(UserId("admin-1"), active = false), actorId = UserId("admin-1"))
         }
 
@@ -102,7 +102,7 @@ class ChangeUserStatusUseCaseTest {
 
     @Test
     fun `usuario inexistente gera erro`() {
-        val error = assertThrows<NotFoundException> {
+        val error = assertThrows<DomainException> {
             useCase.change(ChangeUserStatusCommand(UserId("nao-existe"), active = false), actorId = UserId("admin-1"))
         }
 

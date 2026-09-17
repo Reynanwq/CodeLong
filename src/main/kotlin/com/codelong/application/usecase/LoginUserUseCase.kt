@@ -1,9 +1,10 @@
 package com.codelong.application.usecase
 
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.application.command.LoginCommand
 import com.codelong.application.result.AuthenticationResult
 import com.codelong.application.service.TokenIssuer
-import com.codelong.domain.exception.UnauthorizedException
 import com.codelong.domain.model.User
 import com.codelong.domain.port.PasswordEncoder
 import com.codelong.domain.port.UserRepository
@@ -20,10 +21,10 @@ class LoginUserUseCase(
         val user = resolveUser(command.identifier)
 
         if (user == null || !passwordEncoder.matches(command.password, user.passwordHash())) {
-            throw UnauthorizedException("INVALID_CREDENTIALS", "Invalid credentials")
+            throw DomainException.unauthorized("INVALID_CREDENTIALS", "Invalid credentials")
         }
         if (!user.isActive()) {
-            throw UnauthorizedException("ACCOUNT_INACTIVE", "This account is not active")
+            throw DomainException.unauthorized("ACCOUNT_INACTIVE", "This account is not active")
         }
 
         return AuthenticationResult(user = user, token = tokenIssuer.issue(user))

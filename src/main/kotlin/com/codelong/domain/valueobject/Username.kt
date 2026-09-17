@@ -1,13 +1,14 @@
 package com.codelong.domain.valueobject
 
-import com.codelong.domain.exception.InvalidInputException
+import com.codelong.domain.exception.DomainException
+
 
 @JvmInline
 value class Username private constructor(val value: String) {
 
     init {
         require(isValid(value)) {
-            throw InvalidInputException(
+            throw DomainException.invalidInput(
                 "username.invalid",
                 "Username must have between 3 and 20 characters using only letters, numbers, '_' or '-'"
             )

@@ -1,12 +1,6 @@
 package com.codelong.infrastructure.web
 
-import com.codelong.domain.exception.ConcurrentGameModificationException
-import com.codelong.domain.exception.ConflictException
 import com.codelong.domain.exception.DomainException
-import com.codelong.domain.exception.ForbiddenException
-import com.codelong.domain.exception.InvalidInputException
-import com.codelong.domain.exception.NotFoundException
-import com.codelong.domain.exception.UnauthorizedException
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
@@ -33,13 +27,13 @@ class ApiExceptionHandlerTest {
 
         @JvmStatic
         fun excecoesComStatus(): List<Arguments> = listOf(
-            Arguments.of(NotFoundException("USER_NOT_FOUND", "nao encontrado"), HttpStatus.NOT_FOUND),
-            Arguments.of(ConflictException("USERNAME_ALREADY_EXISTS", "conflito"), HttpStatus.CONFLICT),
-            Arguments.of(ConcurrentGameModificationException(), HttpStatus.CONFLICT),
-            Arguments.of(InvalidInputException("answer.option.invalid", "entrada invalida"), HttpStatus.BAD_REQUEST),
-            Arguments.of(ForbiddenException("GAME_ACCESS_DENIED", "sem permissao"), HttpStatus.FORBIDDEN),
-            Arguments.of(UnauthorizedException("INVALID_CREDENTIALS", "nao autenticado"), HttpStatus.UNAUTHORIZED),
-            Arguments.of(DomainException("CODIGO_DESCONHECIDO", "nao mapeado"), HttpStatus.UNPROCESSABLE_CONTENT)
+            Arguments.of(DomainException.notFound("USER_NOT_FOUND", "nao encontrado"), HttpStatus.NOT_FOUND),
+            Arguments.of(DomainException.conflict("USERNAME_ALREADY_EXISTS", "conflito"), HttpStatus.CONFLICT),
+            Arguments.of(DomainException.concurrentModification(), HttpStatus.CONFLICT),
+            Arguments.of(DomainException.invalidInput("answer.option.invalid", "entrada invalida"), HttpStatus.BAD_REQUEST),
+            Arguments.of(DomainException.forbidden("GAME_ACCESS_DENIED", "sem permissao"), HttpStatus.FORBIDDEN),
+            Arguments.of(DomainException.unauthorized("INVALID_CREDENTIALS", "nao autenticado"), HttpStatus.UNAUTHORIZED),
+            Arguments.of(DomainException.unprocessable("CODIGO_DESCONHECIDO", "nao mapeado"), HttpStatus.UNPROCESSABLE_CONTENT)
         )
     }
 
@@ -59,7 +53,7 @@ class ApiExceptionHandlerTest {
 
     @Test
     fun `excecao de dominio desconhecida resulta em 422`() {
-        val response = handler.handleDomain(DomainException("QUALQUER", "mensagem"))
+        val response = handler.handleDomain(DomainException.unprocessable("QUALQUER", "mensagem"))
 
         assertEquals(HttpStatus.UNPROCESSABLE_CONTENT, response.statusCode)
         assertEquals("QUALQUER", response.body?.code)

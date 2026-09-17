@@ -1,10 +1,10 @@
 package com.codelong.application.usecase
 
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.application.command.ChangeQuestionStatusCommand
 import com.codelong.application.command.CreateQuestionCommand
 import com.codelong.application.command.QuestionOptionCommand
-import com.codelong.domain.exception.InvalidInputException
-import com.codelong.domain.exception.NotFoundException
 import com.codelong.domain.valueobject.Category
 import com.codelong.domain.valueobject.Difficulty
 import com.codelong.domain.valueobject.QuestionId
@@ -57,14 +57,14 @@ class QuestionManagementUseCaseTest {
 
     @Test
     fun `rejeita pergunta sem opcoes suficientes`() {
-        assertThrows<InvalidInputException> {
+        assertThrows<DomainException> {
             createUseCase.create(command(options = listOf(QuestionOptionCommand("a", "Unica"))))
         }
     }
 
     @Test
     fun `rejeita resposta correta fora das opcoes`() {
-        assertThrows<InvalidInputException> {
+        assertThrows<DomainException> {
             createUseCase.create(command(correctOption = "z"))
         }
     }
@@ -84,7 +84,7 @@ class QuestionManagementUseCaseTest {
 
     @Test
     fun `pergunta inexistente`() {
-        val error = assertThrows<NotFoundException> {
+        val error = assertThrows<DomainException> {
             changeStatusUseCase.change(ChangeQuestionStatusCommand(QuestionId("nao-existe"), false))
         }
 

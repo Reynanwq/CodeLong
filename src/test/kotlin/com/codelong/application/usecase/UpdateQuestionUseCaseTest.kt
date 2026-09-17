@@ -1,9 +1,9 @@
 package com.codelong.application.usecase
 
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.application.command.QuestionOptionCommand
 import com.codelong.application.command.UpdateQuestionCommand
-import com.codelong.domain.exception.InvalidInputException
-import com.codelong.domain.exception.NotFoundException
 import com.codelong.domain.valueobject.Category
 import com.codelong.domain.valueobject.Difficulty
 import com.codelong.domain.valueobject.OptionId
@@ -102,7 +102,7 @@ class UpdateQuestionUseCaseTest {
 
     @Test
     fun `pergunta inexistente gera erro`() {
-        val error = assertThrows<NotFoundException> { useCase.update(command(questionId = "nao-existe")) }
+        val error = assertThrows<DomainException> { useCase.update(command(questionId = "nao-existe")) }
 
         assertEquals("QUESTION_NOT_FOUND", error.code)
         assertEquals("Question not found", error.message)
@@ -112,7 +112,7 @@ class UpdateQuestionUseCaseTest {
     fun `conteudo invalido nao atualiza a pergunta`() {
         repository.save(Fixtures.question(id = "q-1"))
 
-        assertThrows<InvalidInputException> { useCase.update(command(statement = "   ")) }
+        assertThrows<DomainException> { useCase.update(command(statement = "   ")) }
 
         assertEquals("O que e polimorfismo?", repository.findById(QuestionId("q-1"))!!.statement())
     }
@@ -121,7 +121,7 @@ class UpdateQuestionUseCaseTest {
     fun `alternativa correta inexistente gera erro`() {
         repository.save(Fixtures.question(id = "q-1"))
 
-        val error = assertThrows<InvalidInputException> { useCase.update(command(correctOption = "z")) }
+        val error = assertThrows<DomainException> { useCase.update(command(correctOption = "z")) }
 
         assertEquals("question.correctOption.invalid", error.code)
     }

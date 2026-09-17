@@ -1,8 +1,6 @@
 package com.codelong.application.usecase
 
-import com.codelong.domain.exception.ConflictException
-import com.codelong.domain.exception.ForbiddenException
-import com.codelong.domain.exception.NotFoundException
+import com.codelong.domain.exception.DomainException
 import com.codelong.domain.valueobject.Difficulty
 import com.codelong.domain.valueobject.GameId
 import com.codelong.domain.valueobject.UserId
@@ -69,7 +67,7 @@ class GetCurrentQuestionUseCaseTest {
 
     @Test
     fun `partida inexistente gera erro`() {
-        val error = assertThrows<NotFoundException> {
+        val error = assertThrows<DomainException> {
             useCase.current(GameId("g-1"), UserId("u-1"))
         }
 
@@ -80,7 +78,7 @@ class GetCurrentQuestionUseCaseTest {
     fun `outro usuario nao acessa a pergunta`() {
         repository.save(Fixtures.game(id = "g-1", userId = "u-1"))
 
-        val error = assertThrows<ForbiddenException> {
+        val error = assertThrows<DomainException> {
             useCase.current(GameId("g-1"), UserId("u-2"))
         }
 
@@ -93,7 +91,7 @@ class GetCurrentQuestionUseCaseTest {
         game.answer(game.currentQuestion().correctOption, Fixtures.NOW)
         repository.save(game)
 
-        val error = assertThrows<ConflictException> {
+        val error = assertThrows<DomainException> {
             useCase.current(GameId("g-1"), UserId("u-1"))
         }
 
@@ -106,6 +104,6 @@ class GetCurrentQuestionUseCaseTest {
         game.abandon(Fixtures.NOW)
         repository.save(game)
 
-        assertThrows<ConflictException> { useCase.current(GameId("g-1"), UserId("u-1")) }
+        assertThrows<DomainException> { useCase.current(GameId("g-1"), UserId("u-1")) }
     }
 }

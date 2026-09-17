@@ -1,8 +1,9 @@
 package com.codelong.application.usecase
 
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.application.command.CreateQuestionCommand
 import com.codelong.application.command.QuestionOptionCommand
-import com.codelong.domain.exception.InvalidInputException
 import com.codelong.domain.valueobject.Category
 import com.codelong.domain.valueobject.Difficulty
 import com.codelong.domain.valueobject.OptionId
@@ -95,14 +96,14 @@ class CreateQuestionUseCaseTest {
 
     @Test
     fun `conteudo invalido nao cria pergunta`() {
-        assertThrows<InvalidInputException> { useCase.create(command(statement = "   ")) }
+        assertThrows<DomainException> { useCase.create(command(statement = "   ")) }
 
         assertEquals(0, repository.countActive())
     }
 
     @Test
     fun `alternativa correta invalida nao cria pergunta`() {
-        val error = assertThrows<InvalidInputException> { useCase.create(command(correctOption = "z")) }
+        val error = assertThrows<DomainException> { useCase.create(command(correctOption = "z")) }
 
         assertEquals("question.correctOption.invalid", error.code)
     }

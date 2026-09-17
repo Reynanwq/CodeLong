@@ -1,6 +1,7 @@
 package com.codelong.infrastructure.security
 
-import com.codelong.domain.exception.UnauthorizedException
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.domain.port.TokenService
 import com.codelong.domain.valueobject.Role
 import com.codelong.domain.valueobject.TokenClaims
@@ -37,9 +38,9 @@ class JwtTokenService(
             .payload
 
         val subject = claims.subject
-            ?: throw UnauthorizedException("TOKEN_INVALID", "The token is missing its subject")
+            ?: throw DomainException.unauthorized("TOKEN_INVALID", "The token is missing its subject")
         val role = claims[ROLE_CLAIM] as? String
-            ?: throw UnauthorizedException("TOKEN_INVALID", "The token is missing its role")
+            ?: throw DomainException.unauthorized("TOKEN_INVALID", "The token is missing its role")
 
         return TokenClaims(
             userId = UserId(subject),

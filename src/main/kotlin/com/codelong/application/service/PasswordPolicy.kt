@@ -1,6 +1,7 @@
 package com.codelong.application.service
 
-import com.codelong.domain.exception.InvalidInputException
+import com.codelong.domain.exception.DomainException
+
 
 /**
  * Politica de senha compartilhada pelo cadastro e pela troca de senha.
@@ -15,13 +16,13 @@ class PasswordPolicy(
 
     fun requireStrong(plainPassword: String) {
         if (plainPassword.length < minLength) {
-            throw InvalidInputException(
+            throw DomainException.invalidInput(
                 "password.tooWeak",
                 "Password must have at least $minLength characters"
             )
         }
         if (plainPassword.length > maxLength) {
-            throw InvalidInputException(
+            throw DomainException.invalidInput(
                 "password.tooWeak",
                 "Password must have at most $maxLength characters"
             )

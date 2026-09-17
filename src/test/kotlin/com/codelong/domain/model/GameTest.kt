@@ -1,8 +1,6 @@
 package com.codelong.domain.model
 
-import com.codelong.domain.exception.ConflictException
-import com.codelong.domain.exception.ForbiddenException
-import com.codelong.domain.exception.InvalidInputException
+import com.codelong.domain.exception.DomainException
 import com.codelong.domain.valueobject.Difficulty
 import com.codelong.domain.valueobject.GameStatus
 import com.codelong.domain.valueobject.OptionId
@@ -65,7 +63,7 @@ class GameTest {
         val game = Fixtures.game(difficulties = listOf(Difficulty.EASY))
         game.answer(game.currentQuestion().correctOption, Fixtures.NOW)
 
-        assertThrows<ConflictException> {
+        assertThrows<DomainException> {
             game.answer(OptionId("opt-3"), Fixtures.NOW)
         }
     }
@@ -74,7 +72,7 @@ class GameTest {
     fun `opcao inexistente e rejeitada`() {
         val game = Fixtures.game()
 
-        assertThrows<InvalidInputException> {
+        assertThrows<DomainException> {
             game.answer(OptionId("nao-existe"), Fixtures.NOW)
         }
     }
@@ -87,7 +85,7 @@ class GameTest {
 
         assertEquals(GameStatus.ABANDONED, game.status())
         assertFalse(game.isInProgress())
-        assertThrows<ConflictException> {
+        assertThrows<DomainException> {
             game.answer(game.questions().first().correctOption, Fixtures.NOW)
         }
     }
@@ -96,7 +94,7 @@ class GameTest {
     fun `somente o dono acessa a partida`() {
         val game = Fixtures.game(userId = "u-1")
 
-        assertThrows<ForbiddenException> {
+        assertThrows<DomainException> {
             game.requireOwner(UserId("u-2"))
         }
         game.requireOwner(UserId("u-1"))

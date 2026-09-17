@@ -1,6 +1,7 @@
 package com.codelong.domain.valueobject
 
-import com.codelong.domain.exception.InvalidInputException
+import com.codelong.domain.exception.DomainException
+
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -52,14 +53,14 @@ class QuestionContentTest {
 
     @Test
     fun `statement em branco e rejeitado`() {
-        val error = assertThrows<InvalidInputException> { content(statement = "   ") }
+        val error = assertThrows<DomainException> { content(statement = "   ") }
 
         assertEquals("question.statement.invalid", error.code)
     }
 
     @Test
     fun `statement vazio e rejeitado`() {
-        val error = assertThrows<InvalidInputException> { content(statement = "") }
+        val error = assertThrows<DomainException> { content(statement = "") }
 
         assertEquals("question.statement.invalid", error.code)
     }
@@ -73,14 +74,14 @@ class QuestionContentTest {
 
     @Test
     fun `statement com 501 caracteres e rejeitado`() {
-        val error = assertThrows<InvalidInputException> { content(statement = "x".repeat(501)) }
+        val error = assertThrows<DomainException> { content(statement = "x".repeat(501)) }
 
         assertEquals("question.statement.invalid", error.code)
     }
 
     @Test
     fun `menos de duas opcoes e rejeitado`() {
-        val error = assertThrows<InvalidInputException> {
+        val error = assertThrows<DomainException> {
             content(options = listOf(optionA))
         }
 
@@ -89,14 +90,14 @@ class QuestionContentTest {
 
     @Test
     fun `lista de opcoes vazia e rejeitada`() {
-        val error = assertThrows<InvalidInputException> { content(options = emptyList()) }
+        val error = assertThrows<DomainException> { content(options = emptyList()) }
 
         assertEquals("question.options.invalid", error.code)
     }
 
     @Test
     fun `texto de opcao em branco e rejeitado`() {
-        val error = assertThrows<InvalidInputException> {
+        val error = assertThrows<DomainException> {
             content(options = listOf(optionA, QuestionOption(OptionId("b"), "  ")))
         }
 
@@ -105,7 +106,7 @@ class QuestionContentTest {
 
     @Test
     fun `ids de opcao duplicados sao rejeitados`() {
-        val error = assertThrows<InvalidInputException> {
+        val error = assertThrows<DomainException> {
             content(options = listOf(optionA, QuestionOption(OptionId("a"), "Duplicada")))
         }
 
@@ -114,7 +115,7 @@ class QuestionContentTest {
 
     @Test
     fun `correctOption fora das opcoes e rejeitado`() {
-        val error = assertThrows<InvalidInputException> {
+        val error = assertThrows<DomainException> {
             content(correctOption = OptionId("z"))
         }
 
@@ -123,7 +124,7 @@ class QuestionContentTest {
 
     @Test
     fun `explanation em branco e rejeitada`() {
-        val error = assertThrows<InvalidInputException> { content(explanation = " ") }
+        val error = assertThrows<DomainException> { content(explanation = " ") }
 
         assertEquals("question.explanation.invalid", error.code)
     }
@@ -137,7 +138,7 @@ class QuestionContentTest {
 
     @Test
     fun `explanation com 1001 caracteres e rejeitada`() {
-        val error = assertThrows<InvalidInputException> { content(explanation = "x".repeat(1001)) }
+        val error = assertThrows<DomainException> { content(explanation = "x".repeat(1001)) }
 
         assertEquals("question.explanation.invalid", error.code)
     }

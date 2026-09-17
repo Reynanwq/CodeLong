@@ -1,12 +1,7 @@
 package com.codelong.infrastructure.web
 
-import com.codelong.domain.exception.ConcurrentGameModificationException
-import com.codelong.domain.exception.ConflictException
 import com.codelong.domain.exception.DomainException
-import com.codelong.domain.exception.ForbiddenException
-import com.codelong.domain.exception.InvalidInputException
-import com.codelong.domain.exception.NotFoundException
-import com.codelong.domain.exception.UnauthorizedException
+import com.codelong.domain.exception.ErrorKind
 import com.codelong.infrastructure.web.dto.ApiErrorResponse
 import org.slf4j.LoggerFactory
 import org.springframework.dao.DuplicateKeyException
@@ -21,6 +16,16 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 class ApiExceptionHandler {
 
     private val logger = LoggerFactory.getLogger(ApiExceptionHandler::class.java)
+
+    private val statusByKind: Map<ErrorKind, HttpStatus> = mapOf(
+        ErrorKind.INVALID_INPUT to HttpStatus.BAD_REQUEST,
+        ErrorKind.UNAUTHORIZED to HttpStatus.UNAUTHORIZED,
+        ErrorKind.FORBIDDEN to HttpStatus.FORBIDDEN,
+        ErrorKind.NOT_FOUND to HttpStatus.NOT_FOUND,
+        ErrorKind.CONFLICT to HttpStatus.CONFLICT,
+        ErrorKind.CONCURRENT_MODIFICATION to HttpStatus.CONFLICT,
+        ErrorKind.UNPROCESSABLE to HttpStatus.UNPROCESSABLE_CONTENT
+    )
 
     @ExceptionHandler(DomainException::class)
     fun handleDomain(ex: DomainException): ResponseEntity<ApiErrorResponse> =
@@ -52,15 +57,7 @@ class ApiExceptionHandler {
         return build(HttpStatus.INTERNAL_SERVER_ERROR, "INTERNAL_ERROR", "An unexpected error occurred")
     }
 
-    private fun statusOf(ex: DomainException): HttpStatus = when (ex) {
-        is NotFoundException -> HttpStatus.NOT_FOUND
-        is ConflictException -> HttpStatus.CONFLICT
-        is ConcurrentGameModificationException -> HttpStatus.CONFLICT
-        is InvalidInputException -> HttpStatus.BAD_REQUEST
-        is ForbiddenException -> HttpStatus.FORBIDDEN
-        is UnauthorizedException -> HttpStatus.UNAUTHORIZED
-        else -> HttpStatus.UNPROCESSABLE_CONTENT
-    }
+    private fun statusOf(ex: DomainException): HttpStatus = statusByKind.getValue(ex.kind)
 
     private fun build(status: HttpStatus, code: String, message: String): ResponseEntity<ApiErrorResponse> =
         ResponseEntity.status(status).body(ApiErrorResponse.of(code, message))

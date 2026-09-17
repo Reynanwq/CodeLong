@@ -1,9 +1,9 @@
 package com.codelong.application.usecase
 
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.application.command.ChangeUserStatusCommand
 import com.codelong.application.command.UserSearchQuery
-import com.codelong.domain.exception.InvalidInputException
-import com.codelong.domain.exception.NotFoundException
 import com.codelong.domain.valueobject.AccountStatus
 import com.codelong.domain.valueobject.Role
 import com.codelong.domain.valueobject.UserId
@@ -70,7 +70,7 @@ class UserManagementUseCaseTest {
 
     @Test
     fun `administrador nao desativa a propria conta`() {
-        val error = assertThrows<InvalidInputException> {
+        val error = assertThrows<DomainException> {
             changeStatusUseCase.change(
                 ChangeUserStatusCommand(UserId("admin-1"), false),
                 UserId("admin-1")
@@ -83,7 +83,7 @@ class UserManagementUseCaseTest {
 
     @Test
     fun `usuario inexistente`() {
-        val error = assertThrows<NotFoundException> {
+        val error = assertThrows<DomainException> {
             changeStatusUseCase.change(
                 ChangeUserStatusCommand(UserId("nao-existe"), false),
                 UserId("admin-1")

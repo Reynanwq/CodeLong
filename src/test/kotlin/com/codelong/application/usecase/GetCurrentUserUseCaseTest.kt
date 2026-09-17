@@ -1,6 +1,7 @@
 package com.codelong.application.usecase
 
-import com.codelong.domain.exception.NotFoundException
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.domain.valueobject.AccountStatus
 import com.codelong.domain.valueobject.Role
 import com.codelong.domain.valueobject.UserId
@@ -61,7 +62,7 @@ class GetCurrentUserUseCaseTest {
 
     @Test
     fun `usuario inexistente gera erro`() {
-        val error = assertThrows<NotFoundException> { useCase.get(UserId("ninguem")) }
+        val error = assertThrows<DomainException> { useCase.get(UserId("ninguem")) }
 
         assertEquals("USER_NOT_FOUND", error.code)
         assertEquals("User not found", error.message)
