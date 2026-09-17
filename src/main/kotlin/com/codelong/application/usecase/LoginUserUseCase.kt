@@ -12,13 +12,19 @@ import com.codelong.domain.port.UserRepository
 import com.codelong.domain.valueobject.Email
 import com.codelong.domain.valueobject.Username
 
-class LoginUserUseCase(
+interface LoginUserUseCase {
+    fun login(command: LoginCommand): AuthenticationResult
+}
+
+
+class LoginUserUseCaseImpl(
     private val userRepository: UserRepository,
     private val passwordEncoder: PasswordEncoder,
     private val tokenIssuer: TokenIssuer
-) {
+) : LoginUserUseCase {
 
-    fun login(command: LoginCommand): AuthenticationResult {
+
+    override fun login(command: LoginCommand): AuthenticationResult {
         val user = resolveUser(command.identifier)
             ?: throw Errors.invalidCredentials()
 

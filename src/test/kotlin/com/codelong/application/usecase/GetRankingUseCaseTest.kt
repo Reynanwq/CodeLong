@@ -13,7 +13,7 @@ import org.junit.jupiter.api.assertThrows
 class GetRankingUseCaseTest {
 
     private val repository = InMemoryRankingRepository()
-    private val useCase = GetRankingUseCase(repository)
+    private val useCase = GetRankingUseCaseImpl(repository)
 
     private fun add(
         id: String,

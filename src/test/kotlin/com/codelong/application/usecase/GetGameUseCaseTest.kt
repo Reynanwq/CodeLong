@@ -21,7 +21,7 @@ class GetGameUseCaseTest {
     @BeforeEach
     fun setUp() {
         repository = InMemoryGameRepository()
-        useCase = GetGameUseCase(repository)
+        useCase = GetGameUseCaseImpl(repository)
     }
 
     @Test

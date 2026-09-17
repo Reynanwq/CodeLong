@@ -1,5 +1,7 @@
 package com.codelong.infrastructure.bootstrap
 
+import com.codelong.application.service.DefaultUserFactory
+
 import com.codelong.application.service.UserFactory
 import com.codelong.domain.valueobject.Role
 import com.codelong.infrastructure.security.SecurityProperties
@@ -21,7 +23,7 @@ class AdminBootstrapTest {
     @BeforeEach
     fun setUp() {
         repository = InMemoryUserRepository()
-        factory = UserFactory(FakePasswordEncoder(), TestClock.fixed)
+        factory = DefaultUserFactory(FakePasswordEncoder(), TestClock.fixed)
     }
 
     private fun bootstrap(username: String, password: String) = AdminBootstrap(

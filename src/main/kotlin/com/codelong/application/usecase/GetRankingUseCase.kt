@@ -6,11 +6,17 @@ import com.codelong.domain.exception.Errors
 import com.codelong.application.result.RankingPage
 import com.codelong.domain.port.RankingRepository
 
-class GetRankingUseCase(
-    private val rankingRepository: RankingRepository
-) {
+interface GetRankingUseCase {
+    fun ranking(page: Int, size: Int): RankingPage
+}
 
-    fun ranking(page: Int, size: Int): RankingPage {
+
+class GetRankingUseCaseImpl(
+    private val rankingRepository: RankingRepository
+) : GetRankingUseCase {
+
+
+    override fun ranking(page: Int, size: Int): RankingPage {
         (page < 0).takeIf { it }?.let {
             throw Errors.invalidPage()
         }

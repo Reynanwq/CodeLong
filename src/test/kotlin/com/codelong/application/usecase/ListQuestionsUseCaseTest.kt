@@ -18,7 +18,7 @@ class ListQuestionsUseCaseTest {
     @BeforeEach
     fun setUp() {
         repository = InMemoryQuestionRepository()
-        useCase = ListQuestionsUseCase(repository)
+        useCase = ListQuestionsUseCaseImpl(repository)
 
         repository.save(Fixtures.question(id = "q-1", difficulty = Difficulty.EASY, category = Category.OOP))
         repository.save(Fixtures.question(id = "q-2", difficulty = Difficulty.HARD, category = Category.KOTLIN))

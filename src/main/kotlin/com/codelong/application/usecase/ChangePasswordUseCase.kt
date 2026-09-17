@@ -11,6 +11,11 @@ import com.codelong.domain.port.UserRepository
 import com.codelong.domain.valueobject.UserId
 import java.time.Clock
 
+interface ChangePasswordUseCase {
+    fun change(command: ChangePasswordCommand, actorId: UserId): User
+}
+
+
 /**
  * Troca a senha do proprio usuario autenticado.
  *
@@ -18,14 +23,15 @@ import java.time.Clock
  * reutilizacao da senha vigente. Como o JWT e stateless, tokens ja emitidos
  * continuam validos ate expirarem.
  */
-class ChangePasswordUseCase(
+class ChangePasswordUseCaseImpl(
     private val userRepository: UserRepository,
     private val passwordEncoder: PasswordEncoder,
     private val passwordPolicy: PasswordPolicy,
     private val clock: Clock
-) {
+) : ChangePasswordUseCase {
 
-    fun change(command: ChangePasswordCommand, actorId: UserId): User {
+
+    override fun change(command: ChangePasswordCommand, actorId: UserId): User {
         val user = userRepository.findById(actorId)
             ?: throw Errors.userNotFound()
 

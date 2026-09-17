@@ -25,7 +25,7 @@ class ChangeUserStatusUseCaseTest {
     @BeforeEach
     fun setUp() {
         repository = InMemoryUserRepository()
-        useCase = ChangeUserStatusUseCase(repository, TestClock.fixed)
+        useCase = ChangeUserStatusUseCaseImpl(repository, TestClock.fixed)
     }
 
     @Test

@@ -9,12 +9,18 @@ import com.codelong.domain.valueobject.GameId
 import com.codelong.domain.valueobject.UserId
 import java.time.Clock
 
-class AbandonGameUseCase(
+interface AbandonGameUseCase {
+    fun abandon(gameId: GameId, actorId: UserId): Game
+}
+
+
+class AbandonGameUseCaseImpl(
     private val gameRepository: GameRepository,
     private val clock: Clock
-) {
+) : AbandonGameUseCase {
 
-    fun abandon(gameId: GameId, actorId: UserId): Game {
+
+    override fun abandon(gameId: GameId, actorId: UserId): Game {
         val game = gameRepository.findById(gameId)
             ?: throw Errors.gameNotFound()
         game.requireOwner(actorId)

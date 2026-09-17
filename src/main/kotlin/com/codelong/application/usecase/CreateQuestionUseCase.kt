@@ -6,12 +6,18 @@ import com.codelong.domain.port.QuestionRepository
 import com.codelong.domain.valueobject.Ids
 import java.time.Clock
 
-class CreateQuestionUseCase(
+interface CreateQuestionUseCase {
+    fun create(command: CreateQuestionCommand): Question
+}
+
+
+class CreateQuestionUseCaseImpl(
     private val questionRepository: QuestionRepository,
     private val clock: Clock
-) {
+) : CreateQuestionUseCase {
 
-    fun create(command: CreateQuestionCommand): Question {
+
+    override fun create(command: CreateQuestionCommand): Question {
         val question = Question.create(
             id = Ids.newQuestionId(),
             content = command.toContent(),

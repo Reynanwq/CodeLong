@@ -1,6 +1,31 @@
 package com.codelong.infrastructure.config
 
 import com.codelong.application.service.GameFactory
+import com.codelong.application.service.DefaultGameFactory
+import com.codelong.application.service.DefaultPasswordPolicy
+import com.codelong.application.service.DefaultTokenIssuer
+import com.codelong.application.service.DefaultUserFactory
+import com.codelong.application.usecase.AbandonGameUseCaseImpl
+import com.codelong.application.usecase.AnswerQuestionUseCaseImpl
+import com.codelong.application.usecase.ChangePasswordUseCaseImpl
+import com.codelong.application.usecase.ChangeQuestionStatusUseCaseImpl
+import com.codelong.application.usecase.ChangeUserStatusUseCaseImpl
+import com.codelong.application.usecase.CreateGameUseCaseImpl
+import com.codelong.application.usecase.CreateQuestionUseCaseImpl
+import com.codelong.application.usecase.DeleteQuestionUseCaseImpl
+import com.codelong.application.usecase.GetCurrentQuestionUseCaseImpl
+import com.codelong.application.usecase.GetCurrentUserUseCaseImpl
+import com.codelong.application.usecase.GetGameUseCaseImpl
+import com.codelong.application.usecase.GetInProgressGameUseCaseImpl
+import com.codelong.application.usecase.GetMyRankingUseCaseImpl
+import com.codelong.application.usecase.GetQuestionUseCaseImpl
+import com.codelong.application.usecase.GetRankingUseCaseImpl
+import com.codelong.application.usecase.ListGamesUseCaseImpl
+import com.codelong.application.usecase.ListQuestionsUseCaseImpl
+import com.codelong.application.usecase.ListUsersUseCaseImpl
+import com.codelong.application.usecase.LoginUserUseCaseImpl
+import com.codelong.application.usecase.RegisterUserUseCaseImpl
+import com.codelong.application.usecase.UpdateQuestionUseCaseImpl
 import com.codelong.application.service.PasswordPolicy
 import com.codelong.application.service.TokenIssuer
 import com.codelong.application.service.UserFactory
@@ -56,18 +81,18 @@ class UseCaseConfig {
         tokenService: TokenService,
         clock: Clock,
         properties: SecurityProperties
-    ): TokenIssuer = TokenIssuer(tokenService, clock, properties.jwt.expiration)
+    ): TokenIssuer = DefaultTokenIssuer(tokenService, clock, properties.jwt.expiration)
 
     @Bean
     fun userFactory(passwordEncoder: PasswordEncoder, clock: Clock): UserFactory =
-        UserFactory(passwordEncoder, clock)
+        DefaultUserFactory(passwordEncoder, clock)
 
     @Bean
-    fun passwordPolicy(): PasswordPolicy = PasswordPolicy()
+    fun passwordPolicy(): PasswordPolicy = DefaultPasswordPolicy()
 
     @Bean
     fun gameFactory(gameSequencer: GameSequencer, clock: Clock): GameFactory =
-        GameFactory(gameSequencer, clock)
+        DefaultGameFactory(gameSequencer, clock)
 
     @Bean
     fun registerUserUseCase(
@@ -75,7 +100,7 @@ class UseCaseConfig {
         userFactory: UserFactory,
         tokenIssuer: TokenIssuer,
         passwordPolicy: PasswordPolicy
-    ) = RegisterUserUseCase(userRepository, userFactory, tokenIssuer, passwordPolicy)
+    ) = RegisterUserUseCaseImpl(userRepository, userFactory, tokenIssuer, passwordPolicy)
 
     @Bean
     fun changePasswordUseCase(
@@ -83,26 +108,26 @@ class UseCaseConfig {
         passwordEncoder: PasswordEncoder,
         passwordPolicy: PasswordPolicy,
         clock: Clock
-    ) = ChangePasswordUseCase(userRepository, passwordEncoder, passwordPolicy, clock)
+    ) = ChangePasswordUseCaseImpl(userRepository, passwordEncoder, passwordPolicy, clock)
 
     @Bean
     fun loginUserUseCase(
         userRepository: UserRepository,
         passwordEncoder: PasswordEncoder,
         tokenIssuer: TokenIssuer
-    ) = LoginUserUseCase(userRepository, passwordEncoder, tokenIssuer)
+    ) = LoginUserUseCaseImpl(userRepository, passwordEncoder, tokenIssuer)
 
     @Bean
     fun getCurrentUserUseCase(userRepository: UserRepository) =
-        GetCurrentUserUseCase(userRepository)
+        GetCurrentUserUseCaseImpl(userRepository)
 
     @Bean
     fun listUsersUseCase(userRepository: UserRepository) =
-        ListUsersUseCase(userRepository)
+        ListUsersUseCaseImpl(userRepository)
 
     @Bean
     fun changeUserStatusUseCase(userRepository: UserRepository, clock: Clock) =
-        ChangeUserStatusUseCase(userRepository, clock)
+        ChangeUserStatusUseCaseImpl(userRepository, clock)
 
     @Bean
     fun createGameUseCase(
@@ -110,59 +135,59 @@ class UseCaseConfig {
         questionRepository: QuestionRepository,
         gameRepository: GameRepository,
         gameFactory: GameFactory
-    ) = CreateGameUseCase(userRepository, questionRepository, gameRepository, gameFactory)
+    ) = CreateGameUseCaseImpl(userRepository, questionRepository, gameRepository, gameFactory)
 
     @Bean
-    fun getGameUseCase(gameRepository: GameRepository) = GetGameUseCase(gameRepository)
+    fun getGameUseCase(gameRepository: GameRepository) = GetGameUseCaseImpl(gameRepository)
 
     @Bean
-    fun listGamesUseCase(gameRepository: GameRepository) = ListGamesUseCase(gameRepository)
+    fun listGamesUseCase(gameRepository: GameRepository) = ListGamesUseCaseImpl(gameRepository)
 
     @Bean
     fun getInProgressGameUseCase(gameRepository: GameRepository) =
-        GetInProgressGameUseCase(gameRepository)
+        GetInProgressGameUseCaseImpl(gameRepository)
 
     @Bean
     fun getCurrentQuestionUseCase(gameRepository: GameRepository) =
-        GetCurrentQuestionUseCase(gameRepository)
+        GetCurrentQuestionUseCaseImpl(gameRepository)
 
     @Bean
     fun answerQuestionUseCase(gameRepository: GameRepository, clock: Clock) =
-        AnswerQuestionUseCase(gameRepository, clock)
+        AnswerQuestionUseCaseImpl(gameRepository, clock)
 
     @Bean
     fun abandonGameUseCase(gameRepository: GameRepository, clock: Clock) =
-        AbandonGameUseCase(gameRepository, clock)
+        AbandonGameUseCaseImpl(gameRepository, clock)
 
     @Bean
     fun getRankingUseCase(rankingRepository: RankingRepository) =
-        GetRankingUseCase(rankingRepository)
+        GetRankingUseCaseImpl(rankingRepository)
 
     @Bean
     fun getMyRankingUseCase(rankingRepository: RankingRepository) =
-        GetMyRankingUseCase(rankingRepository)
+        GetMyRankingUseCaseImpl(rankingRepository)
 
     @Bean
     fun createQuestionUseCase(questionRepository: QuestionRepository, clock: Clock) =
-        CreateQuestionUseCase(questionRepository, clock)
+        CreateQuestionUseCaseImpl(questionRepository, clock)
 
     @Bean
     fun updateQuestionUseCase(questionRepository: QuestionRepository, clock: Clock) =
-        UpdateQuestionUseCase(questionRepository, clock)
+        UpdateQuestionUseCaseImpl(questionRepository, clock)
 
     @Bean
     fun changeQuestionStatusUseCase(questionRepository: QuestionRepository, clock: Clock) =
-        ChangeQuestionStatusUseCase(questionRepository, clock)
+        ChangeQuestionStatusUseCaseImpl(questionRepository, clock)
 
     @Bean
     fun getQuestionUseCase(questionRepository: QuestionRepository) =
-        GetQuestionUseCase(questionRepository)
+        GetQuestionUseCaseImpl(questionRepository)
 
     @Bean
     fun listQuestionsUseCase(questionRepository: QuestionRepository) =
-        ListQuestionsUseCase(questionRepository)
+        ListQuestionsUseCaseImpl(questionRepository)
 
     @Bean
     fun deleteQuestionUseCase(questionRepository: QuestionRepository) =
-        DeleteQuestionUseCase(questionRepository)
+        DeleteQuestionUseCaseImpl(questionRepository)
 }

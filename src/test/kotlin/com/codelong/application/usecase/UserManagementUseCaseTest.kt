@@ -24,8 +24,8 @@ class UserManagementUseCaseTest {
     @BeforeEach
     fun setUp() {
         repository = InMemoryUserRepository()
-        listUseCase = ListUsersUseCase(repository)
-        changeStatusUseCase = ChangeUserStatusUseCase(repository, TestClock.fixed)
+        listUseCase = ListUsersUseCaseImpl(repository)
+        changeStatusUseCase = ChangeUserStatusUseCaseImpl(repository, TestClock.fixed)
 
         repository.save(Fixtures.user(id = "admin-1", username = "admin", role = Role.ADMIN))
         repository.save(Fixtures.user(id = "user-1", username = "alice"))

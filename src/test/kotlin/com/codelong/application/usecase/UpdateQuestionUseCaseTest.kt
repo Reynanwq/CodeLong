@@ -26,7 +26,7 @@ class UpdateQuestionUseCaseTest {
     @BeforeEach
     fun setUp() {
         repository = InMemoryQuestionRepository()
-        useCase = UpdateQuestionUseCase(repository, TestClock.fixed)
+        useCase = UpdateQuestionUseCaseImpl(repository, TestClock.fixed)
     }
 
     private fun command(

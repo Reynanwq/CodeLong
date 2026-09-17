@@ -8,12 +8,18 @@ import com.codelong.domain.model.Question
 import com.codelong.domain.port.QuestionRepository
 import java.time.Clock
 
-class ChangeQuestionStatusUseCase(
+interface ChangeQuestionStatusUseCase {
+    fun change(command: ChangeQuestionStatusCommand): Question
+}
+
+
+class ChangeQuestionStatusUseCaseImpl(
     private val questionRepository: QuestionRepository,
     private val clock: Clock
-) {
+) : ChangeQuestionStatusUseCase {
 
-    fun change(command: ChangeQuestionStatusCommand): Question {
+
+    override fun change(command: ChangeQuestionStatusCommand): Question {
         val question = questionRepository.findById(command.questionId)
             ?: throw Errors.questionNotFound()
 

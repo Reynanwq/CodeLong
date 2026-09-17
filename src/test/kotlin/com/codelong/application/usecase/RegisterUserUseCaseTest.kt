@@ -1,5 +1,11 @@
 package com.codelong.application.usecase
 
+import com.codelong.application.service.DefaultUserFactory
+
+import com.codelong.application.service.DefaultTokenIssuer
+
+import com.codelong.application.service.DefaultPasswordPolicy
+
 import com.codelong.domain.exception.DomainException
 
 import com.codelong.application.command.RegisterUserCommand
@@ -25,11 +31,11 @@ class RegisterUserUseCaseTest {
     @BeforeEach
     fun setUp() {
         repository = InMemoryUserRepository()
-        useCase = RegisterUserUseCase(
+        useCase = RegisterUserUseCaseImpl(
             userRepository = repository,
-            userFactory = UserFactory(FakePasswordEncoder(), TestClock.fixed),
-            tokenIssuer = TokenIssuer(FakeTokenService(), TestClock.fixed, Duration.ofHours(8)),
-            passwordPolicy = PasswordPolicy()
+            userFactory = DefaultUserFactory(FakePasswordEncoder(), TestClock.fixed),
+            tokenIssuer = DefaultTokenIssuer(FakeTokenService(), TestClock.fixed, Duration.ofHours(8)),
+            passwordPolicy = DefaultPasswordPolicy()
         )
     }
 

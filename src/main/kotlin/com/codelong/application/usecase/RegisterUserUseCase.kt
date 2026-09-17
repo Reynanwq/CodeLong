@@ -12,14 +12,20 @@ import com.codelong.domain.port.UserRepository
 import com.codelong.domain.valueobject.Email
 import com.codelong.domain.valueobject.Username
 
-class RegisterUserUseCase(
+interface RegisterUserUseCase {
+    fun register(command: RegisterUserCommand): AuthenticationResult
+}
+
+
+class RegisterUserUseCaseImpl(
     private val userRepository: UserRepository,
     private val userFactory: UserFactory,
     private val tokenIssuer: TokenIssuer,
     private val passwordPolicy: PasswordPolicy
-) {
+) : RegisterUserUseCase {
 
-    fun register(command: RegisterUserCommand): AuthenticationResult {
+
+    override fun register(command: RegisterUserCommand): AuthenticationResult {
         passwordPolicy.requireStrong(command.password)
 
         val username = Username.of(command.username)

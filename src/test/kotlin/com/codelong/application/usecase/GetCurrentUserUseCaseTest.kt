@@ -22,7 +22,7 @@ class GetCurrentUserUseCaseTest {
     @BeforeEach
     fun setUp() {
         repository = InMemoryUserRepository()
-        useCase = GetCurrentUserUseCase(repository)
+        useCase = GetCurrentUserUseCaseImpl(repository)
     }
 
     @Test

@@ -17,7 +17,7 @@ class ListUsersUseCaseTest {
     @BeforeEach
     fun setUp() {
         repository = InMemoryUserRepository()
-        useCase = ListUsersUseCase(repository)
+        useCase = ListUsersUseCaseImpl(repository)
 
         repository.save(Fixtures.user(id = "u-1", username = "alice"))
         repository.save(Fixtures.user(id = "u-2", username = "bob"))

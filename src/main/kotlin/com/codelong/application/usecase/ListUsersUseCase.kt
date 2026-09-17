@@ -4,10 +4,16 @@ import com.codelong.application.command.UserSearchQuery
 import com.codelong.domain.port.UserPage
 import com.codelong.domain.port.UserRepository
 
-class ListUsersUseCase(
-    private val userRepository: UserRepository
-) {
+interface ListUsersUseCase {
+    fun list(query: UserSearchQuery): UserPage
+}
 
-    fun list(query: UserSearchQuery): UserPage =
+
+class ListUsersUseCaseImpl(
+    private val userRepository: UserRepository
+) : ListUsersUseCase {
+
+
+    override fun list(query: UserSearchQuery): UserPage =
         userRepository.search(query.toSearch())
 }

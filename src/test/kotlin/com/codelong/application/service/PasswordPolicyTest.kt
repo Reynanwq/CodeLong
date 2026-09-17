@@ -1,5 +1,7 @@
 package com.codelong.application.service
 
+import com.codelong.application.service.DefaultPasswordPolicy
+
 import com.codelong.domain.exception.DomainException
 
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -12,7 +14,7 @@ import org.junit.jupiter.params.provider.ValueSource
 
 class PasswordPolicyTest {
 
-    private val policy = PasswordPolicy()
+    private val policy = DefaultPasswordPolicy()
 
     @Test
     fun `limites padrao sao oito e setenta e dois`() {
@@ -72,7 +74,7 @@ class PasswordPolicyTest {
 
     @Test
     fun `politica customizada usa os limites informados`() {
-        val custom = PasswordPolicy(minLength = 3, maxLength = 5)
+        val custom = DefaultPasswordPolicy(minLength = 3, maxLength = 5)
 
         assertDoesNotThrow { custom.requireStrong("abc") }
         assertDoesNotThrow { custom.requireStrong("abcde") }
@@ -82,7 +84,7 @@ class PasswordPolicyTest {
 
     @Test
     fun `politica customizada reporta os proprios limites na mensagem`() {
-        val custom = PasswordPolicy(minLength = 10, maxLength = 20)
+        val custom = DefaultPasswordPolicy(minLength = 10, maxLength = 20)
 
         val tooShort = assertThrows<DomainException> { custom.requireStrong("curta") }
         val tooLong = assertThrows<DomainException> { custom.requireStrong("x".repeat(21)) }

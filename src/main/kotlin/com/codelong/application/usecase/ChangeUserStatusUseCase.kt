@@ -9,17 +9,23 @@ import com.codelong.domain.port.UserRepository
 import com.codelong.domain.valueobject.UserId
 import java.time.Clock
 
+interface ChangeUserStatusUseCase {
+    fun change(command: ChangeUserStatusCommand, actorId: UserId): User
+}
+
+
 /**
  * Ativa ou desativa contas de usuario. Operacao restrita a administradores;
  * um administrador nao pode desativar a propria conta, evitando que ele perca
  * o acesso a area administrativa por engano.
  */
-class ChangeUserStatusUseCase(
+class ChangeUserStatusUseCaseImpl(
     private val userRepository: UserRepository,
     private val clock: Clock
-) {
+) : ChangeUserStatusUseCase {
 
-    fun change(command: ChangeUserStatusCommand, actorId: UserId): User {
+
+    override fun change(command: ChangeUserStatusCommand, actorId: UserId): User {
         (!command.active && command.userId == actorId).takeIf { it }?.let {
             throw Errors.selfDeactivation()
         }

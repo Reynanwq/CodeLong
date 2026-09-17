@@ -19,7 +19,7 @@ class DeleteQuestionUseCaseTest {
     @BeforeEach
     fun setUp() {
         repository = InMemoryQuestionRepository()
-        useCase = DeleteQuestionUseCase(repository)
+        useCase = DeleteQuestionUseCaseImpl(repository)
     }
 
     @Test

@@ -27,7 +27,7 @@ class AnswerQuestionUseCaseTest {
     @BeforeEach
     fun setUp() {
         repository = InMemoryGameRepository()
-        useCase = AnswerQuestionUseCase(repository, TestClock.fixed)
+        useCase = AnswerQuestionUseCaseImpl(repository, TestClock.fixed)
     }
 
     @Test

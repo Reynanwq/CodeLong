@@ -22,7 +22,7 @@ class AbandonGameUseCaseTest {
     @BeforeEach
     fun setUp() {
         repository = InMemoryGameRepository()
-        useCase = AbandonGameUseCase(repository, TestClock.fixed)
+        useCase = AbandonGameUseCaseImpl(repository, TestClock.fixed)
     }
 
     @Test

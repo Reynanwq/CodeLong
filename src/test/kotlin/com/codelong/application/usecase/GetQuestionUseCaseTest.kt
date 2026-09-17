@@ -20,7 +20,7 @@ class GetQuestionUseCaseTest {
     @BeforeEach
     fun setUp() {
         repository = InMemoryQuestionRepository()
-        useCase = GetQuestionUseCase(repository)
+        useCase = GetQuestionUseCaseImpl(repository)
     }
 
     @Test

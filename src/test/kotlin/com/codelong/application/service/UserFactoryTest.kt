@@ -1,5 +1,7 @@
 package com.codelong.application.service
 
+import com.codelong.application.service.DefaultUserFactory
+
 import com.codelong.domain.valueobject.Email
 import com.codelong.domain.valueobject.PasswordHash
 import com.codelong.domain.valueobject.Role
@@ -15,7 +17,7 @@ import org.junit.jupiter.params.provider.ValueSource
 
 class UserFactoryTest {
 
-    private val factory = UserFactory(FakePasswordEncoder(), TestClock.fixed)
+    private val factory = DefaultUserFactory(FakePasswordEncoder(), TestClock.fixed)
 
     @Test
     fun `createUser cria usuario com papel USER`() {

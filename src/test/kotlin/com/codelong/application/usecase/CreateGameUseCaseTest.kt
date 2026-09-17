@@ -1,5 +1,7 @@
 package com.codelong.application.usecase
 
+import com.codelong.application.service.DefaultGameFactory
+
 import com.codelong.application.service.GameFactory
 import com.codelong.domain.exception.DomainException
 import com.codelong.domain.service.GameSequencer
@@ -30,11 +32,11 @@ class CreateGameUseCaseTest {
         userRepository = InMemoryUserRepository()
         questionRepository = InMemoryQuestionRepository()
         gameRepository = InMemoryGameRepository()
-        useCase = CreateGameUseCase(
+        useCase = CreateGameUseCaseImpl(
             userRepository = userRepository,
             questionRepository = questionRepository,
             gameRepository = gameRepository,
-            gameFactory = GameFactory(GameSequencer(Random(1)), TestClock.fixed)
+            gameFactory = DefaultGameFactory(GameSequencer(Random(1)), TestClock.fixed)
         )
     }
 

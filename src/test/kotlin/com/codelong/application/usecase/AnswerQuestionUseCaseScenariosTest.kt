@@ -28,7 +28,7 @@ class AnswerQuestionUseCaseScenariosTest {
     @BeforeEach
     fun setUp() {
         repository = InMemoryGameRepository()
-        useCase = AnswerQuestionUseCase(repository, TestClock.fixed)
+        useCase = AnswerQuestionUseCaseImpl(repository, TestClock.fixed)
     }
 
     private fun wrongOptionOf(game: com.codelong.domain.model.Game): OptionId {

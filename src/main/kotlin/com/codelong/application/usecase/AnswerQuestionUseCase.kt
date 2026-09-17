@@ -9,12 +9,18 @@ import com.codelong.domain.valueobject.AnswerResult
 import com.codelong.domain.valueobject.UserId
 import java.time.Clock
 
-class AnswerQuestionUseCase(
+interface AnswerQuestionUseCase {
+    fun answer(command: AnswerQuestionCommand, actorId: UserId): AnswerResult
+}
+
+
+class AnswerQuestionUseCaseImpl(
     private val gameRepository: GameRepository,
     private val clock: Clock
-) {
+) : AnswerQuestionUseCase {
 
-    fun answer(command: AnswerQuestionCommand, actorId: UserId): AnswerResult {
+
+    override fun answer(command: AnswerQuestionCommand, actorId: UserId): AnswerResult {
         val game = gameRepository.findById(command.gameId)
             ?: throw Errors.gameNotFound()
         game.requireOwner(actorId)

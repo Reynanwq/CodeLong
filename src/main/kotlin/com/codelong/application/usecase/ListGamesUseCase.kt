@@ -6,15 +6,21 @@ import com.codelong.domain.port.GameRepository
 import com.codelong.domain.port.GameSearch
 import com.codelong.domain.valueobject.UserId
 
+interface ListGamesUseCase {
+    fun list(userId: UserId, query: GameSearchQuery): GamePage
+}
+
+
 /**
  * Historico de partidas do proprio usuario, paginado e opcionalmente filtrado
  * por status. O [UserId] vem sempre do token, nunca do cliente.
  */
-class ListGamesUseCase(
+class ListGamesUseCaseImpl(
     private val gameRepository: GameRepository
-) {
+) : ListGamesUseCase {
 
-    fun list(userId: UserId, query: GameSearchQuery): GamePage =
+
+    override fun list(userId: UserId, query: GameSearchQuery): GamePage =
         gameRepository.search(
             GameSearch(
                 userId = userId,

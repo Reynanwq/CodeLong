@@ -13,15 +13,21 @@ import java.time.Clock
  * Cria usuarios aplicando hashing de senha e carimbos de tempo de forma
  * consistente em toda a aplicacao.
  */
-class UserFactory(
+interface UserFactory {
+    fun createUser(username: Username, email: Email, rawPassword: String): User
+
+    fun createAdmin(username: Username, email: Email, rawPassword: String): User
+}
+
+class DefaultUserFactory(
     private val passwordEncoder: PasswordEncoder,
     private val clock: Clock
-) {
+) : UserFactory {
 
-    fun createUser(username: Username, email: Email, rawPassword: String): User =
+    override fun createUser(username: Username, email: Email, rawPassword: String): User =
         create(username, email, rawPassword, Role.USER)
 
-    fun createAdmin(username: Username, email: Email, rawPassword: String): User =
+    override fun createAdmin(username: Username, email: Email, rawPassword: String): User =
         create(username, email, rawPassword, Role.ADMIN)
 
     private fun create(username: Username, email: Email, rawPassword: String, role: Role): User {

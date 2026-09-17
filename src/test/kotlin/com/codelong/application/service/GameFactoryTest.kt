@@ -1,5 +1,7 @@
 package com.codelong.application.service
 
+import com.codelong.application.service.DefaultGameFactory
+
 import com.codelong.domain.service.GameSequencer
 import com.codelong.domain.valueobject.Difficulty
 import com.codelong.domain.valueobject.GameStatus
@@ -13,7 +15,7 @@ import kotlin.random.Random
 
 class GameFactoryTest {
 
-    private val factory = GameFactory(GameSequencer(Random(42)), TestClock.fixed)
+    private val factory = DefaultGameFactory(GameSequencer(Random(42)), TestClock.fixed)
 
     @Test
     fun `start cria partida em andamento para o usuario`() {

@@ -23,7 +23,7 @@ class ChangeQuestionStatusUseCaseTest {
     @BeforeEach
     fun setUp() {
         repository = InMemoryQuestionRepository()
-        useCase = ChangeQuestionStatusUseCase(repository, TestClock.fixed)
+        useCase = ChangeQuestionStatusUseCaseImpl(repository, TestClock.fixed)
     }
 
     @Test

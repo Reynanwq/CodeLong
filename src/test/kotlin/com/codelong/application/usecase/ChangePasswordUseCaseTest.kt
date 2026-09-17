@@ -1,5 +1,7 @@
 package com.codelong.application.usecase
 
+import com.codelong.application.service.DefaultPasswordPolicy
+
 import com.codelong.domain.exception.DomainException
 
 import com.codelong.application.command.ChangePasswordCommand
@@ -23,10 +25,10 @@ class ChangePasswordUseCaseTest {
     fun setUp() {
         repository = InMemoryUserRepository()
         repository.save(Fixtures.user(id = "user-1", username = "alice"))
-        useCase = ChangePasswordUseCase(
+        useCase = ChangePasswordUseCaseImpl(
             userRepository = repository,
             passwordEncoder = FakePasswordEncoder(),
-            passwordPolicy = PasswordPolicy(),
+            passwordPolicy = DefaultPasswordPolicy(),
             clock = TestClock.fixed
         )
     }

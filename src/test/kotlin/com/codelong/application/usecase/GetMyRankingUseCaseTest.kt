@@ -32,7 +32,7 @@ class GetMyRankingUseCaseTest {
     @BeforeEach
     fun setUp() {
         repository = InMemoryRankingRepository()
-        useCase = GetMyRankingUseCase(repository)
+        useCase = GetMyRankingUseCaseImpl(repository)
     }
 
     @Test
