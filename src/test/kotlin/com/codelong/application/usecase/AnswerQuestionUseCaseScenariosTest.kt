@@ -1,7 +1,8 @@
 package com.codelong.application.usecase
 
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.application.command.AnswerQuestionCommand
-import com.codelong.domain.exception.ConflictException
 import com.codelong.domain.valueobject.Difficulty
 import com.codelong.domain.valueobject.GameId
 import com.codelong.domain.valueobject.OptionId
@@ -27,7 +28,7 @@ class AnswerQuestionUseCaseScenariosTest {
     @BeforeEach
     fun setUp() {
         repository = InMemoryGameRepository()
-        useCase = AnswerQuestionUseCase(repository, TestClock.fixed)
+        useCase = AnswerQuestionUseCaseImpl(repository, TestClock.fixed)
     }
 
     private fun wrongOptionOf(game: com.codelong.domain.model.Game): OptionId {
@@ -56,7 +57,7 @@ class AnswerQuestionUseCaseScenariosTest {
         val game = repository.save(
             Fixtures.game(userId = "u-1", difficulties = listOf(Difficulty.EASY, Difficulty.HARD))
         )
-        val expectedNext = game.questions()[1]
+        val expectedNext = game.questions[1]
 
         val result = useCase.answer(AnswerQuestionCommand(game.id, game.currentQuestion().correctOption), actor)
 
@@ -125,7 +126,7 @@ class AnswerQuestionUseCaseScenariosTest {
         )
         useCase.answer(AnswerQuestionCommand(game.id, game.currentQuestion().correctOption), actor)
 
-        val error = assertThrows<ConflictException> {
+        val error = assertThrows<DomainException> {
             useCase.answer(AnswerQuestionCommand(game.id, OptionId("opt-0")), actor)
         }
 
@@ -138,7 +139,7 @@ class AnswerQuestionUseCaseScenariosTest {
         game.abandon(TestClock.fixed.instant())
         repository.save(game)
 
-        val error = assertThrows<ConflictException> {
+        val error = assertThrows<DomainException> {
             useCase.answer(AnswerQuestionCommand(game.id, OptionId("opt-0")), actor)
         }
 
@@ -169,7 +170,7 @@ class AnswerQuestionUseCaseScenariosTest {
         val result = useCase.answer(AnswerQuestionCommand(game.id, wrongOptionOf(game)), actor)
 
         assertEquals(0, result.record.earnedPoints)
-        assertEquals(1, repository.findById(GameId("g-1"))!!.answers().size)
+        assertEquals(1, repository.findById(GameId("g-1"))!!.answers.size)
     }
 
     @Test
@@ -181,8 +182,8 @@ class AnswerQuestionUseCaseScenariosTest {
         useCase.answer(AnswerQuestionCommand(game.id, game.currentQuestion().correctOption), actor)
 
         val stored = repository.findById(game.id)!!
-        assertEquals(1, stored.currentQuestionIndex())
-        assertEquals(1, stored.answers().size)
-        assertTrue(stored.isInProgress())
+        assertEquals(1, stored.currentQuestionIndex)
+        assertEquals(1, stored.answers.size)
+        assertTrue(stored.isInProgress)
     }
 }

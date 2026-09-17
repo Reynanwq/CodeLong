@@ -21,8 +21,13 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
+private const val BASE_PATH = "/api/admin/users"
+private const val DEFAULT_PAGE = "0"
+private const val DEFAULT_SIZE = "20"
+private const val STATUS_PATH = "/{userId}/status"
+
 @RestController
-@RequestMapping("/api/admin/users")
+@RequestMapping(BASE_PATH)
 class AdminUserController(
     private val listUsersUseCase: ListUsersUseCase,
     private val changeUserStatusUseCase: ChangeUserStatusUseCase
@@ -32,8 +37,8 @@ class AdminUserController(
     fun list(
         @RequestParam(required = false) status: String?,
         @RequestParam(required = false) role: String?,
-        @RequestParam(defaultValue = "0") page: Int,
-        @RequestParam(defaultValue = "20") size: Int
+        @RequestParam(defaultValue = DEFAULT_PAGE) page: Int,
+        @RequestParam(defaultValue = DEFAULT_SIZE) size: Int
     ): PageResponse<AdminUserResponse> {
         val query = UserSearchQuery(
             status = status?.let { AccountStatus.fromName(it) },
@@ -50,7 +55,7 @@ class AdminUserController(
         )
     }
 
-    @PatchMapping("/{userId}/status")
+    @PatchMapping(STATUS_PATH)
     fun changeStatus(
         @PathVariable userId: String,
         @Valid @RequestBody request: ChangeUserStatusRequest,

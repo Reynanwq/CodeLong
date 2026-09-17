@@ -1,7 +1,6 @@
 package com.codelong.application.usecase
 
-import com.codelong.domain.exception.ForbiddenException
-import com.codelong.domain.exception.NotFoundException
+import com.codelong.domain.exception.DomainException
 import com.codelong.domain.valueobject.Difficulty
 import com.codelong.domain.valueobject.GameId
 import com.codelong.domain.valueobject.GameStatus
@@ -22,7 +21,7 @@ class GetGameUseCaseTest {
     @BeforeEach
     fun setUp() {
         repository = InMemoryGameRepository()
-        useCase = GetGameUseCase(repository)
+        useCase = GetGameUseCaseImpl(repository)
     }
 
     @Test
@@ -35,7 +34,7 @@ class GetGameUseCaseTest {
         assertEquals(GameId("g-1"), found.id)
         assertEquals(UserId("u-1"), found.userId)
         assertEquals("alice", found.username)
-        assertEquals(GameStatus.IN_PROGRESS, found.status())
+        assertEquals(GameStatus.IN_PROGRESS, found.status)
     }
 
     @Test
@@ -48,7 +47,7 @@ class GetGameUseCaseTest {
 
     @Test
     fun `partida inexistente gera erro`() {
-        val error = assertThrows<NotFoundException> {
+        val error = assertThrows<DomainException> {
             useCase.get(GameId("nao-existe"), UserId("u-1"))
         }
 
@@ -60,7 +59,7 @@ class GetGameUseCaseTest {
     fun `outro usuario nao acessa a partida`() {
         repository.save(Fixtures.game(id = "g-1", userId = "u-1"))
 
-        val error = assertThrows<ForbiddenException> {
+        val error = assertThrows<DomainException> {
             useCase.get(GameId("g-1"), UserId("u-2"))
         }
 
@@ -75,8 +74,8 @@ class GetGameUseCaseTest {
 
         val found = useCase.get(GameId("g-1"), UserId("u-1"))
 
-        assertEquals(GameStatus.COMPLETED, found.status())
-        assertEquals(Difficulty.EASY.points, found.score())
+        assertEquals(GameStatus.COMPLETED, found.status)
+        assertEquals(Difficulty.EASY.points, found.score)
     }
 
     @Test
@@ -85,7 +84,7 @@ class GetGameUseCaseTest {
         game.abandon(Fixtures.NOW)
         repository.save(game)
 
-        assertEquals(GameStatus.ABANDONED, useCase.get(GameId("g-1"), UserId("u-1")).status())
+        assertEquals(GameStatus.ABANDONED, useCase.get(GameId("g-1"), UserId("u-1")).status)
     }
 
     @Test
@@ -93,6 +92,6 @@ class GetGameUseCaseTest {
         repository.save(Fixtures.game(id = "g-1", userId = "u-1"))
         repository.save(Fixtures.game(id = "g-2", userId = "u-2"))
 
-        assertThrows<ForbiddenException> { useCase.get(GameId("g-2"), UserId("u-1")) }
+        assertThrows<DomainException> { useCase.get(GameId("g-2"), UserId("u-1")) }
     }
 }

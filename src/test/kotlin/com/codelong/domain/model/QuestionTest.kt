@@ -23,25 +23,25 @@ class QuestionTest {
         val question = Fixtures.question(id = "q-1", difficulty = Difficulty.MEDIUM, category = Category.KOTLIN)
 
         assertEquals(QuestionId("q-1"), question.id)
-        assertEquals(QuestionStatus.ACTIVE, question.status())
+        assertEquals(QuestionStatus.ACTIVE, question.status)
         assertEquals(now, question.createdAt)
-        assertEquals(now, question.updatedAt())
-        assertTrue(question.isActive())
+        assertEquals(now, question.updatedAt)
+        assertTrue(question.isActive)
     }
 
     @Test
     fun `expoe todo o conteudo da pergunta`() {
         val question = Fixtures.question(difficulty = Difficulty.EXPERT, category = Category.SOLID)
 
-        assertEquals("O que e polimorfismo?", question.statement())
-        assertEquals(3, question.options().size)
-        assertEquals(OptionId("opt-0"), question.correctOption())
+        assertEquals("O que e polimorfismo?", question.statement)
+        assertEquals(3, question.options.size)
+        assertEquals(OptionId("opt-0"), question.correctOption)
         assertEquals(
             "Polimorfismo permite tratar objetos de tipos diferentes de forma uniforme.",
-            question.explanation()
+            question.explanation
         )
-        assertEquals(Category.SOLID, question.category())
-        assertEquals(Difficulty.EXPERT, question.difficulty())
+        assertEquals(Category.SOLID, question.category)
+        assertEquals(Difficulty.EXPERT, question.difficulty)
     }
 
     @Test
@@ -71,9 +71,9 @@ class QuestionTest {
         val returned = question.deactivate(later)
 
         assertSame(question, returned)
-        assertEquals(QuestionStatus.INACTIVE, question.status())
-        assertFalse(question.isActive())
-        assertEquals(later, question.updatedAt())
+        assertEquals(QuestionStatus.INACTIVE, question.status)
+        assertFalse(question.isActive)
+        assertEquals(later, question.updatedAt)
         assertEquals(now, question.createdAt)
     }
 
@@ -84,9 +84,9 @@ class QuestionTest {
         val returned = question.activate(later)
 
         assertSame(question, returned)
-        assertEquals(QuestionStatus.ACTIVE, question.status())
-        assertTrue(question.isActive())
-        assertEquals(later, question.updatedAt())
+        assertEquals(QuestionStatus.ACTIVE, question.status)
+        assertTrue(question.isActive)
+        assertEquals(later, question.updatedAt)
     }
 
     @Test
@@ -103,12 +103,12 @@ class QuestionTest {
         val returned = question.update(newContent, later)
 
         assertSame(question, returned)
-        assertEquals("Novo enunciado?", question.statement())
-        assertEquals(4, question.options().size)
-        assertEquals(OptionId("opt-3"), question.correctOption())
-        assertEquals(Category.TESTING, question.category())
-        assertEquals(Difficulty.MASTER, question.difficulty())
-        assertEquals(later, question.updatedAt())
+        assertEquals("Novo enunciado?", question.statement)
+        assertEquals(4, question.options.size)
+        assertEquals(OptionId("opt-3"), question.correctOption)
+        assertEquals(Category.TESTING, question.category)
+        assertEquals(Difficulty.MASTER, question.difficulty)
+        assertEquals(later, question.updatedAt)
     }
 
     @Test
@@ -118,12 +118,12 @@ class QuestionTest {
         val snapshot = question.snapshot()
 
         assertEquals(QuestionId("q-9"), snapshot.id)
-        assertEquals(question.statement(), snapshot.statement)
-        assertEquals(question.options(), snapshot.options)
-        assertEquals(question.correctOption(), snapshot.correctOption)
-        assertEquals(question.explanation(), snapshot.explanation)
-        assertEquals(question.category(), snapshot.category)
-        assertEquals(question.difficulty(), snapshot.difficulty)
+        assertEquals(question.statement, snapshot.statement)
+        assertEquals(question.options, snapshot.options)
+        assertEquals(question.correctOption, snapshot.correctOption)
+        assertEquals(question.explanation, snapshot.explanation)
+        assertEquals(question.category, snapshot.category)
+        assertEquals(question.difficulty, snapshot.difficulty)
     }
 
     @Test
@@ -150,7 +150,7 @@ class QuestionTest {
         assertEquals(QuestionStatus.INACTIVE, state.status)
         assertEquals(now, state.createdAt)
         assertEquals(later, state.updatedAt)
-        assertEquals(question.statement(), state.content.statement)
+        assertEquals(question.statement, state.content.statement)
     }
 
     @Test
@@ -161,14 +161,14 @@ class QuestionTest {
         val restored = Question.reconstitute(original.state())
 
         assertEquals(original.id, restored.id)
-        assertEquals(original.statement(), restored.statement())
-        assertEquals(original.options(), restored.options())
-        assertEquals(original.correctOption(), restored.correctOption())
-        assertEquals(original.explanation(), restored.explanation())
-        assertEquals(original.category(), restored.category())
-        assertEquals(original.difficulty(), restored.difficulty())
-        assertEquals(QuestionStatus.INACTIVE, restored.status())
+        assertEquals(original.statement, restored.statement)
+        assertEquals(original.options, restored.options)
+        assertEquals(original.correctOption, restored.correctOption)
+        assertEquals(original.explanation, restored.explanation)
+        assertEquals(original.category, restored.category)
+        assertEquals(original.difficulty, restored.difficulty)
+        assertEquals(QuestionStatus.INACTIVE, restored.status)
         assertEquals(original.createdAt, restored.createdAt)
-        assertEquals(original.updatedAt(), restored.updatedAt())
+        assertEquals(original.updatedAt, restored.updatedAt)
     }
 }

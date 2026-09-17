@@ -16,18 +16,22 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 
+private const val BASE_PATH = "/api/users"
+private const val ME_PATH = "/me"
+private const val PASSWORD_PATH = "/me/password"
+
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping(BASE_PATH)
 class UserController(
     private val getCurrentUserUseCase: GetCurrentUserUseCase,
     private val changePasswordUseCase: ChangePasswordUseCase
 ) {
 
-    @GetMapping("/me")
+    @GetMapping(ME_PATH)
     fun me(@AuthenticationPrincipal principal: AuthenticatedUser): UserResponse =
         UserResponse.from(getCurrentUserUseCase.get(principal.userId))
 
-    @PatchMapping("/me/password")
+    @PatchMapping(PASSWORD_PATH)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun changePassword(
         @Valid @RequestBody request: ChangePasswordRequest,

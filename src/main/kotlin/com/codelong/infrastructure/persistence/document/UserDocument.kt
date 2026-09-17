@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.Instant
 
-@Document(collection = "users")
+@Document(collection = MongoSchema.Collection.USERS)
 data class UserDocument(
     @field:Id val id: String = "",
     @field:Indexed(unique = true) val username: String = "",

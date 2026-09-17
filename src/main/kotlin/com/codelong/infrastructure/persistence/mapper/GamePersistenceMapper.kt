@@ -22,10 +22,10 @@ object GamePersistenceMapper {
     fun toDocument(game: Game): GameDocument {
         val state = game.state()
         return GameDocument(
-            id = state.id.value,
-            userId = state.userId.value,
+            id = state.idText,
+            userId = state.userIdText,
             username = state.username,
-            status = state.status.name,
+            status = state.statusName,
             startedAt = state.startedAt,
             completedAt = state.completedAt,
             currentQuestionIndex = state.currentQuestionIndex,
@@ -58,13 +58,13 @@ object GamePersistenceMapper {
 
     private fun toQuestionDocument(question: GameQuestion): GameQuestionDocument =
         GameQuestionDocument(
-            id = question.id.value,
+            id = question.idText,
             statement = question.statement,
-            options = question.options.map { OptionDocument(it.id.value, it.text) },
-            correctOption = question.correctOption.value,
+            options = question.options.map { OptionDocument(it.idText, it.text) },
+            correctOption = question.correctOptionText,
             explanation = question.explanation,
-            category = question.category.name,
-            difficulty = question.difficulty.name
+            category = question.categoryName,
+            difficulty = question.difficultyName
         )
 
     private fun toQuestion(document: GameQuestionDocument): GameQuestion = GameQuestion(
@@ -79,8 +79,8 @@ object GamePersistenceMapper {
 
     private fun toAnswerDocument(answer: AnswerRecord): AnswerDocument = AnswerDocument(
         questionIndex = answer.questionIndex,
-        questionId = answer.questionId.value,
-        chosenOption = answer.chosenOption.value,
+        questionId = answer.questionIdText,
+        chosenOption = answer.chosenOptionText,
         correct = answer.correct,
         earnedPoints = answer.earnedPoints,
         answeredAt = answer.answeredAt

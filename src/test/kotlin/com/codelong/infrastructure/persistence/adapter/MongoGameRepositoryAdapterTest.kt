@@ -1,6 +1,7 @@
 package com.codelong.infrastructure.persistence.adapter
 
-import com.codelong.domain.exception.ConcurrentGameModificationException
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.domain.port.GameSearch
 import com.codelong.domain.valueobject.Difficulty
 import com.codelong.domain.valueobject.GameId
@@ -56,7 +57,7 @@ class MongoGameRepositoryAdapterTest {
         `when`(repository.save(any(GameDocument::class.java)))
             .thenThrow(OptimisticLockingFailureException("conflito"))
 
-        assertThrows<ConcurrentGameModificationException> { adapter.save(game) }
+        assertThrows<DomainException> { adapter.save(game) }
     }
 
     @Test
@@ -136,8 +137,8 @@ class MongoGameRepositoryAdapterTest {
 
         val page = adapter.search(GameSearch(userId = UserId("u-1")))
 
-        assertEquals(GameStatus.COMPLETED, page.items.first().status())
-        assertEquals(Difficulty.EASY.points, page.items.first().score())
+        assertEquals(GameStatus.COMPLETED, page.items.first().status)
+        assertEquals(Difficulty.EASY.points, page.items.first().score)
     }
 
     @Test

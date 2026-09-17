@@ -1,6 +1,7 @@
 package com.codelong.domain.valueobject
 
-import com.codelong.domain.exception.InvalidInputException
+import com.codelong.domain.exception.DomainException
+
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -32,7 +33,7 @@ class EnumsTest {
     @ParameterizedTest
     @ValueSource(strings = ["JAVASCRIPT", "kotlin ", " kotlin", "UNKNOWN", "", " "])
     fun `Category fromName rejeita valores desconhecidos`(raw: String) {
-        val error = assertThrows<InvalidInputException> { Category.fromName(raw) }
+        val error = assertThrows<DomainException> { Category.fromName(raw) }
 
         assertEquals("category.invalid", error.code)
         assertTrue(error.message.contains(raw))
@@ -53,7 +54,7 @@ class EnumsTest {
     @ParameterizedTest
     @ValueSource(strings = ["GUEST", " admin ", "SUPER_ADMIN", "", "user "])
     fun `Role fromName rejeita valores desconhecidos`(raw: String) {
-        val error = assertThrows<InvalidInputException> { Role.fromName(raw) }
+        val error = assertThrows<DomainException> { Role.fromName(raw) }
 
         assertEquals("role.invalid", error.code)
         assertTrue(error.message.contains(raw))
@@ -70,7 +71,7 @@ class EnumsTest {
     @ParameterizedTest
     @ValueSource(strings = ["PENDING", "BANNED", "", " ", "active_", "inactive!"])
     fun `AccountStatus fromName rejeita valores desconhecidos`(raw: String) {
-        val error = assertThrows<InvalidInputException> { AccountStatus.fromName(raw) }
+        val error = assertThrows<DomainException> { AccountStatus.fromName(raw) }
 
         assertEquals("status.invalid", error.code)
     }
@@ -86,7 +87,7 @@ class EnumsTest {
     @ParameterizedTest
     @ValueSource(strings = ["FINISHED", "PAUSED", "", " ", "in_progress_", "completed!"])
     fun `GameStatus fromName rejeita valores desconhecidos`(raw: String) {
-        val error = assertThrows<InvalidInputException> { GameStatus.fromName(raw) }
+        val error = assertThrows<DomainException> { GameStatus.fromName(raw) }
 
         assertEquals("status.invalid", error.code)
         assertTrue(error.message.contains(raw))
@@ -108,7 +109,7 @@ class EnumsTest {
     @ParameterizedTest
     @ValueSource(ints = [0, -1, -10, 11, 12, 100, Int.MIN_VALUE, Int.MAX_VALUE])
     fun `Difficulty fromLevel rejeita niveis fora do intervalo`(level: Int) {
-        val error = assertThrows<InvalidInputException> { Difficulty.fromLevel(level) }
+        val error = assertThrows<DomainException> { Difficulty.fromLevel(level) }
 
         assertEquals("difficulty.invalid", error.code)
         assertEquals("Difficulty level must be between 1 and 10", error.message)

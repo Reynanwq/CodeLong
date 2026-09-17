@@ -5,10 +5,11 @@ import com.codelong.domain.port.UserRepository
 import com.codelong.domain.valueobject.Email
 import com.codelong.domain.valueobject.Username
 import com.codelong.infrastructure.security.SecurityProperties
-import org.slf4j.LoggerFactory
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.stereotype.Component
+
+private const val ADMIN_EMAIL_SUFFIX = "@codelong.local"
 
 /**
  * Garante um usuario ADMIN inicial quando codelong.admin.username/password
@@ -21,21 +22,22 @@ class AdminBootstrap(
     private val properties: SecurityProperties
 ) : ApplicationRunner {
 
-    private val logger = LoggerFactory.getLogger(AdminBootstrap::class.java)
-
     override fun run(args: ApplicationArguments) {
         val username = properties.admin.username.trim()
         val password = properties.admin.password
-        if (username.isEmpty() || password.isEmpty()) {
-            return
-        }
 
-        val value = Username.of(username)
-        if (userRepository.existsByUsername(value)) {
-            return
+        (username.isNotEmpty() && password.isNotEmpty()).takeIf { it }?.let {
+            bootstrap(username, password)
         }
+    }
 
-        userRepository.save(userFactory.createAdmin(value, Email.of("$username@codelong.local"), password))
-        logger.info("Admin bootstrap: usuario '{}' criado", username)
+    private fun bootstrap(username: String, password: String) {
+        Username.of(username)
+            .takeUnless { userRepository.existsByUsername(it) }
+            ?.let { value ->
+                userRepository.save(
+                    userFactory.createAdmin(value, Email.of("$username$ADMIN_EMAIL_SUFFIX"), password)
+                )
+            }
     }
 }

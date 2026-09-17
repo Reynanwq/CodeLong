@@ -117,7 +117,7 @@ class RankingAndGameDtosTest {
         val response = PublicQuestionResponse.from(question.snapshot().publicView())
 
         assertEquals("q-1", response.id)
-        assertEquals(question.statement(), response.statement)
+        assertEquals(question.statement, response.statement)
         assertEquals(3, response.options.size)
         assertEquals("REST", response.category)
         assertEquals("HARD", response.difficulty)

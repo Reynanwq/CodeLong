@@ -1,6 +1,8 @@
 package com.codelong.domain.valueobject
 
-import com.codelong.domain.exception.InvalidInputException
+import com.codelong.domain.exception.Errors
+
+
 
 /**
  * Conteudo imutavel de uma pergunta. Agrupa os dados que definem uma pergunta
@@ -24,36 +26,30 @@ data class QuestionContent(
 
     fun isCorrect(optionId: OptionId): Boolean = correctOption == optionId
 
+    val statementText: String get() = statement
+
+    val explanationText: String get() = explanation
+
+    val correctOptionText: String get() = correctOption.value
+
+    val categoryName: String get() = category.name
+
+    val difficultyName: String get() = difficulty.name
+
     private fun validate() {
-        if (statement.isBlank() || statement.length > MAX_STATEMENT) {
-            throw InvalidInputException(
-                "question.statement.invalid",
-                "Statement must not be blank and at most $MAX_STATEMENT characters"
-            )
-        }
-        if (options.size < MIN_OPTIONS) {
-            throw InvalidInputException(
-                "question.options.invalid",
-                "A question must have at least $MIN_OPTIONS options"
-            )
-        }
-        if (options.any { it.text.isBlank() }) {
-            throw InvalidInputException("question.options.invalid", "Option text must not be blank")
-        }
-        if (options.map { it.id }.distinct().size != options.size) {
-            throw InvalidInputException("question.options.invalid", "Option ids must be unique")
-        }
-        if (!hasOption(correctOption)) {
-            throw InvalidInputException(
-                "question.correctOption.invalid",
-                "The correct option must be one of the options"
-            )
-        }
-        if (explanation.isBlank() || explanation.length > MAX_EXPLANATION) {
-            throw InvalidInputException(
-                "question.explanation.invalid",
-                "Explanation must not be blank and at most $MAX_EXPLANATION characters"
-            )
+        when {
+            statement.isBlank() || statement.length > MAX_STATEMENT -> throw Errors.statementInvalid(MAX_STATEMENT)
+
+            options.size < MIN_OPTIONS -> throw Errors.tooFewOptions(MIN_OPTIONS)
+
+            options.any { it.text.isBlank() } -> throw Errors.blankOptionText()
+
+            options.map { it.id }.distinct().size != options.size -> throw Errors.duplicatedOptionIds()
+
+            !hasOption(correctOption) -> throw Errors.correctOptionNotInOptions()
+
+            explanation.isBlank() || explanation.length > MAX_EXPLANATION ->
+                throw Errors.explanationInvalid(MAX_EXPLANATION)
         }
     }
 

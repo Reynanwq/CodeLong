@@ -1,5 +1,7 @@
 package com.codelong.infrastructure.persistence.adapter
 
+import com.codelong.infrastructure.persistence.document.MongoSchema
+
 import com.codelong.domain.port.RankingRepository
 import com.codelong.domain.service.RankingPolicy
 import com.codelong.domain.valueobject.GameStatus
@@ -37,19 +39,19 @@ class MongoRankingRepositoryAdapter(
 
     private fun rankedEntries(): List<RankEntry> {
         val stages = listOf(
-            Aggregation.match(Criteria.where("status").`is`(GameStatus.COMPLETED.name)),
+            Aggregation.match(Criteria.where(MongoSchema.Field.STATUS).`is`(GameStatus.COMPLETED.name)),
             Aggregation.addFields()
-                .addField("totalTimeMillis")
-                .withValue(Document("\$subtract", listOf("\$completedAt", "\$startedAt")))
+                .addField(MongoSchema.Field.TOTAL_TIME_MILLIS)
+                .withValue(Document(MongoSchema.Operator.SUBTRACT, listOf(MongoSchema.Operator.COMPLETED_AT, MongoSchema.Operator.STARTED_AT)))
                 .build(),
             Aggregation.sort(preGroupSort()),
-            Aggregation.group("userId")
-                .first("userId").`as`("userId")
-                .first("username").`as`("username")
-                .first("score").`as`("score")
-                .first("correctAnswers").`as`("correctAnswers")
-                .first("totalTimeMillis").`as`("totalTimeMillis")
-                .first("completedAt").`as`("achievedAt"),
+            Aggregation.group(MongoSchema.Field.USER_ID)
+                .first(MongoSchema.Field.USER_ID).`as`(MongoSchema.Field.USER_ID)
+                .first(MongoSchema.Field.USERNAME).`as`(MongoSchema.Field.USERNAME)
+                .first(MongoSchema.Field.SCORE).`as`(MongoSchema.Field.SCORE)
+                .first(MongoSchema.Field.CORRECT_ANSWERS).`as`(MongoSchema.Field.CORRECT_ANSWERS)
+                .first(MongoSchema.Field.TOTAL_TIME_MILLIS).`as`(MongoSchema.Field.TOTAL_TIME_MILLIS)
+                .first(MongoSchema.Field.COMPLETED_AT).`as`(MongoSchema.Field.ACHIEVED_AT),
             Aggregation.sort(postGroupSort())
         )
 
@@ -64,16 +66,16 @@ class MongoRankingRepositoryAdapter(
     }
 
     private fun preGroupSort(): Sort = Sort.by(
-        Sort.Order.desc("score"),
-        Sort.Order.desc("correctAnswers"),
-        Sort.Order.asc("totalTimeMillis"),
-        Sort.Order.asc("completedAt")
+        Sort.Order.desc(MongoSchema.Field.SCORE),
+        Sort.Order.desc(MongoSchema.Field.CORRECT_ANSWERS),
+        Sort.Order.asc(MongoSchema.Field.TOTAL_TIME_MILLIS),
+        Sort.Order.asc(MongoSchema.Field.COMPLETED_AT)
     )
 
     private fun postGroupSort(): Sort = Sort.by(
-        Sort.Order.desc("score"),
-        Sort.Order.desc("correctAnswers"),
-        Sort.Order.asc("totalTimeMillis"),
-        Sort.Order.asc("achievedAt")
+        Sort.Order.desc(MongoSchema.Field.SCORE),
+        Sort.Order.desc(MongoSchema.Field.CORRECT_ANSWERS),
+        Sort.Order.asc(MongoSchema.Field.TOTAL_TIME_MILLIS),
+        Sort.Order.asc(MongoSchema.Field.ACHIEVED_AT)
     )
 }

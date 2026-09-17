@@ -1,8 +1,8 @@
 package com.codelong.application.usecase
 
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.application.command.ChangeUserStatusCommand
-import com.codelong.domain.exception.InvalidInputException
-import com.codelong.domain.exception.NotFoundException
 import com.codelong.domain.valueobject.AccountStatus
 import com.codelong.domain.valueobject.Role
 import com.codelong.domain.valueobject.UserId
@@ -25,7 +25,7 @@ class ChangeUserStatusUseCaseTest {
     @BeforeEach
     fun setUp() {
         repository = InMemoryUserRepository()
-        useCase = ChangeUserStatusUseCase(repository, TestClock.fixed)
+        useCase = ChangeUserStatusUseCaseImpl(repository, TestClock.fixed)
     }
 
     @Test
@@ -37,8 +37,8 @@ class ChangeUserStatusUseCaseTest {
             actorId = UserId("admin-1")
         )
 
-        assertEquals(AccountStatus.INACTIVE, user.status())
-        assertFalse(user.isActive())
+        assertEquals(AccountStatus.INACTIVE, user.status)
+        assertFalse(user.isActive)
     }
 
     @Test
@@ -50,8 +50,8 @@ class ChangeUserStatusUseCaseTest {
             actorId = UserId("admin-1")
         )
 
-        assertEquals(AccountStatus.ACTIVE, user.status())
-        assertTrue(user.isActive())
+        assertEquals(AccountStatus.ACTIVE, user.status)
+        assertTrue(user.isActive)
     }
 
     @Test
@@ -63,7 +63,7 @@ class ChangeUserStatusUseCaseTest {
             actorId = UserId("admin-1")
         )
 
-        assertEquals(Fixtures.NOW, user.updatedAt())
+        assertEquals(Fixtures.NOW, user.updatedAt)
         assertEquals(Fixtures.NOW, user.createdAt)
     }
 
@@ -73,14 +73,14 @@ class ChangeUserStatusUseCaseTest {
 
         useCase.change(ChangeUserStatusCommand(UserId("u-1"), active = false), actorId = UserId("admin-1"))
 
-        assertEquals(AccountStatus.INACTIVE, repository.findById(UserId("u-1"))!!.status())
+        assertEquals(AccountStatus.INACTIVE, repository.findById(UserId("u-1"))!!.status)
     }
 
     @Test
     fun `admin nao pode desativar a propria conta`() {
         repository.save(Fixtures.user(id = "admin-1", username = "admin", role = Role.ADMIN))
 
-        val error = assertThrows<InvalidInputException> {
+        val error = assertThrows<DomainException> {
             useCase.change(ChangeUserStatusCommand(UserId("admin-1"), active = false), actorId = UserId("admin-1"))
         }
 
@@ -97,12 +97,12 @@ class ChangeUserStatusUseCaseTest {
             actorId = UserId("admin-1")
         )
 
-        assertEquals(AccountStatus.ACTIVE, user.status())
+        assertEquals(AccountStatus.ACTIVE, user.status)
     }
 
     @Test
     fun `usuario inexistente gera erro`() {
-        val error = assertThrows<NotFoundException> {
+        val error = assertThrows<DomainException> {
             useCase.change(ChangeUserStatusCommand(UserId("nao-existe"), active = false), actorId = UserId("admin-1"))
         }
 
@@ -116,7 +116,7 @@ class ChangeUserStatusUseCaseTest {
 
         useCase.change(ChangeUserStatusCommand(UserId("u-1"), active = false), actorId = UserId("admin-1"))
 
-        assertEquals(AccountStatus.ACTIVE, repository.findById(UserId("u-2"))!!.status())
+        assertEquals(AccountStatus.ACTIVE, repository.findById(UserId("u-2"))!!.status)
     }
 
     @Test
@@ -128,7 +128,7 @@ class ChangeUserStatusUseCaseTest {
             actorId = UserId("admin-1")
         )
 
-        assertEquals(AccountStatus.INACTIVE, user.status())
+        assertEquals(AccountStatus.INACTIVE, user.status)
     }
 
     @Test

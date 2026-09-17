@@ -15,14 +15,18 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 
+private const val BASE_PATH = "/api/auth"
+private const val REGISTER_PATH = "/register"
+private const val LOGIN_PATH = "/login"
+
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping(BASE_PATH)
 class AuthController(
     private val registerUserUseCase: RegisterUserUseCase,
     private val loginUserUseCase: LoginUserUseCase
 ) {
 
-    @PostMapping("/register")
+    @PostMapping(REGISTER_PATH)
     @ResponseStatus(HttpStatus.CREATED)
     fun register(@Valid @RequestBody request: RegisterUserRequest): AuthResponse =
         AuthResponse.from(
@@ -31,7 +35,7 @@ class AuthController(
             )
         )
 
-    @PostMapping("/login")
+    @PostMapping(LOGIN_PATH)
     fun login(@Valid @RequestBody request: LoginRequest): AuthResponse =
         AuthResponse.from(
             loginUserUseCase.login(

@@ -1,10 +1,11 @@
 package com.codelong.application.usecase
 
+import com.codelong.application.service.DefaultPasswordPolicy
+
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.application.command.ChangePasswordCommand
 import com.codelong.application.service.PasswordPolicy
-import com.codelong.domain.exception.InvalidInputException
-import com.codelong.domain.exception.NotFoundException
-import com.codelong.domain.exception.UnauthorizedException
 import com.codelong.domain.valueobject.UserId
 import com.codelong.support.FakePasswordEncoder
 import com.codelong.support.Fixtures
@@ -24,10 +25,10 @@ class ChangePasswordUseCaseTest {
     fun setUp() {
         repository = InMemoryUserRepository()
         repository.save(Fixtures.user(id = "user-1", username = "alice"))
-        useCase = ChangePasswordUseCase(
+        useCase = ChangePasswordUseCaseImpl(
             userRepository = repository,
             passwordEncoder = FakePasswordEncoder(),
-            passwordPolicy = PasswordPolicy(),
+            passwordPolicy = DefaultPasswordPolicy(),
             clock = TestClock.fixed
         )
     }
@@ -39,12 +40,12 @@ class ChangePasswordUseCaseTest {
             UserId("user-1")
         )
 
-        assertEquals("hashed:novasenha123", updated.passwordHash().value)
+        assertEquals("hashed:novasenha123", updated.passwordHash.value)
     }
 
     @Test
     fun `rejeita senha atual incorreta`() {
-        val error = assertThrows<UnauthorizedException> {
+        val error = assertThrows<DomainException> {
             useCase.change(ChangePasswordCommand("errada123", "novasenha123"), UserId("user-1"))
         }
 
@@ -53,7 +54,7 @@ class ChangePasswordUseCaseTest {
 
     @Test
     fun `rejeita nova senha fraca`() {
-        val error = assertThrows<InvalidInputException> {
+        val error = assertThrows<DomainException> {
             useCase.change(ChangePasswordCommand("secret123", "curta"), UserId("user-1"))
         }
 
@@ -62,7 +63,7 @@ class ChangePasswordUseCaseTest {
 
     @Test
     fun `rejeita repetir a senha atual`() {
-        val error = assertThrows<InvalidInputException> {
+        val error = assertThrows<DomainException> {
             useCase.change(ChangePasswordCommand("secret123", "secret123"), UserId("user-1"))
         }
 
@@ -71,7 +72,7 @@ class ChangePasswordUseCaseTest {
 
     @Test
     fun `usuario inexistente`() {
-        val error = assertThrows<NotFoundException> {
+        val error = assertThrows<DomainException> {
             useCase.change(ChangePasswordCommand("secret123", "novasenha123"), UserId("nao-existe"))
         }
 

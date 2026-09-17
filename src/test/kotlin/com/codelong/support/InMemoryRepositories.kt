@@ -1,6 +1,7 @@
 package com.codelong.support
 
-import com.codelong.domain.exception.ConcurrentGameModificationException
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.domain.model.Game
 import com.codelong.domain.model.Question
 import com.codelong.domain.model.User
@@ -47,7 +48,7 @@ class InMemoryUserRepository : UserRepository {
 
     override fun search(search: UserSearch): UserPage {
         val filtered = store.values
-            .filter { search.status == null || it.status() == search.status }
+            .filter { search.status == null || it.status == search.status }
             .filter { search.role == null || it.role == search.role }
             .sortedBy { it.username.value }
         val from = search.page * search.size
@@ -73,15 +74,15 @@ class InMemoryQuestionRepository : QuestionRepository {
 
     override fun findById(id: QuestionId): Question? = store[id.value]
 
-    override fun findAllActive(): List<Question> = store.values.filter { it.isActive() }
+    override fun findAllActive(): List<Question> = store.values.filter { it.isActive }
 
-    override fun countActive(): Long = store.values.count { it.isActive() }.toLong()
+    override fun countActive(): Long = store.values.count { it.isActive }.toLong()
 
     override fun search(search: QuestionSearch): QuestionPage {
         val filtered = store.values.filter { question ->
-            (search.status == null || question.status() == search.status) &&
-                (search.category == null || question.category() == search.category) &&
-                (search.difficulty == null || question.difficulty() == search.difficulty)
+            (search.status == null || question.status == search.status) &&
+                (search.category == null || question.category == search.category) &&
+                (search.difficulty == null || question.difficulty == search.difficulty)
         }
         val from = search.page * search.size
         return QuestionPage(
@@ -105,7 +106,7 @@ class InMemoryGameRepository : GameRepository {
         val state = game.state()
         val stored = store[state.id.value]
         if (stored != null && stored.state().version != state.version) {
-            throw ConcurrentGameModificationException()
+            throw DomainException.concurrentModification()
         }
         val newVersion = if (stored == null) 1L else state.version + 1
         val saved = Game.reconstitute(state.copy(version = newVersion))
@@ -117,13 +118,13 @@ class InMemoryGameRepository : GameRepository {
 
     override fun findInProgressByUserId(userId: UserId): Game? =
         store.values
-            .filter { it.userId == userId && it.isInProgress() }
+            .filter { it.userId == userId && it.isInProgress }
             .maxByOrNull { it.startedAt }
 
     override fun search(search: GameSearch): GamePage {
         val filtered = store.values
             .filter { it.userId == search.userId }
-            .filter { search.status == null || it.status() == search.status }
+            .filter { search.status == null || it.status == search.status }
             .sortedByDescending { it.startedAt }
         val from = search.page * search.size
         return GamePage(

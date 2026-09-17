@@ -1,6 +1,7 @@
 package com.codelong.infrastructure.web.dto
 
-import com.codelong.domain.exception.InvalidInputException
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.domain.valueobject.Category
 import com.codelong.domain.valueobject.Difficulty
 import com.codelong.domain.valueobject.OptionId
@@ -37,6 +38,30 @@ class QuestionDtosTest {
         category: String = "KOTLIN",
         difficulty: String = "EASY"
     ) = UpdateQuestionRequest(statement, options, correctOption, explanation, category, difficulty)
+
+    @Test
+    fun `CreateQuestionRequest expoe os campos recebidos`() {
+        val request = createRequest()
+
+        assertEquals("Enunciado?", request.statement)
+        assertEquals(2, request.options.size)
+        assertEquals("a", request.correctOption)
+        assertEquals("Explicacao.", request.explanation)
+        assertEquals("KOTLIN", request.category)
+        assertEquals("EASY", request.difficulty)
+    }
+
+    @Test
+    fun `UpdateQuestionRequest expoe os campos recebidos`() {
+        val request = updateRequest()
+
+        assertEquals("Enunciado?", request.statement)
+        assertEquals(2, request.options.size)
+        assertEquals("a", request.correctOption)
+        assertEquals("Explicacao.", request.explanation)
+        assertEquals("KOTLIN", request.category)
+        assertEquals("EASY", request.difficulty)
+    }
 
     @Test
     fun `CreateQuestionRequest converte para command`() {
@@ -90,7 +115,7 @@ class QuestionDtosTest {
     @ParameterizedTest
     @ValueSource(strings = ["INVALIDO", "", " ", "nivel-1", "10", "FACIL", "unknown"])
     fun `difficulty invalido gera erro`(raw: String) {
-        val error = assertThrows<InvalidInputException> { createRequest(difficulty = raw).toCommand() }
+        val error = assertThrows<DomainException> { createRequest(difficulty = raw).toCommand() }
 
         assertEquals("difficulty.invalid", error.code)
     }
@@ -102,7 +127,7 @@ class QuestionDtosTest {
 
     @Test
     fun `categoria invalida gera erro`() {
-        val error = assertThrows<InvalidInputException> { createRequest(category = "JAVASCRIPT").toCommand() }
+        val error = assertThrows<DomainException> { createRequest(category = "JAVASCRIPT").toCommand() }
 
         assertEquals("category.invalid", error.code)
     }
@@ -119,15 +144,15 @@ class QuestionDtosTest {
         val response = QuestionResponse.from(question)
 
         assertEquals("q-1", response.id)
-        assertEquals(question.statement(), response.statement)
+        assertEquals(question.statement, response.statement)
         assertEquals(3, response.options.size)
-        assertEquals(question.correctOption().value, response.correctOption)
-        assertEquals(question.explanation(), response.explanation)
+        assertEquals(question.correctOption.value, response.correctOption)
+        assertEquals(question.explanation, response.explanation)
         assertEquals("TESTING", response.category)
         assertEquals("MEDIUM", response.difficulty)
         assertEquals("ACTIVE", response.status)
         assertEquals(question.createdAt, response.createdAt)
-        assertEquals(question.updatedAt(), response.updatedAt)
+        assertEquals(question.updatedAt, response.updatedAt)
     }
 
     @Test

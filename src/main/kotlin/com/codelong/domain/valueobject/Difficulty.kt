@@ -1,6 +1,6 @@
 package com.codelong.domain.valueobject
 
-import com.codelong.domain.exception.InvalidInputException
+import com.codelong.domain.exception.Errors
 
 /**
  * Os 10 niveis de dificuldade do CodeLong.
@@ -27,10 +27,11 @@ enum class Difficulty(val level: Int, val points: Int) : Comparable<Difficulty> 
 
         fun fromLevel(level: Int): Difficulty =
             entries.firstOrNull { it.level == level }
-                ?: throw InvalidInputException(
-                    "difficulty.invalid",
-                    "Difficulty level must be between $MIN_LEVEL and $MAX_LEVEL"
-                )
+                ?: throw Errors.unknownDifficultyLevel(MIN_LEVEL, MAX_LEVEL)
+
+        fun fromName(name: String): Difficulty =
+            entries.firstOrNull { it.name == name.trim().uppercase() }
+                ?: throw Errors.unknownDifficulty(name)
 
         val orderedByLevel: List<Difficulty> = entries.sortedBy { it.level }
     }

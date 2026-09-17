@@ -1,6 +1,7 @@
 package com.codelong.domain.valueobject
 
-import com.codelong.domain.exception.InvalidInputException
+import com.codelong.domain.exception.DomainException
+
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -69,7 +70,7 @@ class EmailTest {
     fun `rejeita emails invalidos`(raw: String) {
         assertFalse(Email.isValid(raw))
 
-        val error = assertThrows<InvalidInputException> { Email.of(raw) }
+        val error = assertThrows<DomainException> { Email.of(raw) }
 
         assertEquals("email.invalid", error.code)
         assertEquals("The email address is invalid", error.message)

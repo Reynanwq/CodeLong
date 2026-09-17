@@ -1,6 +1,7 @@
 package com.codelong.application.command
 
-import com.codelong.domain.exception.InvalidInputException
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.domain.valueobject.Category
 import com.codelong.domain.valueobject.Difficulty
 import com.codelong.domain.valueobject.OptionId
@@ -103,7 +104,7 @@ class QuestionContentCommandTest {
 
     @Test
     fun `toContent rejeita enunciado em branco`() {
-        val error = assertThrows<InvalidInputException> {
+        val error = assertThrows<DomainException> {
             createCommand(statement = "   ").toContent()
         }
 
@@ -112,7 +113,7 @@ class QuestionContentCommandTest {
 
     @Test
     fun `toContent rejeita menos de duas opcoes`() {
-        val error = assertThrows<InvalidInputException> {
+        val error = assertThrows<DomainException> {
             createCommand(options = listOf(QuestionOptionCommand("a", "Unica"))).toContent()
         }
 
@@ -121,7 +122,7 @@ class QuestionContentCommandTest {
 
     @Test
     fun `toContent rejeita alternativa correta inexistente`() {
-        val error = assertThrows<InvalidInputException> {
+        val error = assertThrows<DomainException> {
             createCommand(correctOption = "z").toContent()
         }
 
@@ -130,7 +131,7 @@ class QuestionContentCommandTest {
 
     @Test
     fun `toContent rejeita explicacao em branco`() {
-        val error = assertThrows<InvalidInputException> {
+        val error = assertThrows<DomainException> {
             createCommand(explanation = " ").toContent()
         }
 
@@ -139,7 +140,7 @@ class QuestionContentCommandTest {
 
     @Test
     fun `toContent rejeita ids de opcao duplicados`() {
-        val error = assertThrows<InvalidInputException> {
+        val error = assertThrows<DomainException> {
             createCommand(
                 options = listOf(
                     QuestionOptionCommand("a", "Primeira"),

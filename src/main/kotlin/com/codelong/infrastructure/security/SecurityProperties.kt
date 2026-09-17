@@ -3,7 +3,9 @@ package com.codelong.infrastructure.security
 import org.springframework.boot.context.properties.ConfigurationProperties
 import java.time.Duration
 
-@ConfigurationProperties(prefix = "codelong")
+private const val PROPERTIES_PREFIX = "codelong"
+
+@ConfigurationProperties(prefix = PROPERTIES_PREFIX)
 data class SecurityProperties(
     val jwt: Jwt = Jwt(),
     val cors: Cors = Cors(),

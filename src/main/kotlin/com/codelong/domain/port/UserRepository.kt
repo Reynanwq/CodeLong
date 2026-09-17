@@ -14,8 +14,7 @@ data class UserSearch(
     val size: Int = 20
 ) {
     init {
-        require(page >= 0) { "page must be >= 0" }
-        require(size in 1..100) { "size must be between 1 and 100" }
+        Pagination.requireValid(page, size)
     }
 }
 

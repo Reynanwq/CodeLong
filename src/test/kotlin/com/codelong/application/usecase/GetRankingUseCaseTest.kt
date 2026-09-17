@@ -1,6 +1,7 @@
 package com.codelong.application.usecase
 
-import com.codelong.domain.exception.InvalidInputException
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.domain.valueobject.RankEntry
 import com.codelong.domain.valueobject.UserId
 import com.codelong.support.Fixtures
@@ -12,7 +13,7 @@ import org.junit.jupiter.api.assertThrows
 class GetRankingUseCaseTest {
 
     private val repository = InMemoryRankingRepository()
-    private val useCase = GetRankingUseCase(repository)
+    private val useCase = GetRankingUseCaseImpl(repository)
 
     private fun add(
         id: String,
@@ -70,8 +71,8 @@ class GetRankingUseCaseTest {
 
     @Test
     fun `valida parametros de paginacao`() {
-        assertThrows<InvalidInputException> { useCase.ranking(-1, 10) }
-        assertThrows<InvalidInputException> { useCase.ranking(0, 0) }
-        assertThrows<InvalidInputException> { useCase.ranking(0, 101) }
+        assertThrows<DomainException> { useCase.ranking(-1, 10) }
+        assertThrows<DomainException> { useCase.ranking(0, 0) }
+        assertThrows<DomainException> { useCase.ranking(0, 101) }
     }
 }

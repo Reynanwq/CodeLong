@@ -1,6 +1,8 @@
 package com.codelong.domain.valueobject
 
-import com.codelong.domain.exception.InvalidInputException
+import com.codelong.domain.exception.Errors
+
+
 
 /**
  * Categorias de conhecimento cobertas pelas perguntas.
@@ -29,9 +31,6 @@ enum class Category {
     companion object {
         fun fromName(name: String): Category =
             entries.firstOrNull { it.name == name.uppercase() }
-                ?: throw InvalidInputException(
-                    "category.invalid",
-                    "Unknown category: $name"
-                )
+                ?: throw Errors.unknownCategory(name)
     }
 }

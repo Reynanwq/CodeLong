@@ -1,18 +1,26 @@
 package com.codelong.application.usecase
 
-import com.codelong.domain.exception.NotFoundException
+import com.codelong.domain.exception.Errors
+
+
 import com.codelong.domain.model.Game
 import com.codelong.domain.port.GameRepository
 import com.codelong.domain.valueobject.GameId
 import com.codelong.domain.valueobject.UserId
 
-class GetGameUseCase(
-    private val gameRepository: GameRepository
-) {
+interface GetGameUseCase {
+    fun get(gameId: GameId, actorId: UserId): Game
+}
 
-    fun get(gameId: GameId, actorId: UserId): Game {
+
+class GetGameUseCaseImpl(
+    private val gameRepository: GameRepository
+) : GetGameUseCase {
+
+
+    override fun get(gameId: GameId, actorId: UserId): Game {
         val game = gameRepository.findById(gameId)
-            ?: throw NotFoundException("GAME_NOT_FOUND", "Game not found")
+            ?: throw Errors.gameNotFound()
         game.requireOwner(actorId)
         return game
     }

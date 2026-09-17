@@ -1,7 +1,8 @@
 package com.codelong.application.usecase
 
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.application.command.ChangeQuestionStatusCommand
-import com.codelong.domain.exception.NotFoundException
 import com.codelong.domain.valueobject.QuestionId
 import com.codelong.domain.valueobject.QuestionStatus
 import com.codelong.support.Fixtures
@@ -22,7 +23,7 @@ class ChangeQuestionStatusUseCaseTest {
     @BeforeEach
     fun setUp() {
         repository = InMemoryQuestionRepository()
-        useCase = ChangeQuestionStatusUseCase(repository, TestClock.fixed)
+        useCase = ChangeQuestionStatusUseCaseImpl(repository, TestClock.fixed)
     }
 
     @Test
@@ -31,8 +32,8 @@ class ChangeQuestionStatusUseCaseTest {
 
         val question = useCase.change(ChangeQuestionStatusCommand(QuestionId("q-1"), active = false))
 
-        assertEquals(QuestionStatus.INACTIVE, question.status())
-        assertFalse(question.isActive())
+        assertEquals(QuestionStatus.INACTIVE, question.status)
+        assertFalse(question.isActive)
     }
 
     @Test
@@ -41,8 +42,8 @@ class ChangeQuestionStatusUseCaseTest {
 
         val question = useCase.change(ChangeQuestionStatusCommand(QuestionId("q-1"), active = true))
 
-        assertEquals(QuestionStatus.ACTIVE, question.status())
-        assertTrue(question.isActive())
+        assertEquals(QuestionStatus.ACTIVE, question.status)
+        assertTrue(question.isActive)
     }
 
     @Test
@@ -51,7 +52,7 @@ class ChangeQuestionStatusUseCaseTest {
 
         val question = useCase.change(ChangeQuestionStatusCommand(QuestionId("q-1"), active = false))
 
-        assertEquals(Fixtures.NOW, question.updatedAt())
+        assertEquals(Fixtures.NOW, question.updatedAt)
         assertEquals(Fixtures.NOW, question.createdAt)
     }
 
@@ -61,13 +62,13 @@ class ChangeQuestionStatusUseCaseTest {
 
         useCase.change(ChangeQuestionStatusCommand(QuestionId("q-1"), active = false))
 
-        assertEquals(QuestionStatus.INACTIVE, repository.findById(QuestionId("q-1"))!!.status())
+        assertEquals(QuestionStatus.INACTIVE, repository.findById(QuestionId("q-1"))!!.status)
         assertEquals(0L, repository.countActive())
     }
 
     @Test
     fun `pergunta inexistente gera erro`() {
-        val error = assertThrows<NotFoundException> {
+        val error = assertThrows<DomainException> {
             useCase.change(ChangeQuestionStatusCommand(QuestionId("nao-existe"), active = true))
         }
 
@@ -81,7 +82,7 @@ class ChangeQuestionStatusUseCaseTest {
         useCase.change(ChangeQuestionStatusCommand(QuestionId("q-1"), active = false))
         val question = useCase.change(ChangeQuestionStatusCommand(QuestionId("q-1"), active = false))
 
-        assertEquals(QuestionStatus.INACTIVE, question.status())
+        assertEquals(QuestionStatus.INACTIVE, question.status)
     }
 
     @Test
@@ -90,7 +91,7 @@ class ChangeQuestionStatusUseCaseTest {
 
         val question = useCase.change(ChangeQuestionStatusCommand(QuestionId("q-1"), active = true))
 
-        assertEquals(QuestionStatus.ACTIVE, question.status())
+        assertEquals(QuestionStatus.ACTIVE, question.status)
     }
 
     @Test
@@ -100,6 +101,6 @@ class ChangeQuestionStatusUseCaseTest {
 
         useCase.change(ChangeQuestionStatusCommand(QuestionId("q-1"), active = false))
 
-        assertEquals(QuestionStatus.ACTIVE, repository.findById(QuestionId("q-2"))!!.status())
+        assertEquals(QuestionStatus.ACTIVE, repository.findById(QuestionId("q-2"))!!.status)
     }
 }

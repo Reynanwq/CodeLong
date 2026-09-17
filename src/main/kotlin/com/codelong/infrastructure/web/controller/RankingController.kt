@@ -12,8 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
+private const val BASE_PATH = "/api/rankings"
+private const val DEFAULT_PAGE = "0"
+private const val DEFAULT_SIZE = "20"
+private const val ME_PATH = "/me"
+
 @RestController
-@RequestMapping("/api/rankings")
+@RequestMapping(BASE_PATH)
 class RankingController(
     private val getRankingUseCase: GetRankingUseCase,
     private val getMyRankingUseCase: GetMyRankingUseCase
@@ -21,12 +26,12 @@ class RankingController(
 
     @GetMapping
     fun ranking(
-        @RequestParam(defaultValue = "0") page: Int,
-        @RequestParam(defaultValue = "20") size: Int
+        @RequestParam(defaultValue = DEFAULT_PAGE) page: Int,
+        @RequestParam(defaultValue = DEFAULT_SIZE) size: Int
     ): RankingResponse =
         RankingResponse.from(getRankingUseCase.ranking(page, size))
 
-    @GetMapping("/me")
+    @GetMapping(ME_PATH)
     fun me(@AuthenticationPrincipal principal: AuthenticatedUser): ResponseEntity<RankingEntryResponse> {
         val entry = getMyRankingUseCase.myRanking(principal.userId)
             ?: return ResponseEntity.noContent().build()

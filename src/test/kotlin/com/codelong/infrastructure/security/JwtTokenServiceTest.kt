@@ -1,7 +1,7 @@
 package com.codelong.infrastructure.security
 
-import com.codelong.domain.exception.InvalidInputException
-import com.codelong.domain.exception.UnauthorizedException
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.domain.valueobject.Role
 import com.codelong.domain.valueobject.TokenClaims
 import com.codelong.domain.valueobject.UserId
@@ -116,7 +116,7 @@ class JwtTokenServiceTest {
             .signWith(key)
             .compact()
 
-        val error = assertThrows<UnauthorizedException> { service.parse(token) }
+        val error = assertThrows<DomainException> { service.parse(token) }
 
         assertEquals("TOKEN_INVALID", error.code)
         assertEquals("The token is missing its subject", error.message)
@@ -129,7 +129,7 @@ class JwtTokenServiceTest {
             .signWith(key)
             .compact()
 
-        val error = assertThrows<UnauthorizedException> { service.parse(token) }
+        val error = assertThrows<DomainException> { service.parse(token) }
 
         assertEquals("TOKEN_INVALID", error.code)
         assertEquals("The token is missing its role", error.message)
@@ -143,7 +143,7 @@ class JwtTokenServiceTest {
             .signWith(key)
             .compact()
 
-        val error = assertThrows<InvalidInputException> { service.parse(token) }
+        val error = assertThrows<DomainException> { service.parse(token) }
 
         assertEquals("role.invalid", error.code)
     }

@@ -10,4 +10,12 @@ data class UserProfile(
     val role: Role
 ) {
     fun withPasswordHash(newHash: PasswordHash): UserProfile = copy(passwordHash = newHash)
+
+    val usernameText: String get() = username.value
+
+    val emailText: String get() = email.value
+
+    val passwordHashText: String get() = passwordHash.value
+
+    val roleName: String get() = role.name
 }

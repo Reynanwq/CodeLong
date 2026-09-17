@@ -14,28 +14,40 @@ import java.time.Instant
 class Question private constructor(
     val id: QuestionId,
     private var content: QuestionContent,
-    private var status: QuestionStatus,
+    status: QuestionStatus,
     val createdAt: Instant,
-    private var updatedAt: Instant
+    updatedAt: Instant
 ) {
 
-    fun statement(): String = content.statement
+    var status: QuestionStatus = status
+        private set
 
-    fun options(): List<QuestionOption> = content.options
+    var updatedAt: Instant = updatedAt
+        private set
 
-    fun correctOption(): OptionId = content.correctOption
+    val statement: String get() = content.statementText
 
-    fun explanation(): String = content.explanation
+    val options: List<QuestionOption> get() = content.options
 
-    fun category(): Category = content.category
+    val correctOption: OptionId get() = content.correctOption
 
-    fun difficulty(): Difficulty = content.difficulty
+    val explanation: String get() = content.explanationText
 
-    fun status(): QuestionStatus = status
+    val category: Category get() = content.category
 
-    fun updatedAt(): Instant = updatedAt
+    val difficulty: Difficulty get() = content.difficulty
 
-    fun isActive(): Boolean = status == QuestionStatus.ACTIVE
+    val isActive: Boolean get() = status == QuestionStatus.ACTIVE
+
+    val idText: String get() = id.value
+
+    val correctOptionText: String get() = content.correctOptionText
+
+    val categoryName: String get() = content.categoryName
+
+    val difficultyName: String get() = content.difficultyName
+
+    val statusName: String get() = status.name
 
     fun hasOption(optionId: OptionId): Boolean = content.hasOption(optionId)
 
@@ -48,6 +60,12 @@ class Question private constructor(
 
     fun deactivate(now: Instant): Question = apply {
         status = QuestionStatus.INACTIVE
+        updatedAt = now
+    }
+
+    /** Aplica o status correspondente a [active] em uma unica operacao. */
+    fun changeStatus(active: Boolean, now: Instant): Question = apply {
+        status = QuestionStatus.of(active)
         updatedAt = now
     }
 

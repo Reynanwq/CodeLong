@@ -1,8 +1,6 @@
 package com.codelong.application.usecase
 
-import com.codelong.domain.exception.ConflictException
-import com.codelong.domain.exception.ForbiddenException
-import com.codelong.domain.exception.NotFoundException
+import com.codelong.domain.exception.DomainException
 import com.codelong.domain.valueobject.Difficulty
 import com.codelong.domain.valueobject.GameId
 import com.codelong.domain.valueobject.GameStatus
@@ -24,7 +22,7 @@ class AbandonGameUseCaseTest {
     @BeforeEach
     fun setUp() {
         repository = InMemoryGameRepository()
-        useCase = AbandonGameUseCase(repository, TestClock.fixed)
+        useCase = AbandonGameUseCaseImpl(repository, TestClock.fixed)
     }
 
     @Test
@@ -33,8 +31,8 @@ class AbandonGameUseCaseTest {
 
         val abandoned = useCase.abandon(GameId("g-1"), UserId("u-1"))
 
-        assertEquals(GameStatus.ABANDONED, abandoned.status())
-        assertEquals(Fixtures.NOW, abandoned.completedAt())
+        assertEquals(GameStatus.ABANDONED, abandoned.status)
+        assertEquals(Fixtures.NOW, abandoned.completedAt)
         assertEquals("g-1", abandoned.id.value)
     }
 
@@ -46,13 +44,13 @@ class AbandonGameUseCaseTest {
 
         val stored = repository.findById(GameId("g-1"))
         assertNotNull(stored)
-        assertEquals(GameStatus.ABANDONED, stored!!.status())
+        assertEquals(GameStatus.ABANDONED, stored!!.status)
         assertEquals(2L, stored.version)
     }
 
     @Test
     fun `partida inexistente gera erro`() {
-        val error = assertThrows<NotFoundException> {
+        val error = assertThrows<DomainException> {
             useCase.abandon(GameId("nao-existe"), UserId("u-1"))
         }
 
@@ -64,12 +62,12 @@ class AbandonGameUseCaseTest {
     fun `outro usuario nao pode abandonar a partida`() {
         repository.save(Fixtures.game(id = "g-1", userId = "u-1"))
 
-        val error = assertThrows<ForbiddenException> {
+        val error = assertThrows<DomainException> {
             useCase.abandon(GameId("g-1"), UserId("u-2"))
         }
 
         assertEquals("GAME_ACCESS_DENIED", error.code)
-        assertEquals(GameStatus.IN_PROGRESS, repository.findById(GameId("g-1"))!!.status())
+        assertEquals(GameStatus.IN_PROGRESS, repository.findById(GameId("g-1"))!!.status)
     }
 
     @Test
@@ -77,7 +75,7 @@ class AbandonGameUseCaseTest {
         repository.save(Fixtures.game(id = "g-1", userId = "u-1"))
         useCase.abandon(GameId("g-1"), UserId("u-1"))
 
-        val error = assertThrows<ConflictException> {
+        val error = assertThrows<DomainException> {
             useCase.abandon(GameId("g-1"), UserId("u-1"))
         }
 
@@ -90,12 +88,12 @@ class AbandonGameUseCaseTest {
         game.answer(game.currentQuestion().correctOption, Fixtures.NOW)
         repository.save(game)
 
-        val error = assertThrows<ConflictException> {
+        val error = assertThrows<DomainException> {
             useCase.abandon(GameId("g-1"), UserId("u-1"))
         }
 
         assertEquals("GAME_FINISHED", error.code)
-        assertEquals(GameStatus.COMPLETED, repository.findById(GameId("g-1"))!!.status())
+        assertEquals(GameStatus.COMPLETED, repository.findById(GameId("g-1"))!!.status)
     }
 
     @Test
@@ -105,8 +103,8 @@ class AbandonGameUseCaseTest {
 
         useCase.abandon(GameId("g-1"), UserId("u-1"))
 
-        assertEquals(GameStatus.ABANDONED, repository.findById(GameId("g-1"))!!.status())
-        assertEquals(GameStatus.IN_PROGRESS, repository.findById(GameId("g-2"))!!.status())
+        assertEquals(GameStatus.ABANDONED, repository.findById(GameId("g-1"))!!.status)
+        assertEquals(GameStatus.IN_PROGRESS, repository.findById(GameId("g-2"))!!.status)
     }
 
     @Test
@@ -117,7 +115,7 @@ class AbandonGameUseCaseTest {
         useCase.abandon(GameId("g-1"), UserId("u-1"))
         useCase.abandon(GameId("g-2"), UserId("u-1"))
 
-        assertEquals(GameStatus.ABANDONED, repository.findById(GameId("g-1"))!!.status())
-        assertEquals(GameStatus.ABANDONED, repository.findById(GameId("g-2"))!!.status())
+        assertEquals(GameStatus.ABANDONED, repository.findById(GameId("g-1"))!!.status)
+        assertEquals(GameStatus.ABANDONED, repository.findById(GameId("g-2"))!!.status)
     }
 }

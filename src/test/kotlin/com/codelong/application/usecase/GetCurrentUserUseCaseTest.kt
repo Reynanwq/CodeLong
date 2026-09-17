@@ -1,6 +1,7 @@
 package com.codelong.application.usecase
 
-import com.codelong.domain.exception.NotFoundException
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.domain.valueobject.AccountStatus
 import com.codelong.domain.valueobject.Role
 import com.codelong.domain.valueobject.UserId
@@ -21,7 +22,7 @@ class GetCurrentUserUseCaseTest {
     @BeforeEach
     fun setUp() {
         repository = InMemoryUserRepository()
-        useCase = GetCurrentUserUseCase(repository)
+        useCase = GetCurrentUserUseCaseImpl(repository)
     }
 
     @Test
@@ -34,7 +35,7 @@ class GetCurrentUserUseCaseTest {
         assertEquals("alice", user.username.value)
         assertEquals("alice@codelong.dev", user.email.value)
         assertEquals(Role.USER, user.role)
-        assertEquals(AccountStatus.ACTIVE, user.status())
+        assertEquals(AccountStatus.ACTIVE, user.status)
     }
 
     @Test
@@ -56,12 +57,12 @@ class GetCurrentUserUseCaseTest {
     fun `devolve usuario inativo`() {
         repository.save(Fixtures.user(id = "u-1").deactivate(TestClock.fixed.instant()))
 
-        assertEquals(AccountStatus.INACTIVE, useCase.get(UserId("u-1")).status())
+        assertEquals(AccountStatus.INACTIVE, useCase.get(UserId("u-1")).status)
     }
 
     @Test
     fun `usuario inexistente gera erro`() {
-        val error = assertThrows<NotFoundException> { useCase.get(UserId("ninguem")) }
+        val error = assertThrows<DomainException> { useCase.get(UserId("ninguem")) }
 
         assertEquals("USER_NOT_FOUND", error.code)
         assertEquals("User not found", error.message)

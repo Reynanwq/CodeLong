@@ -1,6 +1,7 @@
 package com.codelong.domain.model
 
-import com.codelong.domain.exception.ConflictException
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.domain.valueobject.Difficulty
 import com.codelong.domain.valueobject.GameId
 import com.codelong.domain.valueobject.GameStatus
@@ -24,7 +25,7 @@ class GameAggregateTest {
         assertEquals(UserId("u-1"), game.userId)
         assertEquals("alice", game.username)
         assertEquals(Fixtures.NOW, game.startedAt)
-        assertNull(game.completedAt())
+        assertNull(game.completedAt)
         assertEquals(0L, game.version)
     }
 
@@ -57,30 +58,30 @@ class GameAggregateTest {
     fun `questions e answers refletem o estado interno`() {
         val game = Fixtures.game(difficulties = listOf(Difficulty.EASY, Difficulty.MEDIUM))
 
-        assertEquals(2, game.questions().size)
-        assertEquals(0, game.answers().size)
+        assertEquals(2, game.questions.size)
+        assertEquals(0, game.answers.size)
 
         game.answer(game.currentQuestion().correctOption, Fixtures.NOW)
 
-        assertEquals(1, game.answers().size)
-        assertEquals(0, game.answers().first().questionIndex)
-        assertEquals(2, game.questions().size)
+        assertEquals(1, game.answers.size)
+        assertEquals(0, game.answers.first().questionIndex)
+        assertEquals(2, game.questions.size)
     }
 
     @Test
     fun `remainingQuestions diminui a cada resposta`() {
         val game = Fixtures.game(difficulties = listOf(Difficulty.EASY, Difficulty.MEDIUM, Difficulty.HARD))
 
-        assertEquals(3, game.remainingQuestions())
+        assertEquals(3, game.remainingQuestions)
 
         game.answer(game.currentQuestion().correctOption, Fixtures.NOW)
-        assertEquals(2, game.remainingQuestions())
+        assertEquals(2, game.remainingQuestions)
 
         game.answer(game.currentQuestion().correctOption, Fixtures.NOW)
-        assertEquals(1, game.remainingQuestions())
+        assertEquals(1, game.remainingQuestions)
 
         game.answer(game.currentQuestion().correctOption, Fixtures.NOW)
-        assertEquals(0, game.remainingQuestions())
+        assertEquals(0, game.remainingQuestions)
     }
 
     @Test
@@ -91,10 +92,10 @@ class GameAggregateTest {
         game.answer(game.currentQuestion().correctOption, Fixtures.NOW)
         game.answer(game.currentQuestion().correctOption, Fixtures.NOW)
 
-        assertEquals(expected, game.score())
-        assertEquals(2, game.correctAnswersCount())
-        assertEquals(0, game.wrongAnswersCount())
-        assertTrue(game.isCompleted())
+        assertEquals(expected, game.score)
+        assertEquals(2, game.correctAnswers)
+        assertEquals(0, game.wrongAnswers)
+        assertTrue(game.isCompleted)
     }
 
     @Test
@@ -106,10 +107,10 @@ class GameAggregateTest {
             game.answer(question.options.first { it.id != question.correctOption }.id, Fixtures.NOW)
         }
 
-        assertEquals(0, game.score())
-        assertEquals(0, game.correctAnswersCount())
-        assertEquals(2, game.wrongAnswersCount())
-        assertTrue(game.isCompleted())
+        assertEquals(0, game.score)
+        assertEquals(0, game.correctAnswers)
+        assertEquals(2, game.wrongAnswers)
+        assertTrue(game.isCompleted)
     }
 
     @Test
@@ -120,9 +121,9 @@ class GameAggregateTest {
         val second = game.currentQuestion()
         game.answer(second.options.first { it.id != second.correctOption }.id, Fixtures.NOW)
 
-        assertEquals(Difficulty.EASY.points, game.score())
-        assertEquals(1, game.correctAnswersCount())
-        assertEquals(1, game.wrongAnswersCount())
+        assertEquals(Difficulty.EASY.points, game.score)
+        assertEquals(1, game.correctAnswers)
+        assertEquals(1, game.wrongAnswers)
     }
 
     @Test
@@ -130,7 +131,7 @@ class GameAggregateTest {
         val game = Fixtures.game(difficulties = listOf(Difficulty.EASY))
         game.answer(game.currentQuestion().correctOption, Fixtures.NOW)
 
-        assertThrows<ConflictException> { game.currentQuestion() }
+        assertThrows<DomainException> { game.currentQuestion() }
     }
 
     @Test
@@ -138,7 +139,7 @@ class GameAggregateTest {
         val game = Fixtures.game()
         game.abandon(Fixtures.NOW)
 
-        assertThrows<ConflictException> { game.currentQuestion() }
+        assertThrows<DomainException> { game.currentQuestion() }
     }
 
     @Test
@@ -148,10 +149,10 @@ class GameAggregateTest {
 
         game.abandon(abandonedAt)
 
-        assertEquals(GameStatus.ABANDONED, game.status())
-        assertEquals(abandonedAt, game.completedAt())
-        assertFalse(game.isCompleted())
-        assertFalse(game.isInProgress())
+        assertEquals(GameStatus.ABANDONED, game.status)
+        assertEquals(abandonedAt, game.completedAt)
+        assertFalse(game.isCompleted)
+        assertFalse(game.isInProgress)
     }
 
     @Test
@@ -159,7 +160,7 @@ class GameAggregateTest {
         val game = Fixtures.game()
         game.abandon(Fixtures.NOW)
 
-        assertThrows<ConflictException> { game.abandon(Fixtures.NOW.plusSeconds(1)) }
+        assertThrows<DomainException> { game.abandon(Fixtures.NOW.plusSeconds(1)) }
     }
 
     @Test
@@ -190,11 +191,11 @@ class GameAggregateTest {
 
         val restored = Game.reconstitute(original.state())
 
-        assertEquals(GameStatus.COMPLETED, restored.status())
-        assertEquals(original.score(), restored.score())
-        assertEquals(original.answers().size, restored.answers().size)
-        assertEquals(Fixtures.NOW, restored.completedAt())
-        assertThrows<ConflictException> { restored.answer(OptionId("opt-0"), Fixtures.NOW) }
+        assertEquals(GameStatus.COMPLETED, restored.status)
+        assertEquals(original.score, restored.score)
+        assertEquals(original.answers.size, restored.answers.size)
+        assertEquals(Fixtures.NOW, restored.completedAt)
+        assertThrows<DomainException> { restored.answer(OptionId("opt-0"), Fixtures.NOW) }
     }
 
     @Test
@@ -204,9 +205,9 @@ class GameAggregateTest {
 
         val restored = Game.reconstitute(original.state())
 
-        assertEquals(GameStatus.ABANDONED, restored.status())
-        assertFalse(restored.isInProgress())
-        assertEquals(0, restored.answers().size)
+        assertEquals(GameStatus.ABANDONED, restored.status)
+        assertFalse(restored.isInProgress)
+        assertEquals(0, restored.answers.size)
     }
 
     @Test
@@ -222,7 +223,7 @@ class GameAggregateTest {
 
         game.requireOwner(UserId("u-1"))
 
-        assertThrows<com.codelong.domain.exception.ForbiddenException> {
+        assertThrows<com.codelong.domain.exception.DomainException> {
             game.requireOwner(UserId("u-2"))
         }
     }
@@ -233,9 +234,9 @@ class GameAggregateTest {
 
         game.answer(OptionId("opt-1"), Fixtures.NOW)
 
-        val record = game.answers().first()
+        val record = game.answers.first()
         assertEquals(0, record.questionIndex)
         assertEquals(OptionId("opt-1"), record.chosenOption)
-        assertEquals(game.questions().first().id, record.questionId)
+        assertEquals(game.questions.first().id, record.questionId)
     }
 }

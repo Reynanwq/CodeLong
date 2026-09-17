@@ -1,8 +1,6 @@
 package com.codelong.domain.model
 
-import com.codelong.domain.exception.ConflictException
-import com.codelong.domain.exception.ForbiddenException
-import com.codelong.domain.exception.InvalidInputException
+import com.codelong.domain.exception.DomainException
 import com.codelong.domain.valueobject.Difficulty
 import com.codelong.domain.valueobject.GameStatus
 import com.codelong.domain.valueobject.OptionId
@@ -24,11 +22,11 @@ class GameTest {
         val result = game.answer(game.currentQuestion().correctOption, Fixtures.NOW)
 
         assertEquals(Difficulty.EASY.points, result.record.earnedPoints)
-        assertEquals(Difficulty.EASY.points, game.score())
-        assertEquals(1, game.correctAnswersCount())
-        assertEquals(0, game.wrongAnswersCount())
-        assertEquals(1, game.currentQuestionIndex())
-        assertTrue(game.isInProgress())
+        assertEquals(Difficulty.EASY.points, game.score)
+        assertEquals(1, game.correctAnswers)
+        assertEquals(0, game.wrongAnswers)
+        assertEquals(1, game.currentQuestionIndex)
+        assertTrue(game.isInProgress)
     }
 
     @Test
@@ -41,9 +39,9 @@ class GameTest {
 
         assertEquals(0, result.record.earnedPoints)
         assertFalse(result.record.correct)
-        assertEquals(0, game.score())
-        assertEquals(1, game.wrongAnswersCount())
-        assertEquals(1, game.currentQuestionIndex())
+        assertEquals(0, game.score)
+        assertEquals(1, game.wrongAnswers)
+        assertEquals(1, game.currentQuestionIndex)
     }
 
     @Test
@@ -53,11 +51,11 @@ class GameTest {
         val result = game.answer(game.currentQuestion().correctOption, Fixtures.NOW)
 
         assertTrue(result.gameCompleted)
-        assertTrue(game.isCompleted())
-        assertEquals(GameStatus.COMPLETED, game.status())
-        assertEquals(Fixtures.NOW, game.completedAt())
-        assertEquals(0, game.remainingQuestions())
-        assertEquals(1, game.currentQuestionIndex())
+        assertTrue(game.isCompleted)
+        assertEquals(GameStatus.COMPLETED, game.status)
+        assertEquals(Fixtures.NOW, game.completedAt)
+        assertEquals(0, game.remainingQuestions)
+        assertEquals(1, game.currentQuestionIndex)
     }
 
     @Test
@@ -65,7 +63,7 @@ class GameTest {
         val game = Fixtures.game(difficulties = listOf(Difficulty.EASY))
         game.answer(game.currentQuestion().correctOption, Fixtures.NOW)
 
-        assertThrows<ConflictException> {
+        assertThrows<DomainException> {
             game.answer(OptionId("opt-3"), Fixtures.NOW)
         }
     }
@@ -74,7 +72,7 @@ class GameTest {
     fun `opcao inexistente e rejeitada`() {
         val game = Fixtures.game()
 
-        assertThrows<InvalidInputException> {
+        assertThrows<DomainException> {
             game.answer(OptionId("nao-existe"), Fixtures.NOW)
         }
     }
@@ -85,10 +83,10 @@ class GameTest {
 
         game.abandon(Fixtures.NOW)
 
-        assertEquals(GameStatus.ABANDONED, game.status())
-        assertFalse(game.isInProgress())
-        assertThrows<ConflictException> {
-            game.answer(game.questions().first().correctOption, Fixtures.NOW)
+        assertEquals(GameStatus.ABANDONED, game.status)
+        assertFalse(game.isInProgress)
+        assertThrows<DomainException> {
+            game.answer(game.questions.first().correctOption, Fixtures.NOW)
         }
     }
 
@@ -96,7 +94,7 @@ class GameTest {
     fun `somente o dono acessa a partida`() {
         val game = Fixtures.game(userId = "u-1")
 
-        assertThrows<ForbiddenException> {
+        assertThrows<DomainException> {
             game.requireOwner(UserId("u-2"))
         }
         game.requireOwner(UserId("u-1"))
@@ -109,11 +107,11 @@ class GameTest {
 
         val restored = Game.reconstitute(game.state())
 
-        assertEquals(game.score(), restored.score())
-        assertEquals(game.currentQuestionIndex(), restored.currentQuestionIndex())
-        assertEquals(game.status(), restored.status())
-        assertEquals(game.answers().size, restored.answers().size)
-        assertEquals(game.questions().size, restored.questions().size)
+        assertEquals(game.score, restored.score)
+        assertEquals(game.currentQuestionIndex, restored.currentQuestionIndex)
+        assertEquals(game.status, restored.status)
+        assertEquals(game.answers.size, restored.answers.size)
+        assertEquals(game.questions.size, restored.questions.size)
         assertNotNull(restored.currentQuestion())
     }
 }

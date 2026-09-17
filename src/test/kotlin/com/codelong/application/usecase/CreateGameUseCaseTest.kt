@@ -1,9 +1,9 @@
 package com.codelong.application.usecase
 
+import com.codelong.application.service.DefaultGameFactory
+
 import com.codelong.application.service.GameFactory
-import com.codelong.domain.exception.ConflictException
-import com.codelong.domain.exception.ForbiddenException
-import com.codelong.domain.exception.NotFoundException
+import com.codelong.domain.exception.DomainException
 import com.codelong.domain.service.GameSequencer
 import com.codelong.domain.valueobject.Difficulty
 import com.codelong.domain.valueobject.UserId
@@ -32,11 +32,11 @@ class CreateGameUseCaseTest {
         userRepository = InMemoryUserRepository()
         questionRepository = InMemoryQuestionRepository()
         gameRepository = InMemoryGameRepository()
-        useCase = CreateGameUseCase(
+        useCase = CreateGameUseCaseImpl(
             userRepository = userRepository,
             questionRepository = questionRepository,
             gameRepository = gameRepository,
-            gameFactory = GameFactory(GameSequencer(Random(1)), TestClock.fixed)
+            gameFactory = DefaultGameFactory(GameSequencer(Random(1)), TestClock.fixed)
         )
     }
 
@@ -50,10 +50,10 @@ class CreateGameUseCaseTest {
         val game = result.game
 
         assertTrue(result.created)
-        assertTrue(game.isInProgress())
+        assertTrue(game.isInProgress)
         assertEquals(UserId("u-1"), game.userId)
-        assertEquals(2, game.totalQuestions())
-        assertEquals(0, game.currentQuestionIndex())
+        assertEquals(2, game.totalQuestions)
+        assertEquals(0, game.currentQuestionIndex)
         assertEquals(1L, game.version)
         assertEquals(1, gameRepository.all().size)
     }
@@ -82,14 +82,14 @@ class CreateGameUseCaseTest {
 
         val game = useCase.create(UserId("u-1")).game
 
-        assertEquals(1, game.totalQuestions())
+        assertEquals(1, game.totalQuestions)
     }
 
     @Test
     fun `sem perguntas ativas nao inicia partida`() {
         userRepository.save(Fixtures.user(id = "u-1"))
 
-        val error = assertThrows<ConflictException> { useCase.create(UserId("u-1")) }
+        val error = assertThrows<DomainException> { useCase.create(UserId("u-1")) }
 
         assertEquals("NO_ACTIVE_QUESTIONS", error.code)
     }
@@ -98,7 +98,7 @@ class CreateGameUseCaseTest {
     fun `usuario inexistente nao inicia partida`() {
         questionRepository.save(Fixtures.question(id = "q-1"))
 
-        assertThrows<NotFoundException> { useCase.create(UserId("ninguem")) }
+        assertThrows<DomainException> { useCase.create(UserId("ninguem")) }
     }
 
     @Test
@@ -106,6 +106,6 @@ class CreateGameUseCaseTest {
         userRepository.save(Fixtures.user(id = "u-1").deactivate(TestClock.fixed.instant()))
         questionRepository.save(Fixtures.question(id = "q-1"))
 
-        assertThrows<ForbiddenException> { useCase.create(UserId("u-1")) }
+        assertThrows<DomainException> { useCase.create(UserId("u-1")) }
     }
 }

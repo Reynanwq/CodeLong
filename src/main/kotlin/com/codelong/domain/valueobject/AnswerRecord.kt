@@ -12,4 +12,8 @@ data class AnswerRecord(
     val correct: Boolean,
     val earnedPoints: Int,
     val answeredAt: Instant
-)
+) {
+    val questionIdText: String get() = questionId.value
+
+    val chosenOptionText: String get() = chosenOption.value
+}

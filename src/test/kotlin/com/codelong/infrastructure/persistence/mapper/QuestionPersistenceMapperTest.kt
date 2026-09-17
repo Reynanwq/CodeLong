@@ -22,10 +22,10 @@ class QuestionPersistenceMapperTest {
         val document = QuestionPersistenceMapper.toDocument(question)
 
         assertEquals("q-1", document.id)
-        assertEquals(question.statement(), document.statement)
+        assertEquals(question.statement, document.statement)
         assertEquals(3, document.options.size)
         assertEquals("opt-0", document.correctOption)
-        assertEquals(question.explanation(), document.explanation)
+        assertEquals(question.explanation, document.explanation)
         assertEquals("KAFKA", document.category)
         assertEquals("EXPERT", document.difficulty)
         assertEquals("ACTIVE", document.status)
@@ -59,14 +59,14 @@ class QuestionPersistenceMapperTest {
         val question = QuestionPersistenceMapper.toDomain(document)
 
         assertEquals("q-1", question.id.value)
-        assertEquals("Enunciado?", question.statement())
-        assertEquals(2, question.options().size)
-        assertEquals(OptionId("a"), question.correctOption())
-        assertEquals("Explicacao.", question.explanation())
-        assertEquals(Category.SOLID, question.category())
-        assertEquals(Difficulty.HARD, question.difficulty())
-        assertEquals(QuestionStatus.INACTIVE, question.status())
-        assertFalse(question.isActive())
+        assertEquals("Enunciado?", question.statement)
+        assertEquals(2, question.options.size)
+        assertEquals(OptionId("a"), question.correctOption)
+        assertEquals("Explicacao.", question.explanation)
+        assertEquals(Category.SOLID, question.category)
+        assertEquals(Difficulty.HARD, question.difficulty)
+        assertEquals(QuestionStatus.INACTIVE, question.status)
+        assertFalse(question.isActive)
     }
 
     @Test
@@ -76,15 +76,15 @@ class QuestionPersistenceMapperTest {
         val restored = QuestionPersistenceMapper.toDomain(QuestionPersistenceMapper.toDocument(original))
 
         assertEquals(original.id, restored.id)
-        assertEquals(original.statement(), restored.statement())
-        assertEquals(original.options(), restored.options())
-        assertEquals(original.correctOption(), restored.correctOption())
-        assertEquals(original.explanation(), restored.explanation())
-        assertEquals(original.category(), restored.category())
-        assertEquals(original.difficulty(), restored.difficulty())
-        assertEquals(original.status(), restored.status())
+        assertEquals(original.statement, restored.statement)
+        assertEquals(original.options, restored.options)
+        assertEquals(original.correctOption, restored.correctOption)
+        assertEquals(original.explanation, restored.explanation)
+        assertEquals(original.category, restored.category)
+        assertEquals(original.difficulty, restored.difficulty)
+        assertEquals(original.status, restored.status)
         assertEquals(original.createdAt, restored.createdAt)
-        assertEquals(original.updatedAt(), restored.updatedAt())
+        assertEquals(original.updatedAt, restored.updatedAt)
     }
 
     @Test
@@ -93,9 +93,9 @@ class QuestionPersistenceMapperTest {
 
         val restored = QuestionPersistenceMapper.toDomain(QuestionPersistenceMapper.toDocument(original))
 
-        assertEquals(QuestionStatus.INACTIVE, restored.status())
-        assertFalse(restored.isActive())
-        assertEquals(Fixtures.NOW.plusSeconds(30), restored.updatedAt())
+        assertEquals(QuestionStatus.INACTIVE, restored.status)
+        assertFalse(restored.isActive)
+        assertEquals(Fixtures.NOW.plusSeconds(30), restored.updatedAt)
     }
 
     @Test
@@ -113,7 +113,7 @@ class QuestionPersistenceMapperTest {
             updatedAt = Instant.EPOCH
         )
 
-        assertEquals(Category.KOTLIN, QuestionPersistenceMapper.toDomain(document).category())
+        assertEquals(Category.KOTLIN, QuestionPersistenceMapper.toDomain(document).category)
     }
 
     @Test
@@ -121,6 +121,6 @@ class QuestionPersistenceMapperTest {
         val document = QuestionPersistenceMapper.toDocument(Fixtures.question(id = "q-1"))
 
         assertEquals("ACTIVE", document.status)
-        assertTrue(QuestionPersistenceMapper.toDomain(document).isActive())
+        assertTrue(QuestionPersistenceMapper.toDomain(document).isActive)
     }
 }

@@ -12,16 +12,20 @@ import java.time.Clock
  * Servico de aplicacao que monta uma partida: sequencia as perguntas ativas e
  * cria o agregado [Game] com o snapshot persistido.
  */
-class GameFactory(
+interface GameFactory {
+    fun start(user: User, activeQuestions: List<Question>): Game
+}
+
+class DefaultGameFactory(
     private val sequencer: GameSequencer,
     private val clock: Clock
-) {
+) : GameFactory {
 
-    fun start(user: User, activeQuestions: List<Question>): Game {
+    override fun start(user: User, activeQuestions: List<Question>): Game {
         val sequence = sequencer.sequence(activeQuestions)
         val setup = GameSetup(
             userId = user.id,
-            username = user.username.value,
+            username = user.usernameText,
             questions = sequence
         )
         return Game.newGame(Ids.newGameId(), setup, clock.instant())

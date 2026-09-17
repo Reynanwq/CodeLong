@@ -7,12 +7,14 @@ import com.codelong.domain.valueobject.QuestionPublic
 import jakarta.validation.constraints.NotBlank
 import java.time.Instant
 
+private const val OPTION_ID_REQUIRED = "optionId is required"
+
 data class OptionResponse(
     val id: String,
     val text: String
 ) {
     companion object {
-        fun from(option: QuestionOption) = OptionResponse(option.id.value, option.text)
+        fun from(option: QuestionOption) = OptionResponse(option.idText, option.text)
     }
 }
 
@@ -25,11 +27,11 @@ data class PublicQuestionResponse(
 ) {
     companion object {
         fun from(question: QuestionPublic) = PublicQuestionResponse(
-            id = question.id.value,
+            id = question.idText,
             statement = question.statement,
             options = question.options.map(OptionResponse::from),
-            category = question.category.name,
-            difficulty = question.difficulty.name
+            category = question.categoryName,
+            difficulty = question.difficultyName
         )
     }
 }
@@ -48,22 +50,22 @@ data class GameResponse(
 ) {
     companion object {
         fun from(game: Game) = GameResponse(
-            id = game.id.value,
-            status = game.status().name,
-            currentQuestionIndex = game.currentQuestionIndex(),
-            totalQuestions = game.totalQuestions(),
-            remainingQuestions = game.remainingQuestions(),
-            score = game.score(),
-            correctAnswers = game.correctAnswersCount(),
-            wrongAnswers = game.wrongAnswersCount(),
+            id = game.idText,
+            status = game.statusName,
+            currentQuestionIndex = game.currentQuestionIndex,
+            totalQuestions = game.totalQuestions,
+            remainingQuestions = game.remainingQuestions,
+            score = game.score,
+            correctAnswers = game.correctAnswers,
+            wrongAnswers = game.wrongAnswers,
             startedAt = game.startedAt,
-            completedAt = game.completedAt()
+            completedAt = game.completedAt
         )
     }
 }
 
 data class AnswerRequest(
-    @field:NotBlank(message = "optionId is required")
+    @field:NotBlank(message = OPTION_ID_REQUIRED)
     val optionId: String
 )
 
@@ -84,8 +86,8 @@ data class AnswerResponse(
     companion object {
         fun from(result: AnswerResult) = AnswerResponse(
             correct = result.record.correct,
-            chosenOption = result.record.chosenOption.value,
-            correctOption = result.question.correctOption.value,
+            chosenOption = result.record.chosenOptionText,
+            correctOption = result.question.correctOptionText,
             explanation = result.question.explanation,
             earnedPoints = result.record.earnedPoints,
             currentScore = result.currentScore,

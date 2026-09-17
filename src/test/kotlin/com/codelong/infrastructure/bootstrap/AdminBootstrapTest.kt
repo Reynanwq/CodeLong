@@ -1,5 +1,7 @@
 package com.codelong.infrastructure.bootstrap
 
+import com.codelong.application.service.DefaultUserFactory
+
 import com.codelong.application.service.UserFactory
 import com.codelong.domain.valueobject.Role
 import com.codelong.infrastructure.security.SecurityProperties
@@ -21,7 +23,7 @@ class AdminBootstrapTest {
     @BeforeEach
     fun setUp() {
         repository = InMemoryUserRepository()
-        factory = UserFactory(FakePasswordEncoder(), TestClock.fixed)
+        factory = DefaultUserFactory(FakePasswordEncoder(), TestClock.fixed)
     }
 
     private fun bootstrap(username: String, password: String) = AdminBootstrap(
@@ -65,8 +67,8 @@ class AdminBootstrapTest {
         val admin = repository.all().single()
         assertEquals("admin", admin.username.value)
         assertEquals(Role.ADMIN, admin.role)
-        assertTrue(admin.isAdmin())
-        assertTrue(admin.isActive())
+        assertTrue(admin.isAdmin)
+        assertTrue(admin.isActive)
     }
 
     @Test
@@ -80,7 +82,7 @@ class AdminBootstrapTest {
     fun `admin criado usa o hash da senha`() {
         bootstrap("admin", "admin12345").run(args)
 
-        assertEquals("hashed:admin12345", repository.all().single().passwordHash().value)
+        assertEquals("hashed:admin12345", repository.all().single().passwordHash.value)
     }
 
     @Test
@@ -98,7 +100,7 @@ class AdminBootstrapTest {
         bootstrap("admin", "admin12345").run(args)
 
         assertEquals(1, repository.all().size)
-        assertEquals("hashed:outra-senha", repository.all().single().passwordHash().value)
+        assertEquals("hashed:outra-senha", repository.all().single().passwordHash.value)
     }
 
     @Test

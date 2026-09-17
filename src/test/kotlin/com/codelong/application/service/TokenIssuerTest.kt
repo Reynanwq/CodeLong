@@ -1,5 +1,7 @@
 package com.codelong.application.service
 
+import com.codelong.application.service.DefaultTokenIssuer
+
 import com.codelong.domain.port.TokenService
 import com.codelong.domain.valueobject.Role
 import com.codelong.domain.valueobject.TokenClaims
@@ -26,7 +28,7 @@ class TokenIssuerTest {
 
     private val tokenService = CapturingTokenService()
     private val expiration = Duration.ofHours(2)
-    private val issuer = TokenIssuer(tokenService, TestClock.fixed, expiration)
+    private val issuer = DefaultTokenIssuer(tokenService, TestClock.fixed, expiration)
 
     @Test
     fun `issue devolve o token gerado pelo servico`() {
@@ -72,7 +74,7 @@ class TokenIssuerTest {
 
     @Test
     fun `expiracao customizada e respeitada`() {
-        val shortIssuer = TokenIssuer(tokenService, TestClock.fixed, Duration.ofMinutes(15))
+        val shortIssuer = DefaultTokenIssuer(tokenService, TestClock.fixed, Duration.ofMinutes(15))
 
         shortIssuer.issue(Fixtures.user())
 

@@ -1,6 +1,7 @@
 package com.codelong.integration
 
-import com.codelong.domain.exception.ConcurrentGameModificationException
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.domain.port.GameRepository
 import com.codelong.domain.port.QuestionRepository
 import com.codelong.domain.port.QuestionSearch
@@ -75,10 +76,10 @@ class PersistenceIntegrationTest {
 
         val found = userRepository.findById(UserId("u-1"))
         assertNotNull(found)
-        assertEquals(saved.passwordHash(), found!!.passwordHash())
+        assertEquals(saved.passwordHash, found!!.passwordHash)
         assertEquals("user-1", found.username.value)
         assertEquals("user-1@codelong.dev", found.email.value)
-        assertTrue(found.isActive())
+        assertTrue(found.isActive)
     }
 
     @Test
@@ -141,19 +142,19 @@ class PersistenceIntegrationTest {
 
         val loaded = gameRepository.findById(GameId("g-1"))
         assertNotNull(loaded)
-        assertEquals(2, loaded!!.totalQuestions())
+        assertEquals(2, loaded!!.totalQuestions)
         assertEquals(UserId("u-1"), loaded.userId)
         assertEquals("user-1", loaded.username)
-        assertTrue(loaded.isInProgress())
-        assertEquals(0, loaded.answers().size)
+        assertTrue(loaded.isInProgress)
+        assertEquals(0, loaded.answers.size)
 
         loaded.answer(loaded.currentQuestion().correctOption, Fixtures.NOW)
         gameRepository.save(loaded)
 
         val reloaded = gameRepository.findById(GameId("g-1"))!!
-        assertEquals(1, reloaded.answers().size)
-        assertEquals(1, reloaded.currentQuestionIndex())
-        assertEquals(Difficulty.EASY.points, reloaded.score())
+        assertEquals(1, reloaded.answers.size)
+        assertEquals(1, reloaded.currentQuestionIndex)
+        assertEquals(Difficulty.EASY.points, reloaded.score)
     }
 
     @Test
@@ -170,7 +171,7 @@ class PersistenceIntegrationTest {
         assertTrue(savedA.version > created.version, "a versao deve avancar a cada gravacao")
 
         copyB.answer(copyB.currentQuestion().correctOption, Fixtures.NOW)
-        assertThrows<ConcurrentGameModificationException> {
+        assertThrows<DomainException> {
             gameRepository.save(copyB)
         }
     }
@@ -208,6 +209,6 @@ class PersistenceIntegrationTest {
         val loaded = gameRepository.save(game)
         loaded.answer(loaded.currentQuestion().correctOption, Fixtures.NOW)
         val completed = gameRepository.save(loaded)
-        assertEquals(com.codelong.domain.valueobject.GameStatus.COMPLETED, completed.status())
+        assertEquals(com.codelong.domain.valueobject.GameStatus.COMPLETED, completed.status)
     }
 }

@@ -1,15 +1,20 @@
 package com.codelong.application.usecase
 
+import com.codelong.domain.exception.Errors
+
+
 import com.codelong.application.command.ChangePasswordCommand
 import com.codelong.application.service.PasswordPolicy
-import com.codelong.domain.exception.InvalidInputException
-import com.codelong.domain.exception.NotFoundException
-import com.codelong.domain.exception.UnauthorizedException
 import com.codelong.domain.model.User
 import com.codelong.domain.port.PasswordEncoder
 import com.codelong.domain.port.UserRepository
 import com.codelong.domain.valueobject.UserId
 import java.time.Clock
+
+interface ChangePasswordUseCase {
+    fun change(command: ChangePasswordCommand, actorId: UserId): User
+}
+
 
 /**
  * Troca a senha do proprio usuario autenticado.
@@ -18,31 +23,26 @@ import java.time.Clock
  * reutilizacao da senha vigente. Como o JWT e stateless, tokens ja emitidos
  * continuam validos ate expirarem.
  */
-class ChangePasswordUseCase(
+class ChangePasswordUseCaseImpl(
     private val userRepository: UserRepository,
     private val passwordEncoder: PasswordEncoder,
     private val passwordPolicy: PasswordPolicy,
     private val clock: Clock
-) {
+) : ChangePasswordUseCase {
 
-    fun change(command: ChangePasswordCommand, actorId: UserId): User {
+
+    override fun change(command: ChangePasswordCommand, actorId: UserId): User {
         val user = userRepository.findById(actorId)
-            ?: throw NotFoundException("USER_NOT_FOUND", "User not found")
+            ?: throw Errors.userNotFound()
 
-        if (!passwordEncoder.matches(command.currentPassword, user.passwordHash())) {
-            throw UnauthorizedException(
-                "INVALID_CURRENT_PASSWORD",
-                "The current password is incorrect"
-            )
+        passwordEncoder.matches(command.currentPassword, user.passwordHash).takeUnless { it }?.let {
+            throw Errors.invalidCurrentPassword()
         }
 
         passwordPolicy.requireStrong(command.newPassword)
 
-        if (passwordEncoder.matches(command.newPassword, user.passwordHash())) {
-            throw InvalidInputException(
-                "password.unchanged",
-                "The new password must differ from the current one"
-            )
+        passwordEncoder.matches(command.newPassword, user.passwordHash).takeIf { it }?.let {
+            throw Errors.passwordUnchanged()
         }
 
         user.changePassword(passwordEncoder.encode(command.newPassword), clock.instant())

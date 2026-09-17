@@ -80,8 +80,8 @@ class GamePersistenceMapperTest {
         assertEquals("g-1", game.id.value)
         assertEquals("u-1", game.userId.value)
         assertEquals("alice", game.username)
-        assertEquals(GameStatus.IN_PROGRESS, game.status())
-        assertEquals(1, game.totalQuestions())
+        assertEquals(GameStatus.IN_PROGRESS, game.status)
+        assertEquals(1, game.totalQuestions)
         assertEquals(OptionId("a"), game.currentQuestion().correctOption)
         assertEquals(5L, game.version)
     }
@@ -93,12 +93,12 @@ class GamePersistenceMapperTest {
 
         val restored = GamePersistenceMapper.toDomain(GamePersistenceMapper.toDocument(original))
 
-        assertEquals(original.status(), restored.status())
-        assertEquals(original.score(), restored.score())
-        assertEquals(original.currentQuestionIndex(), restored.currentQuestionIndex())
-        assertEquals(original.answers(), restored.answers())
-        assertEquals(original.correctAnswersCount(), restored.correctAnswersCount())
-        assertEquals(original.wrongAnswersCount(), restored.wrongAnswersCount())
+        assertEquals(original.status, restored.status)
+        assertEquals(original.score, restored.score)
+        assertEquals(original.currentQuestionIndex, restored.currentQuestionIndex)
+        assertEquals(original.answers, restored.answers)
+        assertEquals(original.correctAnswers, restored.correctAnswers)
+        assertEquals(original.wrongAnswers, restored.wrongAnswers)
     }
 
     @Test
@@ -108,10 +108,10 @@ class GamePersistenceMapperTest {
 
         val restored = GamePersistenceMapper.toDomain(GamePersistenceMapper.toDocument(original))
 
-        assertEquals(GameStatus.COMPLETED, restored.status())
-        assertEquals(Fixtures.NOW, restored.completedAt())
-        assertEquals(Difficulty.MASTER.points, restored.score())
-        assertTrue(restored.isCompleted())
+        assertEquals(GameStatus.COMPLETED, restored.status)
+        assertEquals(Fixtures.NOW, restored.completedAt)
+        assertEquals(Difficulty.MASTER.points, restored.score)
+        assertTrue(restored.isCompleted)
     }
 
     @Test
@@ -121,8 +121,8 @@ class GamePersistenceMapperTest {
 
         val restored = GamePersistenceMapper.toDomain(GamePersistenceMapper.toDocument(original))
 
-        assertEquals(GameStatus.ABANDONED, restored.status())
-        assertFalse(restored.isInProgress())
+        assertEquals(GameStatus.ABANDONED, restored.status)
+        assertFalse(restored.isInProgress)
     }
 
     @Test
@@ -154,11 +154,11 @@ class GamePersistenceMapperTest {
 
         val game = GamePersistenceMapper.toDomain(document)
 
-        assertEquals(1, game.answers().size)
-        assertEquals(0, game.answers().first().questionIndex)
-        assertEquals(OptionId("a"), game.answers().first().chosenOption)
-        assertTrue(game.answers().first().correct)
-        assertEquals(20, game.answers().first().earnedPoints)
+        assertEquals(1, game.answers.size)
+        assertEquals(0, game.answers.first().questionIndex)
+        assertEquals(OptionId("a"), game.answers.first().chosenOption)
+        assertTrue(game.answers.first().correct)
+        assertEquals(20, game.answers.first().earnedPoints)
     }
 
     @Test
@@ -168,7 +168,7 @@ class GamePersistenceMapperTest {
         val document = GamePersistenceMapper.toDocument(original)
         val restored = GamePersistenceMapper.toDomain(document.copy(questions = emptyList()))
 
-        assertEquals(0, restored.totalQuestions())
-        assertTrue(restored.isInProgress())
+        assertEquals(0, restored.totalQuestions)
+        assertTrue(restored.isInProgress)
     }
 }

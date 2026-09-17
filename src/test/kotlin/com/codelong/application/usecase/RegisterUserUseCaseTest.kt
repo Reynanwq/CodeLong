@@ -1,11 +1,17 @@
 package com.codelong.application.usecase
 
+import com.codelong.application.service.DefaultUserFactory
+
+import com.codelong.application.service.DefaultTokenIssuer
+
+import com.codelong.application.service.DefaultPasswordPolicy
+
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.application.command.RegisterUserCommand
 import com.codelong.application.service.PasswordPolicy
 import com.codelong.application.service.TokenIssuer
 import com.codelong.application.service.UserFactory
-import com.codelong.domain.exception.ConflictException
-import com.codelong.domain.exception.InvalidInputException
 import com.codelong.support.FakePasswordEncoder
 import com.codelong.support.FakeTokenService
 import com.codelong.support.InMemoryUserRepository
@@ -25,11 +31,11 @@ class RegisterUserUseCaseTest {
     @BeforeEach
     fun setUp() {
         repository = InMemoryUserRepository()
-        useCase = RegisterUserUseCase(
+        useCase = RegisterUserUseCaseImpl(
             userRepository = repository,
-            userFactory = UserFactory(FakePasswordEncoder(), TestClock.fixed),
-            tokenIssuer = TokenIssuer(FakeTokenService(), TestClock.fixed, Duration.ofHours(8)),
-            passwordPolicy = PasswordPolicy()
+            userFactory = DefaultUserFactory(FakePasswordEncoder(), TestClock.fixed),
+            tokenIssuer = DefaultTokenIssuer(FakeTokenService(), TestClock.fixed, Duration.ofHours(8)),
+            passwordPolicy = DefaultPasswordPolicy()
         )
     }
 
@@ -38,8 +44,8 @@ class RegisterUserUseCaseTest {
         val result = useCase.register(RegisterUserCommand("dev", "dev@codelong.dev", "secret123"))
 
         assertEquals("dev", result.user.username.value)
-        assertEquals("hashed:secret123", result.user.passwordHash().value)
-        assertTrue(result.user.isActive())
+        assertEquals("hashed:secret123", result.user.passwordHash.value)
+        assertTrue(result.user.isActive)
         assertTrue(result.token.startsWith("token-"))
         assertEquals(1, repository.all().size)
     }
@@ -48,7 +54,7 @@ class RegisterUserUseCaseTest {
     fun `rejeita username duplicado`() {
         useCase.register(RegisterUserCommand("dev", "dev@codelong.dev", "secret123"))
 
-        val error = assertThrows<ConflictException> {
+        val error = assertThrows<DomainException> {
             useCase.register(RegisterUserCommand("dev", "outro@codelong.dev", "secret123"))
         }
 
@@ -59,7 +65,7 @@ class RegisterUserUseCaseTest {
     fun `rejeita email duplicado`() {
         useCase.register(RegisterUserCommand("dev", "dev@codelong.dev", "secret123"))
 
-        val error = assertThrows<ConflictException> {
+        val error = assertThrows<DomainException> {
             useCase.register(RegisterUserCommand("dev2", "dev@codelong.dev", "secret123"))
         }
 
@@ -68,7 +74,7 @@ class RegisterUserUseCaseTest {
 
     @Test
     fun `rejeita senha fraca`() {
-        val error = assertThrows<InvalidInputException> {
+        val error = assertThrows<DomainException> {
             useCase.register(RegisterUserCommand("dev", "dev@codelong.dev", "curta"))
         }
 

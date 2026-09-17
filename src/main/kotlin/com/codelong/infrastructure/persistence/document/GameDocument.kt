@@ -6,9 +6,9 @@ import org.springframework.data.mongodb.core.index.CompoundIndex
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.Instant
 
-@Document(collection = "games")
-@CompoundIndex(name = "game_ranking_idx", def = "{'status': 1, 'score': -1, 'correctAnswers': -1}")
-@CompoundIndex(name = "game_user_idx", def = "{'userId': 1, 'status': 1}")
+@Document(collection = MongoSchema.Collection.GAMES)
+@CompoundIndex(name = MongoSchema.Index.GAME_RANKING, def = MongoSchema.Index.GAME_RANKING_DEF)
+@CompoundIndex(name = MongoSchema.Index.GAME_USER, def = MongoSchema.Index.GAME_USER_DEF)
 data class GameDocument(
     @field:Id val id: String = "",
     val userId: String = "",

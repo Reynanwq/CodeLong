@@ -21,7 +21,7 @@ data class PageResponse<T>(
 ) {
     companion object {
         fun <T> of(items: List<T>, totalElements: Long, page: Int, size: Int): PageResponse<T> {
-            val totalPages = if (size <= 0) 0 else ((totalElements + size - 1) / size).toInt()
+            val totalPages = size.takeIf { it > 0 }?.let { ((totalElements + it - 1) / it).toInt() } ?: 0
             return PageResponse(items, totalElements, page, size, totalPages)
         }
     }

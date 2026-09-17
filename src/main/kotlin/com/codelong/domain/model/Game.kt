@@ -1,8 +1,6 @@
 package com.codelong.domain.model
 
-import com.codelong.domain.exception.ConflictException
-import com.codelong.domain.exception.ForbiddenException
-import com.codelong.domain.exception.InvalidInputException
+import com.codelong.domain.exception.Errors
 import com.codelong.domain.valueobject.AnswerEval
 import com.codelong.domain.valueobject.AnswerRecord
 import com.codelong.domain.valueobject.GameId
@@ -18,45 +16,58 @@ class Game private constructor(
     val id: GameId,
     val userId: UserId,
     val username: String,
-    private var status: GameStatus,
+    status: GameStatus,
     val startedAt: Instant,
-    private var completedAt: Instant?,
-    private var currentQuestionIndex: Int,
-    private val questions: List<GameQuestion>,
-    private val answers: MutableList<AnswerRecord>,
-    private var score: Int,
-    private var correctAnswers: Int,
-    private var wrongAnswers: Int,
+    completedAt: Instant?,
+    currentQuestionIndex: Int,
+    val questions: List<GameQuestion>,
+    answerRecords: MutableList<AnswerRecord>,
+    score: Int,
+    correctAnswerCount: Int,
+    wrongAnswerCount: Int,
     var version: Long
 ) {
 
-    fun status(): GameStatus = status
+    var status: GameStatus = status
+        private set
 
-    fun completedAt(): Instant? = completedAt
+    var completedAt: Instant? = completedAt
+        private set
 
-    fun currentQuestionIndex(): Int = currentQuestionIndex
+    var currentQuestionIndex: Int = currentQuestionIndex
+        private set
 
-    fun questions(): List<GameQuestion> = questions
+    var score: Int = score
+        private set
 
-    fun answers(): List<AnswerRecord> = answers.toList()
+    var correctAnswers: Int = correctAnswerCount
+        private set
 
-    fun score(): Int = score
+    var wrongAnswers: Int = wrongAnswerCount
+        private set
 
-    fun correctAnswersCount(): Int = correctAnswers
+    private val answerRecords: MutableList<AnswerRecord> = answerRecords
 
-    fun wrongAnswersCount(): Int = wrongAnswers
+    val answers: List<AnswerRecord> get() = answerRecords.toList()
 
-    fun totalQuestions(): Int = questions.size
+    val totalQuestions: Int get() = questions.size
 
-    fun isInProgress(): Boolean = status == GameStatus.IN_PROGRESS
+    /** Quantidade de perguntas restantes incluindo a atual. */
+    val remainingQuestions: Int get() = questions.size - currentQuestionIndex
 
-    fun isCompleted(): Boolean = status == GameStatus.COMPLETED
+    val isInProgress: Boolean get() = status == GameStatus.IN_PROGRESS
+
+    val isCompleted: Boolean get() = status == GameStatus.COMPLETED
+
+    val idText: String get() = id.value
+
+    val statusName: String get() = status.name
 
     fun isOwnedBy(actor: UserId): Boolean = userId == actor
 
     fun requireOwner(actor: UserId) {
-        if (!isOwnedBy(actor)) {
-            throw ForbiddenException("GAME_ACCESS_DENIED", "You do not have access to this game")
+        isOwnedBy(actor).takeUnless { it }?.let {
+            throw Errors.gameAccessDenied()
         }
     }
 
@@ -65,10 +76,7 @@ class Game private constructor(
         return questions[currentQuestionIndex]
     }
 
-    /** Quantidade de perguntas restantes incluindo a atual. */
-    fun remainingQuestions(): Int = questions.size - currentQuestionIndex
-
-    fun answered(questionIndex: Int): Boolean = answers.any { it.questionIndex == questionIndex }
+    fun answered(questionIndex: Int): Boolean = answerRecords.any { it.questionIndex == questionIndex }
 
     /**
      * Processa uma resposta para a pergunta atual.
@@ -82,16 +90,13 @@ class Game private constructor(
         requireInProgress()
 
         val question = questions[currentQuestionIndex]
-        if (!question.hasOption(optionId)) {
-            throw InvalidInputException(
-                "answer.option.invalid",
-                "The chosen option is not valid for the current question"
-            )
+        question.hasOption(optionId).takeUnless { it }?.let {
+            throw Errors.invalidAnswerOption()
         }
 
         val correct = question.isCorrect(optionId)
-        val earnedPoints = if (correct) question.difficulty.points else 0
-        answers.add(
+        val earnedPoints = question.pointsForCorrect.takeIf { correct } ?: 0
+        answerRecords.add(
             AnswerRecord(
                 questionIndex = currentQuestionIndex,
                 questionId = question.id,
@@ -103,24 +108,26 @@ class Game private constructor(
         )
 
         score += earnedPoints
-        if (correct) correctAnswers++ else wrongAnswers++
+        val increments = mapOf(true to 1, false to 0)
+        correctAnswers += increments.getValue(correct)
+        wrongAnswers += increments.getValue(!correct)
 
         val answeredIndex = currentQuestionIndex
         val isLast = answeredIndex >= questions.size - 1
         currentQuestionIndex++
 
-        if (isLast) {
+        isLast.takeIf { it }?.let {
             status = GameStatus.COMPLETED
             completedAt = answeredAt
         }
 
         return AnswerEval(
-            record = answers.last(),
+            record = answerRecords.last(),
             question = question,
             currentScore = score,
             correctAnswers = correctAnswers,
             wrongAnswers = wrongAnswers,
-            gameCompleted = status == GameStatus.COMPLETED,
+            gameCompleted = isCompleted,
             questionIndex = answeredIndex,
             totalQuestions = questions.size
         )
@@ -141,7 +148,7 @@ class Game private constructor(
         completedAt = completedAt,
         currentQuestionIndex = currentQuestionIndex,
         questions = questions,
-        answers = answers.toList(),
+        answers = answers,
         score = score,
         correctAnswers = correctAnswers,
         wrongAnswers = wrongAnswers,
@@ -149,11 +156,8 @@ class Game private constructor(
     )
 
     private fun requireInProgress() {
-        if (status != GameStatus.IN_PROGRESS) {
-            throw ConflictException(
-                "GAME_FINISHED",
-                "This game is already finished and cannot receive new answers"
-            )
+        status.takeUnless { it == GameStatus.IN_PROGRESS }?.let {
+            throw Errors.gameFinished()
         }
     }
 
@@ -167,10 +171,10 @@ class Game private constructor(
             completedAt = null,
             currentQuestionIndex = 0,
             questions = setup.questions,
-            answers = mutableListOf(),
+            answerRecords = mutableListOf(),
             score = 0,
-            correctAnswers = 0,
-            wrongAnswers = 0,
+            correctAnswerCount = 0,
+            wrongAnswerCount = 0,
             version = 0L
         )
 
@@ -183,10 +187,10 @@ class Game private constructor(
             completedAt = state.completedAt,
             currentQuestionIndex = state.currentQuestionIndex,
             questions = state.questions,
-            answers = state.answers.toMutableList(),
+            answerRecords = state.answers.toMutableList(),
             score = state.score,
-            correctAnswers = state.correctAnswers,
-            wrongAnswers = state.wrongAnswers,
+            correctAnswerCount = state.correctAnswers,
+            wrongAnswerCount = state.wrongAnswers,
             version = state.version
         )
     }

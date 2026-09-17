@@ -13,4 +13,6 @@ data class RankEntry(
     val totalTimeMillis: Long,
     val achievedAt: Instant,
     val position: Int? = null
-)
+) {
+    val userIdText: String get() = userId.value
+}

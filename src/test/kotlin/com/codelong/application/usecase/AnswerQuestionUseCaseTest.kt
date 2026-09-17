@@ -1,9 +1,7 @@
 package com.codelong.application.usecase
 
 import com.codelong.application.command.AnswerQuestionCommand
-import com.codelong.domain.exception.ForbiddenException
-import com.codelong.domain.exception.InvalidInputException
-import com.codelong.domain.exception.NotFoundException
+import com.codelong.domain.exception.DomainException
 import com.codelong.domain.valueobject.Difficulty
 import com.codelong.domain.valueobject.GameId
 import com.codelong.domain.valueobject.OptionId
@@ -29,7 +27,7 @@ class AnswerQuestionUseCaseTest {
     @BeforeEach
     fun setUp() {
         repository = InMemoryGameRepository()
-        useCase = AnswerQuestionUseCase(repository, TestClock.fixed)
+        useCase = AnswerQuestionUseCaseImpl(repository, TestClock.fixed)
     }
 
     @Test
@@ -65,7 +63,7 @@ class AnswerQuestionUseCaseTest {
         assertNull(result.nextQuestion)
         assertEquals(0, result.questionIndex)
         assertEquals(1, result.totalQuestions)
-        assertTrue(repository.findById(game.id)!!.isCompleted())
+        assertTrue(repository.findById(game.id)!!.isCompleted)
     }
 
     @Test
@@ -77,13 +75,13 @@ class AnswerQuestionUseCaseTest {
         useCase.answer(AnswerQuestionCommand(game.id, game.currentQuestion().correctOption), actor)
 
         val stored = repository.findById(game.id)!!
-        assertEquals(1, stored.currentQuestionIndex())
-        assertEquals(Difficulty.EASY.points, stored.score())
+        assertEquals(1, stored.currentQuestionIndex)
+        assertEquals(Difficulty.EASY.points, stored.score)
     }
 
     @Test
     fun `partida inexistente resulta em NotFound`() {
-        val error = assertThrows<NotFoundException> {
+        val error = assertThrows<DomainException> {
             useCase.answer(AnswerQuestionCommand(GameId("nao-existe"), OptionId("opt-0")), actor)
         }
 
@@ -94,7 +92,7 @@ class AnswerQuestionUseCaseTest {
     fun `outro usuario nao responde pela partida`() {
         val game = repository.save(Fixtures.game(userId = "u-1"))
 
-        assertThrows<ForbiddenException> {
+        assertThrows<DomainException> {
             useCase.answer(
                 AnswerQuestionCommand(game.id, game.currentQuestion().correctOption),
                 UserId("intruso")
@@ -106,7 +104,7 @@ class AnswerQuestionUseCaseTest {
     fun `opcao invalida e rejeitada`() {
         val game = repository.save(Fixtures.game(userId = "u-1"))
 
-        assertThrows<InvalidInputException> {
+        assertThrows<DomainException> {
             useCase.answer(AnswerQuestionCommand(game.id, OptionId("opcao-inexistente")), actor)
         }
     }

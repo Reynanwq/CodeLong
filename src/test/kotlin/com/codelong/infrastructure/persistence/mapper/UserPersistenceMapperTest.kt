@@ -47,9 +47,9 @@ class UserPersistenceMapperTest {
         assertEquals("u-1", user.id.value)
         assertEquals("alice", user.username.value)
         assertEquals("alice@codelong.dev", user.email.value)
-        assertEquals(PasswordHash("hashed:abc"), user.passwordHash())
+        assertEquals(PasswordHash("hashed:abc"), user.passwordHash)
         assertEquals(Role.USER, user.role)
-        assertEquals(AccountStatus.ACTIVE, user.status())
+        assertEquals(AccountStatus.ACTIVE, user.status)
         assertEquals(Fixtures.NOW, user.createdAt)
     }
 
@@ -64,12 +64,12 @@ class UserPersistenceMapperTest {
         assertEquals(original.id, restored.id)
         assertEquals(original.username, restored.username)
         assertEquals(original.email, restored.email)
-        assertEquals(original.passwordHash(), restored.passwordHash())
+        assertEquals(original.passwordHash, restored.passwordHash)
         assertEquals(original.role, restored.role)
-        assertEquals(original.status(), restored.status())
+        assertEquals(original.status, restored.status)
         assertEquals(original.createdAt, restored.createdAt)
-        assertEquals(original.updatedAt(), restored.updatedAt())
-        assertFalse(restored.isActive())
+        assertEquals(original.updatedAt, restored.updatedAt)
+        assertFalse(restored.isActive)
     }
 
     @Test
@@ -101,15 +101,15 @@ class UserPersistenceMapperTest {
 
         val user = UserPersistenceMapper.toDomain(document)
 
-        assertEquals(AccountStatus.INACTIVE, user.status())
-        assertFalse(user.isActive())
+        assertEquals(AccountStatus.INACTIVE, user.status)
+        assertFalse(user.isActive)
     }
 
     @Test
     fun `toDocument de administrador preserva o papel`() {
         val admin = Fixtures.user(id = "a-1", username = "admin", role = Role.ADMIN)
 
-        assertTrue(UserPersistenceMapper.toDomain(UserPersistenceMapper.toDocument(admin)).isAdmin())
+        assertTrue(UserPersistenceMapper.toDomain(UserPersistenceMapper.toDocument(admin)).isAdmin)
     }
 
     @Test

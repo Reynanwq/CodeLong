@@ -20,8 +20,8 @@ class GameHistoryUseCaseTest {
     @BeforeEach
     fun setUp() {
         repository = InMemoryGameRepository()
-        listUseCase = ListGamesUseCase(repository)
-        inProgressUseCase = GetInProgressGameUseCase(repository)
+        listUseCase = ListGamesUseCaseImpl(repository)
+        inProgressUseCase = GetInProgressGameUseCaseImpl(repository)
 
         repository.save(Fixtures.game(id = "g-1", userId = "u-1", username = "alice"))
         repository.save(completed(id = "g-2", userId = "u-1", username = "alice"))

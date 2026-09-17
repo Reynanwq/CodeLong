@@ -1,8 +1,9 @@
 package com.codelong.application.usecase
 
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.application.command.CreateQuestionCommand
 import com.codelong.application.command.QuestionOptionCommand
-import com.codelong.domain.exception.InvalidInputException
 import com.codelong.domain.valueobject.Category
 import com.codelong.domain.valueobject.Difficulty
 import com.codelong.domain.valueobject.OptionId
@@ -25,7 +26,7 @@ class CreateQuestionUseCaseTest {
     @BeforeEach
     fun setUp() {
         repository = InMemoryQuestionRepository()
-        useCase = CreateQuestionUseCase(repository, TestClock.fixed)
+        useCase = CreateQuestionUseCaseImpl(repository, TestClock.fixed)
     }
 
     private fun command(
@@ -49,18 +50,18 @@ class CreateQuestionUseCaseTest {
     fun `cria pergunta ativa`() {
         val question = useCase.create(command())
 
-        assertEquals(QuestionStatus.ACTIVE, question.status())
-        assertTrue(question.isActive())
+        assertEquals(QuestionStatus.ACTIVE, question.status)
+        assertTrue(question.isActive)
     }
 
     @Test
     fun `cria pergunta com os dados informados`() {
         val question = useCase.create(command(statement = "Enunciado?", category = Category.SOLID))
 
-        assertEquals("Enunciado?", question.statement())
-        assertEquals(Category.SOLID, question.category())
-        assertEquals(OptionId("a"), question.correctOption())
-        assertEquals(2, question.options().size)
+        assertEquals("Enunciado?", question.statement)
+        assertEquals(Category.SOLID, question.category)
+        assertEquals(OptionId("a"), question.correctOption)
+        assertEquals(2, question.options.size)
     }
 
     @Test
@@ -68,7 +69,7 @@ class CreateQuestionUseCaseTest {
         val question = useCase.create(command())
 
         assertEquals(com.codelong.support.Fixtures.NOW, question.createdAt)
-        assertEquals(com.codelong.support.Fixtures.NOW, question.updatedAt())
+        assertEquals(com.codelong.support.Fixtures.NOW, question.updatedAt)
     }
 
     @Test
@@ -89,20 +90,20 @@ class CreateQuestionUseCaseTest {
     fun `remove espacos do enunciado e da explicacao`() {
         val question = useCase.create(command(statement = "  Com espacos  "))
 
-        assertEquals("Com espacos", question.statement())
-        assertEquals("Interfaces definem contratos.", question.explanation())
+        assertEquals("Com espacos", question.statement)
+        assertEquals("Interfaces definem contratos.", question.explanation)
     }
 
     @Test
     fun `conteudo invalido nao cria pergunta`() {
-        assertThrows<InvalidInputException> { useCase.create(command(statement = "   ")) }
+        assertThrows<DomainException> { useCase.create(command(statement = "   ")) }
 
         assertEquals(0, repository.countActive())
     }
 
     @Test
     fun `alternativa correta invalida nao cria pergunta`() {
-        val error = assertThrows<InvalidInputException> { useCase.create(command(correctOption = "z")) }
+        val error = assertThrows<DomainException> { useCase.create(command(correctOption = "z")) }
 
         assertEquals("question.correctOption.invalid", error.code)
     }
@@ -112,7 +113,7 @@ class CreateQuestionUseCaseTest {
     fun `aceita todos os niveis de dificuldade`(difficulty: Difficulty) {
         val question = useCase.create(command(difficulty = difficulty))
 
-        assertEquals(difficulty, question.difficulty())
+        assertEquals(difficulty, question.difficulty)
     }
 
     @ParameterizedTest
@@ -120,7 +121,7 @@ class CreateQuestionUseCaseTest {
     fun `aceita todas as categorias`(category: Category) {
         val question = useCase.create(command(category = category))
 
-        assertEquals(category, question.category())
+        assertEquals(category, question.category)
     }
 
     @Test

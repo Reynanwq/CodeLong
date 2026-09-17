@@ -1,10 +1,10 @@
 package com.codelong.application.usecase
 
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.application.command.ChangeQuestionStatusCommand
 import com.codelong.application.command.CreateQuestionCommand
 import com.codelong.application.command.QuestionOptionCommand
-import com.codelong.domain.exception.InvalidInputException
-import com.codelong.domain.exception.NotFoundException
 import com.codelong.domain.valueobject.Category
 import com.codelong.domain.valueobject.Difficulty
 import com.codelong.domain.valueobject.QuestionId
@@ -26,8 +26,8 @@ class QuestionManagementUseCaseTest {
     @BeforeEach
     fun setUp() {
         repository = InMemoryQuestionRepository()
-        createUseCase = CreateQuestionUseCase(repository, TestClock.fixed)
-        changeStatusUseCase = ChangeQuestionStatusUseCase(repository, TestClock.fixed)
+        createUseCase = CreateQuestionUseCaseImpl(repository, TestClock.fixed)
+        changeStatusUseCase = ChangeQuestionStatusUseCaseImpl(repository, TestClock.fixed)
     }
 
     private fun command(
@@ -49,22 +49,22 @@ class QuestionManagementUseCaseTest {
     fun `cria pergunta ativa e persiste`() {
         val created = createUseCase.create(command())
 
-        assertTrue(created.isActive())
-        assertEquals(Category.SOLID, created.category())
-        assertEquals(Difficulty.EASY_PLUS, created.difficulty())
+        assertTrue(created.isActive)
+        assertEquals(Category.SOLID, created.category)
+        assertEquals(Difficulty.EASY_PLUS, created.difficulty)
         assertEquals(1L, repository.countActive())
     }
 
     @Test
     fun `rejeita pergunta sem opcoes suficientes`() {
-        assertThrows<InvalidInputException> {
+        assertThrows<DomainException> {
             createUseCase.create(command(options = listOf(QuestionOptionCommand("a", "Unica"))))
         }
     }
 
     @Test
     fun `rejeita resposta correta fora das opcoes`() {
-        assertThrows<InvalidInputException> {
+        assertThrows<DomainException> {
             createUseCase.create(command(correctOption = "z"))
         }
     }
@@ -74,17 +74,17 @@ class QuestionManagementUseCaseTest {
         val created = createUseCase.create(command())
 
         val deactivated = changeStatusUseCase.change(ChangeQuestionStatusCommand(created.id, false))
-        assertFalse(deactivated.isActive())
+        assertFalse(deactivated.isActive)
         assertEquals(0L, repository.countActive())
 
         val reactivated = changeStatusUseCase.change(ChangeQuestionStatusCommand(created.id, true))
-        assertTrue(reactivated.isActive())
+        assertTrue(reactivated.isActive)
         assertEquals(1L, repository.countActive())
     }
 
     @Test
     fun `pergunta inexistente`() {
-        val error = assertThrows<NotFoundException> {
+        val error = assertThrows<DomainException> {
             changeStatusUseCase.change(ChangeQuestionStatusCommand(QuestionId("nao-existe"), false))
         }
 

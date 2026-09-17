@@ -1,9 +1,9 @@
 package com.codelong.application.usecase
 
+import com.codelong.domain.exception.DomainException
+
 import com.codelong.application.command.ChangeUserStatusCommand
 import com.codelong.application.command.UserSearchQuery
-import com.codelong.domain.exception.InvalidInputException
-import com.codelong.domain.exception.NotFoundException
 import com.codelong.domain.valueobject.AccountStatus
 import com.codelong.domain.valueobject.Role
 import com.codelong.domain.valueobject.UserId
@@ -24,8 +24,8 @@ class UserManagementUseCaseTest {
     @BeforeEach
     fun setUp() {
         repository = InMemoryUserRepository()
-        listUseCase = ListUsersUseCase(repository)
-        changeStatusUseCase = ChangeUserStatusUseCase(repository, TestClock.fixed)
+        listUseCase = ListUsersUseCaseImpl(repository)
+        changeStatusUseCase = ChangeUserStatusUseCaseImpl(repository, TestClock.fixed)
 
         repository.save(Fixtures.user(id = "admin-1", username = "admin", role = Role.ADMIN))
         repository.save(Fixtures.user(id = "user-1", username = "alice"))
@@ -59,18 +59,18 @@ class UserManagementUseCaseTest {
             ChangeUserStatusCommand(UserId("user-1"), false),
             UserId("admin-1")
         )
-        assertEquals(AccountStatus.INACTIVE, deactivated.status())
+        assertEquals(AccountStatus.INACTIVE, deactivated.status)
 
         val reactivated = changeStatusUseCase.change(
             ChangeUserStatusCommand(UserId("user-1"), true),
             UserId("admin-1")
         )
-        assertEquals(AccountStatus.ACTIVE, reactivated.status())
+        assertEquals(AccountStatus.ACTIVE, reactivated.status)
     }
 
     @Test
     fun `administrador nao desativa a propria conta`() {
-        val error = assertThrows<InvalidInputException> {
+        val error = assertThrows<DomainException> {
             changeStatusUseCase.change(
                 ChangeUserStatusCommand(UserId("admin-1"), false),
                 UserId("admin-1")
@@ -78,12 +78,12 @@ class UserManagementUseCaseTest {
         }
 
         assertEquals("user.deactivate.self", error.code)
-        assertEquals(AccountStatus.ACTIVE, repository.findById(UserId("admin-1"))?.status())
+        assertEquals(AccountStatus.ACTIVE, repository.findById(UserId("admin-1"))?.status)
     }
 
     @Test
     fun `usuario inexistente`() {
-        val error = assertThrows<NotFoundException> {
+        val error = assertThrows<DomainException> {
             changeStatusUseCase.change(
                 ChangeUserStatusCommand(UserId("nao-existe"), false),
                 UserId("admin-1")
