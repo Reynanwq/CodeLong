@@ -23,13 +23,8 @@ class ApiExceptionHandler {
     private val logger = LoggerFactory.getLogger(ApiExceptionHandler::class.java)
 
     @ExceptionHandler(DomainException::class)
-    fun handleDomain(ex: DomainException): ResponseEntity<ApiErrorResponse> {
-        val status = statusOf(ex)
-        if (status.is5xxServerError) {
-            logger.error("Falha de dominio nao mapeada: {}", ex.code, ex)
-        }
-        return build(status, ex.code, ex.message)
-    }
+    fun handleDomain(ex: DomainException): ResponseEntity<ApiErrorResponse> =
+        build(statusOf(ex), ex.code, ex.message)
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
     fun handleValidation(ex: MethodArgumentNotValidException): ResponseEntity<ApiErrorResponse> {
