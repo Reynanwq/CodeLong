@@ -19,7 +19,7 @@ O nome combina **Code** com **Long** (龙, *lóng* — dragão em chinês), repr
 | Banco | MongoDB |
 | API | REST + OpenAPI/Swagger (springdoc 3.1.1) |
 | Segurança | Spring Security + JWT (JJWT 0.13.0) + BCrypt |
-| Testes | JUnit 5, jqwik (property-based), Testcontainers |
+| Testes | JUnit 5, jqwik (disponível), Testcontainers |
 | Container | Docker + Docker Compose |
 
 ---
@@ -29,31 +29,33 @@ O nome combina **Code** com **Long** (龙, *lóng* — dragão em chinês), repr
 O projeto segue **Arquitetura Hexagonal (Ports and Adapters)** com as dependências apontando sempre para dentro.
 
 ```
-                    ┌───────────────────────────────────────────────┐
-   HTTP/REST  ─────▶│  adapter.input.web  (Controllers, DTOs)        │
-                    └───────────────┬───────────────────────────────┘
-                                    │  (usa)
-                    ┌───────────────▼───────────────────────────────┐
-                    │  application  (Use Cases, Commands/Queries)   │
-                    └───────────────┬───────────────────────────────┘
-                                    │  (depende de interfaces)
-                    ┌───────────────▼───────────────────────────────┐
-                    │  domain  (Model, Value Objects, Services,     │
-                    │           Exceptions, Ports)                  │
-                    └───────────────▲───────────────────────────────┘
-                                    │  (implementa as Ports)
-        ┌───────────────────────────┴───────────────────────────┐
-        │  adapter.output.persistence (MongoDB)                 │
-        │  adapter.output.security    (JWT, BCrypt)             │
-        └───────────────────────────────────────────────────────┘
+                     ┌───────────────────────────────────────────────┐
+   HTTP/REST  ─────▶│  infrastructure.web  (Controllers, DTOs)      │
+                     └───────────────┬───────────────────────────────┘
+                                     │  (usa)
+                     ┌───────────────▼───────────────────────────────┐
+                     │  application  (Use Cases, Commands, Results)  │
+                     └───────────────┬───────────────────────────────┘
+                                     │  (depende de interfaces)
+                     ┌───────────────▼───────────────────────────────┐
+                     │  domain  (Model, Value Objects, Services,     │
+                     │           Exceptions, Ports)                  │
+                     └───────────────▲───────────────────────────────┘
+                                     │  (implementa as Ports)
+        ┌────────────────────────────┴────────────────────────────┐
+        │  infrastructure.persistence (MongoDB)                   │
+        │  infrastructure.security    (JWT, BCrypt)               │
+        │  infrastructure.config      (wiring, OpenAPI, Clock)    │
+        └─────────────────────────────────────────────────────────┘
 ```
 
-Regra de dependência: **domain ← application ← adapters ← infrastructure**. O domínio é independente de Spring, MongoDB, HTTP, JWT e de qualquer detalhe de infraestrutura.
+Regra de dependência: **domain ← application ← infrastructure**. O domínio é independente de Spring, MongoDB, HTTP, JWT e de qualquer detalhe de infraestrutura (as classes do domínio e da aplicação não carregam anotações de framework; o wiring é feito em `infrastructure.config.UseCaseConfig`).
 
 ### Estrutura de pacotes
 
 ```
 com.codelong
+├── CodeLongApplication
 ├── domain
 │   ├── model        User, Question, Game
 │   ├── valueobject  UserId, Email, Username, Difficulty, Category, GameStatus, RankEntry, ...
@@ -63,14 +65,15 @@ com.codelong
 │                    PasswordEncoder, TokenService
 ├── application
 │   ├── command      Commands / Queries (parameter objects)
-│   ├── usecase      Casos de uso (regras de aplicação)
-│   └── service      IdGenerator, Clock
-├── adapter
-│   ├── input.web    Controllers, DTOs, tratamento de erro
-│   └── output
-│       ├── persistence  Documents, mappers, repositórios Mongo, índices
-│       └── security     JWT, BCrypt, filtro de autenticação
-└── infrastructure.config  SecurityConfig, OpenApiConfig, CORS, AppProperties, bootstrap admin
+│   ├── result       AuthenticationResult, RankingPage
+│   ├── service      TokenIssuer, UserFactory, GameFactory
+│   └── usecase      Casos de uso (um por operação)
+└── infrastructure
+    ├── web           Controllers, DTOs, ApiExceptionHandler
+    ├── persistence   Documents, mappers, Spring Data repositories, adapters Mongo
+    ├── security      JwtTokenService, JwtAuthenticationFilter, SecurityConfig, BCrypt
+    ├── bootstrap     AdminBootstrap (admin inicial)
+    └── config        UseCaseConfig (wiring), OpenApiConfig, ClockConfig
 ```
 
 ### Princípios seguidos
@@ -163,7 +166,7 @@ O cliente **nunca** informa nem recebe antecipadamente: `score`, `currentQuestio
   3. menor tempo total (duração da partida);
   4. data de obtenção da pontuação (mais antiga primeiro).
 
-`GET /api/ranking/me` retorna a melhor entrada do usuário autenticado e sua posição.
+`GET /api/rankings/me` retorna a melhor entrada do usuário autenticado e sua posição (ou **204** se ele ainda não concluiu nenhuma partida).
 
 ---
 
@@ -208,8 +211,8 @@ Cabeçalho autenticado: `Authorization: Bearer <token>`.
 | GET | `/api/games/{gameId}/current-question` | dono | Pergunta atual (sem resposta) |
 | POST | `/api/games/{gameId}/answers` | dono | Envia a escolha |
 | POST | `/api/games/{gameId}/abandon` | dono | Abandona a partida |
-| GET | `/api/ranking` | autenticado | Ranking paginado |
-| GET | `/api/ranking/me` | autenticado | Posição do próprio usuário |
+| GET | `/api/rankings` | autenticado | Ranking paginado |
+| GET | `/api/rankings/me` | autenticado | Posição do próprio usuário (204 se não ranqueado) |
 | POST | `/api/admin/questions` | ADMIN | Cria pergunta |
 | GET | `/api/admin/questions` | ADMIN | Lista paginada/filtrada |
 | GET | `/api/admin/questions/{id}` | ADMIN | Detalhe da pergunta |
@@ -221,15 +224,62 @@ Swagger UI: `/swagger-ui.html` · OpenAPI JSON: `/v3/api-docs`.
 
 ### Formato de erro
 
+Todos os erros usam o mesmo corpo:
+
 ```json
 {
-  "timestamp": "2026-09-17T12:00:00Z",
-  "status": 400,
-  "code": "INVALID_REQUEST",
-  "message": "The request is invalid",
-  "path": "/api/games"
+  "code": "GAME_FINISHED",
+  "message": "This game is already finished and cannot receive new answers",
+  "timestamp": "2026-09-17T12:00:00Z"
 }
 ```
+
+Códigos HTTP: `400` entrada inválida · `401` não autenticado **ou** credenciais inválidas · `403` sem permissão / recurso de outro usuário · `404` não encontrado · `409` conflito (username/email duplicado, partida finalizada, escrita concorrente) · `500` erro inesperado.
+
+### Exemplos
+
+Registrar e autenticar:
+
+```bash
+curl -s -X POST http://localhost:8080/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"username":"alice","email":"alice@example.com","password":"secret123"}'
+
+TOKEN=$(curl -s -X POST http://localhost:8080/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"identifier":"alice","password":"secret123"}' | jq -r .token)
+```
+
+Criar pergunta (ADMIN), iniciar partida e responder:
+
+```bash
+curl -s -X POST http://localhost:8080/api/admin/questions \
+  -H "Authorization: Bearer $ADMIN_TOKEN" -H "Content-Type: application/json" \
+  -d '{
+        "statement":"Qual palavra-chave define uma constante em Kotlin?",
+        "options":[{"id":"a","text":"val"},{"id":"b","text":"var"},{"id":"c","text":"let"}],
+        "correctOption":"a",
+        "explanation":"Em Kotlin, val declara uma referencia imutavel.",
+        "category":"KOTLIN",
+        "difficulty":"EASY"
+      }'
+
+curl -s -X POST http://localhost:8080/api/games -H "Authorization: Bearer $TOKEN"
+
+curl -s -X POST http://localhost:8080/api/games/$GAME_ID/answers \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"optionId":"a"}'
+```
+
+O cliente envia **apenas** `optionId`; `score`, `correctOption` e `explanation` são calculados/decididos no backend e devolvidos somente depois da resposta.
+
+### Observabilidade
+
+| Rota | Descrição |
+| --- | --- |
+| `/actuator/health` | Estado da aplicação (com probes de liveness/readiness) |
+| `/actuator/info` | Nome, descrição e versão do build |
+| `/swagger-ui.html` | Swagger UI (esquema `bearerAuth`) |
 
 ---
 
@@ -238,24 +288,44 @@ Swagger UI: `/swagger-ui.html` · OpenAPI JSON: `/v3/api-docs`.
 ### Docker Compose (app + MongoDB)
 
 ```bash
+cp .env.example .env      # preencha CODELONG_JWT_SECRET e CODELONG_ADMIN_PASSWORD
 docker compose up --build
 ```
 
-A API sobe em `http://localhost:8080`.
+A API sobe em `http://localhost:8080` e o MongoDB fica exposto em `localhost:27017` (volume `mongo-data`).
+
+Somente o banco (útil para rodar a app pela IDE/Maven):
+
+```bash
+docker compose up -d mongodb
+```
 
 ### Localmente
 
-Pré-requisitos: JDK 21, Maven 3.9+ e um MongoDB acessível.
+Pré-requisitos: JDK 21 e Maven 3.9+.
 
 ```bash
+docker compose up -d mongodb
 mvn spring-boot:run -Dspring-boot.run.profiles=dev
 ```
+
+No perfil `dev` já existe um admin de bootstrap (`admin` / `admin12345`) e um secret de JWT apenas para desenvolvimento — **troque em produção**.
 
 ### Build e testes
 
 ```bash
-mvn verify
+mvn verify          # compila, roda os testes e empacota o jar
+mvn test            # apenas os testes
 ```
+
+Os testes de integração usam **Testcontainers** e, portanto, exigem um Docker em execução. Sem Docker eles são automaticamente ignorados (`disabledWithoutDocker`), então `mvn test` continua funcionando.
+
+```bash
+docker build -t codelong .
+docker run --rm -p 8080:8080 --env-file .env -e CODELONG_MONGO_URI=mongodb://host.docker.internal:27017/codelong codelong
+```
+
+> Se sua rede usa um mirror Maven corporativo, ajuste o seu `~/.m2/settings.xml`; o projeto não versiona configuração de repositório.
 
 ---
 
@@ -268,11 +338,11 @@ mvn verify
 | `CODELONG_JWT_SECRET` | Secret HMAC do JWT (≥ 256 bits) | — (obrigatório em prod) |
 | `CODELONG_JWT_EXPIRATION` | Expiração do token (ex.: `2h`, `30m`) | `8h` |
 | `CODELONG_CORS_ALLOWED_ORIGINS` | Origens permitidas (CSV) | `http://localhost:3000,http://localhost:5173` |
-| `CODELONG_ADMIN_USERNAME` | Username do admin inicial (bootstrap) | — |
-| `CODELONG_ADMIN_PASSWORD` | Senha do admin inicial (bootstrap) | — |
+| `CODELONG_ADMIN_USERNAME` | Username do admin inicial (bootstrap) | `admin` no perfil `dev` |
+| `CODELONG_ADMIN_PASSWORD` | Senha do admin inicial (bootstrap) | `admin12345` no perfil `dev` |
 | `SERVER_PORT` | Porta HTTP | `8080` |
 
-Nunca versione secrets reais.
+O admin de bootstrap só é criado se **username e password** estiverem preenchidos e se o usuário ainda não existir. Nunca versione secrets reais; em produção use `CODELONG_JWT_SECRET` e `CODELONG_ADMIN_PASSWORD` vindos de um gerenciador de segredos.
 
 ---
 
@@ -280,22 +350,30 @@ Nunca versione secrets reais.
 
 | Coleção | Índice | Tipo |
 | --- | --- | --- |
-| `users` | `email` | único |
 | `users` | `username` | único |
-| `questions` | `difficulty`, `status` | composto |
-| `questions` | `status` | simples |
-| `games` | `userId`, `status` | composto |
-| `games` | `status`, `score`, `correctAnswers` | ranking |
+| `users` | `email` | único |
+| `questions` | `status`, `category`, `difficulty` | composto (`question_search_idx`) |
+| `questions` | `createdAt` | simples |
+| `games` | `userId`, `status` | composto (`game_user_idx`) |
+| `games` | `status`, `score`, `correctAnswers` | ranking (`game_ranking_idx`) |
+
+Os índices são criados automaticamente na inicialização (`spring.data.mongodb.auto-index-creation: true`). Em produção com múltiplas instâncias, avalie desabilitar a criação automática e aplicar os índices por migração.
 
 ---
 
 ## 13. Testes
 
-- **Unitários**: sequenciador (ordem + randomização intra-nível), pontuação, progressão, finalização, ranking/desempate, invariantes das entidades, autorização.
-- **Property-based** (jqwik): toda pergunta ativa aparece exatamente uma vez; a ordem de dificuldade nunca decresce; a pontuação nunca vem do cliente; resposta duplicada não duplica pontuação; usuário único no ranking.
-- **Integração** (Testcontainers + MongoDB): repositórios, mappers, casos de uso, autenticação.
-- **API** (MockMvc): sucesso, 401, 403, recurso inexistente, recurso de outro usuário, partida finalizada, resposta duplicada.
-- **Concorrência**: múltiplas respostas simultâneas sem duplicar pontuação.
+Situação atual: **63 testes**, todos verdes (`mvn test`).
+
+- **Domínio (20)** — JUnit 5: pontuação por nível de dificuldade, progressão da pergunta, conclusão/abandono, bloqueio de resposta após o fim, posse da partida, reconstituição do agregado; sequenciador (ordem crescente de dificuldade, embaralhamento apenas dentro do nível, filtro de inativas); política de ranking (os quatro critérios de desempate).
+- **Aplicação (29)** — casos de uso com dublês in-memory dos repositórios: cadastro (hash da senha, username/email duplicado, senha fraca), login (por username e por email, senha errada, conta inativa), fluxo de resposta ponta a ponta, início de partida (sem perguntas ativas, usuário inativo), gestão de perguntas e paginação do ranking.
+- **Integração (18)** — Testcontainers com MongoDB 7 real:
+  - persistência: round-trip de usuário/pergunta/partida, índices únicos, busca filtrada e paginada, exclusão;
+  - **optimistic lock verificado de verdade**: duas cópias da mesma partida, a segunda gravação lança `ConcurrentGameModificationException` (409);
+  - ranking por agregação do Mongo (melhor partida concluída por usuário, partidas em andamento ignoradas, posição individual);
+  - **E2E via HTTP** (porta aleatória): registro/login, 401 sem token, 403 de usuário na área admin, fluxo completo jogar→responder→concluir→ranking, 204 em `/api/rankings/me` sem partidas, abandono com 409 depois, 400 de opção inválida, 404 de partida inexistente e o ciclo de vida da pergunta pelo admin.
+
+jqwik está no classpath para testes property-based; ainda não há testes de propriedade escritos.
 
 ---
 
