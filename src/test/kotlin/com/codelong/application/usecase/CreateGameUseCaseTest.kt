@@ -13,6 +13,7 @@ import com.codelong.support.InMemoryQuestionRepository
 import com.codelong.support.InMemoryUserRepository
 import com.codelong.support.TestClock
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -45,13 +46,28 @@ class CreateGameUseCaseTest {
         questionRepository.save(Fixtures.question(id = "q-1", difficulty = Difficulty.EASY))
         questionRepository.save(Fixtures.question(id = "q-2", difficulty = Difficulty.HARD))
 
-        val game = useCase.create(UserId("u-1"))
+        val result = useCase.create(UserId("u-1"))
+        val game = result.game
 
+        assertTrue(result.created)
         assertTrue(game.isInProgress())
         assertEquals(UserId("u-1"), game.userId)
         assertEquals(2, game.totalQuestions())
         assertEquals(0, game.currentQuestionIndex())
         assertEquals(1L, game.version)
+        assertEquals(1, gameRepository.all().size)
+    }
+
+    @Test
+    fun `retoma a partida em andamento em vez de criar outra`() {
+        userRepository.save(Fixtures.user(id = "u-1"))
+        questionRepository.save(Fixtures.question(id = "q-1", difficulty = Difficulty.EASY))
+        val first = useCase.create(UserId("u-1"))
+
+        val second = useCase.create(UserId("u-1"))
+
+        assertFalse(second.created)
+        assertEquals(first.game.id, second.game.id)
         assertEquals(1, gameRepository.all().size)
     }
 
@@ -64,7 +80,7 @@ class CreateGameUseCaseTest {
                 .deactivate(TestClock.fixed.instant())
         )
 
-        val game = useCase.create(UserId("u-1"))
+        val game = useCase.create(UserId("u-1")).game
 
         assertEquals(1, game.totalQuestions())
     }

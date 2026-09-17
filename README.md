@@ -150,6 +150,15 @@ A sequência é **persistida em snapshot** no documento da partida no momento da
 
 O cliente **nunca** informa nem recebe antecipadamente: `score`, `currentQuestionIndex`, `status`, `userId`, `correctAnswers`, `wrongAnswers`.
 
+### Retomada e histórico
+
+Um jogador tem **no máximo uma partida em andamento**. Se `POST /api/games` for chamado com uma partida aberta, a partida existente é **retomada** em vez de criar outra:
+
+- **201 Created** — nova partida criada;
+- **200 OK** — partida em andamento devolvida (mesmo `id`).
+
+Para reencontrar a partida aberta sem guardar o `id`, use `GET /api/games/in-progress` (**200** com a partida, **204** se não houver). O histórico completo fica em `GET /api/games`, paginado e com filtro opcional por `status`.
+
 ### Estados da partida
 
 `IN_PROGRESS`, `COMPLETED`, `ABANDONED`. Partidas finalizadas não aceitam novas respostas.
@@ -209,7 +218,9 @@ Cabeçalho autenticado: `Authorization: Bearer <token>`.
 | POST | `/api/auth/login` | público | Autentica e emite o JWT |
 | GET | `/api/users/me` | autenticado | Dados do próprio usuário |
 | PATCH | `/api/users/me/password` | autenticado | Troca a própria senha (204) |
-| POST | `/api/games` | autenticado | Inicia uma partida |
+| POST | `/api/games` | autenticado | Inicia uma partida (201) ou retoma a em andamento (200) |
+| GET | `/api/games` | autenticado | Histórico paginado (`status`, `page`, `size`) |
+| GET | `/api/games/in-progress` | autenticado | Partida em andamento (204 se não houver) |
 | GET | `/api/games/{gameId}` | dono | Detalhes da partida |
 | GET | `/api/games/{gameId}/current-question` | dono | Pergunta atual (sem resposta) |
 | POST | `/api/games/{gameId}/answers` | dono | Envia a escolha |

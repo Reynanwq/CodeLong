@@ -15,9 +15,11 @@ import com.codelong.application.usecase.DeleteQuestionUseCase
 import com.codelong.application.usecase.GetCurrentQuestionUseCase
 import com.codelong.application.usecase.GetCurrentUserUseCase
 import com.codelong.application.usecase.GetGameUseCase
+import com.codelong.application.usecase.GetInProgressGameUseCase
 import com.codelong.application.usecase.GetMyRankingUseCase
 import com.codelong.application.usecase.GetQuestionUseCase
 import com.codelong.application.usecase.GetRankingUseCase
+import com.codelong.application.usecase.ListGamesUseCase
 import com.codelong.application.usecase.ListQuestionsUseCase
 import com.codelong.application.usecase.ListUsersUseCase
 import com.codelong.application.usecase.LoginUserUseCase
@@ -112,6 +114,13 @@ class UseCaseConfig {
 
     @Bean
     fun getGameUseCase(gameRepository: GameRepository) = GetGameUseCase(gameRepository)
+
+    @Bean
+    fun listGamesUseCase(gameRepository: GameRepository) = ListGamesUseCase(gameRepository)
+
+    @Bean
+    fun getInProgressGameUseCase(gameRepository: GameRepository) =
+        GetInProgressGameUseCase(gameRepository)
 
     @Bean
     fun getCurrentQuestionUseCase(gameRepository: GameRepository) =

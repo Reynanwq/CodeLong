@@ -177,6 +177,46 @@ class ApiEndToEndIntegrationTest {
     }
 
     @Test
+    fun `historico de partidas e retomada da partida em andamento`() {
+        seedQuestion()
+        val playerToken = registerPlayer("alice")
+
+        val created = api.post("/api/games", token = playerToken)
+        assertEquals(201, created.status)
+        val gameId = created.json().str("id")
+
+        val resumed = api.post("/api/games", token = playerToken)
+        assertEquals(200, resumed.status)
+        assertEquals(gameId, resumed.json().str("id"))
+
+        val inProgress = api.get("/api/games/in-progress", playerToken)
+        assertEquals(200, inProgress.status)
+        assertEquals(gameId, inProgress.json().str("id"))
+
+        val history = api.get("/api/games?page=0&size=10", playerToken)
+        assertEquals(200, history.status)
+        assertEquals(1L, history.json().long("totalElements"))
+        assertEquals(gameId, history.json().arr("items").first().str("id"))
+
+        val inProgressOnly = api.get("/api/games?status=IN_PROGRESS", playerToken)
+        assertEquals(1L, inProgressOnly.json().long("totalElements"))
+
+        val completedOnly = api.get("/api/games?status=COMPLETED", playerToken)
+        assertEquals(0L, completedOnly.json().long("totalElements"))
+
+        assertEquals(200, api.post("/api/games/$gameId/abandon", token = playerToken).status)
+        assertEquals(204, api.get("/api/games/in-progress", playerToken).status)
+
+        val newGame = api.post("/api/games", token = playerToken)
+        assertEquals(201, newGame.status)
+        assertTrue(newGame.json().str("id") != gameId)
+
+        val abandoned = api.get("/api/games?status=ABANDONED", playerToken)
+        assertEquals(1L, abandoned.json().long("totalElements"))
+        assertEquals(2L, api.get("/api/games", playerToken).json().long("totalElements"))
+    }
+
+    @Test
     fun `abandonar encerra a partida e bloqueia novas respostas`() {
         seedQuestion()
         val playerToken = registerPlayer("alice")

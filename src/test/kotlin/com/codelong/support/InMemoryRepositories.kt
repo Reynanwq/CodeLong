@@ -4,7 +4,9 @@ import com.codelong.domain.exception.ConcurrentGameModificationException
 import com.codelong.domain.model.Game
 import com.codelong.domain.model.Question
 import com.codelong.domain.model.User
+import com.codelong.domain.port.GamePage
 import com.codelong.domain.port.GameRepository
+import com.codelong.domain.port.GameSearch
 import com.codelong.domain.port.QuestionPage
 import com.codelong.domain.port.QuestionRepository
 import com.codelong.domain.port.QuestionSearch
@@ -112,6 +114,25 @@ class InMemoryGameRepository : GameRepository {
     }
 
     override fun findById(id: GameId): Game? = store[id.value]
+
+    override fun findInProgressByUserId(userId: UserId): Game? =
+        store.values
+            .filter { it.userId == userId && it.isInProgress() }
+            .maxByOrNull { it.startedAt }
+
+    override fun search(search: GameSearch): GamePage {
+        val filtered = store.values
+            .filter { it.userId == search.userId }
+            .filter { search.status == null || it.status() == search.status }
+            .sortedByDescending { it.startedAt }
+        val from = search.page * search.size
+        return GamePage(
+            items = filtered.drop(from).take(search.size),
+            totalElements = filtered.size.toLong(),
+            page = search.page,
+            size = search.size
+        )
+    }
 
     fun all(): List<Game> = store.values.toList()
 }
