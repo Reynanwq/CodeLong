@@ -358,6 +358,54 @@ class ApiEndToEndIntegrationTest {
         assertEquals("user.deactivate.self", self.json().str("code"))
     }
 
+    @Test
+    fun `admin atualiza pergunta e filtra as listagens administrativas`() {
+        val adminToken = loginAdmin()
+        registerPlayer("alice")
+        val questionId = createQuestion(adminToken, "Pergunta original", "EASY")
+
+        val updated = api.put(
+            "/api/admin/questions/$questionId",
+            questionBody("Pergunta atualizada", "MASTER"),
+            adminToken
+        )
+        assertEquals(200, updated.status)
+        assertEquals(questionId, updated.json().str("id"))
+        assertEquals("Pergunta atualizada", updated.json().str("statement"))
+        assertEquals("MASTER", updated.json().str("difficulty"))
+        assertEquals("ACTIVE", updated.json().str("status"))
+
+        val unfiltered = api.get("/api/admin/questions", adminToken)
+        assertEquals(1L, unfiltered.json().long("totalElements"))
+
+        val byStatus = api.get("/api/admin/questions?status=active", adminToken)
+        assertEquals(1L, byStatus.json().long("totalElements"))
+
+        val byCategory = api.get("/api/admin/questions?category=kotlin", adminToken)
+        assertEquals(1L, byCategory.json().long("totalElements"))
+
+        val byDifficulty = api.get("/api/admin/questions?difficulty=master", adminToken)
+        assertEquals(1L, byDifficulty.json().long("totalElements"))
+
+        val combined = api.get(
+            "/api/admin/questions?status=ACTIVE&category=KOTLIN&difficulty=MASTER&page=0&size=5",
+            adminToken
+        )
+        assertEquals(1L, combined.json().long("totalElements"))
+
+        val none = api.get("/api/admin/questions?category=KAFKA", adminToken)
+        assertEquals(0L, none.json().long("totalElements"))
+
+        val admins = api.get("/api/admin/users?role=ADMIN", adminToken)
+        assertEquals(1L, admins.json().long("totalElements"))
+
+        val players = api.get("/api/admin/users?role=USER", adminToken)
+        assertEquals(1L, players.json().long("totalElements"))
+
+        val activeAdmins = api.get("/api/admin/users?status=ACTIVE&role=ADMIN", adminToken)
+        assertEquals(1L, activeAdmins.json().long("totalElements"))
+    }
+
     private fun credentials(username: String, email: String, password: String): Map<String, String> =
         mapOf("username" to username, "email" to email, "password" to password)
 

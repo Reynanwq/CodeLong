@@ -32,7 +32,7 @@ class SecurityConfig(
             .cors { it.configurationSource(corsConfigurationSource()) }
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .authorizeHttpRequests { auth ->
-                auth.requestMatchers(*PUBLIC_ENDPOINTS).permitAll()
+                auth.requestMatchers(*publicEndpoints()).permitAll()
                 auth.requestMatchers(ADMIN_ENDPOINTS).hasRole(ROLE_ADMIN)
                 auth.anyRequest().authenticated()
             }
@@ -78,14 +78,14 @@ class SecurityConfig(
     private companion object {
         const val ROLE_ADMIN = "ADMIN"
         const val ADMIN_ENDPOINTS = "/api/admin/**"
-
-        val PUBLIC_ENDPOINTS = arrayOf(
-            "/api/auth/**",
-            "/actuator/health",
-            "/actuator/info",
-            "/v3/api-docs/**",
-            "/swagger-ui/**",
-            "/swagger-ui.html"
-        )
     }
+
+    private fun publicEndpoints(): Array<String> = arrayOf(
+        "/api/auth/**",
+        "/actuator/health",
+        "/actuator/info",
+        "/v3/api-docs/**",
+        "/swagger-ui/**",
+        "/swagger-ui.html"
+    )
 }

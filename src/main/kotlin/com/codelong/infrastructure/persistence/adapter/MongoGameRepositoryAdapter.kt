@@ -42,14 +42,14 @@ class MongoGameRepositoryAdapter(
         val criteria = Criteria.where("userId").`is`(userId.value)
             .and("status").`is`(GameStatus.IN_PROGRESS.name)
         return mongoTemplate
-            .find(Query(criteria).with(DEFAULT_SORT).limit(1), GameDocument::class.java)
+            .find(Query(criteria).with(defaultSort()).limit(1), GameDocument::class.java)
             .firstOrNull()
             ?.let(GamePersistenceMapper::toDomain)
     }
 
     override fun search(search: GameSearch): GamePage {
         val criteria = buildCriteria(search)
-        val pageable = PageRequest.of(search.page, search.size, DEFAULT_SORT)
+        val pageable = PageRequest.of(search.page, search.size, defaultSort())
 
         val items = mongoTemplate
             .find(Query(criteria).with(pageable), GameDocument::class.java)
@@ -70,7 +70,5 @@ class MongoGameRepositoryAdapter(
         return criteria
     }
 
-    private companion object {
-        val DEFAULT_SORT: Sort = Sort.by(Sort.Direction.DESC, "startedAt")
-    }
+    private fun defaultSort(): Sort = Sort.by(Sort.Direction.DESC, "startedAt")
 }

@@ -11,7 +11,7 @@ class BCryptPasswordEncoderAdapter : PasswordEncoder {
     private val delegate = BCryptPasswordEncoder()
 
     override fun encode(rawPassword: String): PasswordHash =
-        PasswordHash(delegate.encode(rawPassword) ?: error("Could not encode the password"))
+        PasswordHash(delegate.encode(rawPassword)!!)
 
     override fun matches(rawPassword: String, hash: PasswordHash): Boolean =
         delegate.matches(rawPassword, hash.value)
