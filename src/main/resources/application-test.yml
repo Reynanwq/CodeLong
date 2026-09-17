@@ -1,0 +1,13 @@
+spring:
+  data:
+    mongodb:
+      uri: ${CODELONG_MONGO_URI:mongodb://localhost:27017/codelong-test}
+
+codelong:
+  jwt:
+    secret: ${CODELONG_JWT_SECRET:test-secret-key-with-more-than-256-bits-for-hs256-signature}
+    expiration: 10m
+
+logging:
+  level:
+    com.codelong: INFO

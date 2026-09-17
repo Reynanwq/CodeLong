@@ -1,0 +1,8 @@
+spring:
+  data:
+    mongodb:
+      uri: ${CODELONG_MONGO_URI:mongodb://localhost:27017/codelong}
+
+logging:
+  level:
+    com.codelong: DEBUG
