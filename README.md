@@ -19,7 +19,7 @@ O nome combina **Code** com **Long** (龙, *lóng* — dragão em chinês), repr
 | Banco | MongoDB |
 | API | REST + OpenAPI/Swagger (springdoc 3.1.1) |
 | Segurança | Spring Security + JWT (JJWT 0.13.0) + BCrypt |
-| Testes | JUnit 5, jqwik (disponível), Testcontainers |
+| Testes | JUnit 5, jqwik (property-based), Mockito, JaCoCo (100% de cobertura), Testcontainers |
 | Container | Docker + Docker Compose |
 
 ---
@@ -379,17 +379,32 @@ Os índices são criados automaticamente na inicialização (`spring.data.mongod
 
 ## 13. Testes
 
-Situação atual: **63 testes**, todos verdes (`mvn test`).
+Situação atual: **1047 testes**, todos verdes, com **100% de cobertura de linha e de branch** (`mvn verify`).
 
-- **Domínio (20)** — JUnit 5: pontuação por nível de dificuldade, progressão da pergunta, conclusão/abandono, bloqueio de resposta após o fim, posse da partida, reconstituição do agregado; sequenciador (ordem crescente de dificuldade, embaralhamento apenas dentro do nível, filtro de inativas); política de ranking (os quatro critérios de desempate).
-- **Aplicação (29)** — casos de uso com dublês in-memory dos repositórios: cadastro (hash da senha, username/email duplicado, senha fraca), login (por username e por email, senha errada, conta inativa), fluxo de resposta ponta a ponta, início de partida (sem perguntas ativas, usuário inativo), gestão de perguntas e paginação do ranking.
-- **Integração (18)** — Testcontainers com MongoDB 7 real:
+A cobertura é medida pelo **JaCoCo** (`jacoco-maven-plugin`), que gera o relatório em `target/site/jacoco/index.html` e **quebra o build** se qualquer linha ou branch ficar descoberto:
+
+```bash
+mvn verify        # compila, roda os testes, empacota e valida 100% de cobertura
+mvn test          # apenas os testes (gera o relatorio de cobertura, sem o gate)
+```
+
+Se o `~/.m2/settings.xml` apontar para o Nexus corporativo (inacessível fora da rede da empresa), use as settings locais do projeto — elas não alteram o arquivo global:
+
+```bash
+mvn -s .mvn/settings.xml verify
+```
+
+### Distribuição
+
+- **Domínio** — `JUnit 5` + `@ParameterizedTest`: invariantes dos value objects (`Email`, `Username`, `PasswordHash`, `QuestionContent`, enums), agregados (`User`, `Question`, `Game`) com pontuação, progressão, conclusão, abandono, posse e reconstituição; sequenciador (dificuldade sempre crescente, embaralhamento só dentro do nível, snapshots imutáveis); política de ranking (os quatro critérios de desempate, antissimetria e transitividade).
+- **Property-based** — `jqwik` (`net.jqwik`): invariantes de domínio com até 1000 tentativas por propriedade — soma de pontos por dificuldade, respostas erradas nunca pontuam, `remainingQuestions` nunca negativo, normalização de `Email`/`Username`, consistência do comparator de ranking e unicidade dos ids gerados.
+- **Aplicação** — todos os 21 casos de uso com dublês in-memory dos ports: cadastro/login/troca de senha, criação e retomada de partida, resposta, abandono, histórico paginado, ranking individual e global, além de toda a gestão administrativa de perguntas e usuários.
+- **Infraestrutura** — mappers e documentos do MongoDB (round-trip e índices declarados), adapters Mongo (com `Mockito`, incluindo a tradução de `OptimisticLockingFailureException` em `ConcurrentGameModificationException`), JWT (geração, leitura, expiração, assinatura inválida, secret inválido), filtro de autenticação, `BCrypt`, propriedades de segurança, DTOs, `ApiExceptionHandler` (mapeamento de cada exceção para o status HTTP), bootstrap do admin e wiring dos beans.
+- **Integração** — Testcontainers com MongoDB 7 real:
   - persistência: round-trip de usuário/pergunta/partida, índices únicos, busca filtrada e paginada, exclusão;
   - **optimistic lock verificado de verdade**: duas cópias da mesma partida, a segunda gravação lança `ConcurrentGameModificationException` (409);
   - ranking por agregação do Mongo (melhor partida concluída por usuário, partidas em andamento ignoradas, posição individual);
-  - **E2E via HTTP** (porta aleatória): registro/login, 401 sem token, 403 de usuário na área admin, fluxo completo jogar→responder→concluir→ranking, 204 em `/api/rankings/me` sem partidas, abandono com 409 depois, 400 de opção inválida, 404 de partida inexistente e o ciclo de vida da pergunta pelo admin.
-
-jqwik está no classpath para testes property-based; ainda não há testes de propriedade escritos.
+  - **E2E via HTTP** (porta aleatória): registro/login, 401 sem token, 403 de usuário na área admin, fluxo completo jogar→responder→concluir→ranking, retomada de partida em andamento (200), histórico com filtro de status, 204 em `/api/rankings/me` e `/api/games/in-progress` sem dados, abandono com 409 depois, 400 de opção inválida, 404 de partida inexistente e o ciclo de vida completo da pergunta e do usuário pelo admin.
 
 ---
 
