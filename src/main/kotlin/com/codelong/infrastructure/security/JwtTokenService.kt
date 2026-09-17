@@ -1,6 +1,7 @@
 package com.codelong.infrastructure.security
 
-import com.codelong.domain.exception.DomainException
+import com.codelong.domain.exception.Errors
+
 
 import com.codelong.domain.port.TokenService
 import com.codelong.domain.valueobject.Role
@@ -38,9 +39,9 @@ class JwtTokenService(
             .payload
 
         val subject = claims.subject
-            ?: throw DomainException.unauthorized("TOKEN_INVALID", "The token is missing its subject")
+            ?: throw Errors.tokenWithoutSubject()
         val role = claims[ROLE_CLAIM] as? String
-            ?: throw DomainException.unauthorized("TOKEN_INVALID", "The token is missing its role")
+            ?: throw Errors.tokenWithoutRole()
 
         return TokenClaims(
             userId = UserId(subject),
@@ -55,17 +56,17 @@ class JwtTokenService(
 
     private fun buildKey(secret: String): SecretKey {
         val bytes = secret.toByteArray(StandardCharsets.UTF_8)
-        check(secret.isNotBlank()) {
-            "codelong.jwt.secret is not configured. Set the CODELONG_JWT_SECRET environment variable."
-        }
-        check(bytes.size >= MIN_SECRET_BYTES) {
-            "codelong.jwt.secret must have at least $MIN_SECRET_BYTES bytes (UTF-8) to sign HS256 tokens."
-        }
+        check(secret.isNotBlank()) { SECRET_NOT_CONFIGURED }
+        check(bytes.size >= MIN_SECRET_BYTES) { SECRET_TOO_SHORT }
         return Keys.hmacShaKeyFor(bytes)
     }
 
     private companion object {
         const val ROLE_CLAIM = "role"
         const val MIN_SECRET_BYTES = 32
+        const val SECRET_NOT_CONFIGURED =
+            "codelong.jwt.secret is not configured. Set the CODELONG_JWT_SECRET environment variable."
+        const val SECRET_TOO_SHORT =
+            "codelong.jwt.secret must have at least $MIN_SECRET_BYTES bytes (UTF-8) to sign HS256 tokens."
     }
 }

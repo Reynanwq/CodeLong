@@ -32,8 +32,14 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 
+private const val BASE_PATH = "/api/admin/questions"
+private const val DEFAULT_PAGE = "0"
+private const val DEFAULT_SIZE = "20"
+private const val QUESTION_PATH = "/{questionId}"
+private const val STATUS_PATH = "/{questionId}/status"
+
 @RestController
-@RequestMapping("/api/admin/questions")
+@RequestMapping(BASE_PATH)
 class AdminQuestionController(
     private val createQuestionUseCase: CreateQuestionUseCase,
     private val updateQuestionUseCase: UpdateQuestionUseCase,
@@ -48,7 +54,7 @@ class AdminQuestionController(
     fun create(@Valid @RequestBody request: CreateQuestionRequest): QuestionResponse =
         QuestionResponse.from(createQuestionUseCase.create(request.toCommand()))
 
-    @GetMapping("/{questionId}")
+    @GetMapping(QUESTION_PATH)
     fun get(@PathVariable questionId: String): QuestionResponse =
         QuestionResponse.from(getQuestionUseCase.get(QuestionId(questionId)))
 
@@ -57,8 +63,8 @@ class AdminQuestionController(
         @RequestParam(required = false) status: String?,
         @RequestParam(required = false) category: String?,
         @RequestParam(required = false) difficulty: String?,
-        @RequestParam(defaultValue = "0") page: Int,
-        @RequestParam(defaultValue = "20") size: Int
+        @RequestParam(defaultValue = DEFAULT_PAGE) page: Int,
+        @RequestParam(defaultValue = DEFAULT_SIZE) size: Int
     ): PageResponse<QuestionResponse> {
         val query = QuestionSearchQuery(
             status = status?.let { QuestionStatus.valueOf(it.trim().uppercase()) },
@@ -76,14 +82,14 @@ class AdminQuestionController(
         )
     }
 
-    @PutMapping("/{questionId}")
+    @PutMapping(QUESTION_PATH)
     fun update(
         @PathVariable questionId: String,
         @Valid @RequestBody request: UpdateQuestionRequest
     ): QuestionResponse =
         QuestionResponse.from(updateQuestionUseCase.update(request.toCommand(QuestionId(questionId))))
 
-    @PatchMapping("/{questionId}/status")
+    @PatchMapping(STATUS_PATH)
     fun changeStatus(
         @PathVariable questionId: String,
         @Valid @RequestBody request: ChangeQuestionStatusRequest
@@ -94,7 +100,7 @@ class AdminQuestionController(
             )
         )
 
-    @DeleteMapping("/{questionId}")
+    @DeleteMapping(QUESTION_PATH)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun delete(@PathVariable questionId: String) {
         deleteQuestionUseCase.delete(QuestionId(questionId))

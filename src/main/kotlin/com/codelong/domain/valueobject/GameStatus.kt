@@ -1,6 +1,7 @@
 package com.codelong.domain.valueobject
 
-import com.codelong.domain.exception.DomainException
+import com.codelong.domain.exception.Errors
+
 
 
 enum class GameStatus {
@@ -11,6 +12,6 @@ enum class GameStatus {
     companion object {
         fun fromName(name: String): GameStatus =
             entries.firstOrNull { it.name == name.trim().uppercase() }
-                ?: throw DomainException.invalidInput("status.invalid", "Unknown game status: $name")
+                ?: throw Errors.unknownGameStatus(name)
     }
 }

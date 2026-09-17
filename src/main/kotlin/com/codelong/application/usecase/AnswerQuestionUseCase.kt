@@ -1,6 +1,7 @@
 package com.codelong.application.usecase
 
-import com.codelong.domain.exception.DomainException
+import com.codelong.domain.exception.Errors
+
 
 import com.codelong.application.command.AnswerQuestionCommand
 import com.codelong.domain.port.GameRepository
@@ -15,7 +16,7 @@ class AnswerQuestionUseCase(
 
     fun answer(command: AnswerQuestionCommand, actorId: UserId): AnswerResult {
         val game = gameRepository.findById(command.gameId)
-            ?: throw DomainException.notFound("GAME_NOT_FOUND", "Game not found")
+            ?: throw Errors.gameNotFound()
         game.requireOwner(actorId)
 
         val evaluation = game.answer(command.optionId, clock.instant())

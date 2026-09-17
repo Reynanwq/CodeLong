@@ -1,6 +1,7 @@
 package com.codelong.application.usecase
 
-import com.codelong.domain.exception.DomainException
+import com.codelong.domain.exception.Errors
+
 
 import com.codelong.application.result.RankingPage
 import com.codelong.domain.port.RankingRepository
@@ -11,13 +12,10 @@ class GetRankingUseCase(
 
     fun ranking(page: Int, size: Int): RankingPage {
         (page < 0).takeIf { it }?.let {
-            throw DomainException.invalidInput("pagination.page.invalid", "Page must be greater than or equal to 0")
+            throw Errors.invalidPage()
         }
         (size !in MIN_SIZE..MAX_SIZE).takeIf { it }?.let {
-            throw DomainException.invalidInput(
-                "pagination.size.invalid",
-                "Page size must be between $MIN_SIZE and $MAX_SIZE"
-            )
+            throw Errors.invalidPageSize(MIN_SIZE, MAX_SIZE)
         }
 
         val entries = rankingRepository.findRanking(page, size)

@@ -1,6 +1,7 @@
 package com.codelong.application.usecase
 
-import com.codelong.domain.exception.DomainException
+import com.codelong.domain.exception.Errors
+
 
 import com.codelong.application.command.UpdateQuestionCommand
 import com.codelong.domain.model.Question
@@ -14,7 +15,7 @@ class UpdateQuestionUseCase(
 
     fun update(command: UpdateQuestionCommand): Question {
         val question = questionRepository.findById(command.questionId)
-            ?: throw DomainException.notFound("QUESTION_NOT_FOUND", "Question not found")
+            ?: throw Errors.questionNotFound()
 
         question.update(command.toContent(), clock.instant())
         return questionRepository.save(question)

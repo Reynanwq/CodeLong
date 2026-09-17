@@ -1,6 +1,7 @@
 package com.codelong.domain.valueobject
 
-import com.codelong.domain.exception.DomainException
+import com.codelong.domain.exception.Errors
+
 
 
 /**
@@ -30,9 +31,6 @@ enum class Category {
     companion object {
         fun fromName(name: String): Category =
             entries.firstOrNull { it.name == name.uppercase() }
-                ?: throw DomainException.invalidInput(
-                    "category.invalid",
-                    "Unknown category: $name"
-                )
+                ?: throw Errors.unknownCategory(name)
     }
 }

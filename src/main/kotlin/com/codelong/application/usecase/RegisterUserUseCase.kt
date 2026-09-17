@@ -1,6 +1,7 @@
 package com.codelong.application.usecase
 
-import com.codelong.domain.exception.DomainException
+import com.codelong.domain.exception.Errors
+
 
 import com.codelong.application.command.RegisterUserCommand
 import com.codelong.application.result.AuthenticationResult
@@ -25,10 +26,10 @@ class RegisterUserUseCase(
         val email = Email.of(command.email)
 
         userRepository.existsByUsername(username).takeIf { it }?.let {
-            throw DomainException.conflict("USERNAME_ALREADY_EXISTS", "This username is already taken")
+            throw Errors.usernameAlreadyExists()
         }
         userRepository.existsByEmail(email).takeIf { it }?.let {
-            throw DomainException.conflict("EMAIL_ALREADY_EXISTS", "This email is already registered")
+            throw Errors.emailAlreadyExists()
         }
 
         val user = userRepository.save(userFactory.createUser(username, email, command.password))

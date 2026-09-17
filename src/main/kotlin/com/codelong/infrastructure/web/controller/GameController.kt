@@ -30,8 +30,17 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
+private const val BASE_PATH = "/api/games"
+private const val DEFAULT_PAGE = "0"
+private const val DEFAULT_SIZE = "20"
+private const val IN_PROGRESS_PATH = "/in-progress"
+private const val GAME_PATH = "/{gameId}"
+private const val CURRENT_QUESTION_PATH = "/{gameId}/current-question"
+private const val ANSWERS_PATH = "/{gameId}/answers"
+private const val ABANDON_PATH = "/{gameId}/abandon"
+
 @RestController
-@RequestMapping("/api/games")
+@RequestMapping(BASE_PATH)
 class GameController(
     private val createGameUseCase: CreateGameUseCase,
     private val getGameUseCase: GetGameUseCase,
@@ -53,8 +62,8 @@ class GameController(
     @GetMapping
     fun history(
         @RequestParam(required = false) status: String?,
-        @RequestParam(defaultValue = "0") page: Int,
-        @RequestParam(defaultValue = "20") size: Int,
+        @RequestParam(defaultValue = DEFAULT_PAGE) page: Int,
+        @RequestParam(defaultValue = DEFAULT_SIZE) size: Int,
         @AuthenticationPrincipal principal: AuthenticatedUser
     ): PageResponse<GameResponse> {
         val query = GameSearchQuery(
@@ -71,7 +80,7 @@ class GameController(
         )
     }
 
-    @GetMapping("/in-progress")
+    @GetMapping(IN_PROGRESS_PATH)
     fun inProgress(
         @AuthenticationPrincipal principal: AuthenticatedUser
     ): ResponseEntity<GameResponse> {
@@ -80,21 +89,21 @@ class GameController(
         return ResponseEntity.ok(GameResponse.from(game))
     }
 
-    @GetMapping("/{gameId}")
+    @GetMapping(GAME_PATH)
     fun get(
         @PathVariable gameId: String,
         @AuthenticationPrincipal principal: AuthenticatedUser
     ): GameResponse =
         GameResponse.from(getGameUseCase.get(GameId(gameId), principal.userId))
 
-    @GetMapping("/{gameId}/current-question")
+    @GetMapping(CURRENT_QUESTION_PATH)
     fun currentQuestion(
         @PathVariable gameId: String,
         @AuthenticationPrincipal principal: AuthenticatedUser
     ): PublicQuestionResponse =
         PublicQuestionResponse.from(getCurrentQuestionUseCase.current(GameId(gameId), principal.userId))
 
-    @PostMapping("/{gameId}/answers")
+    @PostMapping(ANSWERS_PATH)
     fun answer(
         @PathVariable gameId: String,
         @Valid @RequestBody request: AnswerRequest,
@@ -107,7 +116,7 @@ class GameController(
             )
         )
 
-    @PostMapping("/{gameId}/abandon")
+    @PostMapping(ABANDON_PATH)
     fun abandon(
         @PathVariable gameId: String,
         @AuthenticationPrincipal principal: AuthenticatedUser

@@ -1,6 +1,7 @@
 package com.codelong.application.usecase
 
-import com.codelong.domain.exception.DomainException
+import com.codelong.domain.exception.Errors
+
 
 import com.codelong.application.command.LoginCommand
 import com.codelong.application.result.AuthenticationResult
@@ -19,13 +20,13 @@ class LoginUserUseCase(
 
     fun login(command: LoginCommand): AuthenticationResult {
         val user = resolveUser(command.identifier)
-            ?: throw DomainException.unauthorized("INVALID_CREDENTIALS", "Invalid credentials")
+            ?: throw Errors.invalidCredentials()
 
         passwordEncoder.matches(command.password, user.passwordHash()).takeUnless { it }?.let {
-            throw DomainException.unauthorized("INVALID_CREDENTIALS", "Invalid credentials")
+            throw Errors.invalidCredentials()
         }
         user.isActive().takeUnless { it }?.let {
-            throw DomainException.unauthorized("ACCOUNT_INACTIVE", "This account is not active")
+            throw Errors.accountInactiveUnauthorized()
         }
 
         return AuthenticationResult(user = user, token = tokenIssuer.issue(user))

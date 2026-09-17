@@ -1,6 +1,7 @@
 package com.codelong.application.usecase
 
-import com.codelong.domain.exception.DomainException
+import com.codelong.domain.exception.Errors
+
 
 import com.codelong.domain.port.GameRepository
 import com.codelong.domain.valueobject.GameId
@@ -13,7 +14,7 @@ class GetCurrentQuestionUseCase(
 
     fun current(gameId: GameId, actorId: UserId): QuestionPublic {
         val game = gameRepository.findById(gameId)
-            ?: throw DomainException.notFound("GAME_NOT_FOUND", "Game not found")
+            ?: throw Errors.gameNotFound()
         game.requireOwner(actorId)
         return game.currentQuestion().publicView()
     }

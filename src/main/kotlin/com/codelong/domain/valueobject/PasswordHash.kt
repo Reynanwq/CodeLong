@@ -5,7 +5,11 @@ value class PasswordHash(val value: String) {
 
     init {
         require(value.isNotBlank()) {
-            "password hash must not be blank"
+            BLANK_MESSAGE
         }
+    }
+
+    companion object {
+        const val BLANK_MESSAGE = "password hash must not be blank"
     }
 }

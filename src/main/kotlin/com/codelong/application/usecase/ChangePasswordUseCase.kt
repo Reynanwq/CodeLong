@@ -1,6 +1,7 @@
 package com.codelong.application.usecase
 
-import com.codelong.domain.exception.DomainException
+import com.codelong.domain.exception.Errors
+
 
 import com.codelong.application.command.ChangePasswordCommand
 import com.codelong.application.service.PasswordPolicy
@@ -26,22 +27,16 @@ class ChangePasswordUseCase(
 
     fun change(command: ChangePasswordCommand, actorId: UserId): User {
         val user = userRepository.findById(actorId)
-            ?: throw DomainException.notFound("USER_NOT_FOUND", "User not found")
+            ?: throw Errors.userNotFound()
 
         passwordEncoder.matches(command.currentPassword, user.passwordHash()).takeUnless { it }?.let {
-            throw DomainException.unauthorized(
-                "INVALID_CURRENT_PASSWORD",
-                "The current password is incorrect"
-            )
+            throw Errors.invalidCurrentPassword()
         }
 
         passwordPolicy.requireStrong(command.newPassword)
 
         passwordEncoder.matches(command.newPassword, user.passwordHash()).takeIf { it }?.let {
-            throw DomainException.invalidInput(
-                "password.unchanged",
-                "The new password must differ from the current one"
-            )
+            throw Errors.passwordUnchanged()
         }
 
         user.changePassword(passwordEncoder.encode(command.newPassword), clock.instant())

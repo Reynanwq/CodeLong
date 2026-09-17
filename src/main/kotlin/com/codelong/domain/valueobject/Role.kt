@@ -1,6 +1,6 @@
 package com.codelong.domain.valueobject
 
-import com.codelong.domain.exception.DomainException
+import com.codelong.domain.exception.Errors
 
 enum class Role {
     USER,
@@ -9,9 +9,6 @@ enum class Role {
     companion object {
         fun fromName(name: String): Role =
             entries.firstOrNull { it.name == name.uppercase() }
-                ?: throw com.codelong.domain.exception.DomainException.invalidInput(
-                    "role.invalid",
-                    "Unknown role: $name"
-                )
+                ?: throw Errors.unknownRole(name)
     }
 }

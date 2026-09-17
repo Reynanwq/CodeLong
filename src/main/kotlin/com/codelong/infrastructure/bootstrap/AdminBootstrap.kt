@@ -9,6 +9,8 @@ import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.stereotype.Component
 
+private const val ADMIN_EMAIL_SUFFIX = "@codelong.local"
+
 /**
  * Garante um usuario ADMIN inicial quando codelong.admin.username/password
  * estao configurados. Nao faz nada se ja existir ou se a config estiver vazia.
@@ -34,7 +36,7 @@ class AdminBootstrap(
             .takeUnless { userRepository.existsByUsername(it) }
             ?.let { value ->
                 userRepository.save(
-                    userFactory.createAdmin(value, Email.of("$username@codelong.local"), password)
+                    userFactory.createAdmin(value, Email.of(username + ADMIN_EMAIL_SUFFIX), password)
                 )
             }
     }

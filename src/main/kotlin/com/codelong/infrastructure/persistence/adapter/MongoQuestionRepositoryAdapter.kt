@@ -1,5 +1,7 @@
 package com.codelong.infrastructure.persistence.adapter
 
+import com.codelong.infrastructure.persistence.document.MongoSchema
+
 import com.codelong.domain.model.Question
 import com.codelong.domain.port.QuestionPage
 import com.codelong.domain.port.QuestionRepository
@@ -55,11 +57,11 @@ class MongoQuestionRepositoryAdapter(
 
     private fun buildCriteria(search: QuestionSearch): Criteria {
         val criteria = Criteria()
-        search.status?.let { criteria.and("status").`is`(it.name) }
-        search.category?.let { criteria.and("category").`is`(it.name) }
-        search.difficulty?.let { criteria.and("difficulty").`is`(it.name) }
+        search.status?.let { criteria.and(MongoSchema.Field.STATUS).`is`(it.name) }
+        search.category?.let { criteria.and(MongoSchema.Field.CATEGORY).`is`(it.name) }
+        search.difficulty?.let { criteria.and(MongoSchema.Field.DIFFICULTY).`is`(it.name) }
         return criteria
     }
 
-    private fun defaultSort(): Sort = Sort.by(Sort.Direction.DESC, "createdAt")
+    private fun defaultSort(): Sort = Sort.by(Sort.Direction.DESC, MongoSchema.Field.CREATED_AT)
 }

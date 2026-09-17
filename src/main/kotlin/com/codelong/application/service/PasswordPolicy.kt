@@ -1,6 +1,7 @@
 package com.codelong.application.service
 
-import com.codelong.domain.exception.DomainException
+import com.codelong.domain.exception.Errors
+
 
 
 /**
@@ -16,15 +17,9 @@ class PasswordPolicy(
 
     fun requireStrong(plainPassword: String) {
         when {
-            plainPassword.length < minLength -> throw DomainException.invalidInput(
-                "password.tooWeak",
-                "Password must have at least $minLength characters"
-            )
+            plainPassword.length < minLength -> throw Errors.passwordTooShort(minLength)
 
-            plainPassword.length > maxLength -> throw DomainException.invalidInput(
-                "password.tooWeak",
-                "Password must have at most $maxLength characters"
-            )
+            plainPassword.length > maxLength -> throw Errors.passwordTooLong(maxLength)
         }
     }
 

@@ -1,6 +1,7 @@
 package com.codelong.domain.valueobject
 
-import com.codelong.domain.exception.DomainException
+import com.codelong.domain.exception.Errors
+
 
 
 /**
@@ -28,10 +29,7 @@ enum class Difficulty(val level: Int, val points: Int) : Comparable<Difficulty> 
 
         fun fromLevel(level: Int): Difficulty =
             entries.firstOrNull { it.level == level }
-                ?: throw DomainException.invalidInput(
-                    "difficulty.invalid",
-                    "Difficulty level must be between $MIN_LEVEL and $MAX_LEVEL"
-                )
+                ?: throw Errors.unknownDifficultyLevel(MIN_LEVEL, MAX_LEVEL)
 
         val orderedByLevel: List<Difficulty> = entries.sortedBy { it.level }
     }

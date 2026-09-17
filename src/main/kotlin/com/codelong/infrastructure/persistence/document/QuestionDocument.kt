@@ -6,8 +6,8 @@ import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.Instant
 
-@Document(collection = "questions")
-@CompoundIndex(name = "question_search_idx", def = "{'status': 1, 'category': 1, 'difficulty': 1}")
+@Document(collection = MongoSchema.Collection.QUESTIONS)
+@CompoundIndex(name = MongoSchema.Index.QUESTION_SEARCH, def = MongoSchema.Index.QUESTION_SEARCH_DEF)
 data class QuestionDocument(
     @field:Id val id: String = "",
     val statement: String = "",

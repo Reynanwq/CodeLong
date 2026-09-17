@@ -1,6 +1,7 @@
 package com.codelong.domain.valueobject
 
-import com.codelong.domain.exception.DomainException
+import com.codelong.domain.exception.Errors
+
 
 
 enum class AccountStatus {
@@ -14,6 +15,6 @@ enum class AccountStatus {
 
         fun fromName(name: String): AccountStatus =
             entries.firstOrNull { it.name == name.trim().uppercase() }
-                ?: throw DomainException.invalidInput("status.invalid", "Unknown account status: $name")
+                ?: throw Errors.unknownAccountStatus(name)
     }
 }

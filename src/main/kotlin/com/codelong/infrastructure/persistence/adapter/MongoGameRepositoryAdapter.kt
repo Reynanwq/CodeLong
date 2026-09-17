@@ -1,5 +1,7 @@
 package com.codelong.infrastructure.persistence.adapter
 
+import com.codelong.infrastructure.persistence.document.MongoSchema
+
 import com.codelong.domain.exception.DomainException
 
 import com.codelong.domain.model.Game
@@ -40,8 +42,8 @@ class MongoGameRepositoryAdapter(
         repository.findById(id.value).orElse(null)?.let(GamePersistenceMapper::toDomain)
 
     override fun findInProgressByUserId(userId: UserId): Game? {
-        val criteria = Criteria.where("userId").`is`(userId.value)
-            .and("status").`is`(GameStatus.IN_PROGRESS.name)
+        val criteria = Criteria.where(MongoSchema.Field.USER_ID).`is`(userId.value)
+            .and(MongoSchema.Field.STATUS).`is`(GameStatus.IN_PROGRESS.name)
         return mongoTemplate
             .find(Query(criteria).with(defaultSort()).limit(1), GameDocument::class.java)
             .firstOrNull()
@@ -66,10 +68,10 @@ class MongoGameRepositoryAdapter(
     }
 
     private fun buildCriteria(search: GameSearch): Criteria {
-        val criteria = Criteria.where("userId").`is`(search.userId.value)
-        search.status?.let { criteria.and("status").`is`(it.name) }
+        val criteria = Criteria.where(MongoSchema.Field.USER_ID).`is`(search.userId.value)
+        search.status?.let { criteria.and(MongoSchema.Field.STATUS).`is`(it.name) }
         return criteria
     }
 
-    private fun defaultSort(): Sort = Sort.by(Sort.Direction.DESC, "startedAt")
+    private fun defaultSort(): Sort = Sort.by(Sort.Direction.DESC, MongoSchema.Field.STARTED_AT)
 }

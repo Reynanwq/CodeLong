@@ -1,5 +1,7 @@
 package com.codelong.infrastructure.persistence.adapter
 
+import com.codelong.infrastructure.persistence.document.MongoSchema
+
 import com.codelong.domain.model.User
 import com.codelong.domain.port.UserPage
 import com.codelong.domain.port.UserRepository
@@ -60,10 +62,10 @@ class MongoUserRepositoryAdapter(
 
     private fun buildCriteria(search: UserSearch): Criteria {
         val criteria = Criteria()
-        search.status?.let { criteria.and("status").`is`(it.name) }
-        search.role?.let { criteria.and("role").`is`(it.name) }
+        search.status?.let { criteria.and(MongoSchema.Field.STATUS).`is`(it.name) }
+        search.role?.let { criteria.and(MongoSchema.Field.ROLE).`is`(it.name) }
         return criteria
     }
 
-    private fun defaultSort(): Sort = Sort.by(Sort.Direction.ASC, "username")
+    private fun defaultSort(): Sort = Sort.by(Sort.Direction.ASC, MongoSchema.Field.USERNAME)
 }

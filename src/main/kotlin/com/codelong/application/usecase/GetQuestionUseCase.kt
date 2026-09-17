@@ -1,6 +1,7 @@
 package com.codelong.application.usecase
 
-import com.codelong.domain.exception.DomainException
+import com.codelong.domain.exception.Errors
+
 
 import com.codelong.domain.model.Question
 import com.codelong.domain.port.QuestionRepository
@@ -12,5 +13,5 @@ class GetQuestionUseCase(
 
     fun get(questionId: QuestionId): Question =
         questionRepository.findById(questionId)
-            ?: throw DomainException.notFound("QUESTION_NOT_FOUND", "Question not found")
+            ?: throw Errors.questionNotFound()
 }

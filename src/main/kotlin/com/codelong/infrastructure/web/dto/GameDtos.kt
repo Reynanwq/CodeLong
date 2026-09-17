@@ -7,6 +7,8 @@ import com.codelong.domain.valueobject.QuestionPublic
 import jakarta.validation.constraints.NotBlank
 import java.time.Instant
 
+private const val OPTION_ID_REQUIRED = "optionId is required"
+
 data class OptionResponse(
     val id: String,
     val text: String
@@ -63,7 +65,7 @@ data class GameResponse(
 }
 
 data class AnswerRequest(
-    @field:NotBlank(message = "optionId is required")
+    @field:NotBlank(message = OPTION_ID_REQUIRED)
     val optionId: String
 )
 

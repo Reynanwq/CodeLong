@@ -1,6 +1,7 @@
 package com.codelong.domain.valueobject
 
-import com.codelong.domain.exception.DomainException
+import com.codelong.domain.exception.Errors
+
 
 
 /**
@@ -27,31 +28,18 @@ data class QuestionContent(
 
     private fun validate() {
         when {
-            statement.isBlank() || statement.length > MAX_STATEMENT -> throw DomainException.invalidInput(
-                "question.statement.invalid",
-                "Statement must not be blank and at most $MAX_STATEMENT characters"
-            )
+            statement.isBlank() || statement.length > MAX_STATEMENT -> throw Errors.statementInvalid(MAX_STATEMENT)
 
-            options.size < MIN_OPTIONS -> throw DomainException.invalidInput(
-                "question.options.invalid",
-                "A question must have at least $MIN_OPTIONS options"
-            )
+            options.size < MIN_OPTIONS -> throw Errors.tooFewOptions(MIN_OPTIONS)
 
-            options.any { it.text.isBlank() } ->
-                throw DomainException.invalidInput("question.options.invalid", "Option text must not be blank")
+            options.any { it.text.isBlank() } -> throw Errors.blankOptionText()
 
-            options.map { it.id }.distinct().size != options.size ->
-                throw DomainException.invalidInput("question.options.invalid", "Option ids must be unique")
+            options.map { it.id }.distinct().size != options.size -> throw Errors.duplicatedOptionIds()
 
-            !hasOption(correctOption) -> throw DomainException.invalidInput(
-                "question.correctOption.invalid",
-                "The correct option must be one of the options"
-            )
+            !hasOption(correctOption) -> throw Errors.correctOptionNotInOptions()
 
-            explanation.isBlank() || explanation.length > MAX_EXPLANATION -> throw DomainException.invalidInput(
-                "question.explanation.invalid",
-                "Explanation must not be blank and at most $MAX_EXPLANATION characters"
-            )
+            explanation.isBlank() || explanation.length > MAX_EXPLANATION ->
+                throw Errors.explanationInvalid(MAX_EXPLANATION)
         }
     }
 
