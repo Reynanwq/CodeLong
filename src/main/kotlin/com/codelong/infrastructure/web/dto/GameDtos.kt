@@ -1,5 +1,6 @@
 package com.codelong.infrastructure.web.dto
 
+import com.codelong.domain.GameRules
 import com.codelong.domain.model.Game
 import com.codelong.domain.valueobject.AnswerResult
 import com.codelong.domain.valueobject.QuestionOption
@@ -23,15 +24,19 @@ data class PublicQuestionResponse(
     val statement: String,
     val options: List<OptionResponse>,
     val category: String,
-    val difficulty: String
+    val difficulty: String,
+    val deadline: Instant?,
+    val timeLimitSeconds: Long
 ) {
     companion object {
-        fun from(question: QuestionPublic) = PublicQuestionResponse(
+        fun from(question: QuestionPublic, deadline: Instant? = null) = PublicQuestionResponse(
             id = question.idText,
             statement = question.statement,
             options = question.options.map(OptionResponse::from),
             category = question.categoryName,
-            difficulty = question.difficultyName
+            difficulty = question.difficultyName,
+            deadline = deadline,
+            timeLimitSeconds = GameRules.ANSWER_TIME_LIMIT_SECONDS
         )
     }
 }
@@ -40,6 +45,7 @@ data class GameResponse(
     val id: String,
     val status: String,
     val currentQuestionIndex: Int,
+    val currentQuestionDeadline: Instant,
     val totalQuestions: Int,
     val remainingQuestions: Int,
     val score: Int,
@@ -53,6 +59,7 @@ data class GameResponse(
             id = game.idText,
             status = game.statusName,
             currentQuestionIndex = game.currentQuestionIndex,
+            currentQuestionDeadline = game.currentQuestionDeadline,
             totalQuestions = game.totalQuestions,
             remainingQuestions = game.remainingQuestions,
             score = game.score,
@@ -71,7 +78,8 @@ data class AnswerRequest(
 
 data class AnswerResponse(
     val correct: Boolean,
-    val chosenOption: String,
+    val timedOut: Boolean,
+    val chosenOption: String?,
     val correctOption: String,
     val explanation: String,
     val earnedPoints: Int,
@@ -86,6 +94,7 @@ data class AnswerResponse(
     companion object {
         fun from(result: AnswerResult) = AnswerResponse(
             correct = result.record.correct,
+            timedOut = result.record.timedOut,
             chosenOption = result.record.chosenOptionText,
             correctOption = result.question.correctOptionText,
             explanation = result.question.explanation,
@@ -96,7 +105,8 @@ data class AnswerResponse(
             gameCompleted = result.gameCompleted,
             questionIndex = result.questionIndex,
             totalQuestions = result.totalQuestions,
-            nextQuestion = result.nextQuestion?.let(PublicQuestionResponse::from)
+            nextQuestion = result.nextQuestion
+                ?.let { PublicQuestionResponse.from(it, result.nextQuestionDeadline) }
         )
     }
 }

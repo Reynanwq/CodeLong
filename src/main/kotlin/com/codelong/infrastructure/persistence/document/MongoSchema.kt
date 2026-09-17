@@ -22,6 +22,8 @@ object MongoSchema {
         const val CORRECT_ANSWERS = "correctAnswers"
         const val STARTED_AT = "startedAt"
         const val COMPLETED_AT = "completedAt"
+        const val CURRENT_QUESTION_DEADLINE = "currentQuestionDeadline"
+        const val TIMED_OUT = "timedOut"
         const val CREATED_AT = "createdAt"
         const val CATEGORY = "category"
         const val DIFFICULTY = "difficulty"

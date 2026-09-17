@@ -1,5 +1,6 @@
 package com.codelong.application.usecase
 
+import com.codelong.domain.GameRules
 import com.codelong.domain.exception.DomainException
 
 import com.codelong.application.command.AnswerQuestionCommand
@@ -18,6 +19,8 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import java.time.Clock
+import java.time.ZoneOffset
 
 class AnswerQuestionUseCaseScenariosTest {
 
@@ -185,5 +188,58 @@ class AnswerQuestionUseCaseScenariosTest {
         assertEquals(1, stored.currentQuestionIndex)
         assertEquals(1, stored.answers.size)
         assertTrue(stored.isInProgress)
+    }
+
+    @Test
+    fun `resposta depois do prazo e rejeitada e a pergunta conta como erro`() {
+        val game = repository.save(
+            Fixtures.game(userId = "u-1", difficulties = listOf(Difficulty.EASY, Difficulty.HARD))
+        )
+        val afterDeadline = Fixtures.NOW.plusSeconds(GameRules.ANSWER_TIME_LIMIT_SECONDS + 1)
+        val lateUseCase = AnswerQuestionUseCaseImpl(repository, Clock.fixed(afterDeadline, ZoneOffset.UTC))
+
+        val error = assertThrows<DomainException> {
+            lateUseCase.answer(
+                AnswerQuestionCommand(game.id, game.currentQuestion().correctOption),
+                actor
+            )
+        }
+
+        assertEquals("ANSWER_TIME_EXPIRED", error.code)
+
+        val stored = repository.findById(game.id)!!
+        assertEquals(1, stored.currentQuestionIndex)
+        assertEquals(0, stored.score)
+        assertEquals(0, stored.correctAnswers)
+        assertEquals(1, stored.wrongAnswers)
+        assertTrue(stored.answers.single().timedOut)
+        assertNull(stored.answers.single().chosenOption)
+    }
+
+    @Test
+    fun `prazo renovado apos resposta permite responder a proxima`() {
+        val game = repository.save(
+            Fixtures.game(userId = "u-1", difficulties = listOf(Difficulty.EASY, Difficulty.HARD))
+        )
+
+        val first = useCase.answer(AnswerQuestionCommand(game.id, game.currentQuestion().correctOption), actor)
+
+        assertNotNull(first.nextQuestionDeadline)
+        assertEquals(
+            TestClock.fixed.instant().plus(GameRules.ANSWER_TIME_LIMIT),
+            first.nextQuestionDeadline
+        )
+    }
+
+    @Test
+    fun `ultima resposta nao devolve prazo seguinte`() {
+        val game = repository.save(
+            Fixtures.game(userId = "u-1", difficulties = listOf(Difficulty.EASY))
+        )
+
+        val result = useCase.answer(AnswerQuestionCommand(game.id, game.currentQuestion().correctOption), actor)
+
+        assertNull(result.nextQuestion)
+        assertNull(result.nextQuestionDeadline)
     }
 }

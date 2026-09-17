@@ -1,17 +1,21 @@
 package com.codelong.application.usecase
 
+import com.codelong.domain.GameRules
 import com.codelong.domain.exception.DomainException
 import com.codelong.domain.valueobject.Difficulty
 import com.codelong.domain.valueobject.GameId
 import com.codelong.domain.valueobject.UserId
 import com.codelong.support.Fixtures
 import com.codelong.support.InMemoryGameRepository
+import com.codelong.support.TestClock
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import java.time.Clock
+import java.time.ZoneOffset
 
 class GetCurrentQuestionUseCaseTest {
 
@@ -21,7 +25,7 @@ class GetCurrentQuestionUseCaseTest {
     @BeforeEach
     fun setUp() {
         repository = InMemoryGameRepository()
-        useCase = GetCurrentQuestionUseCaseImpl(repository)
+        useCase = GetCurrentQuestionUseCaseImpl(repository, TestClock.fixed)
     }
 
     @Test
@@ -29,22 +33,33 @@ class GetCurrentQuestionUseCaseTest {
         val game = Fixtures.game(id = "g-1", userId = "u-1", difficulties = listOf(Difficulty.EASY, Difficulty.HARD))
         repository.save(game)
 
-        val question = useCase.current(GameId("g-1"), UserId("u-1"))
+        val current = useCase.current(GameId("g-1"), UserId("u-1"))
 
-        assertEquals(game.questions.first().id, question.id)
-        assertEquals(game.questions.first().statement, question.statement)
-        assertEquals(Difficulty.EASY, question.difficulty)
+        assertEquals(game.questions.first().id, current.question.id)
+        assertEquals(game.questions.first().statement, current.question.statement)
+        assertEquals(Difficulty.EASY, current.question.difficulty)
+    }
+
+    @Test
+    fun `devolve posicao total e prazo da pergunta atual`() {
+        repository.save(Fixtures.game(id = "g-1", userId = "u-1"))
+
+        val current = useCase.current(GameId("g-1"), UserId("u-1"))
+
+        assertEquals(0, current.index)
+        assertEquals(3, current.total)
+        assertEquals(Fixtures.NOW.plus(GameRules.ANSWER_TIME_LIMIT), current.deadline)
     }
 
     @Test
     fun `nao expoe a resposta correta nem a explicacao`() {
         repository.save(Fixtures.game(id = "g-1", userId = "u-1"))
 
-        val question = useCase.current(GameId("g-1"), UserId("u-1"))
+        val current = useCase.current(GameId("g-1"), UserId("u-1"))
 
-        assertEquals(3, question.options.size)
-        assertFalse(question.options.isEmpty())
-        assertTrue(question.statement.isNotBlank())
+        assertEquals(3, current.question.options.size)
+        assertFalse(current.question.options.isEmpty())
+        assertTrue(current.question.statement.isNotBlank())
     }
 
     @Test
@@ -61,8 +76,47 @@ class GetCurrentQuestionUseCaseTest {
 
         val second = useCase.current(GameId("g-1"), UserId("u-1"))
 
-        assertFalse(first.id == second.id)
-        assertEquals(Difficulty.HARD, second.difficulty)
+        assertFalse(first.question.id == second.question.id)
+        assertEquals(Difficulty.HARD, second.question.difficulty)
+    }
+
+    @Test
+    fun `pergunta expirada conta como erro e avanca para a proxima`() {
+        repository.save(
+            Fixtures.game(id = "g-1", userId = "u-1", difficulties = listOf(Difficulty.EASY, Difficulty.HARD))
+        )
+        val afterDeadline = Fixtures.NOW.plusSeconds(GameRules.ANSWER_TIME_LIMIT_SECONDS + 1)
+        val lateUseCase = GetCurrentQuestionUseCaseImpl(
+            repository,
+            Clock.fixed(afterDeadline, ZoneOffset.UTC)
+        )
+
+        val current = lateUseCase.current(GameId("g-1"), UserId("u-1"))
+
+        assertEquals(Difficulty.HARD, current.question.difficulty)
+        assertEquals(1, current.index)
+        assertEquals(afterDeadline.plus(GameRules.ANSWER_TIME_LIMIT), current.deadline)
+
+        val stored = repository.findById(GameId("g-1"))!!
+        assertEquals(1, stored.wrongAnswers)
+        assertEquals(0, stored.score)
+        assertTrue(stored.answers.single().timedOut)
+        assertFalse(stored.answers.single().correct)
+    }
+
+    @Test
+    fun `expiracao na ultima pergunta conclui a partida`() {
+        repository.save(Fixtures.game(id = "g-1", userId = "u-1", difficulties = listOf(Difficulty.EASY)))
+        val afterDeadline = Fixtures.NOW.plusSeconds(GameRules.ANSWER_TIME_LIMIT_SECONDS + 1)
+        val lateUseCase = GetCurrentQuestionUseCaseImpl(
+            repository,
+            Clock.fixed(afterDeadline, ZoneOffset.UTC)
+        )
+
+        val error = assertThrows<DomainException> { lateUseCase.current(GameId("g-1"), UserId("u-1")) }
+
+        assertEquals("GAME_FINISHED", error.code)
+        assertEquals(1, repository.findById(GameId("g-1"))!!.wrongAnswers)
     }
 
     @Test

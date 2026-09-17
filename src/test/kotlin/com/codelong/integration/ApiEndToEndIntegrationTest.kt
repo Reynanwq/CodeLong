@@ -20,7 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.mongodb.core.MongoTemplate
+import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
+import org.springframework.data.mongodb.core.query.Update
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
@@ -404,6 +406,49 @@ class ApiEndToEndIntegrationTest {
 
         val activeAdmins = api.get("/api/admin/users?status=ACTIVE&role=ADMIN", adminToken)
         assertEquals(1L, activeAdmins.json().long("totalElements"))
+    }
+
+
+    @Test
+    fun `pergunta sem resposta dentro do prazo conta como erro e a partida avanca`() {
+        questionRepository.save(Fixtures.question(id = "q-1", difficulty = Difficulty.EASY))
+        questionRepository.save(Fixtures.question(id = "q-2", difficulty = Difficulty.HARD))
+        val playerToken = registerPlayer("alice")
+        val gameId = api.post("/api/games", token = playerToken).json().str("id")
+
+        val current = api.get("/api/games/$gameId/current-question", playerToken)
+        assertEquals(200, current.status)
+        assertEquals(20, current.json().int("timeLimitSeconds"))
+        assertTrue(current.json().containsKey("deadline"))
+
+        expireCurrentQuestion(gameId)
+
+        val late = api.post("/api/games/$gameId/answers", mapOf("optionId" to "opt-0"), playerToken)
+        assertEquals(409, late.status)
+        assertEquals("ANSWER_TIME_EXPIRED", late.json().str("code"))
+
+        val next = api.get("/api/games/$gameId/current-question", playerToken)
+        assertEquals(200, next.status)
+        assertTrue(next.json().str("id") != current.json().str("id"))
+
+        val game = api.get("/api/games/$gameId", playerToken)
+        assertEquals(1, game.json().int("currentQuestionIndex"))
+        assertEquals(1, game.json().int("wrongAnswers"))
+        assertEquals(0, game.json().int("correctAnswers"))
+        assertEquals(0, game.json().int("score"))
+
+        val answered = api.post("/api/games/$gameId/answers", mapOf("optionId" to "opt-0"), playerToken)
+        assertEquals(200, answered.status)
+        assertTrue(answered.json().bool("gameCompleted"))
+        assertTrue(answered.json().bool("correct"))
+    }
+
+    private fun expireCurrentQuestion(gameId: String) {
+        mongoTemplate.updateFirst(
+            Query.query(Criteria.where("_id").`is`(gameId)),
+            Update().set("currentQuestionDeadline", java.time.Instant.now().minusSeconds(60)),
+            GameDocument::class.java
+        )
     }
 
     private fun credentials(username: String, email: String, password: String): Map<String, String> =

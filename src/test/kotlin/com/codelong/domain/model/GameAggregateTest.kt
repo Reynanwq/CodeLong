@@ -1,5 +1,6 @@
 package com.codelong.domain.model
 
+import com.codelong.domain.GameRules
 import com.codelong.domain.exception.DomainException
 
 import com.codelong.domain.valueobject.Difficulty
@@ -238,5 +239,99 @@ class GameAggregateTest {
         assertEquals(0, record.questionIndex)
         assertEquals(OptionId("opt-1"), record.chosenOption)
         assertEquals(game.questions.first().id, record.questionId)
+    }
+
+    @Test
+    fun `define o prazo da primeira pergunta a partir do inicio`() {
+        val game = Fixtures.game()
+
+        assertEquals(Fixtures.NOW.plus(GameRules.ANSWER_TIME_LIMIT), game.currentQuestionDeadline)
+    }
+
+    @Test
+    fun `nao considera expirada antes do prazo`() {
+        val game = Fixtures.game()
+
+        assertFalse(game.isCurrentQuestionExpired(Fixtures.NOW))
+        assertFalse(game.isCurrentQuestionExpired(Fixtures.NOW.plus(GameRules.ANSWER_TIME_LIMIT)))
+    }
+
+    @Test
+    fun `considera expirada apos o prazo`() {
+        val game = Fixtures.game()
+
+        assertTrue(game.isCurrentQuestionExpired(Fixtures.NOW.plusSeconds(GameRules.ANSWER_TIME_LIMIT_SECONDS + 1)))
+    }
+
+    @Test
+    fun `renova o prazo a cada resposta`() {
+        val game = Fixtures.game(difficulties = listOf(Difficulty.EASY, Difficulty.HARD))
+        val answeredAt = Fixtures.NOW.plusSeconds(5)
+
+        game.answer(game.currentQuestion().correctOption, answeredAt)
+
+        assertEquals(answeredAt.plus(GameRules.ANSWER_TIME_LIMIT), game.currentQuestionDeadline)
+    }
+
+    @Test
+    fun `nao aceita resposta depois do prazo`() {
+        val game = Fixtures.game()
+        val afterDeadline = Fixtures.NOW.plusSeconds(GameRules.ANSWER_TIME_LIMIT_SECONDS + 1)
+
+        val error = assertThrows<DomainException> { game.answer(OptionId("opt-0"), afterDeadline) }
+
+        assertEquals("ANSWER_TIME_EXPIRED", error.code)
+        assertEquals(0, game.currentQuestionIndex)
+        assertEquals(0, game.answers.size)
+    }
+
+    @Test
+    fun `expirar a pergunta conta como erro e avanca`() {
+        val game = Fixtures.game(difficulties = listOf(Difficulty.EASY, Difficulty.HARD))
+        val expiredAt = Fixtures.NOW.plusSeconds(GameRules.ANSWER_TIME_LIMIT_SECONDS + 1)
+
+        val eval = game.expireCurrentQuestion(expiredAt)
+
+        assertTrue(eval.record.timedOut)
+        assertFalse(eval.record.correct)
+        assertNull(eval.record.chosenOption)
+        assertEquals(0, eval.record.earnedPoints)
+        assertEquals(0, game.score)
+        assertEquals(0, game.correctAnswers)
+        assertEquals(1, game.wrongAnswers)
+        assertEquals(1, game.currentQuestionIndex)
+        assertEquals(expiredAt.plus(GameRules.ANSWER_TIME_LIMIT), game.currentQuestionDeadline)
+        assertTrue(game.isInProgress)
+    }
+
+    @Test
+    fun `expirar a ultima pergunta conclui a partida`() {
+        val game = Fixtures.game(difficulties = listOf(Difficulty.EASY))
+        val expiredAt = Fixtures.NOW.plusSeconds(GameRules.ANSWER_TIME_LIMIT_SECONDS + 1)
+
+        val eval = game.expireCurrentQuestion(expiredAt)
+
+        assertTrue(eval.gameCompleted)
+        assertTrue(game.isCompleted)
+        assertEquals(expiredAt, game.completedAt)
+        assertEquals(1, game.wrongAnswers)
+    }
+
+    @Test
+    fun `nao expira pergunta de partida finalizada`() {
+        val game = Fixtures.game(difficulties = listOf(Difficulty.EASY))
+        game.answer(game.currentQuestion().correctOption, Fixtures.NOW)
+
+        val error = assertThrows<DomainException> { game.expireCurrentQuestion(Fixtures.NOW) }
+
+        assertEquals("GAME_FINISHED", error.code)
+    }
+
+    @Test
+    fun `nao expira pergunta de partida abandonada`() {
+        val game = Fixtures.game()
+        game.abandon(Fixtures.NOW)
+
+        assertThrows<DomainException> { game.expireCurrentQuestion(Fixtures.NOW) }
     }
 }

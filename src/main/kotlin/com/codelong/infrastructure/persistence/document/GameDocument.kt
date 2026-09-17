@@ -17,6 +17,7 @@ data class GameDocument(
     val startedAt: Instant = Instant.EPOCH,
     val completedAt: Instant? = null,
     val currentQuestionIndex: Int = 0,
+    val currentQuestionDeadline: Instant = Instant.EPOCH,
     val questions: List<GameQuestionDocument> = emptyList(),
     val answers: List<AnswerDocument> = emptyList(),
     val score: Int = 0,
@@ -38,10 +39,11 @@ data class GameQuestionDocument(
 data class AnswerDocument(
     val questionIndex: Int = 0,
     val questionId: String = "",
-    val chosenOption: String = "",
+    val chosenOption: String? = null,
     val correct: Boolean = false,
     val earnedPoints: Int = 0,
-    val answeredAt: Instant = Instant.EPOCH
+    val answeredAt: Instant = Instant.EPOCH,
+    val timedOut: Boolean = false
 )
 
 /**

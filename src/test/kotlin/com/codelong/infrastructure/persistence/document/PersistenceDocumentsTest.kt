@@ -41,6 +41,7 @@ class PersistenceDocumentsTest {
         assertEquals(Instant.EPOCH, document.startedAt)
         assertNull(document.completedAt)
         assertEquals(0, document.currentQuestionIndex)
+        assertEquals(Instant.EPOCH, document.currentQuestionDeadline)
         assertTrue(document.questions.isEmpty())
         assertTrue(document.answers.isEmpty())
         assertEquals(0, document.score)
@@ -74,7 +75,8 @@ class PersistenceDocumentsTest {
 
         assertEquals(0, document.questionIndex)
         assertEquals("", document.questionId)
-        assertEquals("", document.chosenOption)
+        assertNull(document.chosenOption)
+        assertEquals(false, document.timedOut)
         assertEquals(false, document.correct)
         assertEquals(0, document.earnedPoints)
         assertEquals(Instant.EPOCH, document.answeredAt)

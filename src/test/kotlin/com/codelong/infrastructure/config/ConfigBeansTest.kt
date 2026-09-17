@@ -129,7 +129,7 @@ class ConfigBeansTest {
         assertInstanceOf(GetGameUseCase::class.java, config.getGameUseCase(games))
         assertInstanceOf(ListGamesUseCase::class.java, config.listGamesUseCase(games))
         assertInstanceOf(GetInProgressGameUseCase::class.java, config.getInProgressGameUseCase(games))
-        assertInstanceOf(GetCurrentQuestionUseCase::class.java, config.getCurrentQuestionUseCase(games))
+        assertInstanceOf(GetCurrentQuestionUseCase::class.java, config.getCurrentQuestionUseCase(games, TestClock.fixed))
         assertInstanceOf(AnswerQuestionUseCase::class.java, config.answerQuestionUseCase(games, TestClock.fixed))
         assertInstanceOf(AbandonGameUseCase::class.java, config.abandonGameUseCase(games, TestClock.fixed))
     }

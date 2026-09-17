@@ -14,6 +14,7 @@ data class GameState(
     val startedAt: Instant,
     val completedAt: Instant?,
     val currentQuestionIndex: Int,
+    val currentQuestionDeadline: Instant,
     val questions: List<GameQuestion>,
     val answers: List<AnswerRecord>,
     val score: Int,

@@ -100,8 +100,10 @@ class GameController(
     fun currentQuestion(
         @PathVariable gameId: String,
         @AuthenticationPrincipal principal: AuthenticatedUser
-    ): PublicQuestionResponse =
-        PublicQuestionResponse.from(getCurrentQuestionUseCase.current(GameId(gameId), principal.userId))
+    ): PublicQuestionResponse {
+        val current = getCurrentQuestionUseCase.current(GameId(gameId), principal.userId)
+        return PublicQuestionResponse.from(current.question, current.deadline)
+    }
 
     @PostMapping(ANSWERS_PATH)
     fun answer(

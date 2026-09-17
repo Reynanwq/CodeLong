@@ -38,6 +38,7 @@ object Errors {
     const val EMAIL_ALREADY_EXISTS = "EMAIL_ALREADY_EXISTS"
     const val GAME_FINISHED = "GAME_FINISHED"
     const val NO_ACTIVE_QUESTIONS = "NO_ACTIVE_QUESTIONS"
+    const val ANSWER_TIME_EXPIRED = "ANSWER_TIME_EXPIRED"
 
     // --- Fabricas de falha ---
     fun emailInvalid(): DomainException =
@@ -147,6 +148,9 @@ object Errors {
 
     fun gameFinished(): DomainException =
         DomainException.conflict(GAME_FINISHED, "This game is already finished and cannot receive new answers")
+
+    fun answerTimeExpired(): DomainException =
+        DomainException.conflict(ANSWER_TIME_EXPIRED, "The time to answer the current question has expired")
 
     fun noActiveQuestions(): DomainException =
         DomainException.conflict(NO_ACTIVE_QUESTIONS, "There are no active questions available to start a game")

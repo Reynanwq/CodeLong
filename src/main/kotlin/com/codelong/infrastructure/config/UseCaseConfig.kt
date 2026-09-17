@@ -148,8 +148,8 @@ class UseCaseConfig {
         GetInProgressGameUseCaseImpl(gameRepository)
 
     @Bean
-    fun getCurrentQuestionUseCase(gameRepository: GameRepository) =
-        GetCurrentQuestionUseCaseImpl(gameRepository)
+    fun getCurrentQuestionUseCase(gameRepository: GameRepository, clock: Clock) =
+        GetCurrentQuestionUseCaseImpl(gameRepository, clock)
 
     @Bean
     fun answerQuestionUseCase(gameRepository: GameRepository, clock: Clock) =
