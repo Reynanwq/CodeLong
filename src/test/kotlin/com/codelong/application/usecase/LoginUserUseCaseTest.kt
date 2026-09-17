@@ -2,6 +2,7 @@ package com.codelong.application.usecase
 
 import com.codelong.application.command.RegisterUserCommand
 import com.codelong.application.command.LoginCommand
+import com.codelong.application.service.PasswordPolicy
 import com.codelong.application.service.TokenIssuer
 import com.codelong.application.service.UserFactory
 import com.codelong.domain.exception.UnauthorizedException
@@ -26,7 +27,12 @@ class LoginUserUseCaseTest {
         repository = InMemoryUserRepository()
         val encoder = FakePasswordEncoder()
         val tokenIssuer = TokenIssuer(FakeTokenService(), TestClock.fixed, Duration.ofHours(8))
-        registerUseCase = RegisterUserUseCase(repository, UserFactory(encoder, TestClock.fixed), tokenIssuer)
+        registerUseCase = RegisterUserUseCase(
+            repository,
+            UserFactory(encoder, TestClock.fixed),
+            tokenIssuer,
+            PasswordPolicy()
+        )
         loginUseCase = LoginUserUseCase(repository, encoder, tokenIssuer)
     }
 

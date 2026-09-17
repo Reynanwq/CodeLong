@@ -1,6 +1,7 @@
 package com.codelong.application.usecase
 
 import com.codelong.application.command.RegisterUserCommand
+import com.codelong.application.service.PasswordPolicy
 import com.codelong.application.service.TokenIssuer
 import com.codelong.application.service.UserFactory
 import com.codelong.domain.exception.ConflictException
@@ -27,7 +28,8 @@ class RegisterUserUseCaseTest {
         useCase = RegisterUserUseCase(
             userRepository = repository,
             userFactory = UserFactory(FakePasswordEncoder(), TestClock.fixed),
-            tokenIssuer = TokenIssuer(FakeTokenService(), TestClock.fixed, Duration.ofHours(8))
+            tokenIssuer = TokenIssuer(FakeTokenService(), TestClock.fixed, Duration.ofHours(8)),
+            passwordPolicy = PasswordPolicy()
         )
     }
 

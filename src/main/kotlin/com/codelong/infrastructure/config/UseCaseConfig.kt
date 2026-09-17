@@ -1,10 +1,12 @@
 package com.codelong.infrastructure.config
 
 import com.codelong.application.service.GameFactory
+import com.codelong.application.service.PasswordPolicy
 import com.codelong.application.service.TokenIssuer
 import com.codelong.application.service.UserFactory
 import com.codelong.application.usecase.AbandonGameUseCase
 import com.codelong.application.usecase.AnswerQuestionUseCase
+import com.codelong.application.usecase.ChangePasswordUseCase
 import com.codelong.application.usecase.ChangeQuestionStatusUseCase
 import com.codelong.application.usecase.ChangeUserStatusUseCase
 import com.codelong.application.usecase.CreateGameUseCase
@@ -59,6 +61,9 @@ class UseCaseConfig {
         UserFactory(passwordEncoder, clock)
 
     @Bean
+    fun passwordPolicy(): PasswordPolicy = PasswordPolicy()
+
+    @Bean
     fun gameFactory(gameSequencer: GameSequencer, clock: Clock): GameFactory =
         GameFactory(gameSequencer, clock)
 
@@ -66,8 +71,17 @@ class UseCaseConfig {
     fun registerUserUseCase(
         userRepository: UserRepository,
         userFactory: UserFactory,
-        tokenIssuer: TokenIssuer
-    ) = RegisterUserUseCase(userRepository, userFactory, tokenIssuer)
+        tokenIssuer: TokenIssuer,
+        passwordPolicy: PasswordPolicy
+    ) = RegisterUserUseCase(userRepository, userFactory, tokenIssuer, passwordPolicy)
+
+    @Bean
+    fun changePasswordUseCase(
+        userRepository: UserRepository,
+        passwordEncoder: PasswordEncoder,
+        passwordPolicy: PasswordPolicy,
+        clock: Clock
+    ) = ChangePasswordUseCase(userRepository, passwordEncoder, passwordPolicy, clock)
 
     @Bean
     fun loginUserUseCase(

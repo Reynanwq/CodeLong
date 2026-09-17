@@ -173,6 +173,8 @@ O cliente **nunca** informa nem recebe antecipadamente: `score`, `currentQuestio
 ## 7. Segurança
 
 - Senhas armazenadas com **BCrypt**; nunca em texto puro e nunca retornadas.
+- Política de senha centralizada (`PasswordPolicy`): 8 a 72 caracteres (limite do BCrypt), aplicada no cadastro e na troca de senha, que exige a senha atual e recusa repetir a vigente.
+- Trocar a senha **não revoga** tokens já emitidos (JWT é stateless); eles seguem válidos até expirarem.
 - Autenticação via **JWT** (HS256), secret e expiração por variável de ambiente.
 - Endpoints protegidos por padrão; papéis:
   - `USER`: jogar, responder, consultar seus resultados e o ranking;
@@ -206,6 +208,7 @@ Cabeçalho autenticado: `Authorization: Bearer <token>`.
 | POST | `/api/auth/register` | público | Cria a conta |
 | POST | `/api/auth/login` | público | Autentica e emite o JWT |
 | GET | `/api/users/me` | autenticado | Dados do próprio usuário |
+| PATCH | `/api/users/me/password` | autenticado | Troca a própria senha (204) |
 | POST | `/api/games` | autenticado | Inicia uma partida |
 | GET | `/api/games/{gameId}` | dono | Detalhes da partida |
 | GET | `/api/games/{gameId}/current-question` | dono | Pergunta atual (sem resposta) |

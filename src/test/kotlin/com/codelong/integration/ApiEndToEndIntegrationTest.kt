@@ -247,6 +247,41 @@ class ApiEndToEndIntegrationTest {
     }
 
     @Test
+    fun `usuario troca a propria senha`() {
+        val token = registerPlayer("alice")
+
+        val changed = api.patch(
+            "/api/users/me/password",
+            mapOf("currentPassword" to "secret123", "newPassword" to "novasenha123"),
+            token
+        )
+        assertEquals(204, changed.status)
+
+        val oldPassword = api.post("/api/auth/login", mapOf("identifier" to "alice", "password" to "secret123"))
+        assertEquals(401, oldPassword.status)
+
+        val newPassword = api.post("/api/auth/login", mapOf("identifier" to "alice", "password" to "novasenha123"))
+        assertEquals(200, newPassword.status)
+
+        val wrongCurrent = api.patch(
+            "/api/users/me/password",
+            mapOf("currentPassword" to "errada123", "newPassword" to "outrasenha123"),
+            token
+        )
+        assertEquals(401, wrongCurrent.status)
+        assertEquals("INVALID_CURRENT_PASSWORD", wrongCurrent.json().str("code"))
+
+        val weak = api.patch(
+            "/api/users/me/password",
+            mapOf("currentPassword" to "novasenha123", "newPassword" to "curta"),
+            token
+        )
+        assertEquals(400, weak.status)
+
+        assertEquals(401, api.patch("/api/users/me/password", mapOf("currentPassword" to "a", "newPassword" to "outrasenha123")).status)
+    }
+
+    @Test
     fun `admin gerencia o ciclo de vida do usuario`() {
         val adminToken = loginAdmin()
         registerPlayer("alice")

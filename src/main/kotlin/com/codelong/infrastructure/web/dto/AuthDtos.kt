@@ -28,6 +28,15 @@ data class LoginRequest(
     val password: String
 )
 
+data class ChangePasswordRequest(
+    @field:NotBlank(message = "currentPassword is required")
+    val currentPassword: String,
+
+    @field:NotBlank(message = "newPassword is required")
+    @field:Size(min = 8, max = 72, message = "password must have between 8 and 72 characters")
+    val newPassword: String
+)
+
 data class UserResponse(
     val id: String,
     val username: String,
