@@ -19,6 +19,17 @@ management:
     web:
       exposure:
         include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: never
+
+info:
+  app:
+    name: CodeLong
+    description: Backend do jogo de conhecimento sobre Programacao e Engenharia de Software
+    version: "@project.version@"
 
 codelong:
   jwt:
@@ -38,4 +49,4 @@ springdoc:
 
 logging:
   pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%X{traceId:-}] %-5level %logger{36} - %msg%n"
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n"
