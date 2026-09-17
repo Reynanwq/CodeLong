@@ -58,7 +58,16 @@ data class CreateQuestionRequest(
 
     @field:NotBlank(message = DIFFICULTY_REQUIRED)
     val difficulty: String
-)
+) {
+    fun toCommand(): CreateQuestionCommand = CreateQuestionCommand(
+        statement = statement,
+        options = options.map { QuestionOptionCommand(it.id, it.text) },
+        correctOption = correctOption,
+        explanation = explanation,
+        category = Category.fromName(category),
+        difficulty = Difficulty.fromName(difficulty)
+    )
+}
 
 data class UpdateQuestionRequest(
     @field:NotBlank(message = STATEMENT_REQUIRED)
@@ -81,7 +90,17 @@ data class UpdateQuestionRequest(
 
     @field:NotBlank(message = DIFFICULTY_REQUIRED)
     val difficulty: String
-)
+) {
+    fun toCommand(questionId: QuestionId): UpdateQuestionCommand = UpdateQuestionCommand(
+        questionId = questionId,
+        statement = statement,
+        options = options.map { QuestionOptionCommand(it.id, it.text) },
+        correctOption = correctOption,
+        explanation = explanation,
+        category = Category.fromName(category),
+        difficulty = Difficulty.fromName(difficulty)
+    )
+}
 
 data class ChangeQuestionStatusRequest(
     val active: Boolean
@@ -114,26 +133,3 @@ data class QuestionResponse(
         )
     }
 }
-
-fun CreateQuestionRequest.toCommand(): CreateQuestionCommand = CreateQuestionCommand(
-    statement = statement,
-    options = options.map { QuestionOptionCommand(it.id, it.text) },
-    correctOption = correctOption,
-    explanation = explanation,
-    category = Category.fromName(category),
-    difficulty = difficultyOf(difficulty)
-)
-
-fun UpdateQuestionRequest.toCommand(questionId: QuestionId): UpdateQuestionCommand = UpdateQuestionCommand(
-    questionId = questionId,
-    statement = statement,
-    options = options.map { QuestionOptionCommand(it.id, it.text) },
-    correctOption = correctOption,
-    explanation = explanation,
-    category = Category.fromName(category),
-    difficulty = difficultyOf(difficulty)
-)
-
-private fun difficultyOf(value: String): Difficulty =
-    Difficulty.entries.firstOrNull { it.name == value.trim().uppercase() }
-        ?: throw Errors.unknownDifficulty(value)

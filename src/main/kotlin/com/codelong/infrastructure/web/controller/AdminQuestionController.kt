@@ -17,7 +17,6 @@ import com.codelong.infrastructure.web.dto.CreateQuestionRequest
 import com.codelong.infrastructure.web.dto.PageResponse
 import com.codelong.infrastructure.web.dto.QuestionResponse
 import com.codelong.infrastructure.web.dto.UpdateQuestionRequest
-import com.codelong.infrastructure.web.dto.toCommand
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping

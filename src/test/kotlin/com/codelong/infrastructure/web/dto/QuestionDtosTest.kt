@@ -40,6 +40,30 @@ class QuestionDtosTest {
     ) = UpdateQuestionRequest(statement, options, correctOption, explanation, category, difficulty)
 
     @Test
+    fun `CreateQuestionRequest expoe os campos recebidos`() {
+        val request = createRequest()
+
+        assertEquals("Enunciado?", request.statement)
+        assertEquals(2, request.options.size)
+        assertEquals("a", request.correctOption)
+        assertEquals("Explicacao.", request.explanation)
+        assertEquals("KOTLIN", request.category)
+        assertEquals("EASY", request.difficulty)
+    }
+
+    @Test
+    fun `UpdateQuestionRequest expoe os campos recebidos`() {
+        val request = updateRequest()
+
+        assertEquals("Enunciado?", request.statement)
+        assertEquals(2, request.options.size)
+        assertEquals("a", request.correctOption)
+        assertEquals("Explicacao.", request.explanation)
+        assertEquals("KOTLIN", request.category)
+        assertEquals("EASY", request.difficulty)
+    }
+
+    @Test
     fun `CreateQuestionRequest converte para command`() {
         val command = createRequest().toCommand()
 
