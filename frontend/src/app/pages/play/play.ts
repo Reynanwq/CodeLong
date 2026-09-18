@@ -2,6 +2,8 @@ import { Component, OnDestroy, OnInit, computed, inject, signal } from '@angular
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ApiService } from '../../core/api.service';
+import { AuthService } from '../../core/auth.service';
+import { randomCelebrationGif, randomMotivationalMessage } from '../../core/celebration';
 import { AnswerResponse, GameResponse, QuestionResponse } from '../../core/models';
 
 const TICK_MILLIS = 200;
@@ -150,13 +152,34 @@ const FINISHED_ACTIONS = 3;
         <p class="muted">Carregando partida...</p>
       </section>
     }
+
+    @if (recordBroken()) {
+      <div class="celebration-backdrop" (click)="closeCelebration()">
+        <div class="celebration" (click)="$event.stopPropagation()">
+          <p class="pill ok">Novo recorde</p>
+          <h1>Parabens!</h1>
+          <p class="big">Voce e o TOP 1 do ranking Genocida!</p>
+          <img class="celebration-gif" [src]="celebrationGif()" alt="Comemoracao" />
+          <p class="celebration-message">"{{ celebrationMessage() }}"</p>
+          <div class="finished-actions">
+            <button class="primary" (click)="closeCelebration()">Continuar</button>
+            <a class="secondary" routerLink="/ranking" (click)="closeCelebration()">Ver ranking</a>
+          </div>
+          <p class="muted center hint">
+            Pressione <kbd>Enter</kbd> ou <kbd>Esc</kbd> para fechar
+          </p>
+        </div>
+      </div>
+    }
   `
 })
 export class PlayPage implements OnInit, OnDestroy {
   private readonly api = inject(ApiService);
+  private readonly auth = inject(AuthService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly gameId = signal('');
+  private recordChecked = false;
 
   private timer?: ReturnType<typeof setInterval>;
 
@@ -170,6 +193,9 @@ export class PlayPage implements OnInit, OnDestroy {
   readonly finished = signal(false);
   readonly loading = signal(false);
   readonly error = signal<string | null>(null);
+  readonly recordBroken = signal(false);
+  readonly celebrationMessage = signal('');
+  readonly celebrationGif = signal('');
 
   readonly selectedOption = computed(() => {
     const options = this.question()?.options ?? [];
@@ -209,6 +235,8 @@ export class PlayPage implements OnInit, OnDestroy {
     this.finished.set(false);
     this.loading.set(false);
     this.error.set(null);
+    this.recordBroken.set(false);
+    this.recordChecked = false;
   }
 
   /** Cria/retoma uma partida no mesmo modo e navega para ela. */
@@ -238,6 +266,13 @@ export class PlayPage implements OnInit, OnDestroy {
   }
 
   onKeydown(event: KeyboardEvent): void {
+    if (this.recordBroken()) {
+      if (event.key === 'Enter' || event.key === 'Escape') {
+        event.preventDefault();
+        this.closeCelebration();
+      }
+      return;
+    }
     if (this.finished()) {
       if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
         event.preventDefault();
@@ -307,6 +342,7 @@ export class PlayPage implements OnInit, OnDestroy {
 
     if (result?.gameCompleted) {
       this.finished.set(true);
+      this.checkGenocidaRecord();
       return;
     }
     if (result?.nextQuestion) {
@@ -314,6 +350,43 @@ export class PlayPage implements OnInit, OnDestroy {
       return;
     }
     this.loadQuestion();
+  }
+
+  closeCelebration(): void {
+    this.recordBroken.set(false);
+  }
+
+  /** Se a partida genocida recem-terminada virou a #1 do ranking, dispara a comemoracao. */
+  private checkGenocidaRecord(): void {
+    if (this.recordChecked || this.game()?.mode !== 'GENOCIDA') {
+      return;
+    }
+    this.recordChecked = true;
+    const me = this.auth.user();
+    if (!me) {
+      return;
+    }
+    this.api.game(this.gameId()).subscribe({
+      next: (game) => {
+        if (game.completedAt === null) {
+          return;
+        }
+        this.api.ranking(0, 1, 'GENOCIDA').subscribe({
+          next: (ranking) => {
+            const top = ranking.entries[0];
+            const sameGame =
+              top !== undefined &&
+              game.completedAt !== null &&
+              new Date(top.achievedAt).getTime() === new Date(game.completedAt).getTime();
+            if (top !== undefined && top.userId === me.id && top.score === game.score && sameGame) {
+              this.celebrationMessage.set(randomMotivationalMessage());
+              this.celebrationGif.set(randomCelebrationGif());
+              this.recordBroken.set(true);
+            }
+          }
+        });
+      }
+    });
   }
 
   abandon(): void {
@@ -355,6 +428,7 @@ export class PlayPage implements OnInit, OnDestroy {
       error: () => {
         this.finished.set(true);
         this.refreshGame();
+        this.checkGenocidaRecord();
       }
     });
   }
@@ -411,6 +485,7 @@ export class PlayPage implements OnInit, OnDestroy {
         this.loading.set(false);
         this.finished.set(true);
         this.refreshGame();
+        this.checkGenocidaRecord();
       }
     });
   }

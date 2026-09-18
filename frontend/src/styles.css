@@ -259,6 +259,47 @@ button, .primary, .link {
   outline-offset: 2px;
 }
 
+/* Comemoracao de novo recorde no modo Genocida */
+.celebration-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 50;
+}
+
+.celebration {
+  background: #fff;
+  border-radius: 16px;
+  padding: 1.5rem;
+  max-width: 440px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+}
+
+.celebration h1 {
+  color: var(--ok);
+}
+
+.celebration-gif {
+  width: 100%;
+  max-height: 240px;
+  object-fit: contain;
+  border-radius: 12px;
+  margin: 0.75rem 0;
+  background: #0f172a;
+}
+
+.celebration-message {
+  font-style: italic;
+  color: var(--muted);
+  margin: 0.25rem 0 0;
+}
+
 /* Abas de alternancia (ranking classico x genocida) */
 .tabs {
   display: flex;
