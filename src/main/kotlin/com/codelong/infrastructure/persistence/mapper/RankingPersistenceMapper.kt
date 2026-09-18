@@ -11,6 +11,7 @@ object RankingPersistenceMapper {
         username = document.username,
         score = document.score,
         correctAnswers = document.correctAnswers,
+        answeredQuestions = document.answeredQuestions,
         totalTimeMillis = document.totalTimeMillis,
         achievedAt = document.achievedAt
     )

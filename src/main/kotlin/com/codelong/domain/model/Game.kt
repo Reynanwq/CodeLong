@@ -1,5 +1,6 @@
 package com.codelong.domain.model
 
+import com.codelong.domain.GameRules
 import com.codelong.domain.exception.Errors
 import com.codelong.domain.valueobject.AnswerEval
 import com.codelong.domain.valueobject.AnswerRecord
@@ -20,6 +21,7 @@ class Game private constructor(
     val startedAt: Instant,
     completedAt: Instant?,
     currentQuestionIndex: Int,
+    currentQuestionDeadline: Instant,
     val questions: List<GameQuestion>,
     answerRecords: MutableList<AnswerRecord>,
     score: Int,
@@ -35,6 +37,10 @@ class Game private constructor(
         private set
 
     var currentQuestionIndex: Int = currentQuestionIndex
+        private set
+
+    /** Instante limite para responder a pergunta atual. */
+    var currentQuestionDeadline: Instant = currentQuestionDeadline
         private set
 
     var score: Int = score
@@ -76,6 +82,9 @@ class Game private constructor(
         return questions[currentQuestionIndex]
     }
 
+    /** Indica se o prazo da pergunta atual ja passou. */
+    fun isCurrentQuestionExpired(now: Instant): Boolean = now.isAfter(currentQuestionDeadline)
+
     fun answered(questionIndex: Int): Boolean = answerRecords.any { it.questionIndex == questionIndex }
 
     /**
@@ -89,48 +98,25 @@ class Game private constructor(
     fun answer(optionId: OptionId, answeredAt: Instant): AnswerEval {
         requireInProgress()
 
+        isCurrentQuestionExpired(answeredAt).takeIf { it }?.let {
+            throw Errors.answerTimeExpired()
+        }
+
         val question = questions[currentQuestionIndex]
         question.hasOption(optionId).takeUnless { it }?.let {
             throw Errors.invalidAnswerOption()
         }
 
-        val correct = question.isCorrect(optionId)
-        val earnedPoints = question.pointsForCorrect.takeIf { correct } ?: 0
-        answerRecords.add(
-            AnswerRecord(
-                questionIndex = currentQuestionIndex,
-                questionId = question.id,
-                chosenOption = optionId,
-                correct = correct,
-                earnedPoints = earnedPoints,
-                answeredAt = answeredAt
-            )
-        )
+        return record(question, optionId, question.isCorrect(optionId), answeredAt)
+    }
 
-        score += earnedPoints
-        val increments = mapOf(true to 1, false to 0)
-        correctAnswers += increments.getValue(correct)
-        wrongAnswers += increments.getValue(!correct)
-
-        val answeredIndex = currentQuestionIndex
-        val isLast = answeredIndex >= questions.size - 1
-        currentQuestionIndex++
-
-        isLast.takeIf { it }?.let {
-            status = GameStatus.COMPLETED
-            completedAt = answeredAt
-        }
-
-        return AnswerEval(
-            record = answerRecords.last(),
-            question = question,
-            currentScore = score,
-            correctAnswers = correctAnswers,
-            wrongAnswers = wrongAnswers,
-            gameCompleted = isCompleted,
-            questionIndex = answeredIndex,
-            totalQuestions = questions.size
-        )
+    /**
+     * Contabiliza a pergunta atual como perdida por tempo e avanca para a
+     * proxima, sem pontuar.
+     */
+    fun expireCurrentQuestion(now: Instant): AnswerEval {
+        requireInProgress()
+        return record(questions[currentQuestionIndex], chosenOption = null, correct = false, answeredAt = now)
     }
 
     fun abandon(now: Instant) {
@@ -147,6 +133,7 @@ class Game private constructor(
         startedAt = startedAt,
         completedAt = completedAt,
         currentQuestionIndex = currentQuestionIndex,
+        currentQuestionDeadline = currentQuestionDeadline,
         questions = questions,
         answers = answers,
         score = score,
@@ -154,6 +141,52 @@ class Game private constructor(
         wrongAnswers = wrongAnswers,
         version = version
     )
+
+    private fun record(
+        question: GameQuestion,
+        chosenOption: OptionId?,
+        correct: Boolean,
+        answeredAt: Instant
+    ): AnswerEval {
+        val earnedPoints = question.pointsForCorrect.takeIf { correct } ?: 0
+        answerRecords.add(
+            AnswerRecord(
+                questionIndex = currentQuestionIndex,
+                questionId = question.id,
+                chosenOption = chosenOption,
+                correct = correct,
+                earnedPoints = earnedPoints,
+                answeredAt = answeredAt,
+                timedOut = chosenOption == null
+            )
+        )
+
+        score += earnedPoints
+        val increments = mapOf(true to 1, false to 0)
+        correctAnswers += increments.getValue(correct)
+        wrongAnswers += increments.getValue(!correct)
+
+        val answeredIndex = currentQuestionIndex
+        val isLast = answeredIndex >= questions.size - 1
+        currentQuestionIndex++
+
+        isLast.takeIf { it }?.let {
+            status = GameStatus.COMPLETED
+            completedAt = answeredAt
+        }
+        currentQuestionDeadline = answeredAt.plus(GameRules.ANSWER_TIME_LIMIT)
+
+        return AnswerEval(
+            record = answerRecords.last(),
+            question = question,
+            currentScore = score,
+            correctAnswers = correctAnswers,
+            wrongAnswers = wrongAnswers,
+            gameCompleted = isCompleted,
+            questionIndex = answeredIndex,
+            totalQuestions = questions.size
+        )
+    }
 
     private fun requireInProgress() {
         status.takeUnless { it == GameStatus.IN_PROGRESS }?.let {
@@ -170,6 +203,7 @@ class Game private constructor(
             startedAt = startedAt,
             completedAt = null,
             currentQuestionIndex = 0,
+            currentQuestionDeadline = startedAt.plus(GameRules.ANSWER_TIME_LIMIT),
             questions = setup.questions,
             answerRecords = mutableListOf(),
             score = 0,
@@ -186,6 +220,7 @@ class Game private constructor(
             startedAt = state.startedAt,
             completedAt = state.completedAt,
             currentQuestionIndex = state.currentQuestionIndex,
+            currentQuestionDeadline = state.currentQuestionDeadline,
             questions = state.questions,
             answerRecords = state.answers.toMutableList(),
             score = state.score,

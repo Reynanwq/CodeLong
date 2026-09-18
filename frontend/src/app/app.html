@@ -1,0 +1,17 @@
+@if (auth.isLoggedIn()) {
+  <header class="topbar">
+    <a class="brand" routerLink="/">CodeLong</a>
+    <nav>
+      <a routerLink="/">Inicio</a>
+      <a routerLink="/ranking">Ranking</a>
+    </nav>
+    <div class="user">
+      <span class="muted">{{ auth.user()?.username }}</span>
+      <button class="ghost" type="button" (click)="logout()">Sair</button>
+    </div>
+  </header>
+}
+
+<main class="container">
+  <router-outlet />
+</main>

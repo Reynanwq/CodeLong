@@ -25,6 +25,7 @@ class GetMyRankingUseCaseTest {
         username = id,
         score = score,
         correctAnswers = correctAnswers,
+        answeredQuestions = 10,
         totalTimeMillis = totalTimeMillis,
         achievedAt = Fixtures.NOW.plusSeconds(achievedAtOffsetSeconds)
     )

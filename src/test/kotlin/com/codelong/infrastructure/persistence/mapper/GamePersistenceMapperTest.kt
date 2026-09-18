@@ -171,4 +171,31 @@ class GamePersistenceMapperTest {
         assertEquals(0, restored.totalQuestions)
         assertTrue(restored.isInProgress)
     }
+
+    @Test
+    fun `round trip preserva o prazo da pergunta atual`() {
+        val original = Fixtures.game(id = "g-1")
+
+        val restored = GamePersistenceMapper.toDomain(GamePersistenceMapper.toDocument(original))
+
+        assertEquals(original.currentQuestionDeadline, restored.currentQuestionDeadline)
+        assertEquals(Fixtures.NOW.plus(com.codelong.domain.GameRules.ANSWER_TIME_LIMIT), restored.currentQuestionDeadline)
+    }
+
+    @Test
+    fun `round trip preserva pergunta perdida por tempo`() {
+        val original = Fixtures.game(id = "g-1", difficulties = listOf(Difficulty.EASY, Difficulty.HARD))
+        original.expireCurrentQuestion(Fixtures.NOW)
+
+        val document = GamePersistenceMapper.toDocument(original)
+        val restored = GamePersistenceMapper.toDomain(document)
+
+        val record = restored.answers.single()
+        assertNull(record.chosenOption)
+        assertTrue(record.timedOut)
+        assertFalse(record.correct)
+        assertEquals(0, record.earnedPoints)
+        assertNull(document.answers.single().chosenOption)
+        assertTrue(document.answers.single().timedOut)
+    }
 }

@@ -1,6 +1,7 @@
 package com.codelong.integration
 
 import com.codelong.application.service.UserFactory
+import com.codelong.domain.GameRules
 import com.codelong.domain.port.QuestionRepository
 import com.codelong.domain.port.UserRepository
 import com.codelong.domain.valueobject.Difficulty
@@ -12,6 +13,7 @@ import com.codelong.infrastructure.persistence.document.UserDocument
 import com.codelong.support.Fixtures
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
@@ -20,7 +22,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.mongodb.core.MongoTemplate
+import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
+import org.springframework.data.mongodb.core.query.Update
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
@@ -122,48 +126,57 @@ class ApiEndToEndIntegrationTest {
     @Test
     fun `jogador completa a partida e aparece no ranking`() {
         val adminToken = loginAdmin()
-        val easyQuestionId = createQuestion(adminToken, "Qual palavra-chave define constante em Kotlin?", "EASY")
-        val hardQuestionId = createQuestion(adminToken, "Qual padrao delega a criacao as subclasses?", "HARD")
+        val questions = (1..GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING).map { index ->
+            createQuestion(adminToken, "Qual palavra-chave define constante em Kotlin? ($index)", "EASY")
+        }
         val playerToken = registerPlayer("alice")
 
         val created = api.post("/api/games", token = playerToken)
         assertEquals(201, created.status)
         val gameId = created.json().str("id")
-        assertEquals(2, created.json().int("totalQuestions"))
+        assertEquals(questions.size, created.json().int("totalQuestions"))
         assertEquals("IN_PROGRESS", created.json().str("status"))
 
         val current = api.get("/api/games/$gameId/current-question", playerToken)
         assertEquals(200, current.status)
-        assertEquals(easyQuestionId, current.json().str("id"))
+        assertTrue(questions.contains(current.json().str("id")))
         assertEquals(4, current.json().arr("options").size)
         assertFalse(current.json().containsKey("correctOption"))
         assertFalse(current.json().containsKey("explanation"))
+        assertEquals(20, current.json().int("timeLimitSeconds"))
 
-        val first = api.post("/api/games/$gameId/answers", mapOf("optionId" to "a"), playerToken)
-        assertEquals(200, first.status)
-        assertTrue(first.json().bool("correct"))
-        assertEquals(Difficulty.EASY.points, first.json().int("earnedPoints"))
-        assertFalse(first.json().bool("gameCompleted"))
-        assertEquals(hardQuestionId, first.json().obj("nextQuestion").str("id"))
+        repeat(questions.size) { index ->
+            val response = api.post("/api/games/$gameId/answers", mapOf("optionId" to "a"), playerToken)
+            assertEquals(200, response.status)
+            assertTrue(response.json().bool("correct"))
+            assertEquals(Difficulty.EASY.points, response.json().int("earnedPoints"))
+            if (index == questions.size - 1) {
+                assertTrue(response.json().bool("gameCompleted"))
+                assertNull(response.json()["nextQuestion"])
+            } else {
+                assertFalse(response.json().bool("gameCompleted"))
+                assertNotNull(response.json().obj("nextQuestion"))
+            }
+        }
 
-        val second = api.post("/api/games/$gameId/answers", mapOf("optionId" to "a"), playerToken)
-        assertEquals(200, second.status)
-        assertTrue(second.json().bool("gameCompleted"))
-        assertEquals(Difficulty.EASY.points + Difficulty.HARD.points, second.json().int("currentScore"))
-        assertNull(second.json()["nextQuestion"])
-
+        val expectedScore = Difficulty.EASY.points * questions.size
         val finished = api.get("/api/games/$gameId", playerToken)
         assertEquals("COMPLETED", finished.json().str("status"))
+        assertEquals(expectedScore, finished.json().int("score"))
+        assertEquals(questions.size, finished.json().int("correctAnswers"))
+        assertEquals(0, finished.json().int("wrongAnswers"))
 
         val mine = api.get("/api/rankings/me", playerToken)
         assertEquals(200, mine.status)
         assertEquals(1, mine.json().int("position"))
-        assertEquals(Difficulty.EASY.points + Difficulty.HARD.points, mine.json().int("score"))
+        assertEquals(expectedScore, mine.json().int("score"))
+        assertEquals(questions.size, mine.json().int("answeredQuestions"))
 
         val ranking = api.get("/api/rankings", playerToken)
         assertEquals(200, ranking.status)
         assertEquals(1L, ranking.json().long("totalElements"))
         assertEquals("alice", ranking.json().arr("entries").first().str("username"))
+        assertEquals(questions.size, ranking.json().arr("entries").first().int("answeredQuestions"))
     }
 
     @Test
@@ -404,6 +417,49 @@ class ApiEndToEndIntegrationTest {
 
         val activeAdmins = api.get("/api/admin/users?status=ACTIVE&role=ADMIN", adminToken)
         assertEquals(1L, activeAdmins.json().long("totalElements"))
+    }
+
+
+    @Test
+    fun `pergunta sem resposta dentro do prazo conta como erro e a partida avanca`() {
+        questionRepository.save(Fixtures.question(id = "q-1", difficulty = Difficulty.EASY))
+        questionRepository.save(Fixtures.question(id = "q-2", difficulty = Difficulty.HARD))
+        val playerToken = registerPlayer("alice")
+        val gameId = api.post("/api/games", token = playerToken).json().str("id")
+
+        val current = api.get("/api/games/$gameId/current-question", playerToken)
+        assertEquals(200, current.status)
+        assertEquals(20, current.json().int("timeLimitSeconds"))
+        assertTrue(current.json().containsKey("deadline"))
+
+        expireCurrentQuestion(gameId)
+
+        val late = api.post("/api/games/$gameId/answers", mapOf("optionId" to "opt-0"), playerToken)
+        assertEquals(409, late.status)
+        assertEquals("ANSWER_TIME_EXPIRED", late.json().str("code"))
+
+        val next = api.get("/api/games/$gameId/current-question", playerToken)
+        assertEquals(200, next.status)
+        assertTrue(next.json().str("id") != current.json().str("id"))
+
+        val game = api.get("/api/games/$gameId", playerToken)
+        assertEquals(1, game.json().int("currentQuestionIndex"))
+        assertEquals(1, game.json().int("wrongAnswers"))
+        assertEquals(0, game.json().int("correctAnswers"))
+        assertEquals(0, game.json().int("score"))
+
+        val answered = api.post("/api/games/$gameId/answers", mapOf("optionId" to "opt-0"), playerToken)
+        assertEquals(200, answered.status)
+        assertTrue(answered.json().bool("gameCompleted"))
+        assertTrue(answered.json().bool("correct"))
+    }
+
+    private fun expireCurrentQuestion(gameId: String) {
+        mongoTemplate.updateFirst(
+            Query.query(Criteria.where("_id").`is`(gameId)),
+            Update().set("currentQuestionDeadline", java.time.Instant.now().minusSeconds(60)),
+            GameDocument::class.java
+        )
     }
 
     private fun credentials(username: String, email: String, password: String): Map<String, String> =

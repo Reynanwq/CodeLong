@@ -29,6 +29,7 @@ object GamePersistenceMapper {
             startedAt = state.startedAt,
             completedAt = state.completedAt,
             currentQuestionIndex = state.currentQuestionIndex,
+            currentQuestionDeadline = state.currentQuestionDeadline,
             questions = state.questions.map { toQuestionDocument(it) },
             answers = state.answers.map { toAnswerDocument(it) },
             score = state.score,
@@ -47,6 +48,7 @@ object GamePersistenceMapper {
             startedAt = document.startedAt,
             completedAt = document.completedAt,
             currentQuestionIndex = document.currentQuestionIndex,
+            currentQuestionDeadline = document.currentQuestionDeadline,
             questions = document.questions.map { toQuestion(it) },
             answers = document.answers.map { toAnswer(it) },
             score = document.score,
@@ -83,15 +85,17 @@ object GamePersistenceMapper {
         chosenOption = answer.chosenOptionText,
         correct = answer.correct,
         earnedPoints = answer.earnedPoints,
-        answeredAt = answer.answeredAt
+        answeredAt = answer.answeredAt,
+        timedOut = answer.timedOut
     )
 
     private fun toAnswer(document: AnswerDocument): AnswerRecord = AnswerRecord(
         questionIndex = document.questionIndex,
         questionId = QuestionId(document.questionId),
-        chosenOption = OptionId(document.chosenOption),
+        chosenOption = document.chosenOption?.let(::OptionId),
         correct = document.correct,
         earnedPoints = document.earnedPoints,
-        answeredAt = document.answeredAt
+        answeredAt = document.answeredAt,
+        timedOut = document.timedOut
     )
 }

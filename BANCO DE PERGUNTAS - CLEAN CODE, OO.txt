@@ -1,0 +1,2883 @@
+BANCO DE PERGUNTAS - CLEAN CODE, OOP, SOLID, DESIGN PATTERNS, ARQUITETURA, MICROSERVICES, GIT, KAFKA, SYSTEM DESIGN
+Formato: Pergunta / Opções / Resposta correta
+Níveis: 1 VERY_EASY | 2 EASY | 3 EASY_PLUS | 4 MEDIUM | 5 MEDIUM_PLUS | 6 HARD | 7 HARD_PLUS | 8 VERY_HARD | 9 EXPERT | 10 MASTER
+
+=====================================================
+CATEGORIA: CLEAN_CODE
+=====================================================
+
+[NÍVEL 1 - VERY_EASY]
+1) Um nome de variável deve ser:
+a) Curto e sem sentido
+b) Claro e descritivo
+c) Sempre em maiúsculas
+d) Aleatório
+Resposta: b
+
+2) Código limpo é fácil de:
+a) Esconder
+b) Ler e entender
+c) Compactar
+d) Ofuscar
+Resposta: b
+
+[NÍVEL 2 - EASY]
+3) Comentários em excesso geralmente indicam:
+a) Código bem documentado
+b) Código pouco claro
+c) Boa performance
+d) Boa cobertura de testes
+Resposta: b
+
+4) Uma função deve fazer:
+a) Várias coisas
+b) Uma coisa só
+c) Nada
+d) Tudo que puder
+Resposta: b
+
+[NÍVEL 3 - EASY_PLUS]
+5) "Magic numbers" no código devem ser:
+a) Mantidos como estão
+b) Substituídos por constantes nomeadas
+c) Duplicados
+d) Ignorados
+Resposta: b
+
+6) Código duplicado viola o princípio:
+a) KISS
+b) DRY
+c) YAGNI
+d) SOLID
+Resposta: b
+
+[NÍVEL 4 - MEDIUM]
+7) O princípio YAGNI significa:
+a) Você vai precisar disso
+b) Você não vai precisar disso (agora)
+c) Sempre generalize
+d) Sempre otimize
+Resposta: b
+
+8) Funções com muitos parâmetros geralmente indicam:
+a) Boa coesão
+b) Necessidade de refatoração
+c) Alta performance
+d) Baixo acoplamento
+Resposta: b
+
+[NÍVEL 5 - MEDIUM_PLUS]
+9) O princípio KISS recomenda:
+a) Soluções complexas
+b) Simplicidade
+c) Abstrações desnecessárias
+d) Herança profunda
+Resposta: b
+
+10) "Code smell" é:
+a) Um erro de compilação
+b) Um indício de possível problema de design
+c) Um teste automatizado
+d) Um padrão de projeto
+Resposta: b
+
+[NÍVEL 6 - HARD]
+11) Refatorar significa:
+a) Mudar comportamento externo do código
+b) Melhorar estrutura interna sem mudar comportamento
+c) Reescrever do zero
+d) Adicionar novas features
+Resposta: b
+
+12) Um "long method" (método longo) prejudica principalmente:
+a) A legibilidade e manutenibilidade
+b) O tempo de compilação
+c) O uso de memória
+d) A segurança
+Resposta: a
+
+[NÍVEL 7 - HARD_PLUS]
+13) "Feature Envy" é um code smell em que:
+a) Uma classe usa demais dados de outra classe
+b) Uma classe tem poucos métodos
+c) Uma classe é muito pequena
+d) Um método não tem parâmetros
+Resposta: a
+
+14) "Shotgun Surgery" ocorre quando:
+a) Uma mudança exige alterações em muitos lugares diferentes
+b) Um método faz uma única coisa
+c) Uma classe tem baixo acoplamento
+d) Um teste cobre todo o sistema
+Resposta: a
+
+[NÍVEL 8 - VERY_HARD]
+15) "Primitive Obsession" é o uso excessivo de:
+a) Objetos de domínio
+b) Tipos primitivos no lugar de objetos de valor
+c) Interfaces
+d) Padrões de projeto
+Resposta: b
+
+16) O uso de "flags booleanas" como parâmetro de função geralmente indica:
+a) Boa prática de clean code
+b) Que a função faz mais de uma coisa
+c) Alta coesão
+d) Baixo acoplamento
+Resposta: b
+
+[NÍVEL 9 - EXPERT]
+17) "Command Query Separation" defende que um método deve:
+a) Sempre retornar um valor e alterar estado
+b) Ou alterar estado ou retornar dado, não ambos
+c) Sempre ser estático
+d) Sempre lançar exceção
+Resposta: b
+
+18) "Tell, Don't Ask" recomenda:
+a) Perguntar o estado do objeto e decidir fora dele
+b) Delegar a decisão ao próprio objeto que possui o estado
+c) Expor todos os atributos publicamente
+d) Usar getters e setters para tudo
+Resposta: b
+
+[NÍVEL 10 - MASTER]
+19) Em Clean Code, "Law of Demeter" limita principalmente:
+a) O número de classes de um sistema
+b) O encadeamento de chamadas entre objetos desconhecidos
+c) O uso de herança
+d) O número de testes unitários
+Resposta: b
+
+20) Um dos objetivos centrais do "Boy Scout Rule" é:
+a) Nunca alterar código legado
+b) Deixar o código um pouco melhor do que encontrou
+c) Reescrever tudo a cada sprint
+d) Evitar refatoração
+Resposta: b
+
+=====================================================
+CATEGORIA: ORIENTACAO_A_OBJETOS (OOP)
+=====================================================
+
+[NÍVEL 1 - VERY_EASY]
+21) Um dos 4 pilares da OOP é:
+a) Recursão
+b) Encapsulamento
+c) Concorrência
+d) Indexação
+Resposta: b
+
+22) Uma classe é um(a):
+a) Instância de um objeto
+b) Modelo/molde para criar objetos
+c) Variável global
+d) Função anônima
+Resposta: b
+
+[NÍVEL 2 - EASY]
+23) Um objeto é:
+a) Uma instância de uma classe
+b) Um tipo primitivo
+c) Um comentário
+d) Uma variável estática apenas
+Resposta: a
+
+24) Herança permite que uma classe:
+a) Esconda todos os seus métodos
+b) Reutilize comportamentos de outra classe
+c) Seja instanciada duas vezes
+d) Vire uma interface
+Resposta: b
+
+[NÍVEL 3 - EASY_PLUS]
+25) Polimorfismo permite que:
+a) Um mesmo método tenha comportamentos diferentes conforme o objeto
+b) Uma classe tenha só um método
+c) Um objeto não tenha estado
+d) Uma variável mude de tipo em runtime sempre
+Resposta: a
+
+26) Encapsulamento serve principalmente para:
+a) Expor todos os dados internos
+b) Proteger o estado interno do objeto
+c) Aumentar o acoplamento
+d) Reduzir a coesão
+Resposta: b
+
+[NÍVEL 4 - MEDIUM]
+27) Abstração em OOP significa:
+a) Expor todos os detalhes de implementação
+b) Focar no essencial e ocultar detalhes complexos
+c) Remover todas as classes
+d) Usar apenas tipos primitivos
+Resposta: b
+
+28) Uma interface, diferente de uma classe abstrata, geralmente:
+a) Pode ter estado
+b) Define apenas um contrato de comportamento
+c) Não pode ser implementada
+d) É sempre final
+Resposta: b
+
+[NÍVEL 5 - MEDIUM_PLUS]
+29) Composição é geralmente preferida à herança porque:
+a) Aumenta o acoplamento entre classes
+b) Reduz acoplamento e aumenta flexibilidade
+c) Torna o código mais rígido
+d) Elimina a necessidade de interfaces
+Resposta: b
+
+30) Sobrecarga (overload) de método se diferencia de sobrescrita (override) porque:
+a) Ocorre na mesma classe com assinaturas diferentes
+b) Só ocorre entre classes diferentes
+c) Sempre muda o tipo de retorno apenas
+d) Exige herança obrigatoriamente
+Resposta: a
+
+[NÍVEL 6 - HARD]
+31) O princípio de "favorecer composição sobre herança" evita principalmente:
+a) Hierarquias rígidas e frágeis
+b) Uso de interfaces
+c) Testes unitários
+d) Encapsulamento
+Resposta: a
+
+32) Um objeto "imutável" é aquele que:
+a) Pode alterar seu estado livremente
+b) Não pode ter seu estado alterado após criado
+c) Não pode ser instanciado
+d) Sempre é estático
+Resposta: b
+
+[NÍVEL 7 - HARD_PLUS]
+33) O "Problema do Diamante" está relacionado a:
+a) Herança múltipla ambígua
+b) Encapsulamento excessivo
+c) Sobrecarga de métodos
+d) Polimorfismo de interface
+Resposta: a
+
+34) Acoplamento forte entre classes geralmente resulta em:
+a) Maior facilidade de manutenção
+b) Maior dificuldade de manutenção e testes
+c) Melhor performance
+d) Melhor coesão
+Resposta: b
+
+[NÍVEL 8 - VERY_HARD]
+35) "Duck Typing" é característico de linguagens:
+a) Fortemente tipadas e estáticas
+b) Dinamicamente tipadas
+c) Sem suporte a OOP
+d) Apenas funcionais
+Resposta: b
+
+36) Coesão alta em uma classe significa que:
+a) Ela faz muitas coisas não relacionadas
+b) Seus membros estão fortemente relacionados a um propósito
+c) Ela depende de muitas outras classes
+d) Ela não tem métodos
+Resposta: b
+
+[NÍVEL 9 - EXPERT]
+37) O princípio de substituição está mais relacionado a:
+a) Herança bem projetada (Liskov)
+b) Encapsulamento de atributos
+c) Sobrecarga de operadores
+d) Coleta de lixo
+Resposta: a
+
+38) "Mixins" são usados principalmente para:
+a) Compartilhar comportamento entre classes sem herança tradicional
+b) Substituir interfaces completamente
+c) Eliminar polimorfismo
+d) Criar apenas classes abstratas
+Resposta: a
+
+[NÍVEL 10 - MASTER]
+39) Em despacho de método (dynamic dispatch), a decisão de qual método executar ocorre:
+a) Em tempo de compilação sempre
+b) Em tempo de execução, baseado no tipo real do objeto
+c) Nunca, é fixo
+d) Apenas em linguagens funcionais
+Resposta: b
+
+40) O "Open Recursion" em OOP se refere a:
+a) Métodos que chamam a si mesmos apenas
+b) Um método poder chamar outro método sobrescrito via `this`/`self`
+c) Recursão proibida em classes
+d) Loop infinito controlado
+Resposta: b
+
+=====================================================
+CATEGORIA: SOLID
+=====================================================
+
+[NÍVEL 1 - VERY_EASY]
+41) SOLID é um acrônimo com quantos princípios?
+a) 3
+b) 5
+c) 7
+d) 10
+Resposta: b
+
+42) O "S" de SOLID representa:
+a) Simplicidade
+b) Single Responsibility
+c) Segurança
+d) Substituição
+Resposta: b
+
+[NÍVEL 2 - EASY]
+43) O "O" de SOLID significa:
+a) Open/Closed
+b) Object Oriented
+c) Overload
+d) Optional
+Resposta: a
+
+44) O "L" de SOLID é o princípio de:
+a) Liskov
+b) Layer
+c) Loose coupling
+d) Lazy loading
+Resposta: a
+
+[NÍVEL 3 - EASY_PLUS]
+45) O "I" de SOLID trata de:
+a) Interface Segregation
+b) Inheritance
+c) Immutability
+d) Instantiation
+Resposta: a
+
+46) O "D" de SOLID trata de:
+a) Design Patterns
+b) Dependency Inversion
+c) Data Encapsulation
+d) Duck Typing
+Resposta: b
+
+[NÍVEL 4 - MEDIUM]
+47) O Single Responsibility Principle afirma que uma classe deve ter:
+a) Vários motivos para mudar
+b) Apenas um motivo para mudar
+c) Nenhum motivo para mudar
+d) Motivos ilimitados para mudar
+Resposta: b
+
+48) O Open/Closed Principle diz que entidades devem estar:
+a) Abertas para modificação e fechadas para extensão
+b) Abertas para extensão e fechadas para modificação
+c) Fechadas para tudo
+d) Abertas para tudo
+Resposta: b
+
+[NÍVEL 5 - MEDIUM_PLUS]
+49) O Princípio de Substituição de Liskov exige que subtipos:
+a) Alterem o comportamento esperado da superclasse livremente
+b) Possam substituir seus tipos base sem quebrar o programa
+c) Nunca implementem métodos da superclasse
+d) Sejam sempre classes abstratas
+Resposta: b
+
+50) O Interface Segregation Principle recomenda:
+a) Interfaces grandes e genéricas
+b) Interfaces pequenas e específicas por cliente
+c) Nunca usar interfaces
+d) Uma única interface para todo o sistema
+Resposta: b
+
+[NÍVEL 6 - HARD]
+51) O Dependency Inversion Principle recomenda depender de:
+a) Implementações concretas
+b) Abstrações, não de implementações
+c) Classes finais
+d) Variáveis globais
+Resposta: b
+
+52) Uma violação comum do SRP é uma classe que:
+a) Tem um único método público
+b) Mistura lógica de negócio com persistência de dados
+c) Implementa uma interface
+d) Usa injeção de dependência
+Resposta: b
+
+[NÍVEL 7 - HARD_PLUS]
+53) Uma violação do LSP ocorre quando uma subclasse:
+a) Implementa todos os métodos da interface
+b) Lança exceção inesperada em método herdado que a base não lançava
+c) Adiciona novos métodos próprios
+d) Usa o mesmo construtor da base
+Resposta: b
+
+54) Aplicar o DIP normalmente envolve o uso de:
+a) Herança múltipla
+b) Injeção de dependência
+c) Variáveis estáticas globais
+d) Métodos privados apenas
+Resposta: b
+
+[NÍVEL 8 - VERY_HARD]
+55) O ISP ajuda a evitar que uma classe cliente seja forçada a:
+a) Implementar métodos que não usa
+b) Usar apenas uma classe
+c) Ter herança
+d) Usar testes unitários
+Resposta: a
+
+56) Um exemplo clássico de violação do OCP é:
+a) Usar um switch/case que precisa ser alterado a cada novo tipo
+b) Usar polimorfismo com interfaces
+c) Usar Strategy Pattern
+d) Usar injeção de dependência
+Resposta: a
+
+[NÍVEL 9 - EXPERT]
+57) Em arquiteturas hexagonais, o DIP é aplicado principalmente para:
+a) Isolar o domínio de detalhes de infraestrutura
+b) Acoplar domínio ao banco de dados
+c) Eliminar interfaces
+d) Reduzir número de camadas
+Resposta: a
+
+58) Um "God Class" geralmente viola diretamente:
+a) LSP
+b) SRP
+c) ISP
+d) DIP
+Resposta: b
+
+[NÍVEL 10 - MASTER]
+59) A aplicação rigorosa do LSP exige que pré-condições em subtipos sejam:
+a) Mais restritivas que na superclasse
+b) Iguais ou mais fracas que na superclasse
+c) Totalmente diferentes
+d) Sempre nulas
+Resposta: b
+
+60) Em relação ao LSP, pós-condições em subtipos devem ser:
+a) Mais fracas que na superclasse
+b) Iguais ou mais fortes que na superclasse
+c) Removidas
+d) Aleatórias
+Resposta: b
+
+=====================================================
+CATEGORIA: DESIGN_PATTERNS
+=====================================================
+
+[NÍVEL 1 - VERY_EASY]
+61) Design Patterns são:
+a) Bugs conhecidos
+b) Soluções reutilizáveis para problemas comuns de design
+c) Bibliotecas específicas
+d) Comandos de linguagem
+Resposta: b
+
+62) Os padrões de projeto do GoF são divididos em quantas categorias principais?
+a) 2
+b) 3
+c) 4
+d) 5
+Resposta: b
+
+[NÍVEL 2 - EASY]
+63) O padrão Singleton garante que uma classe tenha:
+a) Múltiplas instâncias
+b) Apenas uma instância
+c) Nenhuma instância
+d) Instâncias ilimitadas por thread
+Resposta: b
+
+64) O padrão Factory Method é usado para:
+a) Destruir objetos
+b) Criar objetos sem expor a lógica de criação ao cliente
+c) Ordenar coleções
+d) Sincronizar threads
+Resposta: b
+
+[NÍVEL 3 - EASY_PLUS]
+65) O padrão Observer é usado quando:
+a) Um objeto precisa notificar vários outros sobre mudanças
+b) Só existe um objeto no sistema
+c) Não há necessidade de notificação
+d) Objetos não se comunicam
+Resposta: a
+
+66) O padrão Strategy permite:
+a) Trocar algoritmos em tempo de execução
+b) Fixar um único algoritmo para sempre
+c) Eliminar polimorfismo
+d) Criar apenas uma instância
+Resposta: a
+
+[NÍVEL 4 - MEDIUM]
+67) O padrão Adapter é usado para:
+a) Criar novas interfaces incompatíveis
+b) Tornar interfaces incompatíveis compatíveis
+c) Remover interfaces
+d) Duplicar código
+Resposta: b
+
+68) O padrão Decorator permite:
+a) Adicionar comportamento a um objeto dinamicamente
+b) Remover todos os métodos de uma classe
+c) Criar apenas uma instância
+d) Substituir herança por completo
+Resposta: a
+
+[NÍVEL 5 - MEDIUM_PLUS]
+69) O padrão Builder é útil quando:
+a) A criação de um objeto é simples e direta
+b) A construção de um objeto complexo precisa ser feita em etapas
+c) Não há necessidade de configuração
+d) O objeto não tem atributos
+Resposta: b
+
+70) O padrão Facade tem como objetivo:
+a) Expor todos os subsistemas ao cliente
+b) Fornecer uma interface simplificada para um subsistema complexo
+c) Substituir todas as classes por uma só
+d) Aumentar o acoplamento
+Resposta: b
+
+[NÍVEL 6 - HARD]
+71) O padrão Command encapsula:
+a) Uma requisição como um objeto
+b) Um estado imutável apenas
+c) Uma conexão de rede
+d) Um algoritmo de ordenação
+Resposta: a
+
+72) O padrão Template Method define:
+a) O esqueleto de um algoritmo, deixando passos para subclasses
+b) Uma única implementação fixa e final
+c) Apenas atributos estáticos
+d) Uma interface vazia
+Resposta: a
+
+[NÍVEL 7 - HARD_PLUS]
+73) A diferença chave entre Strategy e Template Method é que Strategy usa:
+a) Herança para variar o algoritmo
+b) Composição para variar o algoritmo
+c) Apenas classes abstratas
+d) Nenhuma dessas
+Resposta: b
+
+74) O padrão Proxy é usado para:
+a) Controlar acesso a outro objeto
+b) Substituir totalmente o objeto real
+c) Criar múltiplas heranças
+d) Eliminar a necessidade de interfaces
+Resposta: a
+
+[NÍVEL 8 - VERY_HARD]
+75) O padrão Chain of Responsibility permite que uma requisição:
+a) Seja tratada por apenas um objeto fixo
+b) Passe por uma cadeia de handlers até ser tratada
+c) Seja sempre rejeitada
+d) Nunca seja processada
+Resposta: b
+
+76) O padrão Visitor é útil para:
+a) Adicionar novas operações sem modificar as classes dos elementos
+b) Remover polimorfismo
+c) Criar apenas uma classe
+d) Eliminar a necessidade de interfaces
+Resposta: a
+
+[NÍVEL 9 - EXPERT]
+77) O padrão Mediator reduz o acoplamento ao:
+a) Fazer objetos se comunicarem diretamente entre si
+b) Centralizar a comunicação entre objetos em um mediador
+c) Eliminar toda comunicação
+d) Duplicar a lógica de comunicação
+Resposta: b
+
+78) O padrão Flyweight é usado principalmente para:
+a) Reduzir uso de memória compartilhando estado comum
+b) Aumentar o número de objetos criados
+c) Substituir herança
+d) Criar singletons
+Resposta: a
+
+[NÍVEL 10 - MASTER]
+79) No padrão Abstract Factory, o objetivo é:
+a) Criar famílias de objetos relacionados sem especificar classes concretas
+b) Criar apenas um objeto por vez
+c) Substituir todos os construtores
+d) Eliminar a necessidade de interfaces
+Resposta: a
+
+80) O padrão State é semelhante ao Strategy, mas focado em:
+a) Mudança de comportamento conforme o estado interno do objeto
+b) Algoritmos de ordenação
+c) Criação de objetos únicos
+d) Comunicação em rede
+Resposta: a
+
+=====================================================
+CATEGORIA: SOFTWARE_ARCHITECTURE
+=====================================================
+
+[NÍVEL 1 - VERY_EASY]
+81) Arquitetura de software define:
+a) Apenas o design visual da tela
+b) A estrutura de alto nível de um sistema
+c) O nome das variáveis
+d) A cor do código no editor
+Resposta: b
+
+82) Uma arquitetura em camadas geralmente separa:
+a) Apenas o banco de dados
+b) Apresentação, lógica de negócio e dados
+c) Somente o frontend
+d) Nada, é uma camada só
+Resposta: b
+
+[NÍVEL 2 - EASY]
+83) Arquitetura monolítica caracteriza-se por:
+a) Múltiplos serviços independentes
+b) Uma única aplicação unificada
+c) Ausência de banco de dados
+d) Uso obrigatório de containers
+Resposta: b
+
+84) Uma API é usada principalmente para:
+a) Armazenar dados em disco
+b) Permitir comunicação entre sistemas/componentes
+c) Estilizar páginas web
+d) Compilar código
+Resposta: b
+
+[NÍVEL 3 - EASY_PLUS]
+85) Arquitetura em camadas (Layered) ajuda principalmente a:
+a) Aumentar o acoplamento entre módulos
+b) Separar responsabilidades por nível
+c) Eliminar a necessidade de testes
+d) Impedir escalabilidade
+Resposta: b
+
+86) O padrão MVC separa a aplicação em:
+a) Model, View, Controller
+b) Main, Variable, Class
+c) Module, Version, Code
+d) Method, View, Component
+Resposta: a
+
+[NÍVEL 4 - MEDIUM]
+87) Arquitetura Hexagonal (Ports and Adapters) tem como objetivo principal:
+a) Acoplar o domínio à infraestrutura
+b) Isolar o domínio de detalhes externos como banco e UI
+c) Eliminar testes de integração
+d) Forçar uso de microserviços
+Resposta: b
+
+88) Em Clean Architecture, as regras de negócio ficam:
+a) Na camada mais externa
+b) No núcleo, independente de frameworks
+c) Apenas no banco de dados
+d) No frontend
+Resposta: b
+
+[NÍVEL 5 - MEDIUM_PLUS]
+89) CQRS separa principalmente:
+a) Comandos (escrita) de consultas (leitura)
+b) Frontend de backend
+c) Testes de produção
+d) Bancos relacionais de NoSQL obrigatoriamente
+Resposta: a
+
+90) Event-Driven Architecture baseia-se em:
+a) Chamadas síncronas diretas apenas
+b) Comunicação através de eventos
+c) Ausência de comunicação entre componentes
+d) Um único processo monolítico
+Resposta: b
+
+[NÍVEL 6 - HARD]
+91) Em Domain-Driven Design, um "Bounded Context" define:
+a) Os limites de aplicabilidade de um modelo de domínio
+b) O limite físico do servidor
+c) O tamanho do banco de dados
+d) O número de microserviços
+Resposta: a
+
+92) Um "Aggregate Root" em DDD é responsável por:
+a) Garantir a consistência de um conjunto de objetos relacionados
+b) Armazenar logs do sistema
+c) Gerenciar a rede
+d) Substituir o banco de dados
+Resposta: a
+
+[NÍVEL 7 - HARD_PLUS]
+93) Event Sourcing armazena o estado de um sistema como:
+a) Apenas o estado atual
+b) Uma sequência de eventos que reconstrói o estado
+c) Um arquivo de configuração
+d) Um cache temporário
+Resposta: b
+
+94) O padrão Saga é utilizado para:
+a) Gerenciar transações distribuídas entre serviços
+b) Substituir bancos de dados
+c) Eliminar a necessidade de mensageria
+d) Criar apenas transações locais
+Resposta: a
+
+[NÍVEL 8 - VERY_HARD]
+95) O "Anti-Corruption Layer" em DDD protege um modelo de domínio contra:
+a) Ataques de segurança
+b) Influência indevida de outro modelo/sistema legado
+c) Falta de testes
+d) Sobrecarga de CPU
+Resposta: b
+
+96) Arquitetura orientada a eventos com "Event Storming" é usada para:
+a) Descobrir e modelar processos de negócio colaborativamente
+b) Testar performance de rede
+c) Compilar código mais rápido
+d) Substituir toda documentação técnica
+Resposta: a
+
+[NÍVEL 9 - EXPERT]
+97) O teorema CAP afirma que um sistema distribuído não pode garantir simultaneamente:
+a) Consistência, Disponibilidade e Tolerância a Partição
+b) Custo, Agilidade e Performance
+c) Cache, API e Protocolo
+d) Concorrência, Atomicidade e Persistência
+Resposta: a
+
+98) Consistência eventual significa que:
+a) Os dados nunca convergem
+b) Os dados convergem para um estado consistente com o tempo
+c) Não há replicação de dados
+d) O sistema é sempre consistente instantaneamente
+Resposta: b
+
+[NÍVEL 10 - MASTER]
+99) O padrão "Strangler Fig" é usado para:
+a) Migrar gradualmente um sistema legado para um novo
+b) Aumentar o acoplamento com o legado
+c) Reescrever tudo de uma vez
+d) Eliminar testes automatizados
+Resposta: a
+
+100) Em arquiteturas distribuídas, "Idempotência" garante que:
+a) Repetir uma operação produz o mesmo resultado sem efeitos colaterais extras
+b) Toda operação deve ser executada apenas uma vez fisicamente
+c) O sistema nunca falha
+d) Não há necessidade de logs
+Resposta: a
+
+=====================================================
+CATEGORIA: MICROSERVICES
+=====================================================
+
+[NÍVEL 1 - VERY_EASY]
+101) Microserviços são:
+a) Um único sistema monolítico grande
+b) Serviços pequenos e independentes
+c) Apenas bibliotecas de código
+d) Scripts de banco de dados
+Resposta: b
+
+102) Cada microserviço geralmente possui:
+a) O mesmo banco de dados de todos os outros
+b) Seu próprio escopo e, idealmente, seu próprio banco
+c) Nenhuma responsabilidade definida
+d) Apenas uma função matemática
+Resposta: b
+
+[NÍVEL 2 - EASY]
+103) Um benefício comum de microserviços é:
+a) Escalabilidade independente dos serviços
+b) Complexidade zero
+c) Deploy único obrigatório
+d) Ausência de comunicação em rede
+Resposta: a
+
+104) A comunicação entre microserviços geralmente ocorre via:
+a) Memória compartilhada apenas
+b) Rede (HTTP, mensageria, etc.)
+c) Arquivos locais apenas
+d) Não há comunicação
+Resposta: b
+
+[NÍVEL 3 - EASY_PLUS]
+105) Um "API Gateway" em microserviços serve para:
+a) Armazenar dados permanentemente
+b) Centralizar e rotear requisições para os serviços
+c) Substituir o banco de dados
+d) Compilar o código
+Resposta: b
+
+106) Um desafio comum em microserviços é:
+a) Ausência de qualquer complexidade
+b) Consistência de dados distribuídos
+c) Impossibilidade de testar
+d) Uso exclusivo de um único servidor
+Resposta: b
+
+[NÍVEL 4 - MEDIUM]
+107) "Service Discovery" permite que serviços:
+a) Se encontrem dinamicamente na rede
+b) Sejam sempre estáticos e fixos
+c) Nunca se comuniquem
+d) Compartilhem o mesmo processo
+Resposta: a
+
+108) O padrão "Database per Service" recomenda que:
+a) Todos os serviços compartilhem um único banco
+b) Cada serviço tenha seu próprio banco de dados
+c) Não exista banco de dados
+d) Apenas um serviço tenha banco
+Resposta: b
+
+[NÍVEL 5 - MEDIUM_PLUS]
+109) "Circuit Breaker" em microserviços ajuda a:
+a) Aumentar falhas em cascata
+b) Evitar chamadas repetidas a um serviço que está falhando
+c) Eliminar toda comunicação de rede
+d) Substituir o banco de dados
+Resposta: b
+
+110) Comunicação síncrona entre microserviços normalmente usa:
+a) REST/gRPC
+b) Apenas filas de mensagens
+c) Arquivos batch
+d) FTP
+Resposta: a
+
+[NÍVEL 6 - HARD]
+111) Comunicação assíncrona entre microserviços normalmente usa:
+a) Chamadas REST bloqueantes
+b) Mensageria (ex: filas, tópicos)
+c) Chamadas diretas de método
+d) Variáveis compartilhadas
+Resposta: b
+
+112) O padrão "Sidecar" é comumente usado em:
+a) Service Mesh
+b) Bancos de dados relacionais
+c) Frontend web
+d) Compiladores
+Resposta: a
+
+[NÍVEL 7 - HARD_PLUS]
+113) O padrão Saga coreografada (choreography) se diferencia da orquestrada por:
+a) Ter um orquestrador central
+b) Cada serviço reagir a eventos sem um coordenador central
+c) Não usar eventos
+d) Ser sempre síncrona
+Resposta: b
+
+114) "Bulkhead Pattern" em microserviços tem o objetivo de:
+a) Isolar falhas para que não afetem todo o sistema
+b) Unificar todos os serviços em um só
+c) Eliminar redundância
+d) Aumentar acoplamento
+Resposta: a
+
+[NÍVEL 8 - VERY_HARD]
+115) O padrão "Strangler Fig" aplicado a microserviços ajuda a:
+a) Migrar um monólito gradualmente para microserviços
+b) Fundir múltiplos microserviços em um monólito
+c) Remover a necessidade de testes
+d) Eliminar o API Gateway
+Resposta: a
+
+116) "Consistência eventual" é frequentemente aceita em microserviços porque:
+a) Transações distribuídas fortes são caras/difíceis
+b) É mais simples que consistência forte sempre
+c) Não existem bancos de dados distintos
+d) Não há necessidade de sincronização
+Resposta: a
+
+[NÍVEL 9 - EXPERT]
+117) Um "Service Mesh" (ex: Istio) provê principalmente:
+a) Observabilidade, segurança e controle de tráfego entre serviços
+b) Armazenamento de dados
+c) Compilação de código
+d) Testes unitários automatizados
+Resposta: a
+
+118) O padrão CQRS combinado com Event Sourcing em microserviços ajuda a:
+a) Separar modelo de escrita e leitura mantendo histórico de eventos
+b) Eliminar a necessidade de banco de dados
+c) Unificar todos os serviços em um só banco
+d) Remover a necessidade de mensageria
+Resposta: a
+
+[NÍVEL 10 - MASTER]
+119) O "Outbox Pattern" resolve o problema de:
+a) Garantir consistência entre escrita no banco e publicação de eventos
+b) Aumentar a latência de rede
+c) Eliminar a necessidade de banco de dados
+d) Substituir o API Gateway
+Resposta: a
+
+120) "Distributed Tracing" em microserviços serve para:
+a) Rastrear uma requisição através de múltiplos serviços
+b) Compilar código distribuído
+c) Armazenar senhas
+d) Substituir logs locais completamente
+Resposta: a
+
+=====================================================
+CATEGORIA: GIT
+=====================================================
+
+[NÍVEL 1 - VERY_EASY]
+121) Git é um sistema de:
+a) Controle de versão
+b) Banco de dados
+c) Sistema operacional
+d) Editor de texto
+Resposta: a
+
+122) O comando para clonar um repositório é:
+a) git copy
+b) git clone
+c) git download
+d) git fetch-repo
+Resposta: b
+
+[NÍVEL 2 - EASY]
+123) O comando "git commit" serve para:
+a) Enviar código para o servidor remoto
+b) Registrar alterações no histórico local
+c) Apagar o repositório
+d) Criar uma nova branch
+Resposta: b
+
+124) O comando "git status" mostra:
+a) O histórico de commits
+b) O estado atual dos arquivos modificados
+c) A versão do git instalada
+d) As branches remotas apenas
+Resposta: b
+
+[NÍVEL 3 - EASY_PLUS]
+125) O comando "git push" serve para:
+a) Baixar alterações do remoto
+b) Enviar commits locais para o repositório remoto
+c) Apagar commits
+d) Criar uma tag
+Resposta: b
+
+126) O comando "git pull" é equivalente a:
+a) git fetch + git merge
+b) git commit + git push
+c) git init + git clone
+d) git reset + git commit
+Resposta: a
+
+[NÍVEL 4 - MEDIUM]
+127) O comando "git branch" é usado para:
+a) Listar ou criar branches
+b) Apagar o repositório
+c) Fazer commit
+d) Enviar código
+Resposta: a
+
+128) Um "merge conflict" ocorre quando:
+a) Duas alterações incompatíveis são feitas na mesma parte do código
+b) O repositório está vazio
+c) Não há nenhuma branch criada
+d) O commit está vazio
+Resposta: a
+
+[NÍVEL 5 - MEDIUM_PLUS]
+129) O comando "git rebase" serve principalmente para:
+a) Reaplicar commits sobre uma nova base
+b) Apagar todo o histórico
+c) Criar um novo repositório
+d) Enviar código direto para produção
+Resposta: a
+
+130) "git stash" é usado para:
+a) Apagar alterações permanentemente
+b) Guardar temporariamente alterações não commitadas
+c) Criar uma nova branch remota
+d) Fazer merge automático
+Resposta: b
+
+[NÍVEL 6 - HARD]
+131) A diferença principal entre merge e rebase é:
+a) Merge preserva o histórico com commit de merge, rebase reescreve o histórico
+b) Rebase sempre cria conflitos, merge nunca
+c) Merge apaga commits, rebase não
+d) Não há diferença
+Resposta: a
+
+132) O comando "git cherry-pick" permite:
+a) Aplicar um commit específico de outra branch
+b) Apagar uma branch inteira
+c) Criar um novo repositório
+d) Sincronizar todas as branches automaticamente
+Resposta: a
+
+[NÍVEL 7 - HARD_PLUS]
+133) "git reset --hard" faz com que:
+a) Apenas o índice (stage) seja alterado
+b) Working directory e stage sejam revertidos ao commit especificado, perdendo alterações
+c) Nada seja alterado
+d) Um novo commit seja criado automaticamente
+Resposta: b
+
+134) "git reflog" é útil para:
+a) Recuperar referências de commits que parecem perdidos
+b) Apagar todo o histórico definitivamente
+c) Criar novas tags
+d) Sincronizar remotos
+Resposta: a
+
+[NÍVEL 8 - VERY_HARD]
+135) O fluxo "Git Flow" define papéis específicos para branches como:
+a) main/master, develop, feature, release, hotfix
+b) Apenas uma branch única para tudo
+c) Somente branches de teste
+d) Branches numeradas sequencialmente sem nome
+Resposta: a
+
+136) "git bisect" é usado para:
+a) Encontrar o commit que introduziu um bug via busca binária
+b) Dividir um repositório em dois
+c) Criar branches automaticamente
+d) Apagar commits antigos
+Resposta: a
+
+[NÍVEL 9 - EXPERT]
+137) Um "fast-forward merge" ocorre quando:
+a) A branch de destino não tem commits novos além do ponto de origem
+b) Há muitos conflitos
+c) O rebase é obrigatório
+d) O repositório está corrompido
+Resposta: a
+
+138) "git rebase -i" (interativo) permite principalmente:
+a) Reordenar, editar ou squash de commits
+b) Apagar o repositório remoto
+c) Criar múltiplos remotos automaticamente
+d) Sincronizar tags apenas
+Resposta: a
+
+[NÍVEL 10 - MASTER]
+139) O algoritmo padrão de merge do Git é conhecido como:
+a) recursive/ort (ort é o padrão em versões recentes)
+b) bubble merge
+c) binary merge
+d) quicksort merge
+Resposta: a
+
+140) "git worktree" permite:
+a) Ter múltiplos diretórios de trabalho vinculados ao mesmo repositório
+b) Apagar o histórico de commits
+c) Criar múltiplos repositórios independentes
+d) Substituir o .git por completo
+Resposta: a
+
+=====================================================
+CATEGORIA: KAFKA
+=====================================================
+
+[NÍVEL 1 - VERY_EASY]
+141) Apache Kafka é um sistema de:
+a) Banco de dados relacional
+b) Mensageria/streaming de eventos distribuído
+c) Editor de código
+d) Sistema operacional
+Resposta: b
+
+142) Em Kafka, mensagens são organizadas em:
+a) Tabelas
+b) Tópicos (topics)
+c) Pastas
+d) Índices
+Resposta: b
+
+[NÍVEL 2 - EASY]
+143) Quem envia mensagens para o Kafka é chamado de:
+a) Consumer
+b) Producer
+c) Broker
+d) Zookeeper
+Resposta: b
+
+144) Quem lê mensagens do Kafka é chamado de:
+a) Producer
+b) Consumer
+c) Topic
+d) Partition
+Resposta: b
+
+[NÍVEL 3 - EASY_PLUS]
+145) Um tópico Kafka é dividido em:
+a) Partições
+b) Colunas
+c) Índices únicos
+d) Threads
+Resposta: a
+
+146) Um "Broker" em Kafka é:
+a) Um servidor que armazena e serve dados do Kafka
+b) Um cliente que consome mensagens
+c) Um banco de dados relacional
+d) Um tipo de mensagem
+Resposta: a
+
+[NÍVEL 4 - MEDIUM]
+147) O "offset" em Kafka representa:
+a) A posição de uma mensagem dentro de uma partição
+b) O nome do tópico
+c) O número de brokers
+d) O tamanho do cluster
+Resposta: a
+
+148) Um "Consumer Group" permite que:
+a) Vários consumidores dividam o processamento de partições
+b) Apenas um consumidor exista no sistema
+c) As mensagens sejam apagadas automaticamente
+d) O producer pare de funcionar
+Resposta: a
+
+[NÍVEL 5 - MEDIUM_PLUS]
+149) Mensagens dentro de uma mesma partição são:
+a) Ordenadas
+b) Sempre embaralhadas
+c) Nunca ordenadas
+d) Apagadas imediatamente
+Resposta: a
+
+150) O componente historicamente usado para coordenação de cluster Kafka (antes do KRaft) era:
+a) Zookeeper
+b) Redis
+c) Etcd
+d) Consul
+Resposta: a
+
+[NÍVEL 6 - HARD]
+151) A "replication factor" em Kafka define:
+a) Quantas cópias de cada partição existem no cluster
+b) Quantos consumidores podem existir
+c) O tamanho máximo da mensagem
+d) O número de tópicos
+Resposta: a
+
+152) O papel do "leader" de uma partição Kafka é:
+a) Gerenciar todas as leituras e escritas daquela partição
+b) Apenas armazenar backup
+c) Nunca receber escritas
+d) Substituir o producer
+Resposta: a
+
+[NÍVEL 7 - HARD_PLUS]
+153) A garantia "exactly-once" em Kafka é mais difícil de alcançar principalmente devido a:
+a) Falhas de rede e reprocessamento de mensagens
+b) Ausência de partições
+c) Falta de consumers
+d) Uso de apenas um broker
+Resposta: a
+
+154) O parâmetro "acks=all" em um producer Kafka garante que:
+a) A mensagem seja confirmada apenas pelo líder
+b) A mensagem seja replicada e confirmada pelas réplicas in-sync
+c) A mensagem nunca seja enviada
+d) Não haja replicação
+Resposta: b
+
+[NÍVEL 8 - VERY_HARD]
+155) "In-Sync Replicas" (ISR) são réplicas que:
+a) Estão totalmente sincronizadas com o líder
+b) Nunca recebem dados
+c) Substituem o producer
+d) São sempre inválidas
+Resposta: a
+
+156) O Kafka Streams é usado principalmente para:
+a) Processamento de streams de dados diretamente na aplicação
+b) Armazenar dados relacionais
+c) Substituir o Zookeeper
+d) Compilar código Java
+Resposta: a
+
+[NÍVEL 9 - EXPERT]
+157) KRaft (Kafka Raft) foi introduzido para:
+a) Substituir a dependência do Zookeeper usando consenso Raft
+b) Substituir os brokers por completo
+c) Eliminar partições
+d) Aumentar a latência de rede
+Resposta: a
+
+158) O "log compaction" em Kafka mantém:
+a) Apenas a última mensagem por chave
+b) Todas as mensagens indefinidamente sem limpeza
+c) Nenhuma mensagem
+d) Apenas mensagens não lidas
+Resposta: a
+
+[NÍVEL 10 - MASTER]
+159) A garantia de idempotência do producer Kafka evita:
+a) Duplicação de mensagens em caso de retries
+b) Perda total de mensagens
+c) Criação de partições
+d) Uso de consumer groups
+Resposta: a
+
+160) O protocolo de "rebalanceamento cooperativo" (cooperative sticky) em consumer groups busca:
+a) Minimizar a interrupção causada por rebalanceamentos tradicionais
+b) Eliminar consumer groups
+c) Forçar rebalanceamento constante
+d) Remover a necessidade de partições
+Resposta: a
+
+=====================================================
+CATEGORIA: SYSTEM_DESIGN
+=====================================================
+
+[NÍVEL 1 - VERY_EASY]
+161) System Design trata principalmente de:
+a) Escrever testes unitários
+b) Projetar a arquitetura de sistemas em larga escala
+c) Formatar código
+d) Escolher cores de interface
+Resposta: b
+
+162) Escalabilidade se refere à capacidade de um sistema:
+a) Lidar com aumento de carga/demanda
+b) Nunca falhar
+c) Ter menos usuários
+d) Ser mais lento
+Resposta: a
+
+[NÍVEL 2 - EASY]
+163) Escalabilidade vertical significa:
+a) Adicionar mais máquinas
+b) Aumentar recursos de uma única máquina
+c) Remover servidores
+d) Reduzir usuários
+Resposta: b
+
+164) Escalabilidade horizontal significa:
+a) Aumentar recursos de uma única máquina
+b) Adicionar mais máquinas/instâncias
+c) Reduzir o número de servidores
+d) Nunca escalar
+Resposta: b
+
+[NÍVEL 3 - EASY_PLUS]
+165) Um "Load Balancer" serve para:
+a) Distribuir requisições entre múltiplos servidores
+b) Armazenar dados permanentemente
+c) Compilar código
+d) Substituir o banco de dados
+Resposta: a
+
+166) Um "Cache" é usado principalmente para:
+a) Reduzir latência acessando dados frequentes mais rápido
+b) Armazenar dados permanentemente
+c) Substituir o banco de dados por completo
+d) Aumentar a complexidade sem benefício
+Resposta: a
+
+[NÍVEL 4 - MEDIUM]
+167) "Latência" se refere a:
+a) O tempo de resposta de uma requisição
+b) O número de usuários simultâneos
+c) O tamanho do banco de dados
+d) A quantidade de servidores
+Resposta: a
+
+168) "Throughput" mede:
+a) A quantidade de requisições processadas por unidade de tempo
+b) O tempo de uma única requisição
+c) O tamanho do disco
+d) O número de bugs no sistema
+Resposta: a
+
+[NÍVEL 5 - MEDIUM_PLUS]
+169) Sharding em bancos de dados consiste em:
+a) Dividir dados em múltiplos bancos/partições
+b) Duplicar todos os dados em um único banco
+c) Apagar dados antigos
+d) Unificar todos os bancos em um só
+Resposta: a
+
+170) Um CDN (Content Delivery Network) ajuda a:
+a) Entregar conteúdo estático mais rápido através de servidores distribuídos geograficamente
+b) Armazenar dados transacionais
+c) Substituir o banco de dados
+d) Processar pagamentos
+Resposta: a
+
+[NÍVEL 6 - HARD]
+171) O padrão "Rate Limiting" é usado para:
+a) Limitar o número de requisições de um cliente em um período
+b) Aumentar a velocidade de todas as requisições
+c) Eliminar a necessidade de autenticação
+d) Substituir o cache
+Resposta: a
+
+172) "Consistent Hashing" é útil principalmente para:
+a) Minimizar realocação de dados quando nós são adicionados/removidos
+b) Eliminar a necessidade de hashing
+c) Aumentar a latência propositalmente
+d) Substituir bancos de dados relacionais
+Resposta: a
+
+[NÍVEL 7 - HARD_PLUS]
+173) Um sistema com "Strong Consistency" garante que:
+a) Todas as leituras retornam o dado mais recente escrito
+b) Os dados nunca são replicados
+c) Não existe latência
+d) Os dados são sempre eventualmente consistentes apenas
+Resposta: a
+
+174) O padrão "Write-Behind Cache" (write-back) escreve dados:
+a) Primeiro no cache e depois de forma assíncrona no banco
+b) Diretamente no banco, ignorando o cache
+c) Nunca no banco de dados
+d) Apenas em disco local
+Resposta: a
+
+[NÍVEL 8 - VERY_HARD]
+175) "Backpressure" em sistemas distribuídos serve para:
+a) Controlar o fluxo quando um consumidor não acompanha o produtor
+b) Aumentar a velocidade de produção sem limites
+c) Eliminar filas de mensagens
+d) Substituir load balancers
+Resposta: a
+
+176) O uso de "Bloom Filters" em sistemas de larga escala ajuda a:
+a) Verificar rapidamente se um elemento provavelmente existe em um conjunto
+b) Armazenar dados de forma persistente e exata
+c) Substituir bancos de dados
+d) Eliminar a necessidade de cache
+Resposta: a
+
+[NÍVEL 9 - EXPERT]
+177) O algoritmo de consenso Raft é usado para:
+a) Garantir acordo entre nós distribuídos sobre um valor/estado
+b) Comprimir dados
+c) Balancear carga de rede
+d) Criptografar mensagens
+Resposta: a
+
+178) Em sistemas de larga escala, "Hotspot" se refere a:
+a) Uma partição/chave recebendo carga desproporcional
+b) Um servidor com temperatura elevada fisicamente
+c) Um bug de segurança
+d) Um tipo de cache
+Resposta: a
+
+[NÍVEL 10 - MASTER]
+179) O algoritmo de "Vector Clocks" é usado principalmente para:
+a) Detectar ordem causal de eventos em sistemas distribuídos
+b) Sincronizar relógios físicos com precisão absoluta
+c) Substituir bancos de dados
+d) Eliminar réplicas
+Resposta: a
+
+180) O teorema de FLP (Fischer-Lynch-Paterson) demonstra que:
+a) Consenso determinístico é impossível garantir em sistema assíncrono com uma falha
+b) Todo sistema distribuído é sempre consistente
+c) Sharding é sempre desnecessário
+d) Cache elimina toda latência
+Resposta: a
+
+=====================================================
+FIM DO LOTE 1 - 180 PERGUNTAS
+=====================================================
+
+=====================================================
+LOTE 2 - FIGURAS IMPORTANTES DO DESENVOLVIMENTO DE SOFTWARE (60 PERGUNTAS)
+=====================================================
+
+-----------------------------------------------------
+CATEGORIA: GIT (foco: Linus Torvalds)
+-----------------------------------------------------
+
+[NÍVEL 1 - VERY_EASY]
+181) Quem criou o Git?
+a) Bill Gates
+b) Linus Torvalds
+c) James Gosling
+d) Guido van Rossum
+Resposta: b
+
+182) Linus Torvalds também é o criador de qual sistema operacional?
+a) Windows
+b) Linux
+c) macOS
+d) Solaris
+Resposta: b
+
+[NÍVEL 2 - EASY]
+183) Linus Torvalds criou o Git no ano de:
+a) 1991
+b) 2005
+c) 2010
+d) 2015
+Resposta: b
+
+[NÍVEL 3 - EASY_PLUS]
+184) Linus Torvalds criou o Git principalmente para gerenciar o desenvolvimento:
+a) Do kernel Linux
+b) De jogos eletrônicos
+c) De um banco de dados
+d) De um navegador
+Resposta: a
+
+[NÍVEL 5 - MEDIUM_PLUS]
+185) Antes do Git, o kernel Linux usava qual sistema de controle de versão proprietário?
+a) BitKeeper
+b) Perforce
+c) ClearCase
+d) Visual SourceSafe
+Resposta: a
+
+[NÍVEL 6 - HARD]
+186) Um dos objetivos de design do Git definidos por Linus Torvalds era:
+a) Ser centralizado em um único servidor
+b) Ser distribuído e rápido
+c) Depender de conexão constante com a internet
+d) Ter histórico linear obrigatório
+Resposta: b
+
+[NÍVEL 8 - VERY_HARD]
+187) Linus Torvalds é conhecido por criticar fortemente commits que:
+a) Seguem boas práticas de mensagens claras
+b) Quebram o build ou têm baixa qualidade
+c) São pequenos e atômicos
+d) Possuem testes
+Resposta: b
+
+[NÍVEL 9 - EXPERT]
+188) O modelo de branches usado no desenvolvimento do kernel Linux, popularizado por Torvalds, é próximo do fluxo:
+a) Trunk-based com pull requests via mantenedores
+b) GitFlow estrito com releases mensais fixas
+c) Sem uso de branches
+d) Centralizado via SVN
+Resposta: a
+
+-----------------------------------------------------
+CATEGORIA: OOP (foco: Alan Kay, Barbara Liskov, Grady Booch)
+-----------------------------------------------------
+
+[NÍVEL 2 - EASY]
+189) O termo "Programação Orientada a Objetos" é frequentemente atribuído a:
+a) Alan Kay
+b) Linus Torvalds
+c) Guido van Rossum
+d) Dennis Ritchie
+Resposta: a
+
+[NÍVEL 4 - MEDIUM]
+190) Alan Kay foi um dos criadores de qual linguagem pioneira em OOP?
+a) Smalltalk
+b) Java
+c) C++
+d) Python
+Resposta: a
+
+[NÍVEL 5 - MEDIUM_PLUS]
+191) Barbara Liskov é conhecida principalmente por seu trabalho sobre:
+a) Substituição de tipos (Princípio de Substituição de Liskov)
+b) Criação do Git
+c) Invenção do Kafka
+d) Criação do padrão MVC
+Resposta: a
+
+[NÍVEL 6 - HARD]
+192) Barbara Liskov recebeu o Turing Award principalmente por contribuições em:
+a) Design de linguagens de programação e sistemas distribuídos
+b) Criação de redes sociais
+c) Hardware de processadores
+d) Design gráfico
+Resposta: a
+
+[NÍVEL 7 - HARD_PLUS]
+193) Grady Booch é conhecido por ser um dos criadores de qual notação/linguagem de modelagem?
+a) UML (Unified Modeling Language)
+b) HTML
+c) YAML
+d) SQL
+Resposta: a
+
+[NÍVEL 8 - VERY_HARD]
+194) Alan Kay costuma enfatizar que a ideia central de OOP é mais sobre:
+a) Herança
+b) Troca de mensagens entre objetos
+c) Tipagem estática
+d) Estruturas de dados sem comportamento
+Resposta: b
+
+[NÍVEL 9 - EXPERT]
+195) Grady Booch, junto com Ivar Jacobson e James Rumbaugh, é conhecido como um dos "três amigos" responsáveis por:
+a) Unificar métodos de modelagem orientada a objetos em UML
+b) Criar o Kafka
+c) Criar o Git
+d) Fundar a linguagem C
+Resposta: a
+
+-----------------------------------------------------
+CATEGORIA: SOLID (foco: Robert C. Martin / Uncle Bob, Barbara Liskov)
+-----------------------------------------------------
+
+[NÍVEL 1 - VERY_EASY]
+196) O termo "SOLID" foi popularizado por:
+a) Robert C. Martin (Uncle Bob)
+b) Linus Torvalds
+c) Alan Kay
+d) James Gosling
+Resposta: a
+
+[NÍVEL 3 - EASY_PLUS]
+197) "Uncle Bob" é o apelido de:
+a) Robert C. Martin
+b) Martin Fowler
+c) Kent Beck
+d) Erich Gamma
+Resposta: a
+
+[NÍVEL 4 - MEDIUM]
+198) O "L" de SOLID (Liskov Substitution Principle) é uma homenagem a qual cientista da computação?
+a) Barbara Liskov
+b) Grace Hopper
+c) Ada Lovelace
+d) Margaret Hamilton
+Resposta: a
+
+[NÍVEL 6 - HARD]
+199) Robert C. Martin é coautor do "Manifesto Ágil", assinado em:
+a) 2001
+b) 1995
+c) 2010
+d) 1980
+Resposta: a
+
+[NÍVEL 7 - HARD_PLUS]
+200) Robert C. Martin popularizou os princípios SOLID reunindo ideias já discutidas anteriormente por autores como:
+a) Bertrand Meyer e Barbara Liskov, entre outros
+b) Apenas ele mesmo, sem influência anterior
+c) Linus Torvalds
+d) Jay Kreps
+Resposta: a
+
+[NÍVEL 8 - VERY_HARD]
+201) No livro "Agile Software Development, Principles, Patterns, and Practices", Robert C. Martin detalha formalmente:
+a) Os princípios SOLID
+b) O protocolo do Kafka
+c) A arquitetura do Git
+d) O algoritmo Raft
+Resposta: a
+
+-----------------------------------------------------
+CATEGORIA: CLEAN_CODE (foco: Uncle Bob, Kent Beck, Martin Fowler)
+-----------------------------------------------------
+
+[NÍVEL 1 - VERY_EASY]
+202) O livro "Clean Code" foi escrito por:
+a) Robert C. Martin
+b) Linus Torvalds
+c) Bjarne Stroustrup
+d) Ken Thompson
+Resposta: a
+
+[NÍVEL 3 - EASY_PLUS]
+203) Kent Beck é amplamente conhecido como criador de qual metodologia/prática?
+a) Extreme Programming (XP)
+b) Scrum
+c) Kanban
+d) Waterfall
+Resposta: a
+
+[NÍVEL 4 - MEDIUM]
+204) Kent Beck também é reconhecido por popularizar a prática de:
+a) TDD (Test-Driven Development)
+b) Kubernetes
+c) UML
+d) SQL
+Resposta: a
+
+[NÍVEL 5 - MEDIUM_PLUS]
+205) Martin Fowler é autor de qual livro clássico sobre melhoria de código sem mudar comportamento?
+a) Refactoring
+b) Clean Code
+c) The Pragmatic Programmer
+d) Design Patterns
+Resposta: a
+
+[NÍVEL 7 - HARD_PLUS]
+206) Martin Fowler é cofundador de qual consultoria de software influente?
+a) ThoughtWorks
+b) Google
+c) Red Hat
+d) Oracle
+Resposta: a
+
+[NÍVEL 8 - VERY_HARD]
+207) Kent Beck e Ward Cunningham são creditados pela criação do conceito de:
+a) CRC Cards e práticas iniciais de XP
+b) Protocolo Kafka
+c) UML
+d) SOLID
+Resposta: a
+
+[NÍVEL 9 - EXPERT]
+208) Robert C. Martin, em "Clean Architecture", defende que dependências devem apontar para:
+a) O núcleo de regras de negócio (independente de frameworks)
+b) O banco de dados
+c) O framework web utilizado
+d) A interface gráfica
+Resposta: a
+
+-----------------------------------------------------
+CATEGORIA: DESIGN_PATTERNS (foco: Gang of Four)
+-----------------------------------------------------
+
+[NÍVEL 1 - VERY_EASY]
+209) O livro clássico "Design Patterns" foi escrito por um grupo conhecido como:
+a) Gang of Four (GoF)
+b) Big Three
+c) Core Team
+d) Pattern Squad
+Resposta: a
+
+[NÍVEL 4 - MEDIUM]
+210) O livro "Design Patterns" (GoF) foi publicado no ano de:
+a) 1994
+b) 1980
+c) 2001
+d) 2010
+Resposta: a
+
+[NÍVEL 5 - MEDIUM_PLUS]
+211) Um dos quatro autores do livro GoF é:
+a) Erich Gamma
+b) Linus Torvalds
+c) Martin Fowler
+d) Kent Beck
+Resposta: a
+
+[NÍVEL 6 - HARD]
+212) Além de Erich Gamma, os outros autores do GoF incluem Richard Helm, Ralph Johnson e:
+a) John Vlissides
+b) Robert C. Martin
+c) James Gosling
+d) Grady Booch
+Resposta: a
+
+[NÍVEL 7 - HARD_PLUS]
+213) O livro GoF catalogou originalmente quantos padrões de projeto?
+a) 23
+b) 10
+c) 50
+d) 5
+Resposta: a
+
+[NÍVEL 8 - VERY_HARD]
+214) Erich Gamma também foi um dos criadores de qual IDE/ferramenta amplamente usada?
+a) Eclipse
+b) Visual Studio
+c) IntelliJ IDEA
+d) Sublime Text
+Resposta: a
+
+[NÍVEL 9 - EXPERT]
+215) O termo popular "GoF" (Gang of Four) surgiu por causa de:
+a) O número de autores do livro Design Patterns (quatro)
+b) Uma banda de rock citada no livro
+c) Uma empresa de consultoria
+d) Um evento de tecnologia
+Resposta: a
+
+-----------------------------------------------------
+CATEGORIA: SOFTWARE_ARCHITECTURE (foco: Martin Fowler, Eric Evans, Kent Beck)
+-----------------------------------------------------
+
+[NÍVEL 2 - EASY]
+216) O conceito de Domain-Driven Design (DDD) foi popularizado por:
+a) Eric Evans
+b) Linus Torvalds
+c) Jay Kreps
+d) Alan Kay
+Resposta: a
+
+[NÍVEL 4 - MEDIUM]
+217) O livro fundamental sobre DDD, escrito por Eric Evans, foi publicado em:
+a) 2003
+b) 1990
+c) 2015
+d) 1985
+Resposta: a
+
+[NÍVEL 5 - MEDIUM_PLUS]
+218) Martin Fowler contribuiu significativamente para popularizar o conceito de:
+a) Microservices e padrões de arquitetura corporativa
+b) Sistemas operacionais
+c) Compiladores
+d) Redes neurais
+Resposta: a
+
+[NÍVEL 6 - HARD]
+219) O termo "Bounded Context", central em DDD, foi introduzido por:
+a) Eric Evans
+b) Kent Beck
+c) Linus Torvalds
+d) Jay Kreps
+Resposta: a
+
+[NÍVEL 7 - HARD_PLUS]
+220) Martin Fowler é frequentemente citado como referência ao popularizar o padrão arquitetural conhecido como:
+a) Microservices (em artigo com James Lewis)
+b) Kafka Streams
+c) BitKeeper
+d) Git Flow
+Resposta: a
+
+[NÍVEL 8 - VERY_HARD]
+221) Kent Beck, além de XP, também influenciou práticas de arquitetura evolutiva através do conceito de:
+a) Simple Design (design simples e incremental)
+b) UML completo antecipado
+c) Big Design Up Front
+d) Arquitetura monolítica fixa
+Resposta: a
+
+[NÍVEL 9 - EXPERT]
+222) Eric Evans, em DDD, propõe que times técnicos e de negócio compartilhem um(a):
+a) Linguagem Ubíqua (Ubiquitous Language)
+b) Banco de dados único obrigatório
+c) Mesmo servidor físico
+d) Mesmo repositório Git sem branches
+Resposta: a
+
+-----------------------------------------------------
+CATEGORIA: MICROSERVICES (foco: Sam Newman, Martin Fowler)
+-----------------------------------------------------
+
+[NÍVEL 3 - EASY_PLUS]
+223) Sam Newman é reconhecido por escrever um livro de referência sobre:
+a) Microservices
+b) Compiladores
+c) Sistemas operacionais
+d) Redes neurais
+Resposta: a
+
+[NÍVEL 5 - MEDIUM_PLUS]
+224) O artigo influente que ajudou a definir "Microservices" como termo arquitetural foi coescrito por Martin Fowler e:
+a) James Lewis
+b) Linus Torvalds
+c) Eric Evans
+d) Kent Beck
+Resposta: a
+
+[NÍVEL 6 - HARD]
+225) Sam Newman populariza a ideia de decompor sistemas legados usando o padrão:
+a) Strangler Fig
+b) Singleton
+c) Observer
+d) Factory Method
+Resposta: a
+
+[NÍVEL 7 - HARD_PLUS]
+226) Segundo autores como Martin Fowler, um pré-requisito organizacional importante para microservices é:
+a) Times autônomos alinhados a serviços (Conway's Law)
+b) Um único time central controlando tudo
+c) Ausência total de comunicação entre times
+d) Um monólito bem estruturado apenas
+Resposta: a
+
+[NÍVEL 8 - VERY_HARD]
+227) "Conway's Law", frequentemente citada em discussões de microservices, foi formulada por:
+a) Melvin Conway
+b) Martin Fowler
+c) Sam Newman
+d) Linus Torvalds
+Resposta: a
+
+[NÍVEL 9 - EXPERT]
+228) Martin Fowler alertou sobre a complexidade de microservices ao propor o conceito de:
+a) "Monolith First" (começar monolítico antes de migrar)
+b) "Microservices First" sempre obrigatório
+c) Eliminação total de testes
+d) Uso exclusivo de bancos compartilhados
+Resposta: a
+
+-----------------------------------------------------
+CATEGORIA: KAFKA (foco: Jay Kreps, Neha Narkhede, Jun Rao)
+-----------------------------------------------------
+
+[NÍVEL 2 - EASY]
+229) O Apache Kafka foi originalmente criado na empresa:
+a) LinkedIn
+b) Google
+c) Amazon
+d) Microsoft
+Resposta: a
+
+[NÍVEL 4 - MEDIUM]
+230) Um dos principais criadores do Kafka, que depois cofundou a Confluent, é:
+a) Jay Kreps
+b) Linus Torvalds
+c) Martin Fowler
+d) Robert C. Martin
+Resposta: a
+
+[NÍVEL 5 - MEDIUM_PLUS]
+231) O nome "Kafka" foi escolhido por Jay Kreps em homenagem a:
+a) O escritor Franz Kafka
+b) Uma cidade
+c) Um projeto anterior
+d) Um colega de trabalho
+Resposta: a
+
+[NÍVEL 6 - HARD]
+232) Além de Jay Kreps, outros cocriadores do Kafka no LinkedIn incluem Neha Narkhede e:
+a) Jun Rao
+b) Kent Beck
+c) Eric Evans
+d) Grady Booch
+Resposta: a
+
+[NÍVEL 7 - HARD_PLUS]
+233) Jay Kreps, Neha Narkhede e Jun Rao fundaram qual empresa focada em plataformas de streaming de dados?
+a) Confluent
+b) Databricks
+c) MongoDB Inc.
+d) Elastic
+Resposta: a
+
+[NÍVEL 8 - VERY_HARD]
+234) O Kafka foi criado inicialmente para resolver o problema de:
+a) Coleta e processamento de grandes volumes de dados de atividade no LinkedIn
+b) Substituir sistemas de controle de versão
+c) Renderizar páginas web
+d) Compilar código Java mais rápido
+Resposta: a
+
+-----------------------------------------------------
+CATEGORIA: SYSTEM_DESIGN (foco: Werner Vogels, Leslie Lamport)
+-----------------------------------------------------
+
+[NÍVEL 4 - MEDIUM]
+235) Werner Vogels é CTO de qual grande empresa de tecnologia/cloud?
+a) Amazon
+b) Google
+c) Microsoft
+d) IBM
+Resposta: a
+
+[NÍVEL 6 - HARD]
+236) Leslie Lamport é amplamente reconhecido por suas contribuições em:
+a) Sistemas distribuídos e algoritmos de consenso
+b) Design de interfaces gráficas
+c) Compiladores C
+d) Controle de versão
+Resposta: a
+
+[NÍVEL 7 - HARD_PLUS]
+237) Leslie Lamport recebeu o Turing Award principalmente por trabalhos como o algoritmo/conceito de:
+a) Relógios lógicos (Lamport Timestamps) e consenso distribuído
+b) Criação do Kafka
+c) Invenção do Git
+d) Criação da linguagem Java
+Resposta: a
+
+[NÍVEL 8 - VERY_HARD]
+238) Werner Vogels é frequentemente associado à filosofia de engenharia expressa na frase "Everything fails, all the time", relacionada a:
+a) Projetar sistemas resilientes a falhas
+b) Ignorar testes de resiliência
+c) Eliminar réplicas de dados
+d) Usar apenas um único servidor central
+Resposta: a
+
+[NÍVEL 9 - EXPERT]
+239) Leslie Lamport é o criador do algoritmo de consenso distribuído conhecido como:
+a) Paxos
+b) Raft
+c) Two-Phase Commit apenas
+d) MapReduce
+Resposta: a
+
+[NÍVEL 10 - MASTER]
+240) Leslie Lamport também é criador de uma ferramenta de tipografia/preparação de documentos amplamente usada academicamente, chamada:
+a) LaTeX
+b) Markdown
+c) HTML
+d) LaTeX Kafka
+Resposta: a
+
+=====================================================
+FIM DO LOTE 2 - 60 PERGUNTAS SOBRE FIGURAS IMPORTANTES
+TOTAL ACUMULADO: 240 PERGUNTAS
+=====================================================
+
+=====================================================
+LOTE 3 - KOTLIN: CRIADORES, FIGURAS E IDIOMATISMOS (60 PERGUNTAS)
+TOTAL ACUMULADO APÓS ESTE LOTE: 300 PERGUNTAS
+=====================================================
+
+-----------------------------------------------------
+CATEGORIA: OOP (Kotlin)
+-----------------------------------------------------
+
+[NÍVEL 1 - VERY_EASY]
+241) Kotlin é uma linguagem desenvolvida principalmente pela empresa:
+a) JetBrains
+b) Google
+c) Microsoft
+d) Oracle
+Resposta: a
+
+242) Em Kotlin, todas as classes por padrão são:
+a) Abertas para herança
+b) Fechadas para herança (final), a menos que marcadas "open"
+c) Abstratas
+d) Interfaces
+Resposta: b
+
+[NÍVEL 2 - EASY]
+243) O modificador usado em Kotlin para permitir que uma classe seja herdada é:
+a) open
+b) public
+c) extend
+d) inherit
+Resposta: a
+
+[NÍVEL 3 - EASY_PLUS]
+244) "data class" em Kotlin gera automaticamente métodos como:
+a) equals(), hashCode() e toString()
+b) apenas o construtor
+c) apenas getters
+d) nenhum método extra
+Resposta: a
+
+[NÍVEL 4 - MEDIUM]
+245) "sealed class" em Kotlin é útil principalmente para:
+a) Restringir hierarquias de tipos conhecidas em tempo de compilação
+b) Impedir qualquer herança
+c) Criar classes totalmente dinâmicas
+d) Substituir interfaces
+Resposta: a
+
+[NÍVEL 5 - MEDIUM_PLUS]
+246) Um "companion object" em Kotlin é comumente usado para simular:
+a) Membros estáticos de classe
+b) Herança múltipla
+c) Interfaces vazias
+d) Classes seladas
+Resposta: a
+
+[NÍVEL 6 - HARD]
+247) Extension functions em Kotlin permitem:
+a) Adicionar novos métodos a uma classe sem modificá-la ou herdar dela
+b) Remover métodos de uma classe existente
+c) Criar herança múltipla real
+d) Sobrescrever métodos privados
+Resposta: a
+
+[NÍVEL 8 - VERY_HARD]
+248) A "delegação" de interface em Kotlin, via palavra-chave "by", implementa nativamente o padrão:
+a) Delegation Pattern
+b) Singleton
+c) Observer
+d) Factory Method
+Resposta: a
+
+-----------------------------------------------------
+CATEGORIA: CLEAN_CODE (Kotlin idiomático)
+-----------------------------------------------------
+
+[NÍVEL 1 - VERY_EASY]
+249) Em Kotlin, a palavra-chave usada para declarar uma variável imutável é:
+a) var
+b) val
+c) let
+d) const
+Resposta: b
+
+250) Kotlin foi projetada para ser totalmente interoperável com qual linguagem/plataforma?
+a) Java/JVM
+b) Python
+c) Ruby
+d) PHP
+Resposta: a
+
+[NÍVEL 2 - EASY]
+251) O sistema de tipos de Kotlin ajuda a evitar em tempo de compilação o famoso erro de:
+a) NullPointerException
+b) StackOverflow sempre
+c) Divisão por zero
+d) Erro de sintaxe
+Resposta: a
+
+[NÍVEL 3 - EASY_PLUS]
+252) Em Kotlin, um tipo pode aceitar nulo ao ser declarado com:
+a) O símbolo "?" após o tipo
+b) A palavra "null" antes do tipo
+c) A palavra "nullable"
+d) O símbolo "!"
+Resposta: a
+
+[NÍVEL 4 - MEDIUM]
+253) A expressão "when" em Kotlin é uma alternativa idiomática e mais poderosa ao:
+a) switch/case tradicional
+b) for loop
+c) try/catch
+d) while loop
+Resposta: a
+
+[NÍVEL 5 - MEDIUM_PLUS]
+254) As "scope functions" (let, apply, run, also, with) em Kotlin ajudam principalmente a:
+a) Escrever código mais conciso ao operar sobre um objeto em um escopo
+b) Criar threads
+c) Substituir todas as classes
+d) Eliminar a necessidade de funções
+Resposta: a
+
+[NÍVEL 6 - HARD]
+255) O uso idiomático de "val" ao invés de "var" em Kotlin favorece diretamente o princípio de:
+a) Imutabilidade, reduzindo efeitos colaterais
+b) Mutabilidade máxima
+c) Herança múltipla
+d) Alto acoplamento
+Resposta: a
+
+[NÍVEL 7 - HARD_PLUS]
+256) O operador idiomático "?:" (Elvis) em Kotlin serve para:
+a) Fornecer um valor padrão quando a expressão à esquerda é nula
+b) Declarar uma nova classe
+c) Criar um loop infinito
+d) Sobrescrever um método
+Resposta: a
+
+[NÍVEL 8 - VERY_HARD]
+257) Evitar o uso excessivo do operador "!!" (not-null assertion) em Kotlin é considerado boa prática porque:
+a) Ele pode lançar exceção em tempo de execução se o valor for nulo
+b) Ele é mais lento que outros operadores
+c) Ele não compila
+d) Ele substitui o Elvis operator automaticamente
+Resposta: a
+
+-----------------------------------------------------
+CATEGORIA: SOLID (Kotlin)
+-----------------------------------------------------
+
+[NÍVEL 3 - EASY_PLUS]
+258) Interfaces em Kotlin podem conter:
+a) Apenas assinaturas de métodos, nunca implementação
+b) Métodos com implementação padrão
+c) Apenas atributos mutáveis
+d) Apenas construtores
+Resposta: b
+
+[NÍVEL 4 - MEDIUM]
+259) "sealed class/interface" em Kotlin ajuda a respeitar o Open/Closed Principle porque:
+a) Permite adicionar novos comportamentos via "when" exaustivo sem quebrar código existente
+b) Impede qualquer extensão do sistema
+c) Elimina a necessidade de interfaces
+d) Força mutabilidade total
+Resposta: a
+
+[NÍVEL 5 - MEDIUM_PLUS]
+260) Kotlin favorece o Dependency Inversion Principle ao facilitar o uso de:
+a) Interfaces e injeção de dependência (ex: com frameworks como Koin/Dagger)
+b) Apenas classes finais
+c) Variáveis globais mutáveis
+d) Herança múltipla de classes
+Resposta: a
+
+[NÍVEL 6 - HARD]
+261) O modificador "open" em Kotlin, sendo o oposto do padrão "final", está relacionado diretamente à aplicação correta do princípio:
+a) Liskov Substitution Principle, ao exigir intenção explícita para herança
+b) Interface Segregation apenas
+c) Single Responsibility apenas
+d) Nenhum princípio SOLID
+Resposta: a
+
+[NÍVEL 7 - HARD_PLUS]
+262) Extension functions em Kotlin ajudam a respeitar o Single Responsibility Principle porque:
+a) Permitem adicionar comportamento sem inchar a classe original
+b) Forçam todas as funções a ficarem em uma única classe
+c) Eliminam a necessidade de responsabilidade única
+d) Substituem completamente classes
+Resposta: a
+
+[NÍVEL 8 - VERY_HARD]
+263) Interfaces funcionais em Kotlin (fun interface) favorecem o Interface Segregation Principle ao:
+a) Definir contratos mínimos com um único método abstrato
+b) Exigir múltiplos métodos obrigatórios
+c) Eliminar a necessidade de contratos
+d) Forçar herança de classes concretas
+Resposta: a
+
+-----------------------------------------------------
+CATEGORIA: DESIGN_PATTERNS (Kotlin)
+-----------------------------------------------------
+
+[NÍVEL 2 - EASY]
+264) Em Kotlin, o padrão Singleton pode ser implementado de forma nativa e simples usando a palavra-chave:
+a) object
+b) singleton
+c) static
+d) companion
+Resposta: a
+
+[NÍVEL 4 - MEDIUM]
+265) O padrão Builder em Kotlin muitas vezes é substituído de forma idiomática por:
+a) Named arguments e valores padrão em construtores
+b) Herança múltipla
+c) Reflection obrigatória
+d) Classes seladas
+Resposta: a
+
+[NÍVEL 5 - MEDIUM_PLUS]
+266) DSLs (Domain Specific Languages) em Kotlin, como as usadas no Gradle Kotlin DSL, aproveitam principalmente:
+a) Funções de extensão e lambdas com receiver
+b) Herança múltipla de classes
+c) Apenas anotações
+d) Reflection dinâmica obrigatória
+Resposta: a
+
+[NÍVEL 6 - HARD]
+267) O padrão Decorator pode ser implementado de forma concisa em Kotlin usando:
+a) Delegação de interface via "by"
+b) Apenas herança múltipla
+c) Reflection
+d) Sealed classes exclusivamente
+Resposta: a
+
+[NÍVEL 7 - HARD_PLUS]
+268) O padrão Factory Method em Kotlin é frequentemente implementado usando:
+a) Funções de nível superior (top-level) ou companion object
+b) Apenas classes abstratas obrigatórias
+c) Herança múltipla
+d) Reflection dinâmica
+Resposta: a
+
+[NÍVEL 8 - VERY_HARD]
+269) O padrão Strategy é naturalmente expresso em Kotlin através de:
+a) Funções de alta ordem e lambdas
+b) Apenas herança de classes abstratas
+c) Reflection obrigatória
+d) Sealed interfaces sem funções
+Resposta: a
+
+[NÍVEL 9 - EXPERT]
+270) O padrão Observer pode ser implementado de forma idiomática em Kotlin usando:
+a) Flow ou StateFlow do Kotlin Coroutines
+b) Apenas herança múltipla
+c) Reflection dinâmica exclusivamente
+d) Sealed classes sem coroutines
+Resposta: a
+
+-----------------------------------------------------
+CATEGORIA: SOFTWARE_ARCHITECTURE (Kotlin)
+-----------------------------------------------------
+
+[NÍVEL 1 - VERY_EASY]
+271) Kotlin Multiplatform (KMP) permite compartilhar código entre:
+a) Diferentes plataformas como Android, iOS e backend
+b) Apenas o navegador
+c) Apenas bancos de dados
+d) Apenas sistemas embarcados
+Resposta: a
+
+[NÍVEL 3 - EASY_PLUS]
+272) Ktor é um framework em Kotlin usado principalmente para construir:
+a) Aplicações web e APIs assíncronas
+b) Interfaces gráficas desktop apenas
+c) Bancos de dados relacionais
+d) Sistemas operacionais
+Resposta: a
+
+[NÍVEL 4 - MEDIUM]
+273) Kotlin foi anunciada como linguagem oficialmente suportada para desenvolvimento Android pela Google em:
+a) 2017
+b) 2010
+c) 2020
+d) 2005
+Resposta: a
+
+[NÍVEL 6 - HARD]
+274) Em arquiteturas Android modernas com Kotlin, a arquitetura recomendada pela Google geralmente envolve camadas como:
+a) UI, Domain (opcional) e Data
+b) Apenas uma camada monolítica
+c) Somente banco de dados
+d) Apenas UI sem separação
+Resposta: a
+
+[NÍVEL 7 - HARD_PLUS]
+275) Em arquiteturas server-side com Kotlin, o modelo de concorrência baseado em coroutines favorece:
+a) Alta concorrência com menor overhead que threads tradicionais
+b) Uso obrigatório de múltiplos processos
+c) Eliminação total de concorrência
+d) Bloqueio total de threads
+Resposta: a
+
+[NÍVEL 8 - VERY_HARD]
+276) Kotlin Multiplatform utiliza o conceito de "expect/actual" para:
+a) Declarar uma API comum e implementações específicas por plataforma
+b) Substituir totalmente interfaces
+c) Eliminar a necessidade de módulos
+d) Forçar duplicação total de código
+Resposta: a
+
+[NÍVEL 9 - EXPERT]
+277) A arquitetura de compilador do Kotlin (K2), lançada oficialmente em versões recentes, tinha como objetivo principal:
+a) Melhorar performance e unificar o front-end do compilador
+b) Remover o suporte à JVM
+c) Eliminar o Kotlin Multiplatform
+d) Substituir o Gradle
+Resposta: a
+
+-----------------------------------------------------
+CATEGORIA: MICROSERVICES (Kotlin)
+-----------------------------------------------------
+
+[NÍVEL 2 - EASY]
+278) Frameworks populares para construir microserviços em Kotlin incluem:
+a) Spring Boot e Ktor
+b) Apenas Django
+c) Apenas Rails
+d) Apenas Express puro sem Node
+Resposta: a
+
+[NÍVEL 4 - MEDIUM]
+279) Coroutines em Kotlin são especialmente úteis em microserviços para:
+a) Lidar com operações assíncronas de forma leve e legível
+b) Substituir completamente o banco de dados
+c) Eliminar a necessidade de APIs REST
+d) Forçar processamento síncrono obrigatório
+Resposta: a
+
+[NÍVEL 5 - MEDIUM_PLUS]
+280) O uso de "suspend functions" em Kotlin dentro de microserviços permite:
+a) Escrever código assíncrono com aparência sequencial/síncrona
+b) Bloquear threads obrigatoriamente
+c) Eliminar chamadas de rede
+d) Substituir o API Gateway
+Resposta: a
+
+[NÍVEL 6 - HARD]
+281) Em um microserviço Kotlin com Ktor, rotas HTTP são tipicamente definidas usando uma:
+a) DSL baseada em lambdas (routing DSL)
+b) Configuração XML obrigatória
+c) Apenas anotações Java clássicas
+d) Reflection dinâmica exclusiva
+Resposta: a
+
+[NÍVEL 8 - VERY_HARD]
+282) Structured Concurrency, conceito reforçado pelas coroutines de Kotlin, ajuda em microserviços a:
+a) Garantir que tarefas filhas sejam gerenciadas dentro do escopo do pai, evitando vazamentos
+b) Eliminar toda concorrência
+c) Forçar uso exclusivo de threads do sistema operacional
+d) Substituir circuit breakers
+Resposta: a
+
+[NÍVEL 9 - EXPERT]
+283) Em serviços Kotlin de alta performance, "Dispatchers" nas coroutines são usados para:
+a) Controlar em qual pool de threads uma coroutine é executada
+b) Substituir o sistema de arquivos
+c) Eliminar a necessidade de I/O assíncrono
+d) Gerenciar apenas conexões de banco de dados
+Resposta: a
+
+-----------------------------------------------------
+CATEGORIA: GIT (Kotlin)
+-----------------------------------------------------
+
+[NÍVEL 1 - VERY_EASY]
+284) O código-fonte do compilador Kotlin é hospedado publicamente principalmente em:
+a) GitHub
+b) Um servidor privado da JetBrains sem acesso externo
+c) SourceForge
+d) FTP público
+Resposta: a
+
+[NÍVEL 3 - EASY_PLUS]
+285) Em projetos Kotlin/Gradle, um arquivo comum versionado no Git para configurar dependências é:
+a) build.gradle.kts
+b) index.html
+c) package.json
+d) Dockerfile obrigatoriamente
+Resposta: a
+
+[NÍVEL 5 - MEDIUM_PLUS]
+286) Em um projeto Kotlin típico, o arquivo ".gitignore" geralmente exclui do controle de versão a pasta:
+a) build/
+b) src/
+c) README.md
+d) LICENSE
+Resposta: a
+
+[NÍVEL 6 - HARD]
+287) Contribuições open-source para a linguagem Kotlin (compilador, stdlib) geralmente seguem um fluxo de:
+a) Fork, branch de feature e pull request
+b) Commit direto na branch principal sem revisão
+c) Envio de código por e-mail apenas
+d) Nenhum controle de versão
+Resposta: a
+
+[NÍVEL 8 - VERY_HARD]
+288) Releases da linguagem Kotlin (ex: 1.9, 2.0) costumam ser marcadas no repositório oficial usando:
+a) Tags Git
+b) Apenas nomes de branches temporárias
+c) Arquivos de texto separados sem versionamento
+d) E-mails para a comunidade sem registro no repositório
+Resposta: a
+
+-----------------------------------------------------
+CATEGORIA: KAFKA (Kotlin)
+-----------------------------------------------------
+
+[NÍVEL 2 - EASY]
+289) É possível consumir e produzir mensagens Kafka em aplicações Kotlin usando:
+a) O cliente oficial Kafka para Java/JVM (compatível com Kotlin)
+b) Apenas linguagens não-JVM
+c) Nenhuma biblioteca compatível
+d) Apenas reescrevendo o protocolo do zero
+Resposta: a
+
+[NÍVEL 4 - MEDIUM]
+290) Uma vantagem de usar coroutines Kotlin junto a clientes Kafka é:
+a) Consumir mensagens de forma assíncrona sem bloquear threads desnecessariamente
+b) Eliminar a necessidade de consumer groups
+c) Substituir partições por completo
+d) Forçar processamento síncrono bloqueante
+Resposta: a
+
+[NÍVEL 5 - MEDIUM_PLUS]
+291) Bibliotecas como "kotlinx-coroutines" combinadas a clientes Kafka geralmente usam qual abstração para representar fluxos contínuos de mensagens?
+a) Flow
+b) Sealed class apenas
+c) Data class apenas
+d) Companion object apenas
+Resposta: a
+
+[NÍVEL 6 - HARD]
+292) Em serviços Kotlin que consomem Kafka, o uso de "suspend" nas funções de processamento ajuda principalmente a:
+a) Integrar chamadas assíncronas (ex: chamadas de rede) durante o processamento da mensagem
+b) Bloquear obrigatoriamente a thread principal
+c) Eliminar deserialização de mensagens
+d) Substituir o broker Kafka
+Resposta: a
+
+[NÍVEL 7 - HARD_PLUS]
+293) Frameworks como Spring Kafka, quando usados com Kotlin, permitem configurar listeners de tópicos através de:
+a) Anotações e/ou DSLs de configuração
+b) Apenas arquivos binários compilados manualmente
+c) Reflection dinâmica sem qualquer configuração
+d) Edição direta do broker
+Resposta: a
+
+[NÍVEL 8 - VERY_HARD]
+294) Ao desserializar mensagens Kafka em Kotlin, "data class" combinada a bibliotecas como kotlinx.serialization ajuda a:
+a) Mapear o payload da mensagem para objetos tipados de forma concisa
+b) Eliminar a necessidade de serialização
+c) Substituir o Zookeeper/KRaft
+d) Forçar uso exclusivo de Strings cruas
+Resposta: a
+
+-----------------------------------------------------
+CATEGORIA: SYSTEM_DESIGN (Kotlin)
+-----------------------------------------------------
+
+[NÍVEL 3 - EASY_PLUS]
+295) O modelo de concorrência baseado em coroutines em Kotlin é frequentemente comparado a "threads leves" porque:
+a) Consomem menos recursos que threads tradicionais do sistema operacional
+b) São exatamente iguais a threads do SO
+c) Não podem ser suspensas
+d) Sempre bloqueiam a CPU
+Resposta: a
+
+[NÍVEL 5 - MEDIUM_PLUS]
+296) Em sistemas de alta escala escritos em Kotlin, o uso de "Channels" (kotlinx.coroutines) permite:
+a) Comunicação segura entre coroutines, similar a filas
+b) Substituir bancos de dados distribuídos
+c) Eliminar a necessidade de concorrência
+d) Forçar uso exclusivo de variáveis globais
+Resposta: a
+
+[NÍVEL 6 - HARD]
+297) Kotlin é usada em sistemas de alta performance por empresas como Netflix e outras, aproveitando principalmente:
+a) Interoperabilidade com JVM e ecossistema Java maduro
+b) Ausência total de tipagem
+c) Execução exclusiva em navegadores
+d) Substituição obrigatória do sistema operacional
+Resposta: a
+
+[NÍVEL 7 - HARD_PLUS]
+298) Ao projetar sistemas distribuídos com Kotlin, "sealed classes" são úteis para modelar resultados de operações (sucesso/erro) de forma:
+a) Exaustiva e segura em tempo de compilação
+b) Totalmente dinâmica sem verificação
+c) Apenas via exceções não verificadas
+d) Sem qualquer tipo de retorno
+Resposta: a
+
+[NÍVEL 9 - EXPERT]
+299) Em sistemas concorrentes complexos, o uso de "Mutex" e "Actor" (padrão suportado via coroutines) em Kotlin ajuda a:
+a) Controlar acesso concorrente a estado compartilhado de forma segura
+b) Eliminar totalmente a necessidade de sincronização
+c) Substituir bancos de dados distribuídos
+d) Forçar uso exclusivo de variáveis globais mutáveis sem proteção
+Resposta: a
+
+[NÍVEL 10 - MASTER]
+300) O design de "Structured Concurrency" nas coroutines de Kotlin, influenciado por discussões acadêmicas sobre concorrência, busca resolver principalmente o problema de:
+a) Vazamento de tarefas assíncronas órfãs sem escopo definido
+b) Excesso de tipagem estática
+c) Ausência de coletor de lixo
+d) Falta de suporte a herança múltipla
+Resposta: a
+
+=====================================================
+FIM DO LOTE 3 - 60 PERGUNTAS SOBRE KOTLIN
+TOTAL ACUMULADO: 300 PERGUNTAS
+=====================================================
+
+=====================================================
+LOTE 4 - MONGODB: CONCEITOS GERAIS E COMANDOS SIMPLES (50 PERGUNTAS)
+TOTAL ACUMULADO APÓS ESTE LOTE: 350 PERGUNTAS
+=====================================================
+
+-----------------------------------------------------
+CATEGORIA: SYSTEM_DESIGN (MongoDB)
+-----------------------------------------------------
+
+[NÍVEL 1 - VERY_EASY]
+301) MongoDB é um banco de dados do tipo:
+a) Relacional
+b) NoSQL orientado a documentos
+c) Apenas um cache em memória
+d) Um sistema de arquivos
+Resposta: b
+
+302) Em MongoDB, os dados são armazenados no formato:
+a) XML
+b) BSON (similar a JSON binário)
+c) CSV
+d) YAML
+Resposta: b
+
+[NÍVEL 2 - EASY]
+303) Em MongoDB, o equivalente a uma "tabela" no modelo relacional é chamado de:
+a) Coleção (collection)
+b) Índice
+c) Schema fixo
+d) View
+Resposta: a
+
+304) Em MongoDB, o equivalente a uma "linha" de uma tabela relacional é chamado de:
+a) Documento
+b) Coluna
+c) Chave primária
+d) Índice
+Resposta: a
+
+[NÍVEL 3 - EASY_PLUS]
+305) Um dos principais objetivos do MongoDB é oferecer:
+a) Esquema flexível (schema-less/dinâmico)
+b) Esquema rígido obrigatório
+c) Suporte apenas a dados tabulares fixos
+d) Ausência total de consultas
+Resposta: a
+
+[NÍVEL 5 - MEDIUM_PLUS]
+306) Sharding em MongoDB é usado para:
+a) Distribuir dados horizontalmente entre múltiplos servidores
+b) Fazer backup automático
+c) Criptografar dados
+d) Compactar imagens
+Resposta: a
+
+[NÍVEL 6 - HARD]
+307) Um "Replica Set" em MongoDB garante principalmente:
+a) Alta disponibilidade através de réplicas dos dados
+b) Redução do tamanho do banco
+c) Eliminação da necessidade de índices
+d) Criptografia automática
+Resposta: a
+
+[NÍVEL 7 - HARD_PLUS]
+308) Em um Replica Set do MongoDB, o nó responsável por receber escritas é chamado de:
+a) Primary
+b) Secondary
+c) Arbiter
+d) Shard
+Resposta: a
+
+[NÍVEL 8 - VERY_HARD]
+309) A "shard key" em MongoDB é importante porque:
+a) Determina como os dados são distribuídos entre os shards
+b) Define a senha do banco
+c) Substitui os índices por completo
+d) Controla apenas o backup
+Resposta: a
+
+[NÍVEL 9 - EXPERT]
+310) Um dos riscos de escolher uma shard key ruim no MongoDB é:
+a) Criar "hotspots" com distribuição desigual de dados/carga
+b) Melhorar automaticamente a performance
+c) Eliminar a necessidade de réplicas
+d) Não ter nenhum impacto no sistema
+Resposta: a
+
+-----------------------------------------------------
+CATEGORIA: SOFTWARE_ARCHITECTURE (MongoDB)
+-----------------------------------------------------
+
+[NÍVEL 2 - EASY]
+311) MongoDB é frequentemente escolhido em arquiteturas que precisam de:
+a) Flexibilidade de esquema para dados semiestruturados
+b) Transações rígidas multi-tabela como único caso de uso
+c) Apenas dados tabulares fixos
+d) Ausência de qualquer consulta
+Resposta: a
+
+[NÍVEL 3 - EASY_PLUS]
+312) No modelo de dados do MongoDB, é comum usar a técnica de:
+a) Embutir documentos relacionados (embedding) quando fizer sentido
+b) Nunca aninhar dados
+c) Sempre normalizar como em bancos relacionais
+d) Proibir arrays dentro de documentos
+Resposta: a
+
+[NÍVEL 4 - MEDIUM]
+313) A escolha entre "embedding" e "referencing" no MongoDB geralmente depende de:
+a) O padrão de acesso aos dados e a frequência de leitura/escrita
+b) Apenas o tamanho do disco disponível
+c) A cor da interface do banco
+d) O nome da coleção
+Resposta: a
+
+[NÍVEL 5 - MEDIUM_PLUS]
+314) Em arquiteturas poliglotas, o MongoDB é frequentemente combinado com outros bancos para:
+a) Usar a ferramenta certa para cada tipo de dado/caso de uso
+b) Substituir totalmente bancos relacionais em qualquer cenário
+c) Eliminar a necessidade de qualquer outro banco
+d) Reduzir a complexidade a zero
+Resposta: a
+
+[NÍVEL 6 - HARD]
+315) Índices em MongoDB são criados principalmente para:
+a) Melhorar a performance de consultas
+b) Aumentar o tamanho do banco sem benefício
+c) Substituir coleções
+d) Eliminar a necessidade de queries
+Resposta: a
+
+[NÍVEL 7 - HARD_PLUS]
+316) O "Aggregation Framework" do MongoDB é usado para:
+a) Processar e transformar dados através de um pipeline de estágios
+b) Apenas inserir documentos
+c) Apenas apagar coleções
+d) Substituir índices
+Resposta: a
+
+[NÍVEL 8 - VERY_HARD]
+317) Em cenários de alta escrita, uma prática de design no MongoDB é evitar:
+a) Documentos que crescem indefinidamente (unbounded arrays)
+b) O uso de índices
+c) O uso de réplicas
+d) O uso de sharding
+Resposta: a
+
+[NÍVEL 9 - EXPERT]
+318) MongoDB introduziu suporte a transações multi-documento ACID a partir de:
+a) Versões mais recentes (a partir da 4.0, expandido depois para sharded clusters)
+b) Sua primeira versão
+c) Nunca suportou transações
+d) Apenas em bancos relacionais concorrentes
+Resposta: a
+
+-----------------------------------------------------
+CATEGORIA: MICROSERVICES (MongoDB)
+-----------------------------------------------------
+
+[NÍVEL 2 - EASY]
+319) MongoDB é uma escolha comum em microserviços que seguem o padrão:
+a) Database per Service
+b) Banco único compartilhado obrigatório
+c) Ausência total de persistência
+d) Apenas arquivos locais
+Resposta: a
+
+[NÍVEL 4 - MEDIUM]
+320) A flexibilidade de esquema do MongoDB pode ajudar microserviços a:
+a) Evoluir seus modelos de dados de forma independente
+b) Forçar todos os serviços a usarem o mesmo schema fixo
+c) Eliminar versionamento de API
+d) Substituir mensageria
+Resposta: a
+
+[NÍVEL 5 - MEDIUM_PLUS]
+321) O driver oficial do MongoDB para aplicações JVM (Java/Kotlin) permite:
+a) Conectar e operar sobre o banco a partir dessas linguagens
+b) Apenas uso via linha de comando
+c) Apenas uso em Python
+d) Nenhuma integração com JVM
+Resposta: a
+
+[NÍVEL 6 - HARD]
+322) Um desafio ao usar MongoDB com "Database per Service" em microserviços é:
+a) Realizar consultas que unam dados de múltiplos serviços/bancos
+b) A ausência total de qualquer consulta
+c) A impossibilidade de qualquer índice
+d) A obrigatoriedade de um único banco global
+Resposta: a
+
+[NÍVEL 7 - HARD_PLUS]
+323) "Change Streams" no MongoDB podem ser usados em microserviços para:
+a) Reagir a mudanças nos dados em tempo real (padrão semelhante a eventos)
+b) Substituir totalmente um message broker
+c) Apagar dados automaticamente
+d) Eliminar a necessidade de APIs
+Resposta: a
+
+[NÍVEL 8 - VERY_HARD]
+324) Ao usar MongoDB em microserviços com alta escala, um padrão comum é:
+a) Usar réplicas de leitura para distribuir a carga de consultas
+b) Usar sempre um único nó sem réplicas
+c) Eliminar completamente índices
+d) Proibir sharding
+Resposta: a
+
+[NÍVEL 9 - EXPERT]
+325) Em arquiteturas orientadas a eventos, "Change Streams" do MongoDB podem alimentar diretamente:
+a) Um pipeline de eventos para outros serviços/tópicos (ex: Kafka)
+b) Apenas relatórios impressos
+c) Nada, é uma feature isolada
+d) Apenas backups manuais
+Resposta: a
+
+-----------------------------------------------------
+CATEGORIA: CLEAN_CODE (MongoDB)
+-----------------------------------------------------
+
+[NÍVEL 1 - VERY_EASY]
+326) O comando básico para inserir um documento em uma coleção MongoDB é:
+a) insertOne()
+b) addDoc()
+c) createRow()
+d) newItem()
+Resposta: a
+
+327) O comando básico para buscar documentos em uma coleção MongoDB é:
+a) find()
+b) select()
+c) getAll()
+d) fetch()
+Resposta: a
+
+[NÍVEL 2 - EASY]
+328) O comando usado para atualizar um único documento no MongoDB é:
+a) updateOne()
+b) changeOne()
+c) editRow()
+d) modify()
+Resposta: a
+
+329) O comando usado para remover um único documento no MongoDB é:
+a) deleteOne()
+b) removeRow()
+c) dropOne()
+d) eraseDoc()
+Resposta: a
+
+[NÍVEL 3 - EASY_PLUS]
+330) Escrever nomes de campos claros e consistentes em documentos MongoDB, evitando abreviações confusas, é uma boa prática de:
+a) Legibilidade/Clean Code aplicada a modelagem de dados
+b) Otimização de disco obrigatória
+c) Segurança de rede
+d) Backup automático
+Resposta: a
+
+[NÍVEL 4 - MEDIUM]
+331) Usar consultas MongoDB muito genéricas sem filtros (ex: find() sem critério em coleções grandes) é considerado uma prática ruim porque:
+a) Pode trazer volume excessivo de dados e degradar performance
+b) Sempre retorna erro de sintaxe
+c) É proibido pelo MongoDB
+d) Substitui automaticamente os índices
+Resposta: a
+
+[NÍVEL 5 - MEDIUM_PLUS]
+332) Nomear coleções de forma consistente (ex: sempre no plural) é uma convenção comum para:
+a) Manter clareza e padronização no código/modelagem
+b) Aumentar a performance do banco
+c) Ser obrigatório pelo MongoDB
+d) Evitar o uso de índices
+Resposta: a
+
+-----------------------------------------------------
+CATEGORIA: OOP (MongoDB)
+-----------------------------------------------------
+
+[NÍVEL 2 - EASY]
+333) Um documento MongoDB pode ser mapeado, em uma aplicação orientada a objetos, para:
+a) Um objeto/instância de classe
+b) Apenas uma variável primitiva
+c) Uma função
+d) Um comentário
+Resposta: a
+
+[NÍVEL 3 - EASY_PLUS]
+334) Bibliotecas de mapeamento como "ODM" (Object-Document Mapper) ajudam a:
+a) Converter documentos MongoDB em objetos da aplicação e vice-versa
+b) Substituir o banco por completo
+c) Eliminar a necessidade de classes
+d) Compactar arquivos
+Resposta: a
+
+[NÍVEL 5 - MEDIUM_PLUS]
+335) Modelar um documento MongoDB com sub-documentos aninhados é semelhante, na orientação a objetos, a:
+a) Composição de objetos
+b) Herança múltipla obrigatória
+c) Interfaces vazias
+d) Polimorfismo de método
+Resposta: a
+
+[NÍVEL 6 - HARD]
+336) Ao mapear herança de classes para documentos MongoDB, uma abordagem comum é:
+a) Incluir um campo discriminador indicando o "tipo" do documento
+b) Criar uma coleção para cada nível de herança sempre
+c) Ignorar herança completamente
+d) Usar apenas arrays sem campos de tipo
+Resposta: a
+
+[NÍVEL 7 - HARD_PLUS]
+337) O polimorfismo de esquema no MongoDB é facilitado justamente por seu(sua):
+a) Flexibilidade de schema, permitindo documentos com estruturas variadas na mesma coleção
+b) Esquema fixo obrigatório
+c) Ausência de qualquer tipo de dado
+d) Necessidade de migrations rígidas antes de qualquer mudança
+Resposta: a
+
+-----------------------------------------------------
+CATEGORIA: SOLID (MongoDB)
+-----------------------------------------------------
+
+[NÍVEL 4 - MEDIUM]
+338) Ao usar MongoDB em uma aplicação orientada a objetos, separar a lógica de acesso a dados da lógica de negócio favorece o princípio de:
+a) Responsabilidade única (SRP)
+b) Substituição de Liskov apenas
+c) Segregação de interface apenas
+d) Nenhum princípio SOLID
+Resposta: a
+
+[NÍVEL 5 - MEDIUM_PLUS]
+339) Depender de uma interface de repositório (ex: "UserRepository") ao invés do driver MongoDB diretamente na camada de negócio favorece:
+a) Dependency Inversion Principle
+b) Apenas performance
+c) Apenas segurança
+d) Nenhum benefício de design
+Resposta: a
+
+[NÍVEL 6 - HARD]
+340) Criar interfaces específicas para diferentes operações de persistência (ex: leitura vs escrita) ao invés de uma única interface genérica gigante está alinhado com:
+a) Interface Segregation Principle
+b) Open/Closed Principle apenas
+c) Liskov Substitution apenas
+d) Nenhum princípio
+Resposta: a
+
+[NÍVEL 7 - HARD_PLUS]
+341) Trocar a implementação de persistência de MongoDB para outro banco, sem alterar a camada de negócio, é possível quando se aplica corretamente:
+a) Abstração via interfaces (DIP) na camada de repositório
+b) Acoplamento direto ao driver do MongoDB em toda a aplicação
+c) Ausência total de abstrações
+d) Uso de variáveis globais
+Resposta: a
+
+-----------------------------------------------------
+CATEGORIA: DESIGN_PATTERNS (MongoDB)
+-----------------------------------------------------
+
+[NÍVEL 3 - EASY_PLUS]
+342) O padrão de projeto comumente usado para abstrair o acesso a dados do MongoDB é:
+a) Repository Pattern
+b) Singleton obrigatório
+c) Observer
+d) Visitor
+Resposta: a
+
+[NÍVEL 5 - MEDIUM_PLUS]
+343) Uma conexão única e reutilizável com o MongoDB na aplicação é frequentemente gerenciada usando o padrão:
+a) Singleton (ou um pool de conexões gerenciado)
+b) Factory Method apenas
+c) Observer
+d) Visitor
+Resposta: a
+
+[NÍVEL 6 - HARD]
+344) O padrão "Unit of Work" pode ser combinado ao Repository Pattern ao usar MongoDB para:
+a) Agrupar operações relacionadas de forma consistente
+b) Eliminar a necessidade de transações
+c) Substituir índices
+d) Apagar coleções automaticamente
+Resposta: a
+
+[NÍVEL 7 - HARD_PLUS]
+345) Um padrão de modelagem específico do MongoDB para lidar com grandes listas que crescem indefinidamente é o:
+a) Bucket Pattern
+b) Singleton Pattern
+c) Observer Pattern
+d) Visitor Pattern
+Resposta: a
+
+-----------------------------------------------------
+CATEGORIA: GIT (MongoDB)
+-----------------------------------------------------
+
+[NÍVEL 2 - EASY]
+346) Scripts de migração/seed para popular um banco MongoDB em ambiente de desenvolvimento geralmente são versionados no:
+a) Repositório Git do projeto
+b) Apenas na memória do servidor
+c) Nunca são versionados
+d) Apenas em e-mails da equipe
+Resposta: a
+
+[NÍVEL 4 - MEDIUM]
+347) Um arquivo comum versionado no Git para conter variáveis sensíveis (como string de conexão do MongoDB) NÃO deve, por boa prática, incluir:
+a) Credenciais em texto puro commitadas no repositório
+b) O nome da variável de ambiente
+c) Comentários explicativos
+d) A estrutura do arquivo de exemplo (.env.example)
+Resposta: a
+
+[NÍVEL 6 - HARD]
+348) Ao alterar o schema esperado por uma aplicação que usa MongoDB, é comum versionar no Git scripts de:
+a) Migração de dados
+b) Apenas imagens
+c) Apenas documentação sem código
+d) Nada relacionado ao banco
+Resposta: a
+
+-----------------------------------------------------
+CATEGORIA: KAFKA (MongoDB)
+-----------------------------------------------------
+
+[NÍVEL 3 - EASY_PLUS]
+349) Um conector comum no ecossistema Kafka Connect permite integrar dados entre:
+a) MongoDB e tópicos Kafka
+b) Apenas arquivos locais sem rede
+c) Apenas dois brokers Kafka entre si
+d) Nenhuma integração é possível
+Resposta: a
+
+[NÍVEL 6 - HARD]
+350) Usar "Change Streams" do MongoDB junto a um conector Kafka permite implementar o padrão:
+a) Captura de mudanças de dados (Change Data Capture - CDC)
+b) Circuit Breaker
+c) Observer local sem rede
+d) Singleton distribuído
+Resposta: a
+
+=====================================================
+FIM DO LOTE 4 - 50 PERGUNTAS SOBRE MONGODB
+TOTAL ACUMULADO: 350 PERGUNTAS
+=====================================================

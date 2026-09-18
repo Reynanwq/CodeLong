@@ -128,6 +128,7 @@ class StateValueObjectsTest {
             startedAt = now,
             completedAt = null,
             currentQuestionIndex = 0,
+            currentQuestionDeadline = later,
             questions = listOf(gameQuestion),
             answers = listOf(answerRecord),
             score = 20,
@@ -160,6 +161,7 @@ class StateValueObjectsTest {
             startedAt = now,
             completedAt = null,
             currentQuestionIndex = 0,
+            currentQuestionDeadline = later,
             questions = listOf(gameQuestion),
             answers = emptyList(),
             score = 0,
@@ -191,6 +193,7 @@ class StateValueObjectsTest {
             username = "alice",
             score = 100,
             correctAnswers = 3,
+            answeredQuestions = 10,
             totalTimeMillis = 5_000,
             achievedAt = now
         )
@@ -247,7 +250,8 @@ class StateValueObjectsTest {
             gameCompleted = false,
             questionIndex = 0,
             totalQuestions = 2,
-            nextQuestion = next.publicView()
+            nextQuestion = next.publicView(),
+            nextQuestionDeadline = later
         )
 
         assertEquals(QuestionId("q-2"), result.nextQuestion?.id)
@@ -265,7 +269,8 @@ class StateValueObjectsTest {
             gameCompleted = true,
             questionIndex = 1,
             totalQuestions = 2,
-            nextQuestion = null
+            nextQuestion = null,
+            nextQuestionDeadline = null
         )
 
         assertNull(result.nextQuestion)

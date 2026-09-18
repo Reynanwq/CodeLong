@@ -27,6 +27,7 @@ class RankingAndGameDtosTest {
         username = id,
         score = score,
         correctAnswers = 3,
+        answeredQuestions = 10,
         totalTimeMillis = 5_000,
         achievedAt = Fixtures.NOW,
         position = position
@@ -189,7 +190,8 @@ class RankingAndGameDtosTest {
         gameCompleted = nextQuestion == null,
         questionIndex = 0,
         totalQuestions = 2,
-        nextQuestion = nextQuestion
+        nextQuestion = nextQuestion,
+        nextQuestionDeadline = nextQuestion?.let { Fixtures.NOW.plusSeconds(20) }
     )
 
     @Test
@@ -228,5 +230,66 @@ class RankingAndGameDtosTest {
         )
 
         assertEquals(listOf("a", "b"), options.map { OptionResponse.from(it).id })
+    }
+
+    @Test
+    fun `PublicQuestionResponse carrega prazo e limite de tempo`() {
+        val question = Fixtures.question(id = "q-1")
+
+        val response = PublicQuestionResponse.from(question.snapshot().publicView(), Fixtures.NOW.plusSeconds(20))
+
+        assertEquals(Fixtures.NOW.plusSeconds(20), response.deadline)
+        assertEquals(20L, response.timeLimitSeconds)
+    }
+
+    @Test
+    fun `PublicQuestionResponse sem prazo informado fica nulo`() {
+        val response = PublicQuestionResponse.from(Fixtures.question(id = "q-1").snapshot().publicView())
+
+        assertNull(response.deadline)
+        assertEquals(20L, response.timeLimitSeconds)
+    }
+
+    @Test
+    fun `GameResponse carrega o prazo da pergunta atual`() {
+        val game = Fixtures.game(id = "g-1")
+
+        val response = GameResponse.from(game)
+
+        assertEquals(game.currentQuestionDeadline, response.currentQuestionDeadline)
+    }
+
+    @Test
+    fun `AnswerResponse converte pergunta perdida por tempo`() {
+        val record = AnswerRecord(
+            questionIndex = 0,
+            questionId = QuestionId("q-1"),
+            chosenOption = null,
+            correct = false,
+            earnedPoints = 0,
+            answeredAt = Fixtures.NOW,
+            timedOut = true
+        )
+        val result = AnswerResult(
+            record = record,
+            question = Fixtures.question(id = "q-1").snapshot(),
+            currentScore = 0,
+            correctAnswers = 0,
+            wrongAnswers = 1,
+            gameCompleted = true,
+            questionIndex = 0,
+            totalQuestions = 1,
+            nextQuestion = null,
+            nextQuestionDeadline = null
+        )
+
+        val response = AnswerResponse.from(result)
+
+        assertEquals(true, response.timedOut)
+        assertNull(response.chosenOption)
+        assertEquals(false, response.correct)
+        assertEquals(0, response.earnedPoints)
+        assertEquals(1, response.wrongAnswers)
+        assertNull(response.nextQuestion)
     }
 }
