@@ -159,5 +159,7 @@ class InMemoryRankingRepository(
 
     override fun countRankedEntries(): Long = ranked().size.toLong()
 
-    private fun ranked(): List<RankEntry> = entries.sortedWith(RankingPolicy.comparator)
+    private fun ranked(): List<RankEntry> = entries
+        .filter(RankingPolicy::isEligible)
+        .sortedWith(RankingPolicy.comparator)
 }

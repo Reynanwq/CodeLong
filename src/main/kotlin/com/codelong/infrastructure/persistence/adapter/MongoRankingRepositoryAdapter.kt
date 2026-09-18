@@ -1,8 +1,8 @@
 package com.codelong.infrastructure.persistence.adapter
 
-import com.codelong.domain.GameRules
 import com.codelong.domain.port.RankingRepository
 import com.codelong.domain.service.RankingPolicy
+import com.codelong.domain.valueobject.GameMode
 import com.codelong.domain.valueobject.GameStatus
 import com.codelong.domain.valueobject.RankEntry
 import com.codelong.domain.valueobject.UserId
@@ -21,9 +21,9 @@ import org.springframework.stereotype.Repository
  * Ranking calculado por agregacao no MongoDB.
  *
  * Entram **todas as tentativas** concluidas, abandonadas ou derrotadas (modo
- * classico e genocida misturados) com pelo menos
- * [GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING] respostas. Cada partida ocupa
- * uma linha, ordenada pela politica de desempate do dominio.
+ * classico e genocida misturados) que atendam ao minimo de respostas do seu
+ * modo (ver [RankingPolicy.minimumAnswers]). Cada partida ocupa uma linha,
+ * ordenada pela politica de desempate do dominio.
  */
 @Repository
 class MongoRankingRepositoryAdapter(
@@ -48,10 +48,7 @@ class MongoRankingRepositoryAdapter(
                 .addField(MongoSchema.Field.ANSWERED_QUESTIONS)
                 .withValue(Document(OPERATOR_SIZE, DOCUMENT_ANSWERS))
                 .build(),
-            Aggregation.match(
-                Criteria.where(MongoSchema.Field.ANSWERED_QUESTIONS)
-                    .gte(GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING)
-            ),
+            Aggregation.match(eligibilityCriteria()),
             Aggregation.addFields()
                 .addField(MongoSchema.Field.TOTAL_TIME_MILLIS)
                 .withValue(Document(MongoSchema.Operator.SUBTRACT, listOf(DOCUMENT_COMPLETED_AT, DOCUMENT_STARTED_AT)))
@@ -72,6 +69,16 @@ class MongoRankingRepositoryAdapter(
             .mappedResults
             .map(RankingPersistenceMapper::toDomain)
     }
+
+    /** O minimo de respostas depende do modo (genocida exige menos). */
+    private fun eligibilityCriteria(): Criteria = Criteria().orOperator(
+        Criteria.where(MongoSchema.Field.MODE).`is`(GameMode.GENOCIDA.name)
+            .and(MongoSchema.Field.ANSWERED_QUESTIONS)
+            .gte(RankingPolicy.minimumAnswers(GameMode.GENOCIDA)),
+        Criteria.where(MongoSchema.Field.MODE).ne(GameMode.GENOCIDA.name)
+            .and(MongoSchema.Field.ANSWERED_QUESTIONS)
+            .gte(RankingPolicy.minimumAnswers(GameMode.CLASSIC))
+    )
 
     private fun rankingSort(): Sort = Sort.by(
         Sort.Order.desc(MongoSchema.Field.SCORE),

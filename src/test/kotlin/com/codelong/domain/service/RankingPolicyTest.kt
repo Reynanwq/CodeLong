@@ -5,6 +5,7 @@ import com.codelong.domain.valueobject.GameMode
 import com.codelong.domain.valueobject.RankEntry
 import com.codelong.domain.valueobject.UserId
 import com.codelong.support.Fixtures
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -62,4 +63,30 @@ class RankingPolicyTest {
 
         assertTrue(RankingPolicy.isBetter(older, newer))
     }
+
+    @Test
+    fun `minimo de respostas e menor no modo genocida`() {
+        assertEquals(10, RankingPolicy.minimumAnswers(GameMode.CLASSIC))
+        assertEquals(5, RankingPolicy.minimumAnswers(GameMode.GENOCIDA))
+    }
+
+    @Test
+    fun `elegibilidade respeita o minimo de cada modo`() {
+        assertTrue(RankingPolicy.isEligible(entryWith(GameMode.CLASSIC, answered = 10)))
+        assertFalse(RankingPolicy.isEligible(entryWith(GameMode.CLASSIC, answered = 9)))
+        assertTrue(RankingPolicy.isEligible(entryWith(GameMode.GENOCIDA, answered = 5)))
+        assertFalse(RankingPolicy.isEligible(entryWith(GameMode.GENOCIDA, answered = 4)))
+    }
+
+    private fun entryWith(mode: GameMode, answered: Int) = RankEntry(
+        userId = UserId("u-1"),
+        username = "alice",
+        score = 100,
+        correctAnswers = 3,
+        wrongAnswers = 1,
+        answeredQuestions = answered,
+        mode = mode,
+        totalTimeMillis = 1_000,
+        achievedAt = Fixtures.NOW
+    )
 }

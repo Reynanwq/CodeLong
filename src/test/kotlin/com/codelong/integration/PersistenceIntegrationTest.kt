@@ -247,8 +247,32 @@ class PersistenceIntegrationTest {
         assertEquals(Difficulty.EASY.points * (GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING - 1), ranking.first().score)
     }
 
-    private fun persistDefeatedGame(id: String, userId: String, username: String, difficulty: Difficulty) {
-        val difficulties = List(GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING) { difficulty }
+    @Test
+    fun `ranking aceita genocida com o minimo menor e recusa abaixo dele`() {
+        persistDefeatedGame(
+            id = "g-1", userId = "u-1", username = "alice", difficulty = Difficulty.EASY,
+            correctAnswers = GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING_GENOCIDA - 1
+        )
+        persistDefeatedGame(
+            id = "g-2", userId = "u-2", username = "bob", difficulty = Difficulty.EASY,
+            correctAnswers = GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING_GENOCIDA - 2
+        )
+
+        val ranking = rankingRepository.findRanking(0, 10)
+
+        assertEquals(1, ranking.size)
+        assertEquals("alice", ranking.first().username)
+        assertEquals(GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING_GENOCIDA, ranking.first().answeredQuestions)
+    }
+
+    private fun persistDefeatedGame(
+        id: String,
+        userId: String,
+        username: String,
+        difficulty: Difficulty,
+        correctAnswers: Int = GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING - 1
+    ) {
+        val difficulties = List(correctAnswers + 1) { difficulty }
         val game = Fixtures.game(
             id = id,
             userId = userId,
@@ -257,7 +281,7 @@ class PersistenceIntegrationTest {
             mode = com.codelong.domain.valueobject.GameMode.GENOCIDA
         )
         val loaded = gameRepository.save(game)
-        repeat(GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING - 1) {
+        repeat(correctAnswers) {
             loaded.answer(loaded.currentQuestion().correctOption, Fixtures.NOW)
         }
         val last = loaded.currentQuestion()
