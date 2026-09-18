@@ -48,15 +48,16 @@ class GetRankingUseCaseTest {
     }
 
     @Test
-    fun `considera somente a melhor partida de cada usuario`() {
+    fun `lista todas as tentativas do mesmo usuario em linhas separadas`() {
         add("u-1", "alice", score = 50)
         add("u-1", "alice", score = 100)
 
         val page = useCase.ranking(0, 10)
 
-        assertEquals(1, page.entries.size)
-        assertEquals(100, page.entries.single().score)
-        assertEquals(1L, page.totalElements)
+        assertEquals(2, page.entries.size)
+        assertEquals(listOf(100, 50), page.entries.map { it.score })
+        assertEquals(2L, page.totalElements)
+        assertEquals(listOf(1, 2), page.entries.map { it.position })
     }
 
     @Test

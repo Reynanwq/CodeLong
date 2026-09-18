@@ -20,9 +20,10 @@ import org.springframework.stereotype.Repository
 /**
  * Ranking calculado por agregacao no MongoDB.
  *
- * Entram partidas concluidas ou abandonadas com pelo menos
- * [GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING] respostas; vale a melhor
- * partida de cada usuario, ordenada pela politica de desempate do dominio.
+ * Entram **todas as tentativas** concluidas, abandonadas ou derrotadas (modo
+ * classico e genocida misturados) com pelo menos
+ * [GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING] respostas. Cada partida ocupa
+ * uma linha, ordenada pela politica de desempate do dominio.
  */
 @Repository
 class MongoRankingRepositoryAdapter(
@@ -38,7 +39,7 @@ class MongoRankingRepositoryAdapter(
     override fun countUsersBetterThan(entry: RankEntry): Long =
         rankedEntries().count { RankingPolicy.isBetter(it, entry) }.toLong()
 
-    override fun countRankedUsers(): Long = rankedEntries().size.toLong()
+    override fun countRankedEntries(): Long = rankedEntries().size.toLong()
 
     private fun rankedEntries(): List<RankEntry> {
         val stages = listOf(
@@ -55,16 +56,11 @@ class MongoRankingRepositoryAdapter(
                 .addField(MongoSchema.Field.TOTAL_TIME_MILLIS)
                 .withValue(Document(MongoSchema.Operator.SUBTRACT, listOf(DOCUMENT_COMPLETED_AT, DOCUMENT_STARTED_AT)))
                 .build(),
-            Aggregation.sort(preGroupSort()),
-            Aggregation.group(MongoSchema.Field.USER_ID)
-                .first(MongoSchema.Field.USER_ID).`as`(MongoSchema.Field.USER_ID)
-                .first(MongoSchema.Field.USERNAME).`as`(MongoSchema.Field.USERNAME)
-                .first(MongoSchema.Field.SCORE).`as`(MongoSchema.Field.SCORE)
-                .first(MongoSchema.Field.CORRECT_ANSWERS).`as`(MongoSchema.Field.CORRECT_ANSWERS)
-                .first(MongoSchema.Field.ANSWERED_QUESTIONS).`as`(MongoSchema.Field.ANSWERED_QUESTIONS)
-                .first(MongoSchema.Field.TOTAL_TIME_MILLIS).`as`(MongoSchema.Field.TOTAL_TIME_MILLIS)
-                .first(MongoSchema.Field.COMPLETED_AT).`as`(MongoSchema.Field.ACHIEVED_AT),
-            Aggregation.sort(postGroupSort())
+            Aggregation.addFields()
+                .addField(MongoSchema.Field.ACHIEVED_AT)
+                .withValue(DOCUMENT_COMPLETED_AT)
+                .build(),
+            Aggregation.sort(rankingSort())
         )
 
         return mongoTemplate
@@ -77,14 +73,7 @@ class MongoRankingRepositoryAdapter(
             .map(RankingPersistenceMapper::toDomain)
     }
 
-    private fun preGroupSort(): Sort = Sort.by(
-        Sort.Order.desc(MongoSchema.Field.SCORE),
-        Sort.Order.asc(MongoSchema.Field.TOTAL_TIME_MILLIS),
-        Sort.Order.desc(MongoSchema.Field.CORRECT_ANSWERS),
-        Sort.Order.asc(MongoSchema.Field.COMPLETED_AT)
-    )
-
-    private fun postGroupSort(): Sort = Sort.by(
+    private fun rankingSort(): Sort = Sort.by(
         Sort.Order.desc(MongoSchema.Field.SCORE),
         Sort.Order.asc(MongoSchema.Field.TOTAL_TIME_MILLIS),
         Sort.Order.desc(MongoSchema.Field.CORRECT_ANSWERS),

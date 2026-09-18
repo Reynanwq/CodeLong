@@ -31,7 +31,7 @@ class GetRankingUseCaseImpl(
 
         return RankingPage(
             entries = positioned,
-            totalElements = rankingRepository.countRankedUsers(),
+            totalElements = rankingRepository.countRankedEntries(),
             page = page,
             size = size
         )

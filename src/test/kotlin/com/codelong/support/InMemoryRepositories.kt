@@ -157,10 +157,7 @@ class InMemoryRankingRepository(
     override fun countUsersBetterThan(entry: RankEntry): Long =
         ranked().count { RankingPolicy.isBetter(it, entry) }.toLong()
 
-    override fun countRankedUsers(): Long = ranked().size.toLong()
+    override fun countRankedEntries(): Long = ranked().size.toLong()
 
-    private fun ranked(): List<RankEntry> = entries
-        .groupBy { it.userId }
-        .map { (_, scores) -> scores.minWith(RankingPolicy.comparator) }
-        .sortedWith(RankingPolicy.comparator)
+    private fun ranked(): List<RankEntry> = entries.sortedWith(RankingPolicy.comparator)
 }

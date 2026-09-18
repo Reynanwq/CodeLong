@@ -152,14 +152,14 @@ class MongoRankingRepositoryAdapterTest {
     fun `countRankedUsers conta as entradas`() {
         stubAggregation((1..4).map { document("u-$it") })
 
-        assertEquals(4L, adapter.countRankedUsers())
+        assertEquals(4L, adapter.countRankedEntries())
     }
 
     @Test
     fun `countRankedUsers e zero sem partidas concluidas`() {
         stubAggregation(emptyList())
 
-        assertEquals(0L, adapter.countRankedUsers())
+        assertEquals(0L, adapter.countRankedEntries())
     }
 
     @Test

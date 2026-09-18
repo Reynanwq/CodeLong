@@ -178,17 +178,17 @@ class PersistenceIntegrationTest {
     }
 
     @Test
-    fun `ranking considera apenas a melhor partida concluida de cada usuario`() {
+    fun `ranking lista todas as tentativas, inclusive do mesmo usuario`() {
         persistCompletedGame(id = "g-1", userId = "u-1", username = "alice", difficulty = Difficulty.EASY)
         persistCompletedGame(id = "g-2", userId = "u-1", username = "alice", difficulty = Difficulty.MASTER)
         persistCompletedGame(id = "g-3", userId = "u-2", username = "bob", difficulty = Difficulty.EASY)
 
         val ranking = rankingRepository.findRanking(0, 10)
 
-        assertEquals(2, ranking.size)
-        assertEquals(listOf("alice", "bob"), ranking.map { it.username })
+        assertEquals(3, ranking.size)
+        assertEquals(listOf("alice", "alice", "bob"), ranking.map { it.username })
         assertEquals(Difficulty.MASTER.points * GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING, ranking.first().score)
-        assertEquals(2L, rankingRepository.countRankedUsers())
+        assertEquals(3L, rankingRepository.countRankedEntries())
     }
 
     @Test
@@ -202,7 +202,7 @@ class PersistenceIntegrationTest {
 
         val bob = rankingRepository.findUserBestScore(UserId("u-2"))!!
         assertEquals(1L, rankingRepository.countUsersBetterThan(bob))
-        assertEquals(2L, rankingRepository.countRankedUsers())
+        assertEquals(2L, rankingRepository.countRankedEntries())
     }
 
     @Test
@@ -215,7 +215,7 @@ class PersistenceIntegrationTest {
         assertEquals("alice", ranking.first().username)
         assertEquals(Difficulty.HARD.points * GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING, ranking.first().score)
         assertEquals(GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING, ranking.first().answeredQuestions)
-        assertEquals(1L, rankingRepository.countRankedUsers())
+        assertEquals(1L, rankingRepository.countRankedEntries())
     }
 
     @Test
@@ -232,7 +232,7 @@ class PersistenceIntegrationTest {
         gameRepository.save(loaded)
 
         assertTrue(rankingRepository.findRanking(0, 10).isEmpty())
-        assertEquals(0L, rankingRepository.countRankedUsers())
+        assertEquals(0L, rankingRepository.countRankedEntries())
     }
 
     @Test
