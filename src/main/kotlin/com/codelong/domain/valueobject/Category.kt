@@ -32,7 +32,9 @@ enum class Category {
     OBSERVABILITY,
     CONCURRENCY,
     RESILIENCE,
-    EVENT_DRIVEN;
+    EVENT_DRIVEN,
+    AI,
+    CLAUDE_CODE;
 
     companion object {
         fun fromName(name: String): Category =
