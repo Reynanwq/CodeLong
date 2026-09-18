@@ -89,6 +89,7 @@ data class AnswerResponse(
     val correctAnswers: Int,
     val wrongAnswers: Int,
     val gameCompleted: Boolean,
+    val status: String,
     val questionIndex: Int,
     val totalQuestions: Int,
     val nextQuestion: PublicQuestionResponse?
@@ -105,6 +106,7 @@ data class AnswerResponse(
             correctAnswers = result.correctAnswers,
             wrongAnswers = result.wrongAnswers,
             gameCompleted = result.gameCompleted,
+            status = result.gameStatus.name,
             questionIndex = result.questionIndex,
             totalQuestions = result.totalQuestions,
             nextQuestion = result.nextQuestion

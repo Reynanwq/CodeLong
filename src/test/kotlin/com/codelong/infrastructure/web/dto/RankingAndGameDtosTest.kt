@@ -1,5 +1,7 @@
 package com.codelong.infrastructure.web.dto
 
+import com.codelong.domain.valueobject.GameStatus
+
 import com.codelong.application.result.RankingPage
 import com.codelong.domain.valueobject.AnswerRecord
 import com.codelong.domain.valueobject.AnswerResult
@@ -188,6 +190,7 @@ class RankingAndGameDtosTest {
         correctAnswers = 1,
         wrongAnswers = 0,
         gameCompleted = nextQuestion == null,
+        gameStatus = GameStatus.COMPLETED,
         questionIndex = 0,
         totalQuestions = 2,
         nextQuestion = nextQuestion,
@@ -277,6 +280,7 @@ class RankingAndGameDtosTest {
             correctAnswers = 0,
             wrongAnswers = 1,
             gameCompleted = true,
+            gameStatus = GameStatus.COMPLETED,
             questionIndex = 0,
             totalQuestions = 1,
             nextQuestion = null,

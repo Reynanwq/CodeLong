@@ -1,5 +1,7 @@
 package com.codelong.domain.valueobject
 
+import com.codelong.domain.valueobject.GameStatus
+
 import com.codelong.domain.valueobject.GameMode
 
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -250,6 +252,7 @@ class StateValueObjectsTest {
             correctAnswers = 1,
             wrongAnswers = 0,
             gameCompleted = false,
+            gameStatus = GameStatus.COMPLETED,
             questionIndex = 0,
             totalQuestions = 2,
             nextQuestion = next.publicView(),
@@ -269,6 +272,7 @@ class StateValueObjectsTest {
             correctAnswers = 1,
             wrongAnswers = 0,
             gameCompleted = true,
+            gameStatus = GameStatus.COMPLETED,
             questionIndex = 1,
             totalQuestions = 2,
             nextQuestion = null,

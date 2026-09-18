@@ -94,8 +94,8 @@ class EnumsTest {
     }
 
     @Test
-    fun `GameStatus possui os tres estados esperados`() {
-        assertEquals(listOf(GameStatus.IN_PROGRESS, GameStatus.COMPLETED, GameStatus.ABANDONED), GameStatus.entries)
+    fun `GameStatus possui os quatro estados esperados`() {
+        assertEquals(listOf(GameStatus.IN_PROGRESS, GameStatus.COMPLETED, GameStatus.ABANDONED, GameStatus.DEFEATED), GameStatus.entries)
     }
 
     @ParameterizedTest

@@ -75,14 +75,15 @@ object Fixtures {
         id: String = "g-1",
         userId: String = "u-1",
         username: String = "user-1",
-        difficulties: List<Difficulty> = listOf(Difficulty.EASY, Difficulty.MEDIUM, Difficulty.HARD)
+        difficulties: List<Difficulty> = listOf(Difficulty.EASY, Difficulty.MEDIUM, Difficulty.HARD),
+        mode: GameMode = GameMode.CLASSIC
     ): Game {
         val questions = difficulties.mapIndexed { index, difficulty ->
             question(id = "q-$index", difficulty = difficulty).snapshot()
         }
         return Game.newGame(
             id = GameId(id),
-            setup = GameSetup(UserId(userId), username, questions, GameMode.CLASSIC),
+            setup = GameSetup(UserId(userId), username, questions, mode),
             startedAt = NOW
         )
     }

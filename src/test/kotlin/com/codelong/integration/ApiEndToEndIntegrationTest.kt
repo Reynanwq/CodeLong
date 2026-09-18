@@ -421,6 +421,43 @@ class ApiEndToEndIntegrationTest {
 
 
     @Test
+    fun `no modo genocida errar encerra a partida como derrota`() {
+        val adminToken = loginAdmin()
+        createQuestion(adminToken, "Pergunta um?", "EASY")
+        createQuestion(adminToken, "Pergunta dois?", "EASY")
+        val playerToken = registerPlayer("alice")
+        val gameId = api.post("/api/games?mode=GENOCIDA", token = playerToken).json().str("id")
+
+        val wrong = api.post("/api/games/$gameId/answers", mapOf("optionId" to "b"), playerToken)
+
+        assertEquals(200, wrong.status)
+        assertFalse(wrong.json().bool("correct"))
+        assertTrue(wrong.json().bool("gameCompleted"))
+        assertEquals("DEFEATED", wrong.json().str("status"))
+        assertNull(wrong.json()["nextQuestion"])
+
+        val game = api.get("/api/games/$gameId", playerToken)
+        assertEquals("DEFEATED", game.json().str("status"))
+        assertEquals(1, game.json().int("wrongAnswers"))
+        assertEquals(0, game.json().int("score"))
+    }
+
+    @Test
+    fun `no modo genocida acertar mantem a partida em andamento`() {
+        questionRepository.save(Fixtures.question(id = "q-1", difficulty = Difficulty.EASY))
+        questionRepository.save(Fixtures.question(id = "q-2", difficulty = Difficulty.HARD))
+        val playerToken = registerPlayer("alice")
+        val gameId = api.post("/api/games?mode=GENOCIDA", token = playerToken).json().str("id")
+
+        val answer = api.post("/api/games/$gameId/answers", mapOf("optionId" to "opt-0"), playerToken)
+
+        assertEquals(200, answer.status)
+        assertTrue(answer.json().bool("correct"))
+        assertFalse(answer.json().bool("gameCompleted"))
+        assertEquals("IN_PROGRESS", answer.json().str("status"))
+    }
+
+    @Test
     fun `inicia partida no modo genocida e recusa modo invalido`() {
         seedQuestion()
         val playerToken = registerPlayer("alice")

@@ -98,6 +98,6 @@ class MongoRankingRepositoryAdapter(
         const val DOCUMENT_STARTED_AT = "\$" + MongoSchema.Field.STARTED_AT
 
         fun rankedStatuses(): List<String> =
-            listOf(GameStatus.COMPLETED.name, GameStatus.ABANDONED.name)
+            listOf(GameStatus.COMPLETED.name, GameStatus.ABANDONED.name, GameStatus.DEFEATED.name)
     }
 }

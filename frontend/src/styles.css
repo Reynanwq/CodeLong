@@ -133,6 +133,10 @@ a {
   color: var(--bad);
 }
 
+h1.defeat {
+  color: var(--bad);
+}
+
 .genocide {
   background: #7f1d1d;
   color: #fff;

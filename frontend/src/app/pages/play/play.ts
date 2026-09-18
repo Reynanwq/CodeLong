@@ -35,13 +35,18 @@ const TICK_MILLIS = 200;
           <span [style.width.%]="timerPercent()"></span>
         </div>
         <p class="muted center">
-          {{ finished() ? 'Partida concluida' : secondsLeft() + 's para responder' }}
+          {{ finished() ? (current.status === 'DEFEATED' ? 'Derrota' : 'Partida concluida') : secondsLeft() + 's para responder' }}
         </p>
       </section>
 
       @if (finished()) {
         <section class="panel center">
-          <h1>Partida concluida</h1>
+          @if (current.status === 'DEFEATED') {
+            <h1 class="defeat">Voce foi derrotado!</h1>
+            <p class="muted">No modo Genocida uma resposta errada encerra a partida.</p>
+          } @else {
+            <h1>Partida concluida</h1>
+          }
           <p class="big">{{ current.score }} pontos</p>
           <p class="muted">
             {{ current.correctAnswers }} acertos &middot; {{ current.wrongAnswers }} erros
@@ -308,7 +313,7 @@ export class PlayPage implements OnInit, OnDestroy {
               correctAnswers: result.correctAnswers,
               wrongAnswers: result.wrongAnswers,
               currentQuestionIndex: result.questionIndex + 1,
-              status: result.gameCompleted ? 'COMPLETED' : game.status
+              status: result.status
             }
           : game
       );

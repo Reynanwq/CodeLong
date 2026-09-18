@@ -67,6 +67,8 @@ class Game private constructor(
 
     val isCompleted: Boolean get() = status == GameStatus.COMPLETED
 
+    val isDefeated: Boolean get() = status == GameStatus.DEFEATED
+
     val idText: String get() = id.value
 
     val statusName: String get() = status.name
@@ -173,8 +175,9 @@ class Game private constructor(
         val isLast = answeredIndex >= questions.size - 1
         currentQuestionIndex++
 
-        isLast.takeIf { it }?.let {
-            status = GameStatus.COMPLETED
+        val defeated = mode == GameMode.GENOCIDA && !correct
+        (defeated || isLast).takeIf { it }?.let {
+            status = mapOf(true to GameStatus.DEFEATED, false to GameStatus.COMPLETED).getValue(defeated)
             completedAt = answeredAt
         }
         currentQuestionDeadline = answeredAt.plus(GameRules.ANSWER_TIME_LIMIT)
@@ -185,7 +188,7 @@ class Game private constructor(
             currentScore = score,
             correctAnswers = correctAnswers,
             wrongAnswers = wrongAnswers,
-            gameCompleted = isCompleted,
+            gameCompleted = !isInProgress,
             questionIndex = answeredIndex,
             totalQuestions = questions.size
         )

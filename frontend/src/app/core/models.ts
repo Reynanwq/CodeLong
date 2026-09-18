@@ -53,6 +53,7 @@ export interface AnswerResponse {
   correctAnswers: number;
   wrongAnswers: number;
   gameCompleted: boolean;
+  status: string;
   questionIndex: number;
   totalQuestions: number;
   nextQuestion: QuestionResponse | null;

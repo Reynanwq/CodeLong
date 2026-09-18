@@ -235,6 +235,37 @@ class PersistenceIntegrationTest {
         assertEquals(0L, rankingRepository.countRankedUsers())
     }
 
+    @Test
+    fun `ranking inclui partida derrotada no modo genocida`() {
+        persistDefeatedGame(id = "g-1", userId = "u-1", username = "alice", difficulty = Difficulty.EASY)
+
+        val ranking = rankingRepository.findRanking(0, 10)
+
+        assertEquals(1, ranking.size)
+        assertEquals("alice", ranking.first().username)
+        assertEquals(GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING, ranking.first().answeredQuestions)
+        assertEquals(Difficulty.EASY.points * (GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING - 1), ranking.first().score)
+    }
+
+    private fun persistDefeatedGame(id: String, userId: String, username: String, difficulty: Difficulty) {
+        val difficulties = List(GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING) { difficulty }
+        val game = Fixtures.game(
+            id = id,
+            userId = userId,
+            username = username,
+            difficulties = difficulties,
+            mode = com.codelong.domain.valueobject.GameMode.GENOCIDA
+        )
+        val loaded = gameRepository.save(game)
+        repeat(GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING - 1) {
+            loaded.answer(loaded.currentQuestion().correctOption, Fixtures.NOW)
+        }
+        val last = loaded.currentQuestion()
+        loaded.answer(last.options.first { it.id != last.correctOption }.id, Fixtures.NOW)
+        val defeated = gameRepository.save(loaded)
+        assertEquals(com.codelong.domain.valueobject.GameStatus.DEFEATED, defeated.status)
+    }
+
     private fun persistAbandonedGame(id: String, userId: String, username: String, difficulty: Difficulty) {
         val difficulties = List(GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING + 5) { difficulty }
         val game = Fixtures.game(id = id, userId = userId, username = username, difficulties = difficulties)

@@ -5,6 +5,7 @@ import com.codelong.domain.exception.DomainException
 
 import com.codelong.domain.valueobject.Difficulty
 import com.codelong.domain.valueobject.GameId
+import com.codelong.domain.valueobject.GameMode
 import com.codelong.domain.valueobject.GameStatus
 import com.codelong.domain.valueobject.OptionId
 import com.codelong.domain.valueobject.UserId
@@ -333,5 +334,70 @@ class GameAggregateTest {
         game.abandon(Fixtures.NOW)
 
         assertThrows<DomainException> { game.expireCurrentQuestion(Fixtures.NOW) }
+    }
+
+    @Test
+    fun `no modo genocida errar encerra a partida como derrota`() {
+        val game = Fixtures.game(difficulties = listOf(Difficulty.EASY, Difficulty.HARD), mode = GameMode.GENOCIDA)
+        val question = game.currentQuestion()
+        val wrong = question.options.first { it.id != question.correctOption }.id
+
+        val eval = game.answer(wrong, Fixtures.NOW)
+
+        assertEquals(GameStatus.DEFEATED, game.status)
+        assertTrue(game.isDefeated)
+        assertFalse(game.isCompleted)
+        assertTrue(eval.gameCompleted)
+        assertEquals(Fixtures.NOW, game.completedAt)
+        assertEquals(1, game.wrongAnswers)
+    }
+
+    @Test
+    fun `no modo genocida acertar mantem a partida em andamento`() {
+        val game = Fixtures.game(difficulties = listOf(Difficulty.EASY, Difficulty.HARD), mode = GameMode.GENOCIDA)
+
+        val eval = game.answer(game.currentQuestion().correctOption, Fixtures.NOW)
+
+        assertTrue(game.isInProgress)
+        assertFalse(game.isDefeated)
+        assertFalse(eval.gameCompleted)
+        assertEquals(1, game.correctAnswers)
+    }
+
+    @Test
+    fun `no modo genocida estourar o tempo tambem encerra como derrota`() {
+        val game = Fixtures.game(difficulties = listOf(Difficulty.EASY, Difficulty.HARD), mode = GameMode.GENOCIDA)
+        val expiredAt = Fixtures.NOW.plusSeconds(GameRules.ANSWER_TIME_LIMIT_SECONDS + 1)
+
+        val eval = game.expireCurrentQuestion(expiredAt)
+
+        assertEquals(GameStatus.DEFEATED, game.status)
+        assertTrue(eval.gameCompleted)
+        assertTrue(game.answers.single().timedOut)
+    }
+
+    @Test
+    fun `no modo classico errar nao encerra a partida`() {
+        val game = Fixtures.game(difficulties = listOf(Difficulty.EASY, Difficulty.HARD))
+        val question = game.currentQuestion()
+        val wrong = question.options.first { it.id != question.correctOption }.id
+
+        val eval = game.answer(wrong, Fixtures.NOW)
+
+        assertTrue(game.isInProgress)
+        assertFalse(game.isDefeated)
+        assertFalse(eval.gameCompleted)
+    }
+
+    @Test
+    fun `erro na ultima pergunta no modo genocida resulta em derrota e nao em conclusao`() {
+        val game = Fixtures.game(difficulties = listOf(Difficulty.EASY), mode = GameMode.GENOCIDA)
+        val question = game.currentQuestion()
+        val wrong = question.options.first { it.id != question.correctOption }.id
+
+        game.answer(wrong, Fixtures.NOW)
+
+        assertEquals(GameStatus.DEFEATED, game.status)
+        assertFalse(game.isCompleted)
     }
 }

@@ -27,5 +27,6 @@ data class AnswerResult(
     val questionIndex: Int,
     val totalQuestions: Int,
     val nextQuestion: QuestionPublic?,
-    val nextQuestionDeadline: Instant?
+    val nextQuestionDeadline: Instant?,
+    val gameStatus: GameStatus
 )
