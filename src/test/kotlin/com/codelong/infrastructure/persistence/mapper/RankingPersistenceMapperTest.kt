@@ -1,5 +1,7 @@
 package com.codelong.infrastructure.persistence.mapper
 
+import com.codelong.domain.valueobject.GameMode
+
 import com.codelong.infrastructure.persistence.document.RankEntryDocument
 import com.codelong.support.Fixtures
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -15,6 +17,8 @@ class RankingPersistenceMapperTest {
             username = "alice",
             score = 250,
             correctAnswers = 7,
+            wrongAnswers = 2,
+            mode = "GENOCIDA",
             answeredQuestions = 10,
             totalTimeMillis = 12_345,
             achievedAt = Fixtures.NOW
@@ -24,6 +28,8 @@ class RankingPersistenceMapperTest {
 
         assertEquals("u-1", entry.userId.value)
         assertEquals("alice", entry.username)
+        assertEquals(2, entry.wrongAnswers)
+        assertEquals(GameMode.GENOCIDA, entry.mode)
         assertEquals(250, entry.score)
         assertEquals(7, entry.correctAnswers)
         assertEquals(12_345L, entry.totalTimeMillis)

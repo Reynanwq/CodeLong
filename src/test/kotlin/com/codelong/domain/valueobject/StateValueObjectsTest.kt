@@ -197,6 +197,8 @@ class StateValueObjectsTest {
             username = "alice",
             score = 100,
             correctAnswers = 3,
+            wrongAnswers = 0,
+            mode = GameMode.CLASSIC,
             answeredQuestions = 10,
             totalTimeMillis = 5_000,
             achievedAt = now

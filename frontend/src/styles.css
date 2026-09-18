@@ -137,6 +137,11 @@ h1.defeat {
   color: var(--bad);
 }
 
+td.errors {
+  color: var(--bad);
+  font-weight: 600;
+}
+
 .genocide {
   background: #7f1d1d;
   color: #fff;

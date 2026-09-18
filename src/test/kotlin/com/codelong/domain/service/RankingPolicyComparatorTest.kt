@@ -1,5 +1,7 @@
 package com.codelong.domain.service
 
+import com.codelong.domain.valueobject.GameMode
+
 import com.codelong.domain.valueobject.RankEntry
 import com.codelong.domain.valueobject.UserId
 import com.codelong.support.Fixtures
@@ -21,6 +23,8 @@ class RankingPolicyComparatorTest {
         username = id,
         score = score,
         correctAnswers = correctAnswers,
+        wrongAnswers = 0,
+        mode = GameMode.CLASSIC,
         answeredQuestions = 10,
         totalTimeMillis = totalTimeMillis,
         achievedAt = Fixtures.NOW.plusSeconds(achievedAtOffsetSeconds)

@@ -1,5 +1,7 @@
 package com.codelong.application.usecase
 
+import com.codelong.domain.valueobject.GameMode
+
 import com.codelong.domain.exception.DomainException
 
 import com.codelong.domain.valueobject.RankEntry
@@ -28,6 +30,8 @@ class GetRankingUseCaseTest {
             username = username,
             score = score,
             correctAnswers = correctAnswers,
+            wrongAnswers = 0,
+            mode = GameMode.CLASSIC,
             answeredQuestions = 10,
             totalTimeMillis = totalTimeMillis,
             achievedAt = Fixtures.NOW.plusSeconds(achievedAtOffsetSeconds)

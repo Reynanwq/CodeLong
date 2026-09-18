@@ -250,6 +250,8 @@ class DomainPropertiesTest {
         username = id,
         score = score,
         correctAnswers = correctAnswers,
+        wrongAnswers = 0,
+        mode = GameMode.CLASSIC,
         answeredQuestions = 10,
         totalTimeMillis = totalTimeMillis,
         achievedAt = Instant.parse("2026-01-01T12:00:00Z")

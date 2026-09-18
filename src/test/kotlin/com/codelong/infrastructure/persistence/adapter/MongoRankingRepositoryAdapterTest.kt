@@ -1,5 +1,7 @@
 package com.codelong.infrastructure.persistence.adapter
 
+import com.codelong.domain.valueobject.GameMode
+
 import com.codelong.domain.valueobject.UserId
 import com.codelong.infrastructure.persistence.document.GameDocument
 import com.codelong.infrastructure.persistence.document.RankEntryDocument
@@ -34,6 +36,8 @@ class MongoRankingRepositoryAdapterTest {
         username = id,
         score = score,
         correctAnswers = correctAnswers,
+        wrongAnswers = 0,
+        mode = "CLASSIC",
         answeredQuestions = 10,
         totalTimeMillis = totalTimeMillis,
         achievedAt = Fixtures.NOW.plusSeconds(achievedAtOffsetSeconds)

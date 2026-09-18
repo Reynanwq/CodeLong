@@ -1,5 +1,7 @@
 package com.codelong.application.result
 
+import com.codelong.domain.valueobject.GameMode
+
 import com.codelong.domain.valueobject.RankEntry
 import com.codelong.domain.valueobject.UserId
 import com.codelong.support.Fixtures
@@ -60,6 +62,8 @@ class ApplicationResultsTest {
                 username = "alice",
                 score = 100,
                 correctAnswers = 3,
+                wrongAnswers = 0,
+                mode = GameMode.CLASSIC,
                 answeredQuestions = 10,
                 totalTimeMillis = 5_000,
                 achievedAt = Fixtures.NOW,
@@ -91,6 +95,8 @@ class ApplicationResultsTest {
             username = "alice",
             score = 50,
             correctAnswers = 1,
+            wrongAnswers = 0,
+            mode = GameMode.CLASSIC,
             answeredQuestions = 10,
             totalTimeMillis = 1_000,
             achievedAt = Fixtures.NOW

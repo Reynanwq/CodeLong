@@ -1,5 +1,7 @@
 package com.codelong.infrastructure.web.dto
 
+import com.codelong.domain.valueobject.GameMode
+
 import com.codelong.domain.valueobject.GameStatus
 
 import com.codelong.application.result.RankingPage
@@ -29,6 +31,8 @@ class RankingAndGameDtosTest {
         username = id,
         score = score,
         correctAnswers = 3,
+        wrongAnswers = 0,
+        mode = GameMode.CLASSIC,
         answeredQuestions = 10,
         totalTimeMillis = 5_000,
         achievedAt = Fixtures.NOW,

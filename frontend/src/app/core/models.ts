@@ -73,7 +73,9 @@ export interface RankingEntry {
   username: string;
   score: number;
   correctAnswers: number;
+  wrongAnswers: number;
   answeredQuestions: number;
+  mode: string;
   totalTimeMillis: number;
   achievedAt: string;
 }

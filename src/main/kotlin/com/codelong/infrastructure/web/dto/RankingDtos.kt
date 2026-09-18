@@ -10,7 +10,9 @@ data class RankingEntryResponse(
     val username: String,
     val score: Int,
     val correctAnswers: Int,
+    val wrongAnswers: Int,
     val answeredQuestions: Int,
+    val mode: String,
     val totalTimeMillis: Long,
     val achievedAt: Instant
 ) {
@@ -21,7 +23,9 @@ data class RankingEntryResponse(
             username = entry.username,
             score = entry.score,
             correctAnswers = entry.correctAnswers,
+            wrongAnswers = entry.wrongAnswers,
             answeredQuestions = entry.answeredQuestions,
+            mode = entry.mode.name,
             totalTimeMillis = entry.totalTimeMillis,
             achievedAt = entry.achievedAt
         )

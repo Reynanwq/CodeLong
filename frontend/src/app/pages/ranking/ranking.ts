@@ -24,19 +24,27 @@ import { RankingEntry } from '../../core/models';
               <th>Jogador</th>
               <th>Pontos</th>
               <th>Acertos</th>
+              <th>Erros</th>
               <th>Perguntas</th>
+              <th>Modo</th>
               <th>Tempo</th>
               <th>Quando</th>
             </tr>
           </thead>
           <tbody>
-            @for (entry of entries(); track entry.userId) {
+            @for (entry of entries(); track $index) {
               <tr>
                 <td>{{ entry.position }}</td>
                 <td>{{ entry.username }}</td>
                 <td><strong>{{ entry.score }}</strong></td>
                 <td>{{ entry.correctAnswers }}</td>
+                <td class="errors">{{ entry.wrongAnswers }}</td>
                 <td>{{ entry.answeredQuestions }}</td>
+                <td>
+                  <span class="pill" [class.danger]="entry.mode === 'GENOCIDA'">
+                    {{ entry.mode === 'GENOCIDA' ? 'Genocida' : 'Classico' }}
+                  </span>
+                </td>
                 <td>{{ duration(entry) }}</td>
                 <td>{{ entry.achievedAt | date: 'dd/MM HH:mm' }}</td>
               </tr>
