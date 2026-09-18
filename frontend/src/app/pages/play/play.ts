@@ -40,10 +40,26 @@ const TICK_MILLIS = 200;
       </section>
 
       @if (finished()) {
-        <section class="panel center">
+        <section class="panel center" [class.defeat-panel]="current.status === 'DEFEATED'">
           @if (current.status === 'DEFEATED') {
+            <svg class="monster" viewBox="0 0 200 200" role="img" aria-label="Monstro que venceu a partida">
+              <path d="M52 62 L34 16 L78 46 Z" fill="#7f1d1d"/>
+              <path d="M148 62 L166 16 L122 46 Z" fill="#7f1d1d"/>
+              <path d="M30 96 L12 88 L30 78 Z" fill="#7f1d1d"/>
+              <path d="M170 96 L188 88 L170 78 Z" fill="#7f1d1d"/>
+              <path d="M100 34 C142 34 168 64 168 104 C168 148 138 178 100 178 C62 178 32 148 32 104 C32 64 58 34 100 34 Z"
+                    fill="#1f2937"/>
+              <path d="M58 90 L94 104 L58 118 Z" fill="#ef4444"/>
+              <path d="M142 90 L106 104 L142 118 Z" fill="#ef4444"/>
+              <path d="M64 134 Q100 162 136 134 Q100 150 64 134 Z" fill="#7f1d1d"/>
+              <path d="M74 138 L80 154 L86 138 Z" fill="#f8fafc"/>
+              <path d="M96 142 L102 160 L108 142 Z" fill="#f8fafc"/>
+              <path d="M118 138 L124 154 L130 138 Z" fill="#f8fafc"/>
+            </svg>
             <h1 class="defeat">Voce foi derrotado!</h1>
-            <p class="muted">No modo Genocida uma resposta errada encerra a partida.</p>
+            <p class="muted">
+              No modo Genocida uma resposta errada encerra a partida. O monstro agradece.
+            </p>
           } @else {
             <h1>Partida concluida</h1>
           }

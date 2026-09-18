@@ -137,6 +137,30 @@ h1.defeat {
   color: var(--bad);
 }
 
+/* Tela de derrota no modo genocida */
+.defeat-panel {
+  background: linear-gradient(180deg, #ffffff 0%, #fef2f2 100%);
+  border-color: #fecaca;
+}
+
+.monster {
+  display: block;
+  width: 170px;
+  height: 170px;
+  margin: 0 auto 0.25rem;
+  animation: monster-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes monster-pulse {
+  0%,
+  100% {
+    transform: scale(1) rotate(-1deg);
+  }
+  50% {
+    transform: scale(1.06) rotate(1deg);
+  }
+}
+
 td.errors {
   color: var(--bad);
   font-weight: 600;
