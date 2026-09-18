@@ -1,0 +1,320 @@
+# Formato: categoria|dificuldade|enunciado|alternativa1;alternativa2;alternativa3;alternativa4|correta(1-4)
+# Bloco A - KISS, DRY, YAGNI e SOLID
+CLEAN_CODE|VERY_EASY|A sigla KISS significa "Keep It Simple,___"?|Stupid;Slow;Secure;Static|1
+CLEAN_CODE|EASY|O princípio KISS recomenda que o design de um sistema seja:|Complexo;Simples;Ofuscado;Redundante|2
+CLEAN_CODE|EASY_PLUS|KISS busca principalmente reduzir:|Complexidade desnecessária;Cobertura de testes;Tamanho da equipe;Orçamento do projeto|1
+CLEAN_CODE|MEDIUM|Aplicar KISS geralmente significa evitar:|Over-engineering;Documentação;Testes automatizados;Controle de versão|1
+CLEAN_CODE|MEDIUM_PLUS|Um código que segue o KISS é mais fácil de:|Esconder;Entender e manter;Ofuscar;Compilar apenas|2
+CLEAN_CODE|HARD|KISS pode entrar em conflito com a prática de:|Otimização prematura;Lançamentos frequentes;Testes automatizados;Nomenclatura clara|1
+CLEAN_CODE|HARD_PLUS|Camadas de abstração excessivas sem necessidade real tendem a violar:|KISS;Atomicidade;ACID;Normalização|1
+CLEAN_CODE|VERY_HARD|KISS complementa fortemente qual outro princípio, quanto a evitar funcionalidades desnecessárias?|YAGNI;CAP;ACID;BASE|1
+CLEAN_CODE|EXPERT|Uma crítica comum ao uso excessivo do KISS é que ele pode:|Resultar em falta de extensibilidade se levado ao extremo;Sempre aumentar a complexidade;Eliminar a necessidade de testes;Ignorar completamente os requisitos|1
+CLEAN_CODE|MASTER|O princípio KISS tem origem informal em práticas de engenharia, frequentemente associado a:|Simplicidade no design de sistemas de engenharia em geral;Um teorema formal da ciência da computação;A especificação de uma linguagem específica;Uma patente registrada|1
+CLEAN_CODE|VERY_EASY|A sigla DRY significa "Don't Repeat___"?|Yourself;Everything;Code;Tests|1
+CLEAN_CODE|EASY|O princípio DRY busca evitar:|Duplicação de código;Testes automatizados;Documentação;Convenções de nomenclatura|1
+CLEAN_CODE|EASY_PLUS|Violar o DRY torna a manutenção do sistema:|Mais fácil;Mais difícil, pois há múltiplos lugares para atualizar;Irrelevante;Automática|2
+CLEAN_CODE|MEDIUM|Uma forma comum de aplicar DRY é:|Extrair lógica repetida em funções/métodos reutilizáveis;Copiar e colar código;Escrever mais comentários;Aumentar a duplicação|1
+CLEAN_CODE|MEDIUM_PLUS|O DRY se aplica não só ao código, mas também a:|Regras de negócio/conhecimento (fonte única da verdade);Apenas nomes de variáveis;Apenas comentários;Apenas testes|1
+CLEAN_CODE|HARD|Aplicar DRY em excesso pode levar a:|Abstrações prematuras ou incorretas;Mais duplicação;Menor acoplamento sempre;Nenhum problema|1
+CLEAN_CODE|HARD_PLUS|O termo informal "WET", usado como piada contrária ao DRY, costuma significar:|"Write Everything Twice";"Write Everything Thoroughly";"Well Engineered Tests";Não tem significado|1
+CLEAN_CODE|VERY_HARD|Em bancos de dados, o DRY é frequentemente alcançado através de:|Normalização;Denormalização sempre;Duplicação de tabelas;Remoção de índices|1
+CLEAN_CODE|EXPERT|Aplicar DRY entre diferentes "bounded contexts" em DDD pode ser arriscado porque:|Pode criar acoplamento indesejado entre domínios diferentes;Sempre melhora a modularidade;Elimina a necessidade de interfaces;Não tem implicação de design|1
+CLEAN_CODE|MASTER|O equilíbrio entre DRY e acoplamento é frequentemente resumido pela frase:|"Duplicação é bem mais barata que a abstração errada";"Nunca duplique nada, jamais";"Nunca abstraia nada";"Duplicação não tem custo algum"|1
+CLEAN_CODE|VERY_EASY|A sigla YAGNI significa:|You Aren't Gonna Need It;You Always Get New Ideas;Yes And Go Now Immediately;You Are Great, Not Ideal|1
+CLEAN_CODE|EASY|O princípio YAGNI recomenda implementar:|Apenas o que é necessário no momento;Toda funcionalidade futura possível;Máxima flexibilidade sempre;Código não utilizado|1
+CLEAN_CODE|EASY_PLUS|YAGNI ajuda a evitar:|Over-engineering;Testes automatizados;Documentação;Controle de versão|1
+CLEAN_CODE|MEDIUM|YAGNI está fortemente associado a qual metodologia?|Extreme Programming (XP);Waterfall;RUP;Modelo em V|1
+CLEAN_CODE|MEDIUM_PLUS|Seguindo YAGNI, um desenvolvedor deve evitar adicionar:|Generalidade especulativa;Testes para requisitos atuais;Código funcional;Funções simples|1
+CLEAN_CODE|HARD|Um possível trade-off do YAGNI aplicado de forma estrita é:|Retrabalho futuro quando novos requisitos surgirem;Zero manutenção para sempre;Eliminação total de bugs;Nenhuma desvantagem|1
+CLEAN_CODE|HARD_PLUS|YAGNI funciona bem junto a um desenvolvimento:|Iterativo e incremental;Big Design Up Front;Em cascata (waterfall);Com especificações fixas de longo prazo|1
+CLEAN_CODE|VERY_HARD|YAGNI desencoraja a construção de frameworks genéricos para:|Requisitos futuros hipotéticos ainda não confirmados;Requisitos atuais e confirmados;Qualquer código, sempre;Testes automatizados|1
+CLEAN_CODE|EXPERT|Equilibrar YAGNI com decisões de arquitetura exige julgamento sobre:|Quais pontos de flexibilidade são baratos de adicionar depois versus custosos;Sempre adicionar o máximo de flexibilidade;Nunca adicionar flexibilidade alguma;Isso é irrelevante para arquitetura|1
+CLEAN_CODE|MASTER|Críticos do uso excessivamente estrito do YAGNI argumentam que ele pode ignorar:|Evoluções de curto prazo já conhecidas e baratas de acomodar agora;Todo planejamento futuro por completo;Necessidades de teste;Comunicação da equipe|1
+SOLID|VERY_EASY|SOLID agrupa quantos princípios de design?|5;3;7;10|1
+SOLID|EASY|Os princípios SOLID se aplicam principalmente a:|Design orientado a objetos;Indexação de banco de dados;Protocolos de rede;Cores de interface|1
+SOLID|EASY_PLUS|SOLID busca tornar o software mais:|Manutenível e extensível;Lento;Sem documentação;Menos testável|1
+SOLID|MEDIUM|Qual princípio SOLID trata de uma classe ter apenas um motivo para mudar?|SRP;OCP;LSP;ISP|1
+SOLID|MEDIUM_PLUS|Qual princípio SOLID trata de estender comportamento sem modificar código existente?|OCP;SRP;ISP;DIP|1
+SOLID|HARD|Um sistema que ignora SOLID frequentemente sofre de:|Rigidez e fragilidade a mudanças;Melhor testabilidade automática;Menor acoplamento automático;Nenhuma desvantagem|1
+SOLID|HARD_PLUS|Os princípios SOLID foram reunidos e popularizados principalmente por:|Robert C. Martin;Linus Torvalds;Apenas Martin Fowler;Apenas Kent Beck|1
+SOLID|VERY_HARD|Aplicar SOLID em excesso, sem necessidade real, pode levar a:|Abstração excessiva/complexidade desnecessária;Código sempre mais simples;Menos classes sempre;Ausência total de interfaces|1
+SOLID|EXPERT|Os padrões de projeto (design patterns) complementam SOLID porque muitas vezes:|São soluções concretas que incorporam princípios SOLID;Contradizem SOLID sempre;Substituem a necessidade de SOLID por completo;Não têm relação alguma|1
+SOLID|MASTER|Em discussões modernas de arquitetura, SOLID costuma ser complementado por princípios de coesão/acoplamento de pacotes, também descritos por Robert C. Martin, como:|REP, CCP e CRP (princípios de coesão de pacotes);Apenas o teorema CAP;Apenas ACID;Nenhum princípio adicional existe|1
+# Bloco B - Figuras da computacao
+COMPUTING_HISTORY|VERY_EASY|Quem é considerado o "pai" da linguagem C?|Dennis Ritchie;James Gosling;Guido van Rossum;Bjarne Stroustrup|1
+COMPUTING_HISTORY|VERY_EASY|Quem criou o sistema operacional Linux?|Linus Torvalds;Richard Stallman;Ken Thompson;Dennis Ritchie|1
+COMPUTING_HISTORY|VERY_EASY|Quem criou a linguagem Python?|Guido van Rossum;James Gosling;Brendan Eich;Anders Hejlsberg|1
+COMPUTING_HISTORY|VERY_EASY|Quem criou a linguagem Java?|James Gosling;Guido van Rossum;Bjarne Stroustrup;Ken Thompson|1
+COMPUTING_HISTORY|VERY_EASY|Quem é considerado o inventor da World Wide Web?|Tim Berners-Lee;Vint Cerf;Bill Gates;Steve Wozniak|1
+COMPUTING_HISTORY|VERY_EASY|Alan Turing é amplamente reconhecido como um dos pais de qual área?|Ciência da Computação;Marketing digital;Design gráfico;Redes sociais|1
+COMPUTING_HISTORY|VERY_EASY|Ada Lovelace é frequentemente citada como:|A primeira programadora de computadores da história;A criadora do Linux;A criadora do HTML;A criadora do Java|1
+COMPUTING_HISTORY|VERY_EASY|Grace Hopper é conhecida por seu trabalho pioneiro em:|Compiladores e na linguagem COBOL;Redes sociais;Design de interfaces;Criptomoedas|1
+COMPUTING_HISTORY|VERY_EASY|Quem criou a linguagem C++?|Bjarne Stroustrup;Dennis Ritchie;James Gosling;Ken Thompson|1
+COMPUTING_HISTORY|VERY_EASY|Quem criou a linguagem JavaScript?|Brendan Eich;Guido van Rossum;Anders Hejlsberg;Rasmus Lerdorf|1
+COMPUTING_HISTORY|EASY|Ken Thompson, junto com Dennis Ritchie, é um dos criadores originais do sistema operacional:|Unix;Windows;Linux;macOS|1
+COMPUTING_HISTORY|EASY|Anders Hejlsberg é conhecido por liderar o design de qual linguagem da Microsoft?|C#;Java;Python;Ruby|1
+COMPUTING_HISTORY|EASY|Yukihiro Matsumoto ("Matz") é o criador da linguagem:|Ruby;Python;PHP;Perl|1
+COMPUTING_HISTORY|EASY|Rasmus Lerdorf é conhecido como o criador original da linguagem:|PHP;Perl;Ruby;JavaScript|1
+COMPUTING_HISTORY|EASY|Robert C. Martin, conhecido como "Uncle Bob", é famoso por popularizar os princípios:|SOLID;ACID;CAP;BASE|1
+COMPUTING_HISTORY|EASY|Martin Fowler é amplamente conhecido por seus livros sobre:|Refatoração e padrões de arquitetura;Redes de computadores;Sistemas operacionais;Hardware|1
+COMPUTING_HISTORY|EASY|Donald Knuth é famoso por escrever a extensa obra:|"The Art of Computer Programming";"Clean Code";"Design Patterns";"Refactoring"|1
+COMPUTING_HISTORY|EASY|Vint Cerf é frequentemente chamado de um dos "pais" de qual tecnologia fundamental?|Internet (protocolo TCP/IP);Linguagem Python;Sistema Linux;Banco de dados relacional|1
+COMPUTING_HISTORY|EASY|Edsger Dijkstra é conhecido por contribuições fundamentais em:|Algoritmos e programação estruturada;Design de interfaces gráficas;Marketing de software;Criptomoedas|1
+COMPUTING_HISTORY|EASY|Richard Stallman é o fundador do movimento/projeto:|GNU e da Free Software Foundation;Linux Foundation;Apache Software Foundation;W3C|1
+COMPUTING_HISTORY|EASY_PLUS|Barbara Liskov é homenageada no princípio de substituição presente no acrônimo:|SOLID (o "L");ACID (o "A");CAP (o "C");BASE (o "B")|1
+COMPUTING_HISTORY|EASY_PLUS|Kent Beck é amplamente reconhecido como criador da metodologia:|Extreme Programming (XP);Scrum;Kanban;RUP|1
+COMPUTING_HISTORY|EASY_PLUS|Ward Cunningham é conhecido por criar o primeiro:|Wiki;Compilador C;Sistema operacional;Navegador web|1
+COMPUTING_HISTORY|EASY_PLUS|Erich Gamma é um dos autores do livro clássico:|"Design Patterns" (GoF);"Clean Code";"Refactoring";"The Pragmatic Programmer"|1
+COMPUTING_HISTORY|EASY_PLUS|Alan Kay é frequentemente associado à criação do termo:|"Programação Orientada a Objetos";"Machine Learning";"Cloud Computing";"Big Data"|1
+COMPUTING_HISTORY|EASY_PLUS|Tim Berners-Lee trabalhava em qual instituição quando criou a Web?|CERN;MIT;Stanford;Google|1
+COMPUTING_HISTORY|EASY_PLUS|Margaret Hamilton é conhecida por liderar o desenvolvimento do software de bordo da missão:|Apollo (NASA);Voyager;Mars Rover;Hubble|1
+COMPUTING_HISTORY|EASY_PLUS|Niklaus Wirth é o criador da linguagem de programação:|Pascal;COBOL;Fortran;Lisp|1
+COMPUTING_HISTORY|EASY_PLUS|John von Neumann é amplamente associado à arquitetura de computadores conhecida como:|Arquitetura von Neumann;Arquitetura Harvard exclusivamente;Arquitetura RISC moderna;Arquitetura de microsserviços|1
+COMPUTING_HISTORY|EASY_PLUS|Claude Shannon é considerado o pai de qual campo teórico fundamental para a computação?|Teoria da Informação;Teoria dos Jogos;Teoria da Relatividade;Teoria das Filas|1
+COMPUTING_HISTORY|MEDIUM|Rich Hickey é o criador da linguagem funcional:|Clojure;Elixir;Haskell;Erlang|1
+COMPUTING_HISTORY|MEDIUM|Joe Armstrong é um dos criadores da linguagem:|Erlang;Elixir;Clojure;Go|1
+COMPUTING_HISTORY|MEDIUM|Larry Wall é o criador da linguagem:|Perl;Python;Ruby;PHP|1
+COMPUTING_HISTORY|MEDIUM|Rob Pike e Ken Thompson, junto com Robert Griesemer, criaram a linguagem:|Go;Rust;Swift;Kotlin|1
+COMPUTING_HISTORY|MEDIUM|Chris Lattner é conhecido por criar o compilador/infraestrutura:|LLVM (e também a linguagem Swift);GCC;JVM;.NET Runtime|1
+COMPUTING_HISTORY|MEDIUM|Martin Odersky é o criador da linguagem:|Scala;Kotlin;Groovy;Clojure|1
+COMPUTING_HISTORY|MEDIUM|David Parnas é reconhecido por seu trabalho pioneiro sobre:|Ocultação de informação (information hiding) e modularidade;Redes neurais;Bancos de dados NoSQL;Criptografia moderna|1
+COMPUTING_HISTORY|MEDIUM|Fred Brooks é autor do influente livro sobre gestão de projetos de software:|"The Mythical Man-Month";"Clean Code";"Design Patterns";"Refactoring"|1
+COMPUTING_HISTORY|MEDIUM|Edgar F. Codd é reconhecido por propor o modelo:|Relacional de bancos de dados;De documentos (NoSQL);De grafos;De arquivos planos|1
+COMPUTING_HISTORY|MEDIUM|Michael Stonebraker é um pesquisador influente em sistemas de:|Banco de dados;Compiladores;Sistemas operacionais embarcados;Criptografia|1
+COMPUTING_HISTORY|MEDIUM_PLUS|Kristen Nygaard e Ole-Johan Dahl são reconhecidos como criadores da linguagem Simula, considerada pioneira em:|Programação orientada a objetos;Programação funcional;Programação lógica;Programação concorrente moderna|1
+COMPUTING_HISTORY|MEDIUM_PLUS|Ivar Jacobson é conhecido por sua contribuição ao desenvolvimento de software através dos:|Casos de uso (use cases) e UML;Padrões de projeto GoF;Princípios SOLID;Extreme Programming|1
+COMPUTING_HISTORY|MEDIUM_PLUS|James Rumbaugh, junto com Grady Booch e Ivar Jacobson, ajudou a unificar métodos de modelagem no(a):|UML (Unified Modeling Language);SOLID;TDD;BDD|1
+COMPUTING_HISTORY|MEDIUM_PLUS|Whitfield Diffie e Martin Hellman são conhecidos por seu trabalho pioneiro em:|Criptografia de chave pública;Bancos de dados distribuídos;Sistemas operacionais;Redes sociais|1
+COMPUTING_HISTORY|MEDIUM_PLUS|Ron Rivest, Adi Shamir e Leonard Adleman são os criadores do algoritmo de criptografia:|RSA;AES;SHA-256;MD5|1
+COMPUTING_HISTORY|MEDIUM_PLUS|Doug Cutting é reconhecido como um dos criadores do ecossistema:|Hadoop;Kafka;Spark;Kubernetes|1
+COMPUTING_HISTORY|MEDIUM_PLUS|Jeff Dean e Sanjay Ghemawat, ambos do Google, são conhecidos por trabalhos fundamentais como:|MapReduce e Bigtable;Git e GitHub;Kafka e Zookeeper;Docker e Kubernetes|1
+COMPUTING_HISTORY|MEDIUM_PLUS|Radia Perlman é conhecida por sua contribuição fundamental ao criar o protocolo:|Spanning Tree Protocol (redes);HTTP;TCP/IP;DNS|1
+COMPUTING_HISTORY|MEDIUM_PLUS|John McCarthy é reconhecido como um dos pais da área de Inteligência Artificial e criador da linguagem:|Lisp;Prolog;Python;Fortran|1
+COMPUTING_HISTORY|MEDIUM_PLUS|John Backus liderou o desenvolvimento da linguagem:|Fortran;COBOL;Lisp;Algol|1
+COMPUTING_HISTORY|HARD|Bruce Schneier é amplamente conhecido como um influente escritor e especialista em:|Segurança e criptografia;Bancos de dados;Design de UI/UX;Compiladores|1
+COMPUTING_HISTORY|HARD|Phil Zimmermann é o criador do software de criptografia:|PGP (Pretty Good Privacy);SSH;TLS;VPN genérica|1
+COMPUTING_HISTORY|HARD|Douglas Engelbart é conhecido por inventar o(a):|Mouse de computador e demonstrar interfaces interativas (The Mother of All Demos);Linguagem Java;Protocolo HTTP;Sistema Unix|1
+COMPUTING_HISTORY|HARD|Leslie Lamport é o criador do algoritmo de consenso distribuído:|Paxos;Raft (criado por Diego Ongaro e John Ousterhout);Two-Phase Commit apenas;MapReduce|1
+COMPUTING_HISTORY|HARD|Werner Vogels é atualmente CTO de qual empresa, sendo referência em sistemas distribuídos escaláveis?|Amazon;Google;Microsoft;Meta|1
+COMPUTING_HISTORY|HARD|Jay Kreps, Neha Narkhede e Jun Rao são os criadores originais do:|Apache Kafka;Apache Spark;Apache Hadoop;Apache Cassandra|1
+COMPUTING_HISTORY|HARD|Eric Evans é reconhecido como o autor do livro fundador sobre:|Domain-Driven Design (DDD);Clean Architecture;Extreme Programming;Microservices Patterns|1
+COMPUTING_HISTORY|HARD|Sam Newman é um autor de referência ao escrever sobre o tema de:|Microservices;Bancos de dados relacionais;Sistemas operacionais;Redes neurais|1
+COMPUTING_HISTORY|HARD|Douglas Crockford é conhecido por popularizar/especificar o formato:|JSON;XML;YAML;BSON|1
+COMPUTING_HISTORY|HARD|Butler Lampson é um cientista da computação premiado com o Turing Award por contribuições em:|Sistemas distribuídos, redes e sistemas operacionais;Redes sociais;Design gráfico;Marketing de tecnologia|1
+COMPUTING_HISTORY|HARD_PLUS|Ralph Johnson e Richard Helm, junto com Erich Gamma e John Vlissides, formam o grupo conhecido como:|Gang of Four (GoF);Big Four da IA;Core Team do Kotlin;Fundadores da Apache Foundation|1
+COMPUTING_HISTORY|HARD_PLUS|Grady Booch, além de contribuir para o UML, é conhecido por popularizar conceitos de:|Design orientado a objetos em larga escala;Criptografia de chave pública;Bancos de dados NoSQL;Redes neurais profundas|1
+COMPUTING_HISTORY|HARD_PLUS|Jose Valim é o criador da linguagem:|Elixir;Erlang;Clojure;Scala|1
+COMPUTING_HISTORY|HARD_PLUS|Robert Tarjan é um cientista da computação premiado por contribuições fundamentais em:|Algoritmos e estruturas de dados em grafos;Interfaces gráficas;Bancos de dados relacionais;Redes sociais|1
+COMPUTING_HISTORY|HARD_PLUS|Guido van Rossum, criador do Python, trabalhou por um período em qual grande empresa de tecnologia relacionada ao design da linguagem?|Dropbox (entre outras, ao longo de sua carreira);Nenhuma empresa, apenas projetos pessoais;Apenas universidades;Apenas start-ups de jogos|1
+COMPUTING_HISTORY|HARD_PLUS|Peter Naur contribuiu significativamente para a notação formal usada para descrever gramáticas de linguagens, conhecida como:|BNF (Backus-Naur Form);UML;EBNF exclusivamente criada por ele sozinho;JSON Schema|1
+COMPUTING_HISTORY|HARD_PLUS|Diego Ongaro e John Ousterhout são os criadores do algoritmo de consenso:|Raft;Paxos;Two-Phase Commit;Byzantine Fault Tolerance clássico|1
+COMPUTING_HISTORY|HARD_PLUS|Roberto Ierusalimschy é um dos criadores da linguagem:|Lua;Ruby;Python;Elixir|1
+COMPUTING_HISTORY|HARD_PLUS|Anders Hejlsberg, além do C#, também liderou o design de qual linguagem/superset popular para tipagem em JavaScript?|TypeScript;CoffeeScript;Dart;Flow|1
+COMPUTING_HISTORY|HARD_PLUS|Jim Gray é um cientista da computação premiado com o Turing Award por contribuições fundamentais a:|Processamento de transações em bancos de dados;Redes sociais;Criptografia moderna;Interfaces gráficas|1
+COMPUTING_HISTORY|VERY_HARD|O termo "Programação Extrema" (XP) foi formalizado por Kent Beck durante um projeto na empresa:|Chrysler (projeto C3);Google;IBM;Microsoft|1
+COMPUTING_HISTORY|VERY_HARD|Barbara Liskov liderou o desenvolvimento da linguagem CLU, pioneira em:|Tipos abstratos de dados;Programação lógica;Redes neurais;Criptografia de chave pública|1
+COMPUTING_HISTORY|VERY_HARD|Vint Cerf e Bob Kahn são coautores do design original do protocolo:|TCP/IP;HTTP;DNS;SMTP|1
+COMPUTING_HISTORY|VERY_HARD|O algoritmo de Dijkstra, criado por Edsger Dijkstra, resolve o problema de:|Caminho mínimo em grafos;Ordenação de arrays;Compressão de dados;Balanceamento de árvores binárias|1
+COMPUTING_HISTORY|VERY_HARD|Donald Knuth também é conhecido por criar o sistema de tipografia/preparação de documentos:|TeX;LaTeX (criado depois por Leslie Lamport com base no TeX);Markdown;PostScript|1
+COMPUTING_HISTORY|VERY_HARD|John Carmack é amplamente reconhecido por seu trabalho pioneiro em:|Motores gráficos de jogos (game engines) 3D;Bancos de dados distribuídos;Protocolos de rede;Sistemas operacionais embarcados|1
+COMPUTING_HISTORY|VERY_HARD|Robert Griesemer, além de coautor do Go, também trabalhou anteriormente em qual máquina virtual da Google?|V8 (motor JavaScript);JVM;.NET CLR;LLVM|1
+COMPUTING_HISTORY|VERY_HARD|Urs Hölzle é reconhecido por seu papel na construção da infraestrutura técnica em larga escala da:|Google;Amazon;Microsoft;Meta|1
+COMPUTING_HISTORY|VERY_HARD|O conceito de "Programação Literária" (Literate Programming) foi proposto por:|Donald Knuth;Dennis Ritchie;Ken Thompson;Alan Kay|1
+COMPUTING_HISTORY|VERY_HARD|Alonzo Church é reconhecido por criar o cálculo lambda, base teórica fundamental para:|Linguagens de programação funcional;Redes de computadores;Bancos de dados relacionais;Sistemas operacionais|1
+COMPUTING_HISTORY|EXPERT|O algoritmo de consenso Paxos, criado por Leslie Lamport, foi originalmente apresentado através de um artigo com uma narrativa envolvendo:|Uma ilha grega fictícia chamada Paxos;Um sistema bancário real;Um protocolo militar real;Um jogo de tabuleiro comercial|1
+COMPUTING_HISTORY|EXPERT|Robin Milner é reconhecido por contribuições fundamentais como a criação da linguagem funcional:|ML (MetaLanguage);Haskell;Erlang;Clojure|1
+COMPUTING_HISTORY|EXPERT|Tony Hoare é conhecido por criar o algoritmo de ordenação:|Quicksort;Mergesort;Bubble sort;Heapsort|1
+COMPUTING_HISTORY|EXPERT|Tony Hoare também é famoso por se referir à invenção do valor nulo (null reference) como:|Seu "erro de um bilhão de dólares";Sua maior conquista sem ressalvas;Uma decisão sem impacto prático;Uma ideia de outro pesquisador, não dele|1
+COMPUTING_HISTORY|EXPERT|Edsger Dijkstra é autor do famoso ensaio crítico sobre o uso do comando GOTO, intitulado aproximadamente:|"Go To Statement Considered Harmful";"Clean Code Manifesto";"The Art of Structured Programming";"Refactoring Considered Essential"|1
+COMPUTING_HISTORY|EXPERT|Corrado Böhm e Giuseppe Jacopini contribuíram teoricamente para fundamentar a:|Programação estruturada;Programação orientada a objetos;Programação funcional;Programação lógica|1
+COMPUTING_HISTORY|EXPERT|John Backus, além do Fortran, também é conhecido por uma palestra crítica ao estilo de programação imperativo, defendendo estilo:|Funcional;Orientado a objetos;Procedural clássico;Orientado a eventos|1
+COMPUTING_HISTORY|EXPERT|Niklaus Wirth também é autor da célebre frase relacionando algoritmos e estruturas de dados ao:|Próprio conceito de "programas" ("Algorithms + Data Structures = Programs");Conceito de microserviços;Conceito de containers;Conceito de DevOps|1
+COMPUTING_HISTORY|EXPERT|Whitfield Diffie e Martin Hellman publicaram seu trabalho seminal sobre criptografia de chave pública em qual década?|1970;1950;1990;2000|1
+COMPUTING_HISTORY|EXPERT|Robert Floyd é reconhecido por contribuições fundamentais à verificação formal de programas e por criar, junto a outros, o algoritmo:|Floyd–Warshall (caminhos mínimos em grafos);Dijkstra completo sozinho;RSA;MapReduce|1
+COMPUTING_HISTORY|MASTER|Stephen Cook é conhecido por formalizar o problema NP-completo através do chamado:|Teorema de Cook-Levin;Teorema de Church-Turing;Teorema CAP;Teorema de Shannon|1
+COMPUTING_HISTORY|MASTER|Leonid Levin, de forma independente e quase simultânea a Stephen Cook, também contribuiu para a teoria da:|NP-completude;Criptografia de curvas elípticas;Redes neurais convolucionais;Sistemas de arquivos distribuídos|1
+COMPUTING_HISTORY|MASTER|Amir Pnueli é reconhecido por introduzir o uso de qual formalismo lógico para especificação e verificação de sistemas concorrentes?|Lógica Temporal;Álgebra Relacional;Cálculo Lambda;Lógica Difusa|1
+COMPUTING_HISTORY|MASTER|Barbara Liskov e Jeannette Wing formalizaram, em um artigo acadêmico, o conceito hoje conhecido como:|Princípio de Substituição de Liskov (LSP);Teorema CAP;Algoritmo de Paxos;Modelo Relacional|1
+COMPUTING_HISTORY|MASTER|Leslie Lamport recebeu o Turing Award com destaque para contribuições sobre:|Fundamentos teóricos de sistemas distribuídos e concorrentes;Design de compiladores C;Redes sociais em larga escala;Interfaces gráficas modernas|1
+COMPUTING_HISTORY|MASTER|Eric Brewer é reconhecido por formular o que hoje é conhecido como:|Teorema CAP;Princípios SOLID;Algoritmo de Dijkstra;Modelo Ator (Actor Model)|1
+COMPUTING_HISTORY|MASTER|Carl Hewitt é reconhecido por propor originalmente o:|Modelo de Atores (Actor Model), influente em sistemas concorrentes;Modelo Relacional;Algoritmo RSA;Protocolo TCP/IP|1
+COMPUTING_HISTORY|MASTER|Barbara Liskov recebeu o Turing Award (2008) reconhecendo contribuições práticas e teóricas em:|Design de linguagens de programação e sistemas distribuídos confiáveis;Design gráfico;Marketing digital;Redes sociais|1
+COMPUTING_HISTORY|MASTER|Niklaus Wirth também projetou, além do Pascal, linguagens posteriores como Modula-2 e:|Oberon;Kotlin;Elixir;Swift|1
+COMPUTING_HISTORY|MASTER|O termo "Programação Orientada a Aspectos" (AOP) foi popularizado por um grupo de pesquisa liderado por:|Gregor Kiczales;Kent Beck;Martin Fowler;Robert C. Martin|1
+# Bloco C - AWS
+AWS|VERY_EASY|O serviço da AWS usado para armazenamento de objetos (arquivos) é o:|S3;EC2;RDS;Lambda|1
+AWS|VERY_EASY|O serviço da AWS usado para executar máquinas virtuais é o:|EC2;S3;SNS;IAM|1
+AWS|VERY_EASY|AWS é a plataforma de computação em nuvem de qual empresa?|Amazon;Google;Microsoft;IBM|1
+AWS|VERY_EASY|A sigla AWS significa:|Amazon Web Services;Advanced Web Systems;Automated Web Servers;Amazon Wide Storage|1
+AWS|VERY_EASY|O serviço da AWS usado para executar código sem gerenciar servidores é o:|Lambda;EC2;S3;VPC|1
+AWS|EASY|O serviço da AWS usado para bancos de dados relacionais gerenciados é o:|RDS;S3;EC2;Route 53|1
+AWS|EASY|O serviço da AWS de banco de dados NoSQL totalmente gerenciado é o:|DynamoDB;RDS;Redshift;Aurora exclusivamente relacional|1
+AWS|EASY|O serviço da AWS usado para gerenciar usuários, grupos e permissões é o:|IAM;VPC;S3;CloudFront|1
+AWS|EASY|O serviço de DNS gerenciado da AWS é o:|Route 53;CloudFront;VPC;IAM|1
+AWS|EASY|O serviço da AWS de CDN (rede de distribuição de conteúdo) é o:|CloudFront;Route 53;S3 exclusivamente;IAM|1
+AWS|EASY_PLUS|O serviço da AWS usado para criar redes virtuais isoladas é o:|VPC (Virtual Private Cloud);IAM;S3;SNS|1
+AWS|EASY_PLUS|O serviço da AWS de filas de mensagens é o:|SQS (Simple Queue Service);SNS;SES;EC2|1
+AWS|EASY_PLUS|O serviço da AWS de notificações (pub/sub) é o:|SNS (Simple Notification Service);SQS;SES;S3|1
+AWS|EASY_PLUS|O serviço da AWS para monitoramento de métricas e logs é o:|CloudWatch;CloudTrail exclusivamente;CloudFormation;Config|1
+AWS|EASY_PLUS|O serviço da AWS usado para orquestrar containers com o motor próprio da AWS é o:|ECS (Elastic Container Service);EKS exclusivamente;Lambda;S3|1
+AWS|VERY_EASY|O serviço da AWS para orquestração de containers Kubernetes gerenciado é o:|EKS (Elastic Kubernetes Service);ECS exclusivamente;RDS;IAM|1
+AWS|VERY_EASY|O serviço da AWS usado como registro de imagens de containers é o:|ECR (Elastic Container Registry);S3 exclusivamente;EC2;VPC|1
+AWS|EASY|O serviço da AWS para provisionar infraestrutura como código é o:|CloudFormation;CloudWatch;IAM;Route 53|1
+AWS|EASY|O serviço da AWS usado para armazenar segredos como senhas e chaves de API é o:|Secrets Manager;S3 exclusivamente;EC2;SNS|1
+AWS|EASY|O serviço da AWS usado para gerenciamento de chaves de criptografia é o:|KMS (Key Management Service);IAM exclusivamente;S3;VPC|1
+AWS|EASY_PLUS|O serviço da AWS usado para criar e gerenciar APIs é o:|API Gateway;Lambda exclusivamente;S3;SNS|1
+AWS|EASY_PLUS|O serviço da AWS de armazenamento de longo prazo e baixo custo (arquivamento) é o:|S3 Glacier;EC2;RDS;DynamoDB|1
+AWS|EASY_PLUS|O serviço da AWS de data warehouse (armazenamento analítico) é o:|Redshift;DynamoDB;S3 exclusivamente;RDS|1
+AWS|EASY_PLUS|O serviço da AWS usado para balanceamento de carga é o:|Elastic Load Balancing (ELB);Route 53 exclusivamente;CloudFront exclusivamente;VPC|1
+AWS|EASY_PLUS|O recurso da AWS que ajusta automaticamente a quantidade de instâncias conforme a demanda é o:|Auto Scaling;IAM;S3;CloudTrail|1
+AWS|EASY|O serviço de armazenamento em bloco usado junto a instâncias EC2 é o:|EBS (Elastic Block Store);S3 exclusivamente;EFS exclusivamente;Glacier|1
+AWS|EASY|O serviço de armazenamento de arquivos compartilhado (sistema de arquivos) da AWS é o:|EFS (Elastic File System);EBS exclusivamente;S3 exclusivamente;RDS|1
+AWS|EASY|O serviço da AWS que facilita o deploy de aplicações web sem gerenciar toda a infraestrutura manualmente é o:|Elastic Beanstalk;IAM;VPC;Route 53|1
+AWS|EASY_PLUS|O serviço de orquestração de fluxos de trabalho serverless da AWS é o:|Step Functions;Lambda exclusivamente;SQS exclusivamente;SNS|1
+AWS|EASY_PLUS|O serviço da AWS usado para consultas SQL diretamente sobre dados no S3 é o:|Athena;Redshift exclusivamente;RDS;DynamoDB|1
+# Bloco D - Seguranca
+SECURITY|VERY_EASY|Autenticação é o processo de:|Verificar a identidade de um usuário;Definir o que um usuário pode fazer;Criptografar todos os dados;Apagar logs do sistema|1
+SECURITY|VERY_EASY|Autorização é o processo de:|Definir o que um usuário autenticado pode fazer;Verificar apenas a senha;Criar novos usuários;Apagar dados sensíveis|1
+SECURITY|EASY|HTTPS é a versão segura do HTTP, utilizando criptografia através de:|TLS/SSL;FTP;SSH exclusivamente;DNS|1
+SECURITY|EASY|MFA (autenticação multifator) aumenta a segurança exigindo:|Mais de um fator de verificação de identidade;Apenas uma senha simples;Nenhuma verificação;Apenas biometria obrigatória em todos os casos|1
+SECURITY|EASY_PLUS|SQL Injection é um ataque que explora:|Entrada de dados não validada em consultas SQL;Falhas de hardware;Problemas de rede física;Falta de espaço em disco|1
+SECURITY|EASY_PLUS|XSS (Cross-Site Scripting) é um ataque que injeta:|Scripts maliciosos em páginas web visualizadas por outros usuários;Vírus diretamente no hardware;Pacotes de rede falsificados apenas;Consultas SQL apenas|1
+SECURITY|MEDIUM|O princípio do menor privilégio recomenda conceder a usuários e sistemas:|Apenas as permissões mínimas necessárias;Acesso total por padrão;Nenhuma permissão jamais;Permissões aleatórias|1
+SECURITY|MEDIUM|Hashing de senhas, diferente de criptografia reversível, é usado para:|Armazenar senhas de forma que não possam ser revertidas facilmente;Enviar senhas em texto puro;Acelerar o login;Substituir a autenticação|1
+SECURITY|MEDIUM_PLUS|O uso de "salt" no hashing de senhas serve para:|Evitar ataques de rainbow table, tornando cada hash único;Acelerar a quebra de senhas;Substituir a necessidade de hashing;Armazenar senhas em texto puro|1
+SECURITY|MEDIUM_PLUS|CSRF (Cross-Site Request Forgery) explora a confiança de um site em:|Requisições vindas do navegador autenticado do usuário;Consultas SQL diretas;Falta de conexão de rede;Ausência de JavaScript|1
+SECURITY|HARD|O modelo de segurança "Zero Trust" parte do princípio de que:|Nenhuma requisição deve ser confiável por padrão, mesmo dentro da rede interna;Toda a rede interna é sempre confiável;Autenticação só é necessária externamente;Não é necessário validar nenhuma requisição|1
+SECURITY|HARD|O OWASP Top 10 é uma referência amplamente usada para listar:|Os riscos de segurança mais críticos em aplicações web;As melhores práticas de UI/UX;Os frameworks mais rápidos do mercado;As linguagens mais populares|1
+SECURITY|HARD_PLUS|Um JWT (JSON Web Token) é comumente usado para:|Transmitir informações de autenticação/autorização de forma compacta e verificável;Armazenar arquivos grandes;Substituir bancos de dados;Criptografar discos rígidos|1
+SECURITY|HARD_PLUS|CORS (Cross-Origin Resource Sharing) é um mecanismo que controla:|Quais origens podem fazer requisições a um recurso web;A velocidade de conexão de rede;O tamanho máximo de arquivos enviados;A criptografia do disco|1
+SECURITY|VERY_HARD|Um "buffer overflow" ocorre quando:|Dados escritos excedem o espaço de memória alocado, corrompendo áreas adjacentes;Um arquivo é grande demais para o disco;Uma senha é digitada incorretamente várias vezes;Uma consulta SQL retorna resultado vazio|1
+SECURITY|VERY_HARD|Testes de penetração (pentest) têm como objetivo:|Simular ataques reais para identificar vulnerabilidades antes de atacantes reais;Apenas medir performance da aplicação;Substituir toda a equipe de segurança;Eliminar a necessidade de atualizações|1
+SECURITY|EXPERT|O princípio de "Security by Design" recomenda que a segurança seja:|Considerada desde as fases iniciais do desenvolvimento, não apenas ao final;Adicionada somente após o lançamento em produção;Responsabilidade exclusiva do time de infraestrutura;Ignorada em sistemas internos|1
+SECURITY|EXPERT|Um ataque de "Man-in-the-Middle" ocorre quando um atacante:|Intercepta e potencialmente altera a comunicação entre duas partes sem que percebam;Ataca diretamente o disco rígido físico;Apenas escuta rádio sem interceptar dados;Ataca apenas bancos de dados locais sem rede|1
+SECURITY|MASTER|Em criptografia, um ataque de "timing attack" explora:|Diferenças no tempo de execução de operações para inferir informações secretas;Apenas falhas de digitação do usuário;A cor da interface do sistema;O tamanho da tela do dispositivo|1
+SECURITY|MASTER|O conceito de "defesa em profundidade" (defense in depth) recomenda:|Múltiplas camadas independentes de segurança, para que a falha de uma não comprometa tudo;Uma única camada de segurança extremamente forte, sem redundância;Nenhuma camada de segurança em sistemas internos;Segurança apenas no perímetro de rede|1
+# Bloco E - Siglas
+ACRONYMS|VERY_EASY|A sigla DNS significa:|Domain Name System;Data Network Service;Digital Naming Standard;Dynamic Node System|1
+ACRONYMS|VERY_EASY|A sigla HTTP significa:|HyperText Transfer Protocol;High Transfer Text Protocol;HyperText Transmission Process;Host Transfer Text Protocol|1
+ACRONYMS|EASY|A sigla HTTPS adiciona ao HTTP a camada de:|Segurança (via TLS/SSL);Compressão obrigatória;Cache automático;Roteamento de e-mail|1
+ACRONYMS|EASY|A sigla API significa:|Application Programming Interface;Automated Program Integration;Application Process Interaction;Advanced Programming Instruction|1
+ACRONYMS|EASY_PLUS|A sigla REST, em APIs, significa:|Representational State Transfer;Remote State Transmission;Reliable Endpoint Service Transfer;Resource State Transaction|1
+ACRONYMS|EASY_PLUS|A sigla JSON significa:|JavaScript Object Notation;Java Standard Object Notation;JavaScript Oriented Syntax Node;Joint Structured Object Notation|1
+ACRONYMS|MEDIUM|A sigla CRUD refere-se às operações básicas:|Create, Read, Update, Delete;Create, Run, Undo, Delete;Connect, Read, Update, Disconnect;Create, Read, Upload, Download|1
+ACRONYMS|MEDIUM|A sigla ORM significa:|Object-Relational Mapping;Object Runtime Manager;Operational Resource Model;Object Relation Module|1
+ACRONYMS|MEDIUM_PLUS|A sigla CI/CD refere-se a:|Continuous Integration / Continuous Delivery (ou Deployment);Code Inspection / Code Delivery;Continuous Iteration / Continuous Debugging;Central Integration / Central Deployment|1
+ACRONYMS|MEDIUM_PLUS|A sigla SSH significa:|Secure Shell;Simple Shell Host;Server Side Handler;Secure System Host|1
+ACRONYMS|HARD|A sigla TCP significa:|Transmission Control Protocol;Total Connection Protocol;Transfer Control Process;Transmission Channel Protocol|1
+ACRONYMS|HARD|A sigla UDP significa:|User Datagram Protocol;Universal Data Protocol;User Data Process;Unified Datagram Process|1
+ACRONYMS|HARD_PLUS|A sigla CDN significa:|Content Delivery Network;Central Data Node;Cloud Distribution Network;Content Data Node|1
+ACRONYMS|HARD_PLUS|A sigla JWT significa:|JSON Web Token;Java Web Transfer;JavaScript Web Type;Joint Web Token|1
+ACRONYMS|VERY_HARD|A sigla CORS significa:|Cross-Origin Resource Sharing;Central Origin Request Service;Cross-Object Resource Standard;Client Origin Request Sharing|1
+ACRONYMS|VERY_HARD|A sigla SLA significa:|Service Level Agreement;System Load Average;Service Load Assurance;Standard Level API|1
+ACRONYMS|EXPERT|A sigla SLO, comumente usada junto ao SLA, significa:|Service Level Objective;System Level Operation;Service Load Objective;Standard Level Output|1
+ACRONYMS|EXPERT|A sigla SLI, relacionada a SLA/SLO, significa:|Service Level Indicator;System Load Index;Standard Latency Indicator;Service Load Interface|1
+ACRONYMS|MASTER|A sigla mTLS, usada em segurança de comunicação entre serviços, significa:|Mutual Transport Layer Security;Managed Transfer Layer Standard;Multi Transport Level Service;Master Transport Layer Sync|1
+ACRONYMS|MASTER|A sigla RPC significa:|Remote Procedure Call;Runtime Process Controller;Remote Process Configuration;Rapid Procedure Communication|1
+# Bloco F - Observabilidade
+OBSERVABILITY|VERY_EASY|Observabilidade em sistemas de software está relacionada à capacidade de:|Entender o estado interno de um sistema a partir de seus dados externos;Apenas desligar o sistema remotamente;Compactar arquivos automaticamente;Criptografar dados em repouso|1
+OBSERVABILITY|VERY_EASY|Um dos "três pilares" clássicos da observabilidade é:|Logs;Backups;Testes unitários;Migrations|1
+OBSERVABILITY|EASY|Além dos logs, outro pilar clássico da observabilidade é:|Métricas;Comentários no código;Documentação de API;Testes de UI|1
+OBSERVABILITY|EASY|O terceiro pilar clássico da observabilidade, além de logs e métricas, é:|Traces (rastros distribuídos);Backups;Migrations;Design patterns|1
+OBSERVABILITY|EASY_PLUS|Uma ferramenta popular para coleta e consulta de métricas em sistemas modernos é o:|Prometheus;Git;Docker exclusivamente;Kafka exclusivamente|1
+OBSERVABILITY|EASY_PLUS|Uma ferramenta popular para visualização de dashboards de métricas é o:|Grafana;Jenkins;Maven;Webpack|1
+OBSERVABILITY|MEDIUM|O OpenTelemetry é um projeto que padroniza principalmente:|A coleta de logs, métricas e traces de forma vendor-neutral;A criação de containers;O controle de versão de código;A criptografia de dados em trânsito|1
+OBSERVABILITY|MEDIUM|Health checks em serviços são usados para:|Verificar se uma aplicação está operacional e pronta para receber tráfego;Substituir logs por completo;Apagar dados antigos automaticamente;Gerar documentação de API|1
+OBSERVABILITY|MEDIUM_PLUS|"Correlation ID" (ou trace ID) em sistemas distribuídos é usado para:|Rastrear uma requisição através de múltiplos serviços;Criptografar mensagens;Substituir autenticação;Compactar logs automaticamente|1
+OBSERVABILITY|MEDIUM_PLUS|Os "Golden Signals" frequentemente citados em observabilidade incluem latência, tráfego, erros e:|Saturação;Criptografia;Versionamento;Compilação|1
+OBSERVABILITY|HARD|A diferença central entre monitoramento tradicional e observabilidade é que a observabilidade busca:|Responder perguntas não previstas antecipadamente sobre o sistema;Apenas alertar sobre limites fixos pré-definidos;Substituir totalmente logs por métricas;Eliminar a necessidade de dashboards|1
+OBSERVABILITY|HARD|APM (Application Performance Monitoring) tem como foco principal:|Monitorar performance e comportamento de aplicações em produção;Apenas monitorar hardware físico;Substituir testes automatizados;Gerenciar código-fonte|1
+OBSERVABILITY|HARD_PLUS|Alta "cardinalidade" em métricas se refere a:|Um grande número de combinações únicas de valores de rótulos/labels;Um número fixo e pequeno de métricas;Ausência total de rótulos;Métricas armazenadas apenas em memória|1
+OBSERVABILITY|HARD_PLUS|Um sistema de alertas bem projetado deve evitar principalmente:|Excesso de alertas (alert fatigue) que causam ruído desnecessário;Qualquer tipo de notificação;Uso de métricas;Uso de dashboards|1
+OBSERVABILITY|VERY_HARD|Em tracing distribuído, um "span" representa:|Uma unidade de trabalho/operação dentro de um trace;Um tipo de banco de dados;Um protocolo de rede;Um formato de arquivo de log|1
+OBSERVABILITY|VERY_HARD|A amostragem (sampling) em sistemas de tracing distribuído é usada principalmente para:|Reduzir o volume de dados coletados mantendo visibilidade representativa;Aumentar indefinidamente o volume de dados;Substituir métricas por completo;Eliminar a necessidade de logs|1
+OBSERVABILITY|EXPERT|Logs estruturados (ex: em formato JSON) são preferidos em sistemas modernos porque:|Facilitam consultas, filtros e análise automatizada;São sempre menores que logs em texto puro;Eliminam a necessidade de qualquer ferramenta de análise;Substituem métricas e traces por completo|1
+OBSERVABILITY|EXPERT|O conceito de "erro orçamentário" (error budget), associado a SLOs, define:|Quanto de falha um serviço pode ter antes de violar seu objetivo de nível de serviço;O custo financeiro de um servidor;O tempo de compilação máximo permitido;O número de desenvolvedores em um time|1
+OBSERVABILITY|MASTER|Em observabilidade avançada, a prática de "eBPF" tem ganhado espaço por permitir:|Observar o comportamento do kernel/sistema com baixo overhead, sem modificar o código da aplicação;Substituir totalmente logs e métricas por uma única métrica;Eliminar a necessidade de qualquer instrumentação;Funcionar apenas em ambientes sem rede|1
+OBSERVABILITY|MASTER|A combinação de "SLI, SLO e error budget" forma a base metodológica popularizada principalmente pela prática de:|Site Reliability Engineering (SRE);Extreme Programming;Waterfall;Design Thinking|1
+# Bloco G - Threads e concorrencia
+CONCURRENCY|VERY_EASY|Uma thread pode ser descrita como:|Uma linha de execução dentro de um processo;Um arquivo no disco;Um banco de dados;Um protocolo de rede|1
+CONCURRENCY|VERY_EASY|Um processo pode conter:|Uma ou mais threads;Nenhuma thread nunca;Apenas variáveis globais sem execução;Apenas um arquivo de configuração|1
+CONCURRENCY|EASY|Concorrência se refere à capacidade de um sistema:|Lidar com múltiplas tarefas, ainda que não simultaneamente no mesmo instante;Executar apenas uma tarefa por vez, sempre;Nunca alternar entre tarefas;Rodar exclusivamente em um único núcleo sempre|1
+CONCURRENCY|EASY|Paralelismo se refere à execução de múltiplas tarefas:|Literalmente ao mesmo tempo, geralmente em múltiplos núcleos;Sempre uma após a outra;Apenas em um único núcleo;Nunca ao mesmo tempo|1
+CONCURRENCY|EASY_PLUS|Uma "race condition" ocorre quando:|O resultado de um programa depende da ordem não determinística de execução de threads;Duas threads nunca acessam o mesmo dado;Um programa executa sempre na mesma ordem;Não há concorrência envolvida|1
+CONCURRENCY|EASY_PLUS|Um "deadlock" ocorre quando:|Duas ou mais threads ficam bloqueadas esperando recursos umas das outras indefinidamente;Uma thread termina rapidamente sem problemas;Não há nenhum recurso compartilhado;Apenas uma thread está em execução|1
+CONCURRENCY|MEDIUM|Um "mutex" é usado principalmente para:|Garantir acesso exclusivo a um recurso compartilhado;Criar novas threads automaticamente;Eliminar a necessidade de sincronização;Substituir processos por threads|1
+CONCURRENCY|MEDIUM|Um "semáforo" em programação concorrente é usado para:|Controlar o acesso a um número limitado de recursos compartilhados;Apenas medir tempo de execução;Substituir totalmente mutexes sempre;Eliminar processos|1
+CONCURRENCY|MEDIUM_PLUS|Um "thread pool" é usado para:|Reutilizar um conjunto de threads, evitando o custo de criar/destruir threads repetidamente;Criar uma nova thread para cada tarefa sem limite;Eliminar a necessidade de concorrência;Substituir processos por completo|1
+CONCURRENCY|MEDIUM_PLUS|"Context switching" (troca de contexto) refere-se a:|O processo de salvar e restaurar o estado de execução ao alternar entre threads/processos;A compilação do código-fonte;A criação de novos arquivos;A criptografia de dados em trânsito|1
+CONCURRENCY|HARD|"Thread safety" descreve um código que:|Funciona corretamente quando acessado por múltiplas threads simultaneamente;Nunca pode ser executado por mais de uma thread;Elimina a necessidade de qualquer sincronização;Sempre falha em ambientes concorrentes|1
+CONCURRENCY|HARD|Uma variável marcada como "volatile" (em linguagens como Java) tem como objetivo principal:|Garantir visibilidade consistente do valor entre threads, evitando cache local desatualizado;Tornar a variável constante e imutável;Criar automaticamente uma nova thread;Eliminar a necessidade de sincronização em qualquer caso|1
+CONCURRENCY|HARD_PLUS|"Starvation" (inanição) ocorre quando:|Uma thread nunca consegue acesso a um recurso porque outras sempre têm prioridade;Todas as threads recebem acesso igualitário sempre;Não há nenhuma thread em execução;O sistema está ocioso, sem tarefas|1
+CONCURRENCY|HARD_PLUS|"Livelock" se diferencia de "deadlock" porque, no livelock, as threads:|Continuam ativas reagindo umas às outras, mas sem progresso real;Ficam completamente paradas e bloqueadas;Nunca interagem entre si;São finalizadas automaticamente pelo sistema|1
+CONCURRENCY|VERY_HARD|"Green threads" (threads leves gerenciadas pela própria aplicação/runtime) se diferenciam de threads do sistema operacional principalmente por:|Serem gerenciadas em nível de aplicação/runtime, geralmente com menor overhead;Serem sempre mais lentas que threads nativas;Não poderem executar código concorrente;Exigirem hardware especial obrigatório|1
+CONCURRENCY|VERY_HARD|O GIL (Global Interpreter Lock), presente na implementação padrão do Python (CPython), tem como efeito:|Limitar a execução simultânea de bytecode Python a uma thread por vez;Eliminar completamente a possibilidade de multithreading;Melhorar automaticamente o paralelismo em múltiplos núcleos;Não ter nenhum impacto em concorrência|1
+CONCURRENCY|EXPERT|Operações atômicas (ex: Compare-And-Swap/CAS) são usadas para:|Realizar atualizações concorrentes seguras sem a necessidade de locks tradicionais em certos casos;Sempre exigir bloqueio total do sistema;Eliminar a necessidade de qualquer verificação de estado;Substituir threads por processos|1
+CONCURRENCY|EXPERT|O padrão "Produtor-Consumidor" (Producer-Consumer) geralmente utiliza qual estrutura para coordenar threads?|Uma fila compartilhada com sincronização adequada;Nenhuma estrutura compartilhada;Apenas variáveis globais sem proteção;Arquivos temporários no disco exclusivamente|1
+CONCURRENCY|MASTER|"False sharing" ocorre quando:|Threads diferentes modificam variáveis distintas que compartilham a mesma linha de cache da CPU, degradando performance;Duas threads compartilham intencionalmente a mesma variável sem problemas;Não há nenhum uso de cache envolvido;O sistema operacional impede qualquer paralelismo|1
+CONCURRENCY|MASTER|"Memory visibility" em sistemas concorrentes está relacionado ao fato de que:|Alterações feitas por uma thread podem não ser imediatamente visíveis a outras sem sincronização adequada;Todas as threads sempre veem o mesmo valor instantaneamente sem qualquer cuidado;A memória é sempre compartilhada de forma automática e segura;Não existe conceito de memória compartilhada em sistemas modernos|1
+CONCURRENCY|MEDIUM_PLUS|"Thread local storage" (armazenamento local à thread) permite que:|Cada thread tenha sua própria cópia independente de uma variável;Todas as threads compartilhem obrigatoriamente o mesmo valor;Apenas processos, não threads, tenham dados locais;A variável seja sempre global e compartilhada|1
+CONCURRENCY|HARD|Um "lock reentrante" (reentrant lock) permite que:|A mesma thread adquira o lock novamente sem causar deadlock consigo mesma;Múltiplas threads diferentes adquiram o mesmo lock simultaneamente sem restrição;Nenhuma thread possa adquirir o lock mais de uma vez, nem a mesma;O lock seja eliminado automaticamente após uso|1
+CONCURRENCY|HARD_PLUS|O padrão "Monitor" em programação concorrente combina:|Um mecanismo de exclusão mútua com variáveis de condição para sincronização;Apenas variáveis globais sem qualquer controle;Múltiplos processos sem qualquer comunicação;Um sistema de arquivos compartilhado apenas|1
+CONCURRENCY|MEDIUM|Um "daemon thread" (em ambientes como Java) é caracterizado por:|Não impedir o encerramento do programa mesmo se ainda estiver em execução;Sempre impedir o encerramento da aplicação;Ser obrigatoriamente a thread principal;Nunca poder ser criado pelo desenvolvedor|1
+CONCURRENCY|EASY_PLUS|Um "Executor Service" (em linguagens como Java/Kotlin) é usado para:|Gerenciar a execução de tarefas assíncronas em um pool de threads;Substituir totalmente o sistema operacional;Eliminar a necessidade de qualquer concorrência;Compilar código automaticamente|1
+CONCURRENCY|VERY_HARD|Um "CompletableFuture" (Java) ou construções similares de "Future/Promise" em outras linguagens representam:|Um valor que estará disponível no futuro, resultado de uma computação assíncrona;Um valor sempre disponível imediatamente de forma síncrona;Uma thread que nunca termina;Um tipo de banco de dados|1
+CONCURRENCY|EXPERT|Coroutines, presentes em linguagens como Kotlin, diferem de threads tradicionais do sistema operacional principalmente por:|Serem mais leves e gerenciadas cooperativamente, geralmente sem mapeamento direto 1:1 com threads do SO;Serem sempre idênticas a threads nativas em custo;Não permitirem qualquer forma de suspensão;Não poderem ser usadas para I/O assíncrono|1
+CONCURRENCY|EASY|Executar múltiplas tarefas de forma concorrente pode melhorar principalmente:|O aproveitamento de recursos e a responsividade do sistema;Sempre a simplicidade do código, sem exceção;Sempre elimina qualquer necessidade de testes;Nunca traz nenhum benefício real|1
+CONCURRENCY|HARD|Um dos principais desafios de depurar código multithread é:|A dificuldade de reproduzir bugs que dependem de condições de tempo (timing);A ausência total de qualquer ferramenta de debug;A garantia de que bugs sempre se repetem exatamente da mesma forma;A inexistência de race conditions em sistemas modernos|1
+CONCURRENCY|MASTER|O conceito de "work-stealing", usado em alguns schedulers de tarefas concorrentes (ex: ForkJoinPool), permite que:|Threads ociosas "roubem" tarefas de filas de outras threads ocupadas, balanceando a carga;Apenas uma thread execute todas as tarefas sempre;Tarefas sejam sempre perdidas quando uma thread está ociosa;Nenhuma forma de balanceamento de carga seja possível|1
+# Bloco H - Resiliencia
+RESILIENCE|VERY_EASY|Um "Timeout" define:|O tempo máximo de espera por uma resposta antes de desistir da operação;O tempo mínimo obrigatório de uma requisição;A quantidade de requisições permitidas por segundo;O número de tentativas de reconexão|1
+RESILIENCE|VERY_EASY|Um "Retry" consiste em:|Tentar novamente uma operação que falhou;Cancelar definitivamente uma operação após a primeira falha;Ignorar erros silenciosamente sem qualquer ação;Aumentar o timeout indefinidamente|1
+RESILIENCE|EASY|"Rate Limiting" tem como objetivo:|Limitar o número de requisições permitidas em um período de tempo;Aumentar a velocidade de todas as requisições sem limites;Eliminar a necessidade de autenticação;Substituir o banco de dados|1
+RESILIENCE|EASY|Um "Circuit Breaker" (disjuntor) tem como objetivo principal:|Evitar chamadas repetidas a um serviço que está falhando continuamente;Aumentar o número de tentativas sem limite;Eliminar toda comunicação entre serviços;Substituir o banco de dados por cache|1
+RESILIENCE|EASY_PLUS|No padrão Circuit Breaker, o estado em que as chamadas são bloqueadas imediatamente sem tentar o serviço é chamado de:|Aberto (Open);Fechado (Closed);Meio-Aberto (Half-Open);Desligado (Off)|1
+RESILIENCE|EASY_PLUS|No padrão Circuit Breaker, o estado normal, em que as chamadas fluem normalmente, é chamado de:|Fechado (Closed);Aberto (Open);Meio-Aberto (Half-Open);Bloqueado (Blocked)|1
+RESILIENCE|MEDIUM|No padrão Circuit Breaker, o estado "Meio-Aberto" (Half-Open) serve para:|Testar com poucas requisições se o serviço já se recuperou;Bloquear permanentemente todas as chamadas;Aumentar indefinidamente o tráfego ao serviço com falha;Substituir o estado fechado por completo|1
+RESILIENCE|MEDIUM|Um "Retry" sem nenhuma estratégia de espera entre tentativas pode causar:|Sobrecarga adicional em um serviço já instável;Melhora garantida na disponibilidade;Eliminação total de falhas;Redução automática de latência|1
+RESILIENCE|MEDIUM_PLUS|A estratégia de "Exponential Backoff" em retries consiste em:|Aumentar progressivamente o tempo de espera entre tentativas;Tentar novamente imediatamente e sem intervalo, sempre;Nunca tentar novamente após a primeira falha;Diminuir o tempo de espera a cada tentativa|1
+RESILIENCE|MEDIUM_PLUS|"Jitter", frequentemente combinado ao backoff exponencial, é usado para:|Adicionar aleatoriedade ao tempo de espera, evitando que muitos clientes tentem novamente ao mesmo tempo;Aumentar a previsibilidade total do sistema;Eliminar a necessidade de retries;Forçar todas as tentativas a ocorrerem simultaneamente|1
+RESILIENCE|HARD|Aplicar Rate Limiting em uma API ajuda a proteger o sistema contra:|Abuso, picos de tráfego excessivo e ataques de negação de serviço;Falhas de compilação;Erros de sintaxe no código;Problemas de nomenclatura de variáveis|1
+RESILIENCE|HARD|Um algoritmo comum para implementar rate limiting é o:|Token Bucket;Bubble Sort;Dijkstra;MapReduce|1
+RESILIENCE|HARD_PLUS|Combinar Timeout com Retry sem cuidado pode resultar em:|Aumento significativo da latência total percebida pelo usuário;Redução garantida do tempo de resposta;Eliminação total de falhas de rede;Nenhum efeito colateral|1
+RESILIENCE|HARD_PLUS|O padrão "Bulkhead", frequentemente usado junto a Circuit Breaker, tem como objetivo:|Isolar recursos para que a falha em uma parte não afete todo o sistema;Unificar todos os recursos em um único pool sem isolamento;Eliminar a necessidade de timeouts;Substituir retries por completo|1
+RESILIENCE|VERY_HARD|Nem todo erro deve ser reprocessado com Retry; erros como validação de dados inválidos (erro do cliente) geralmente:|Não devem ser retentados automaticamente, pois falharão novamente da mesma forma;Devem sempre ser retentados indefinidamente;Devem sempre aumentar o rate limit;Devem abrir o circuit breaker imediatamente sem análise|1
+RESILIENCE|VERY_HARD|Rate limiting pode ser aplicado em diferentes granularidades, como:|Por usuário, por IP ou globalmente por serviço;Apenas de forma global, sem outras opções;Apenas por thread individual;Apenas por linha de código|1
+RESILIENCE|EXPERT|Definir um Timeout muito curto para chamadas a um serviço externo pode causar:|Falhas desnecessárias mesmo quando o serviço responderia corretamente, só um pouco mais devagar;Sempre melhorar a confiabilidade do sistema;Eliminar totalmente a necessidade de circuit breaker;Nenhum impacto negativo|1
+RESILIENCE|EXPERT|O uso combinado de Timeout, Retry, Circuit Breaker e Rate Limiting é frequentemente agrupado sob o conceito de:|Padrões de resiliência (resilience patterns);Padrões de criação (creational patterns) do GoF;Normalização de banco de dados;Princípios SOLID|1
+RESILIENCE|MASTER|Bibliotecas como Resilience4j e Hystrix (este último descontinuado) implementam de forma pronta padrões como:|Circuit Breaker, Retry, Rate Limiter e Bulkhead;Apenas compressão de dados;Apenas criptografia de disco;Apenas balanceamento de carga de rede física|1
+RESILIENCE|MASTER|Em sistemas distribuídos de grande escala, decidir os limites (thresholds) ideais de circuit breakers e rate limiters geralmente exige:|Análise de métricas reais de produção e ajuste contínuo, não apenas valores fixos arbitrários;Um único valor universal válido para qualquer sistema;Nenhum tipo de monitoramento;Configuração manual feita uma única vez sem revisão|1
+# Bloco I - CQRS e Event Sourcing
+EVENT_DRIVEN|VERY_EASY|A sigla CQRS significa:|Command Query Responsibility Segregation;Central Query Response System;Command Queue Retry Service;Client Query Resource Sync|1
+EVENT_DRIVEN|VERY_EASY|CQRS separa principalmente:|Operações de escrita (comandos) das operações de leitura (consultas);Frontend de backend;Testes de produção;Bancos relacionais de NoSQL obrigatoriamente|1
+EVENT_DRIVEN|EASY|Em CQRS, um "Command" (comando) representa:|Uma intenção de alterar o estado do sistema;Apenas uma consulta de leitura;Um relatório estático;Um arquivo de configuração|1
+EVENT_DRIVEN|EASY|Em CQRS, uma "Query" (consulta) representa:|Uma solicitação de leitura de dados, sem alterar estado;Uma alteração no banco de dados;Um comando de exclusão obrigatório;Um evento de domínio|1
+EVENT_DRIVEN|EASY_PLUS|Event Sourcing armazena o estado de uma entidade como:|Uma sequência de eventos que, aplicados em ordem, reconstroem o estado atual;Apenas o estado final, sem histórico;Um arquivo de configuração estático;Um cache temporário sem persistência|1
+EVENT_DRIVEN|EASY_PLUS|Em Event Sourcing, um "evento" representa:|Um fato imutável que já ocorreu no passado;Uma consulta de leitura;Um comando ainda não processado;Um arquivo de log temporário sem significado|1
+EVENT_DRIVEN|MEDIUM|Um dos benefícios de CQRS é permitir que os modelos de leitura e escrita:|Evoluam e sejam otimizados de forma independente;Sejam sempre idênticos e compartilhados;Usem obrigatoriamente o mesmo banco de dados;Eliminem completamente a necessidade de testes|1
+EVENT_DRIVEN|MEDIUM|Um dos benefícios do Event Sourcing é fornecer:|Um histórico completo e auditável de todas as mudanças de estado;Apenas o estado atual, sem qualquer histórico;Eliminação total da necessidade de banco de dados;Consultas mais lentas sempre|1
+EVENT_DRIVEN|MEDIUM_PLUS|CQRS é frequentemente combinado com Event Sourcing, onde os eventos:|Alimentam tanto o modelo de escrita quanto modelos de leitura (projeções) otimizados;São usados apenas para leitura, nunca para escrita;Substituem totalmente a necessidade de comandos;Eliminam a necessidade de consultas|1
+EVENT_DRIVEN|MEDIUM_PLUS|Um "modelo de leitura" (read model) em CQRS geralmente é otimizado para:|Consultas rápidas e específicas para a interface do usuário;Validações complexas de regras de negócio;Processamento de comandos;Armazenar apenas eventos brutos sem transformação|1
+EVENT_DRIVEN|HARD|Em sistemas com Event Sourcing, uma "projeção" é responsável por:|Construir uma visão (read model) a partir da reprodução de eventos;Apagar eventos antigos automaticamente;Substituir o barramento de eventos;Validar comandos antes de serem emitidos|1
+EVENT_DRIVEN|HARD|Um desafio comum ao adotar CQRS com Event Sourcing é lidar com:|Consistência eventual entre o modelo de escrita e os modelos de leitura;Ausência total de qualquer consulta;Impossibilidade de versionar eventos;A obrigatoriedade de um único banco de dados compartilhado|1
+EVENT_DRIVEN|HARD_PLUS|"Snapshots" em Event Sourcing são usados para:|Evitar reprocessar todo o histórico de eventos a cada reconstrução de estado;Substituir totalmente os eventos originais;Apagar o histórico de eventos antigos;Eliminar a necessidade do modelo de leitura|1
+EVENT_DRIVEN|HARD_PLUS|A evolução de esquemas de eventos ao longo do tempo (ex: adicionar campos) exige uma estratégia de:|Versionamento de eventos;Exclusão imediata de eventos antigos;Substituição do banco de dados a cada mudança;Ignorar completamente eventos anteriores|1
+EVENT_DRIVEN|VERY_HARD|Um "Event Store" é um tipo especializado de armazenamento otimizado para:|Persistir e recuperar sequências de eventos de forma append-only (apenas inserção);Substituir totalmente bancos relacionais em qualquer cenário;Armazenar apenas dados temporários sem persistência real;Executar consultas analíticas complexas como função principal|1
+EVENT_DRIVEN|VERY_HARD|Em CQRS aplicado a microserviços, a propagação de mudanças do modelo de escrita para os modelos de leitura geralmente ocorre via:|Eventos publicados de forma assíncrona;Chamadas síncronas bloqueantes obrigatórias;Compartilhamento direto do mesmo banco de dados sempre;Arquivos copiados manualmente|1
+EVENT_DRIVEN|EXPERT|Um dos riscos de aplicar CQRS e Event Sourcing sem necessidade real é:|Aumento desnecessário de complexidade arquitetural para domínios simples;Redução garantida de complexidade sempre;Eliminação total de bugs;Simplificação automática do código|1
+EVENT_DRIVEN|EXPERT|Ao reconstruir o estado de um agregado em Event Sourcing sem snapshots, o sistema geralmente precisa:|Reaplicar todos os eventos associados àquele agregado, em ordem;Ler diretamente o estado final sem processar eventos;Ignorar eventos antigos automaticamente;Consultar apenas o modelo de leitura|1
+EVENT_DRIVEN|MASTER|Um desafio avançado em Event Sourcing é lidar com "eventos compensatórios" quando:|É necessário corrigir efeitos de eventos já processados sem simplesmente apagá-los do histórico imutável;O sistema nunca comete erros;Não há necessidade de manter consistência;Todos os eventos podem ser livremente editados retroativamente|1
+EVENT_DRIVEN|MASTER|Combinar CQRS, Event Sourcing e o padrão Saga em sistemas distribuídos complexos ajuda principalmente a:|Coordenar transações de negócio de longa duração mantendo rastreabilidade e consistência eventual;Eliminar totalmente a necessidade de comunicação entre serviços;Garantir consistência forte instantânea sem qualquer custo;Substituir completamente bancos de dados relacionais em todos os contextos|1
+EVENT_DRIVEN|MEDIUM|Em CQRS, é comum que o modelo de escrita valide regras de negócio antes de:|Persistir o comando como uma mudança de estado válida (ou emitir o evento correspondente);Apenas exibir dados na tela;Substituir o modelo de leitura;Ignorar toda validação|1
+EVENT_DRIVEN|EASY_PLUS|Um cenário comum de uso do Event Sourcing é em sistemas onde:|Auditoria e histórico completo de mudanças são fundamentais (ex: sistemas financeiros);Nenhum histórico é necessário;Apenas o estado mais recente importa, sem qualquer rastreabilidade;Não há qualquer necessidade de consistência|1
+EVENT_DRIVEN|HARD|Um "Message/Event Bus", frequentemente usado junto a Event Sourcing, é responsável por:|Transportar eventos entre produtores e consumidores de forma desacoplada;Armazenar permanentemente todos os eventos como única fonte de verdade;Substituir totalmente o event store;Validar regras de negócio no lugar do domínio|1
+EVENT_DRIVEN|MEDIUM_PLUS|Em um sistema CQRS, múltiplos modelos de leitura diferentes podem ser criados para:|Atender necessidades distintas de exibição/consulta a partir da mesma fonte de eventos;Substituir a necessidade de qualquer comando;Eliminar a necessidade de consistência eventual;Impedir qualquer tipo de escalabilidade|1
+EVENT_DRIVEN|HARD_PLUS|Reprocessar todo o histórico de eventos para reconstruir um novo modelo de leitura do zero é uma técnica útil quando:|É necessário criar uma nova projeção ou corrigir uma projeção existente com bug;Nunca é necessário em sistemas com Event Sourcing;Apenas dados recentes importam, sem qualquer valor no histórico;O sistema não possui event store|1
+EVENT_DRIVEN|VERY_HARD|Idempotência no processamento de eventos é importante porque:|Um mesmo evento pode ser entregue mais de uma vez em sistemas distribuídos;Eventos nunca são reentregues em nenhum cenário;Elimina a necessidade de qualquer ordenação;Substitui a necessidade de snapshots|1
+EVENT_DRIVEN|EXPERT|Um "Aggregate", no contexto de Event Sourcing combinado a DDD, é responsável por:|Garantir a consistência das regras de negócio ao processar comandos e emitir eventos;Armazenar apenas dados de configuração do sistema;Substituir o event bus;Gerenciar exclusivamente a infraestrutura de rede|1
+EVENT_DRIVEN|EASY|Uma vantagem de separar comandos e consultas em CQRS é facilitar:|A escalabilidade independente de leitura e escrita;A fusão obrigatória de todos os modelos em um só;A eliminação de qualquer tipo de cache;A remoção de toda validação de dados|1
+EVENT_DRIVEN|HARD|Ao adotar Event Sourcing, testar o comportamento de um agregado geralmente envolve verificar que, dado um conjunto de eventos e um comando, o sistema:|Produz os eventos esperados como resultado;Sempre lança exceção;Ignora completamente o comando recebido;Nunca produz efeitos observáveis|1
+EVENT_DRIVEN|MASTER|A decisão de adotar CQRS e Event Sourcing deve considerar principalmente:|A complexidade real do domínio de negócio e a necessidade de auditoria/histórico, não apenas a moda tecnológica;Exclusivamente a popularidade da técnica em blogs;O tamanho da equipe apenas;A linguagem de programação usada, independente do domínio|1
