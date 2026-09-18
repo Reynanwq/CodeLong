@@ -5,6 +5,7 @@ import com.codelong.domain.valueobject.AnswerRecord
 import com.codelong.domain.valueobject.Category
 import com.codelong.domain.valueobject.Difficulty
 import com.codelong.domain.valueobject.GameId
+import com.codelong.domain.valueobject.GameMode
 import com.codelong.domain.valueobject.GameQuestion
 import com.codelong.domain.valueobject.GameState
 import com.codelong.domain.valueobject.GameStatus
@@ -26,6 +27,7 @@ object GamePersistenceMapper {
             userId = state.userIdText,
             username = state.username,
             status = state.statusName,
+            mode = state.mode.name,
             startedAt = state.startedAt,
             completedAt = state.completedAt,
             currentQuestionIndex = state.currentQuestionIndex,
@@ -44,6 +46,7 @@ object GamePersistenceMapper {
             id = GameId(document.id),
             userId = UserId(document.userId),
             username = document.username,
+            mode = document.mode.takeIf { it.isNotBlank() }?.let(GameMode::fromName) ?: GameMode.CLASSIC,
             status = GameStatus.valueOf(document.status),
             startedAt = document.startedAt,
             completedAt = document.completedAt,

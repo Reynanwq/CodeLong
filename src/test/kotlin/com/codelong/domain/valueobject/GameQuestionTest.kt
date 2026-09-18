@@ -1,5 +1,7 @@
 package com.codelong.domain.valueobject
 
+import com.codelong.domain.valueobject.GameMode
+
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -109,7 +111,8 @@ class GameQuestionTest {
         val setup = GameSetup(
             userId = UserId("u-1"),
             username = "alice",
-            questions = listOf(gameQuestion())
+            questions = listOf(gameQuestion()),
+            mode = GameMode.CLASSIC
         )
 
         assertEquals(UserId("u-1"), setup.userId)

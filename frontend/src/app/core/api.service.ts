@@ -30,8 +30,9 @@ export class ApiService {
     return this.http.get<User>(`${API_BASE}/users/me`);
   }
 
-  startGame(): Observable<GameResponse> {
-    return this.http.post<GameResponse>(`${API_BASE}/games`, null);
+  startGame(mode?: string): Observable<GameResponse> {
+    const url = mode ? `${API_BASE}/games?mode=${mode}` : `${API_BASE}/games`;
+    return this.http.post<GameResponse>(url, null);
   }
 
   inProgressGame(): Observable<GameResponse | null> {

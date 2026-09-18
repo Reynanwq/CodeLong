@@ -1,5 +1,7 @@
 package com.codelong.domain
 
+import com.codelong.domain.valueobject.GameMode
+
 import com.codelong.domain.model.Game
 import com.codelong.domain.service.RankingPolicy
 import com.codelong.domain.valueobject.Difficulty
@@ -97,7 +99,7 @@ class DomainPropertiesTest {
         }
         val game = Game.newGame(
             id = GameId("g-prop"),
-            setup = GameSetup(UserId("u-1"), "alice", questions),
+            setup = GameSetup(UserId("u-1"), "alice", questions, GameMode.CLASSIC),
             startedAt = Fixtures.NOW
         )
 
@@ -121,7 +123,7 @@ class DomainPropertiesTest {
         }
         val game = Game.newGame(
             id = GameId("g-prop"),
-            setup = GameSetup(UserId("u-1"), "alice", questions),
+            setup = GameSetup(UserId("u-1"), "alice", questions, GameMode.CLASSIC),
             startedAt = Fixtures.NOW
         )
 
@@ -145,7 +147,7 @@ class DomainPropertiesTest {
         }
         val game = Game.newGame(
             id = GameId("g-prop"),
-            setup = GameSetup(UserId("u-1"), "alice", questions),
+            setup = GameSetup(UserId("u-1"), "alice", questions, GameMode.CLASSIC),
             startedAt = Fixtures.NOW
         )
 
@@ -226,7 +228,7 @@ class DomainPropertiesTest {
         }
         val game = Game.newGame(
             id = GameId("g-prop"),
-            setup = GameSetup(UserId("u-1"), "alice", questions),
+            setup = GameSetup(UserId("u-1"), "alice", questions, GameMode.CLASSIC),
             startedAt = Fixtures.NOW
         )
         repeat(answers) {

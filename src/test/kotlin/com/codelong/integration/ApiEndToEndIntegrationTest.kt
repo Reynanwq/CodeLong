@@ -421,6 +421,35 @@ class ApiEndToEndIntegrationTest {
 
 
     @Test
+    fun `inicia partida no modo genocida e recusa modo invalido`() {
+        seedQuestion()
+        val playerToken = registerPlayer("alice")
+
+        val created = api.post("/api/games?mode=GENOCIDA", token = playerToken)
+        assertEquals(201, created.status)
+        assertEquals("GENOCIDA", created.json().str("mode"))
+
+        val inProgress = api.get("/api/games/in-progress", playerToken)
+        assertEquals(200, inProgress.status)
+        assertEquals("GENOCIDA", inProgress.json().str("mode"))
+
+        val invalid = api.post("/api/games?mode=INVALIDO", token = playerToken)
+        assertEquals(400, invalid.status)
+        assertEquals("game.mode.invalid", invalid.json().str("code"))
+    }
+
+    @Test
+    fun `partida sem modo informado usa o classico`() {
+        seedQuestion()
+        val playerToken = registerPlayer("alice")
+
+        val created = api.post("/api/games", token = playerToken)
+
+        assertEquals(201, created.status)
+        assertEquals("CLASSIC", created.json().str("mode"))
+    }
+
+    @Test
     fun `pergunta sem resposta dentro do prazo conta como erro e a partida avanca`() {
         questionRepository.save(Fixtures.question(id = "q-1", difficulty = Difficulty.EASY))
         questionRepository.save(Fixtures.question(id = "q-2", difficulty = Difficulty.HARD))

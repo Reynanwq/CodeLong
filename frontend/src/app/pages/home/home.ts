@@ -20,8 +20,11 @@ import { GameResponse, RankingEntry } from '../../core/models';
           @if (inProgress()) {
             <a class="primary" [routerLink]="['/play', inProgress()!.id]">Continuar partida</a>
           } @else {
-            <button class="primary" (click)="start()" [disabled]="loading()">
+            <button class="primary" (click)="start('CLASSIC')" [disabled]="loading()">
               {{ loading() ? 'Criando...' : 'Nova partida' }}
+            </button>
+            <button class="genocide" (click)="start('GENOCIDA')" [disabled]="loading()">
+              Modo Genocida
             </button>
           }
         </div>
@@ -37,6 +40,9 @@ import { GameResponse, RankingEntry } from '../../core/models';
             <strong>Partida em andamento</strong>
             <span class="pill">{{ game.currentQuestionIndex }} / {{ game.totalQuestions }}</span>
           </div>
+          <p class="muted">
+            Modo: <strong>{{ game.mode === 'GENOCIDA' ? 'Genocida' : 'Classico' }}</strong>
+          </p>
           <div class="bar">
             <span [style.width.%]="percent(game)"></span>
           </div>
@@ -104,10 +110,10 @@ export class HomePage implements OnInit {
     this.load();
   }
 
-  start(): void {
+  start(mode: string): void {
     this.loading.set(true);
     this.error.set(null);
-    this.api.startGame().subscribe({
+    this.api.startGame(mode).subscribe({
       next: () => this.load(),
       error: (response: HttpErrorResponse) => {
         this.loading.set(false);

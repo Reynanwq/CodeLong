@@ -148,4 +148,26 @@ class EnumsTest {
     fun `QuestionStatus possui os dois estados esperados`() {
         assertEquals(listOf(QuestionStatus.ACTIVE, QuestionStatus.INACTIVE), QuestionStatus.entries)
     }
+
+    @ParameterizedTest
+    @EnumSource(GameMode::class)
+    fun `GameMode fromName aceita o proprio nome`(mode: GameMode) {
+        assertEquals(mode, GameMode.fromName(mode.name))
+        assertEquals(mode, GameMode.fromName(mode.name.lowercase()))
+        assertEquals(mode, GameMode.fromName("  ${mode.name.lowercase()}  "))
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = ["INVALIDO", "", " ", "genocida_", "classic!"])
+    fun `GameMode fromName rejeita valores desconhecidos`(raw: String) {
+        val error = assertThrows<DomainException> { GameMode.fromName(raw) }
+
+        assertEquals("game.mode.invalid", error.code)
+        assertTrue(error.message.contains(raw))
+    }
+
+    @Test
+    fun `GameMode possui os dois modos esperados`() {
+        assertEquals(listOf(GameMode.CLASSIC, GameMode.GENOCIDA), GameMode.entries)
+    }
 }

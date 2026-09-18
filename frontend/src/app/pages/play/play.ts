@@ -24,6 +24,9 @@ const TICK_MILLIS = 200;
           <div>
             <span class="pill">{{ current.currentQuestionIndex + 1 }} / {{ current.totalQuestions }}</span>
             <span class="pill ok">Pontos: {{ current.score }}</span>
+            @if (current.mode === 'GENOCIDA') {
+              <span class="pill danger">GENOCIDA</span>
+            }
           </div>
           <button class="ghost" (click)="abandon()" [disabled]="loading()">Abandonar</button>
         </div>
@@ -67,7 +70,7 @@ const TICK_MILLIS = 200;
                 (mouseenter)="selectedIndex.set(i)"
                 (click)="choose(option.id)"
               >
-                <strong>{{ option.id }})</strong> {{ option.text }}
+                <strong>{{ letter(i) }})</strong> {{ option.text }}
               </button>
             }
           </div>
@@ -144,6 +147,11 @@ export class PlayPage implements OnInit, OnDestroy {
   timerPercent(): number {
     const total = this.question()?.timeLimitSeconds ?? 20;
     return total === 0 ? 0 : Math.round((this.secondsLeft() / total) * 100);
+  }
+
+  /** Rotulo da alternativa pela POSICAO (as alternativas vem embaralhadas). */
+  letter(index: number): string {
+    return String.fromCharCode(65 + index);
   }
 
   onKeydown(event: KeyboardEvent): void {

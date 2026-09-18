@@ -39,6 +39,7 @@ object Errors {
     const val GAME_FINISHED = "GAME_FINISHED"
     const val NO_ACTIVE_QUESTIONS = "NO_ACTIVE_QUESTIONS"
     const val ANSWER_TIME_EXPIRED = "ANSWER_TIME_EXPIRED"
+    const val GAME_MODE_INVALID = "game.mode.invalid"
 
     // --- Fabricas de falha ---
     fun emailInvalid(): DomainException =
@@ -151,6 +152,9 @@ object Errors {
 
     fun answerTimeExpired(): DomainException =
         DomainException.conflict(ANSWER_TIME_EXPIRED, "The time to answer the current question has expired")
+
+    fun unknownGameMode(name: String): DomainException =
+        DomainException.invalidInput(GAME_MODE_INVALID, "Unknown game mode: $name")
 
     fun noActiveQuestions(): DomainException =
         DomainException.conflict(NO_ACTIVE_QUESTIONS, "There are no active questions available to start a game")

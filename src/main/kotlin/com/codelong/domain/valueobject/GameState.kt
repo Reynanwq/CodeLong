@@ -10,6 +10,7 @@ data class GameState(
     val id: GameId,
     val userId: UserId,
     val username: String,
+    val mode: GameMode,
     val status: GameStatus,
     val startedAt: Instant,
     val completedAt: Instant?,

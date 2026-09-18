@@ -15,6 +15,7 @@ export interface AuthResponse {
 export interface GameResponse {
   id: string;
   status: string;
+  mode: string;
   currentQuestionIndex: number;
   currentQuestionDeadline: string;
   totalQuestions: number;

@@ -10,6 +10,7 @@ import com.codelong.application.usecase.GetGameUseCase
 import com.codelong.application.usecase.GetInProgressGameUseCase
 import com.codelong.application.usecase.ListGamesUseCase
 import com.codelong.domain.valueobject.GameId
+import com.codelong.domain.valueobject.GameMode
 import com.codelong.domain.valueobject.GameStatus
 import com.codelong.domain.valueobject.OptionId
 import com.codelong.infrastructure.security.AuthenticatedUser
@@ -53,9 +54,14 @@ class GameController(
 
     private val statusByCreation = mapOf(true to HttpStatus.CREATED, false to HttpStatus.OK)
 
+    private fun modeOf(mode: String?): GameMode = mode?.let(GameMode::fromName) ?: GameMode.CLASSIC
+
     @PostMapping
-    fun create(@AuthenticationPrincipal principal: AuthenticatedUser): ResponseEntity<GameResponse> {
-        val result = createGameUseCase.create(principal.userId)
+    fun create(
+        @RequestParam(required = false) mode: String?,
+        @AuthenticationPrincipal principal: AuthenticatedUser
+    ): ResponseEntity<GameResponse> {
+        val result = createGameUseCase.create(principal.userId, modeOf(mode))
         return ResponseEntity.status(statusByCreation.getValue(result.created)).body(GameResponse.from(result.game))
     }
 

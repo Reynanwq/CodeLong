@@ -6,5 +6,6 @@ package com.codelong.domain.valueobject
 data class GameSetup(
     val userId: UserId,
     val username: String,
-    val questions: List<GameQuestion>
+    val questions: List<GameQuestion>,
+    val mode: GameMode
 )

@@ -5,6 +5,7 @@ import com.codelong.domain.exception.Errors
 import com.codelong.domain.valueobject.AnswerEval
 import com.codelong.domain.valueobject.AnswerRecord
 import com.codelong.domain.valueobject.GameId
+import com.codelong.domain.valueobject.GameMode
 import com.codelong.domain.valueobject.GameQuestion
 import com.codelong.domain.valueobject.GameSetup
 import com.codelong.domain.valueobject.GameState
@@ -17,6 +18,7 @@ class Game private constructor(
     val id: GameId,
     val userId: UserId,
     val username: String,
+    val mode: GameMode,
     status: GameStatus,
     val startedAt: Instant,
     completedAt: Instant?,
@@ -129,6 +131,7 @@ class Game private constructor(
         id = id,
         userId = userId,
         username = username,
+        mode = mode,
         status = status,
         startedAt = startedAt,
         completedAt = completedAt,
@@ -199,6 +202,7 @@ class Game private constructor(
             id = id,
             userId = setup.userId,
             username = setup.username,
+            mode = setup.mode,
             status = GameStatus.IN_PROGRESS,
             startedAt = startedAt,
             completedAt = null,
@@ -216,6 +220,7 @@ class Game private constructor(
             id = state.id,
             userId = state.userId,
             username = state.username,
+            mode = state.mode,
             status = state.status,
             startedAt = state.startedAt,
             completedAt = state.completedAt,

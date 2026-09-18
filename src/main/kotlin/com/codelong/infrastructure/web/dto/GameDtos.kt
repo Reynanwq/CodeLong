@@ -44,6 +44,7 @@ data class PublicQuestionResponse(
 data class GameResponse(
     val id: String,
     val status: String,
+    val mode: String,
     val currentQuestionIndex: Int,
     val currentQuestionDeadline: Instant,
     val totalQuestions: Int,
@@ -58,6 +59,7 @@ data class GameResponse(
         fun from(game: Game) = GameResponse(
             id = game.idText,
             status = game.statusName,
+            mode = game.mode.name,
             currentQuestionIndex = game.currentQuestionIndex,
             currentQuestionDeadline = game.currentQuestionDeadline,
             totalQuestions = game.totalQuestions,

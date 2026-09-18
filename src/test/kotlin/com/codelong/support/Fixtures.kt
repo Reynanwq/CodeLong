@@ -1,5 +1,7 @@
 package com.codelong.support
 
+import com.codelong.domain.valueobject.GameMode
+
 import com.codelong.domain.model.Game
 import com.codelong.domain.model.Question
 import com.codelong.domain.model.User
@@ -80,7 +82,7 @@ object Fixtures {
         }
         return Game.newGame(
             id = GameId(id),
-            setup = GameSetup(UserId(userId), username, questions),
+            setup = GameSetup(UserId(userId), username, questions, GameMode.CLASSIC),
             startedAt = NOW
         )
     }

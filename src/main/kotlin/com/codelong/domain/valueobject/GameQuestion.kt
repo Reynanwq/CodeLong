@@ -1,5 +1,7 @@
 package com.codelong.domain.valueobject
 
+import kotlin.random.Random
+
 /**
  * Snapshot da pergunta persistido na partida no momento de sua criacao.
  *
@@ -30,6 +32,9 @@ data class GameQuestion(
     val categoryName: String get() = category.name
 
     val difficultyName: String get() = difficulty.name
+
+    /** Devolve o snapshot com as alternativas em ordem aleatoria. */
+    fun withShuffledOptions(random: Random): GameQuestion = copy(options = options.shuffled(random))
 
     /** Visao publica: sem a resposta correta e sem a explicacao. */
     fun publicView(): QuestionPublic {

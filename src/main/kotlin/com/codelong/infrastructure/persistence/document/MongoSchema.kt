@@ -17,6 +17,7 @@ object MongoSchema {
         const val USER_ID = "userId"
         const val USERNAME = "username"
         const val STATUS = "status"
+        const val MODE = "mode"
         const val ROLE = "role"
         const val SCORE = "score"
         const val CORRECT_ANSWERS = "correctAnswers"

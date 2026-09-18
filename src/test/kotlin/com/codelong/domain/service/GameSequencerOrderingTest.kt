@@ -1,6 +1,7 @@
 package com.codelong.domain.service
 
 import com.codelong.domain.valueobject.Difficulty
+import com.codelong.domain.valueobject.GameMode
 import com.codelong.support.Fixtures
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -36,8 +37,63 @@ class GameSequencerOrderingTest {
         assertEquals(1, sequence.size)
         assertEquals(question.id, sequence.first().id)
         assertEquals(question.difficulty, sequence.first().difficulty)
-        assertEquals(question.options, sequence.first().options)
+        assertEquals(question.options.toSet(), sequence.first().options.toSet())
     }
+
+    @Test
+    fun `embaralha as alternativas mantendo todas`() {
+        val question = Fixtures.question(id = "q-1", difficulty = Difficulty.EASY)
+        val original = question.options.map { it.id }
+
+        val sequence = GameSequencer(Random(7)).sequence(listOf(question))
+
+        assertEquals(original.toSet(), sequence.first().options.map { it.id }.toSet())
+        assertEquals(original.size, sequence.first().options.size)
+    }
+
+    @Test
+    fun `modo genocida nao respeita a ordem de dificuldade`() {
+        val questions = Difficulty.entries.flatMap { difficulty -> questionsOf(difficulty, 3) }
+
+        val sequence = GameSequencer(Random(42)).sequence(questions, GameMode.GENOCIDA)
+
+        val levels = sequence.map { it.difficulty.level }
+        assertEquals(30, sequence.size)
+        assertEquals(30, sequence.map { it.id }.distinct().size)
+        assertFalse(levels == levels.sorted(), "a ordem nao deve ser crescente por dificuldade")
+    }
+
+    @Test
+    fun `modo genocida inclui todas as perguntas ativas`() {
+        val active = Difficulty.entries.flatMap { difficulty -> questionsOf(difficulty, 2) }
+        val inactive = questionsOf(Difficulty.EASY, 3, prefix = "inativa").map { it.deactivate(Fixtures.NOW) }
+
+        val sequence = GameSequencer(Random(3)).sequence(active + inactive, GameMode.GENOCIDA)
+
+        assertEquals(20, sequence.size)
+        assertEquals(active.map { it.id }.toSet(), sequence.map { it.id }.toSet())
+    }
+
+    @Test
+    fun `modo classico continua ordenando por dificuldade`() {
+        val questions = Difficulty.entries.reversed().flatMap { difficulty -> questionsOf(difficulty, 2) }
+
+        val sequence = GameSequencer(Random(11)).sequence(questions, GameMode.CLASSIC)
+
+        val levels = sequence.map { it.difficulty.level }
+        assertEquals(levels.sorted(), levels)
+    }
+
+    @Test
+    fun `mesma semente produz o mesmo embaralhamento de alternativas`() {
+        val question = Fixtures.question(id = "q-1", difficulty = Difficulty.EASY)
+
+        val first = GameSequencer(Random(99)).sequence(listOf(question)).first().options.map { it.id }
+        val second = GameSequencer(Random(99)).sequence(listOf(question)).first().options.map { it.id }
+
+        assertEquals(first, second)
+    }
+
 
     @Test
     fun `mantem ordem crescente com os dez niveis`() {

@@ -4,16 +4,17 @@ import com.codelong.domain.model.Game
 import com.codelong.domain.model.Question
 import com.codelong.domain.model.User
 import com.codelong.domain.service.GameSequencer
+import com.codelong.domain.valueobject.GameMode
 import com.codelong.domain.valueobject.GameSetup
 import com.codelong.domain.valueobject.Ids
 import java.time.Clock
 
 /**
- * Servico de aplicacao que monta uma partida: sequencia as perguntas ativas e
- * cria o agregado [Game] com o snapshot persistido.
+ * Servico de aplicacao que monta uma partida: sequencia as perguntas ativas
+ * conforme o [GameMode] e cria o agregado [Game] com o snapshot persistido.
  */
 interface GameFactory {
-    fun start(user: User, activeQuestions: List<Question>): Game
+    fun start(user: User, activeQuestions: List<Question>, mode: GameMode): Game
 }
 
 class DefaultGameFactory(
@@ -21,12 +22,13 @@ class DefaultGameFactory(
     private val clock: Clock
 ) : GameFactory {
 
-    override fun start(user: User, activeQuestions: List<Question>): Game {
-        val sequence = sequencer.sequence(activeQuestions)
+    override fun start(user: User, activeQuestions: List<Question>, mode: GameMode): Game {
+        val sequence = sequencer.sequence(activeQuestions, mode)
         val setup = GameSetup(
             userId = user.id,
             username = user.usernameText,
-            questions = sequence
+            questions = sequence,
+            mode = mode
         )
         return Game.newGame(Ids.newGameId(), setup, clock.instant())
     }

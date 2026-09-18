@@ -6,16 +6,17 @@ import com.codelong.domain.exception.Errors
 import com.codelong.domain.port.GameRepository
 import com.codelong.domain.port.QuestionRepository
 import com.codelong.domain.port.UserRepository
+import com.codelong.domain.valueobject.GameMode
 import com.codelong.domain.valueobject.UserId
 
 /**
- * Abre uma partida para o usuario.
+ * Abre uma partida para o usuario no modo informado.
  *
  * Se ja existe uma partida em andamento, ela e retomada em vez de criar uma
  * segunda — o jogador nunca fica com duas partidas abertas ao mesmo tempo.
  */
 interface CreateGameUseCase {
-    fun create(actorId: UserId): GameCreationResult
+    fun create(actorId: UserId, mode: GameMode): GameCreationResult
 }
 
 class CreateGameUseCaseImpl(
@@ -25,7 +26,7 @@ class CreateGameUseCaseImpl(
     private val gameFactory: GameFactory
 ) : CreateGameUseCase {
 
-    override fun create(actorId: UserId): GameCreationResult {
+    override fun create(actorId: UserId, mode: GameMode): GameCreationResult {
         val user = userRepository.findById(actorId)
             ?: throw Errors.userNotFound()
 
@@ -42,7 +43,7 @@ class CreateGameUseCaseImpl(
             throw Errors.noActiveQuestions()
         }
 
-        val game = gameRepository.save(gameFactory.start(user, activeQuestions))
+        val game = gameRepository.save(gameFactory.start(user, activeQuestions, mode))
         return GameCreationResult(game = game, created = true)
     }
 }

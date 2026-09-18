@@ -14,6 +14,7 @@ data class GameDocument(
     val userId: String = "",
     val username: String = "",
     val status: String = "",
+    val mode: String = "",
     val startedAt: Instant = Instant.EPOCH,
     val completedAt: Instant? = null,
     val currentQuestionIndex: Int = 0,

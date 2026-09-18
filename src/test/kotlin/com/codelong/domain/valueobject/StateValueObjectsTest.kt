@@ -1,5 +1,7 @@
 package com.codelong.domain.valueobject
 
+import com.codelong.domain.valueobject.GameMode
+
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNull
@@ -120,7 +122,7 @@ class StateValueObjectsTest {
 
     @Test
     fun `GameState carrega todos os campos da partida`() {
-        val state = GameState(
+        val state = GameState(mode = GameMode.CLASSIC, 
             id = GameId("g-1"),
             userId = UserId("u-1"),
             username = "alice",
@@ -153,7 +155,7 @@ class StateValueObjectsTest {
 
     @Test
     fun `GameState copy altera somente o campo informado`() {
-        val state = GameState(
+        val state = GameState(mode = GameMode.CLASSIC, 
             id = GameId("g-1"),
             userId = UserId("u-1"),
             username = "alice",

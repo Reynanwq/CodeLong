@@ -2,6 +2,7 @@ package com.codelong.application.service
 
 import com.codelong.application.service.DefaultGameFactory
 
+import com.codelong.domain.valueobject.GameMode
 import com.codelong.domain.service.GameSequencer
 import com.codelong.domain.valueobject.Difficulty
 import com.codelong.domain.valueobject.GameStatus
@@ -25,7 +26,7 @@ class GameFactoryTest {
             Fixtures.question(id = "q-2", difficulty = Difficulty.HARD)
         )
 
-        val game = factory.start(user, questions)
+        val game = factory.start(user, questions, GameMode.CLASSIC)
 
         assertEquals(UserId("u-1"), game.userId)
         assertEquals("alice", game.username)
@@ -41,7 +42,7 @@ class GameFactoryTest {
         val user = Fixtures.user()
         val questions = listOf(Fixtures.question(id = "q-1", difficulty = Difficulty.MEDIUM))
 
-        val game = factory.start(user, questions)
+        val game = factory.start(user, questions, GameMode.CLASSIC)
 
         assertEquals(1, game.totalQuestions)
         assertEquals(questions.first().id, game.questions.first().id)
@@ -58,7 +59,7 @@ class GameFactoryTest {
             Fixtures.question(id = "q-medium", difficulty = Difficulty.MEDIUM)
         )
 
-        val game = factory.start(user, questions)
+        val game = factory.start(user, questions, GameMode.CLASSIC)
 
         assertEquals(
             listOf(Difficulty.EASY, Difficulty.MEDIUM, Difficulty.MASTER),
@@ -74,14 +75,14 @@ class GameFactoryTest {
             Fixtures.question(id = "inativa", difficulty = Difficulty.EASY).deactivate(Fixtures.NOW)
         )
 
-        val game = factory.start(user, questions)
+        val game = factory.start(user, questions, GameMode.CLASSIC)
 
         assertEquals(1, game.totalQuestions)
     }
 
     @Test
     fun `start sem perguntas gera partida vazia`() {
-        val game = factory.start(Fixtures.user(), emptyList())
+        val game = factory.start(Fixtures.user(), emptyList(), GameMode.CLASSIC)
 
         assertEquals(0, game.totalQuestions)
         assertEquals(0, game.remainingQuestions)
@@ -93,7 +94,7 @@ class GameFactoryTest {
         val user = Fixtures.user()
         val questions = listOf(Fixtures.question(id = "q-1", difficulty = Difficulty.EASY))
 
-        val ids = (1..100).map { factory.start(user, questions).id.value }
+        val ids = (1..100).map { factory.start(user, questions, GameMode.CLASSIC).id.value }
 
         assertEquals(100, ids.distinct().size)
     }
@@ -103,7 +104,7 @@ class GameFactoryTest {
         val user = Fixtures.user()
         val question = Fixtures.question(id = "q-1", difficulty = Difficulty.EASY)
 
-        factory.start(user, listOf(question))
+        factory.start(user, listOf(question), GameMode.CLASSIC)
 
         assertTrue(question.isActive)
         assertEquals("O que e polimorfismo?", question.statement)
@@ -113,7 +114,8 @@ class GameFactoryTest {
     fun `start registra o username do usuario no snapshot`() {
         val game = factory.start(
             Fixtures.user(username = "carol"),
-            listOf(Fixtures.question(id = "q-1", difficulty = Difficulty.EASY))
+            listOf(Fixtures.question(id = "q-1", difficulty = Difficulty.EASY)),
+            GameMode.CLASSIC
         )
 
         assertEquals("carol", game.username)
