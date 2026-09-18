@@ -60,6 +60,7 @@ class ApplicationResultsTest {
                 username = "alice",
                 score = 100,
                 correctAnswers = 3,
+                answeredQuestions = 10,
                 totalTimeMillis = 5_000,
                 achievedAt = Fixtures.NOW,
                 position = 1
@@ -90,6 +91,7 @@ class ApplicationResultsTest {
             username = "alice",
             score = 50,
             correctAnswers = 1,
+            answeredQuestions = 10,
             totalTimeMillis = 1_000,
             achievedAt = Fixtures.NOW
         )

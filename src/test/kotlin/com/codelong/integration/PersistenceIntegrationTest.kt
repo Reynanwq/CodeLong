@@ -5,6 +5,7 @@ import com.codelong.domain.exception.DomainException
 import com.codelong.domain.port.GameRepository
 import com.codelong.domain.port.QuestionRepository
 import com.codelong.domain.port.QuestionSearch
+import com.codelong.domain.GameRules
 import com.codelong.domain.port.RankingRepository
 import com.codelong.domain.port.UserRepository
 import com.codelong.domain.valueobject.Category
@@ -186,7 +187,7 @@ class PersistenceIntegrationTest {
 
         assertEquals(2, ranking.size)
         assertEquals(listOf("alice", "bob"), ranking.map { it.username })
-        assertEquals(Difficulty.MASTER.points, ranking.first().score)
+        assertEquals(Difficulty.MASTER.points * GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING, ranking.first().score)
         assertEquals(2L, rankingRepository.countRankedUsers())
     }
 
@@ -204,10 +205,55 @@ class PersistenceIntegrationTest {
         assertEquals(2L, rankingRepository.countRankedUsers())
     }
 
-    private fun persistCompletedGame(id: String, userId: String, username: String, difficulty: Difficulty) {
-        val game = Fixtures.game(id = id, userId = userId, username = username, difficulties = listOf(difficulty))
+    @Test
+    fun `ranking inclui partidas abandonadas com o minimo de respostas`() {
+        persistAbandonedGame(id = "g-1", userId = "u-1", username = "alice", difficulty = Difficulty.HARD)
+
+        val ranking = rankingRepository.findRanking(0, 10)
+
+        assertEquals(1, ranking.size)
+        assertEquals("alice", ranking.first().username)
+        assertEquals(Difficulty.HARD.points * GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING, ranking.first().score)
+        assertEquals(GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING, ranking.first().answeredQuestions)
+        assertEquals(1L, rankingRepository.countRankedUsers())
+    }
+
+    @Test
+    fun `ranking ignora partida concluida abaixo do minimo de respostas`() {
+        val belowMinimum = GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING - 1
+        val game = Fixtures.game(
+            id = "g-1",
+            userId = "u-1",
+            username = "alice",
+            difficulties = List(belowMinimum) { Difficulty.EASY }
+        )
         val loaded = gameRepository.save(game)
-        loaded.answer(loaded.currentQuestion().correctOption, Fixtures.NOW)
+        repeat(belowMinimum) { loaded.answer(loaded.currentQuestion().correctOption, Fixtures.NOW) }
+        gameRepository.save(loaded)
+
+        assertTrue(rankingRepository.findRanking(0, 10).isEmpty())
+        assertEquals(0L, rankingRepository.countRankedUsers())
+    }
+
+    private fun persistAbandonedGame(id: String, userId: String, username: String, difficulty: Difficulty) {
+        val difficulties = List(GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING + 5) { difficulty }
+        val game = Fixtures.game(id = id, userId = userId, username = username, difficulties = difficulties)
+        val loaded = gameRepository.save(game)
+        repeat(GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING) {
+            loaded.answer(loaded.currentQuestion().correctOption, Fixtures.NOW)
+        }
+        loaded.abandon(Fixtures.NOW.plusSeconds(60))
+        val abandoned = gameRepository.save(loaded)
+        assertEquals(com.codelong.domain.valueobject.GameStatus.ABANDONED, abandoned.status)
+    }
+
+    private fun persistCompletedGame(id: String, userId: String, username: String, difficulty: Difficulty) {
+        val difficulties = List(GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING) { difficulty }
+        val game = Fixtures.game(id = id, userId = userId, username = username, difficulties = difficulties)
+        val loaded = gameRepository.save(game)
+        repeat(difficulties.size) {
+            loaded.answer(loaded.currentQuestion().correctOption, Fixtures.NOW)
+        }
         val completed = gameRepository.save(loaded)
         assertEquals(com.codelong.domain.valueobject.GameStatus.COMPLETED, completed.status)
     }

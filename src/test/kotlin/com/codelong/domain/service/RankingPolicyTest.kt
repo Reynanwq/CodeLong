@@ -20,6 +20,7 @@ class RankingPolicyTest {
         username = id,
         score = score,
         correctAnswers = correctAnswers,
+        answeredQuestions = 10,
         totalTimeMillis = totalTimeMillis,
         achievedAt = Fixtures.NOW.plusSeconds(achievedAtOffsetSeconds)
     )
@@ -34,11 +35,12 @@ class RankingPolicyTest {
     }
 
     @Test
-    fun `empate na pontuacao desempata por mais acertos`() {
-        val better = entry("a", score = 100, correctAnswers = 12, totalTimeMillis = 9000, achievedAtOffsetSeconds = 10)
-        val worse = entry("b", score = 100, correctAnswers = 10, totalTimeMillis = 1000, achievedAtOffsetSeconds = 0)
+    fun `empate na pontuacao desempata pelo menor tempo`() {
+        val faster = entry("a", score = 100, correctAnswers = 10, totalTimeMillis = 1_000, achievedAtOffsetSeconds = 10)
+        val slower = entry("b", score = 100, correctAnswers = 12, totalTimeMillis = 9_000, achievedAtOffsetSeconds = 0)
 
-        assertTrue(RankingPolicy.isBetter(better, worse))
+        assertTrue(RankingPolicy.isBetter(faster, slower))
+        assertFalse(RankingPolicy.isBetter(slower, faster))
     }
 
     @Test

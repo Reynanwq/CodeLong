@@ -12,4 +12,10 @@ object GameRules {
 
     /** Duracao maxima para responder a pergunta atual. */
     val ANSWER_TIME_LIMIT: Duration = Duration.ofSeconds(ANSWER_TIME_LIMIT_SECONDS)
+
+    /**
+     * Minimo de perguntas respondidas para uma partida disputar o ranking.
+     * Evita que alguem responda poucas perguntas e pare com aproveitamento alto.
+     */
+    const val MIN_ANSWERED_QUESTIONS_FOR_RANKING = 10
 }

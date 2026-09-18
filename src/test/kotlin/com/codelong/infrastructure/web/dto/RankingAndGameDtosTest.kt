@@ -27,6 +27,7 @@ class RankingAndGameDtosTest {
         username = id,
         score = score,
         correctAnswers = 3,
+        answeredQuestions = 10,
         totalTimeMillis = 5_000,
         achievedAt = Fixtures.NOW,
         position = position

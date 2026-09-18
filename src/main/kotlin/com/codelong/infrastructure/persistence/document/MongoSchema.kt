@@ -20,6 +20,8 @@ object MongoSchema {
         const val ROLE = "role"
         const val SCORE = "score"
         const val CORRECT_ANSWERS = "correctAnswers"
+        const val ANSWERS = "answers"
+        const val ANSWERED_QUESTIONS = "answeredQuestions"
         const val STARTED_AT = "startedAt"
         const val COMPLETED_AT = "completedAt"
         const val CURRENT_QUESTION_DEADLINE = "currentQuestionDeadline"

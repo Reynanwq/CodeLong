@@ -21,6 +21,7 @@ class RankingPolicyComparatorTest {
         username = id,
         score = score,
         correctAnswers = correctAnswers,
+        answeredQuestions = 10,
         totalTimeMillis = totalTimeMillis,
         achievedAt = Fixtures.NOW.plusSeconds(achievedAtOffsetSeconds)
     )
@@ -57,13 +58,13 @@ class RankingPolicyComparatorTest {
     fun `desempata pela cadeia completa de criterios`() {
         val champion = entry("champion", score = 100, correctAnswers = 10, totalTimeMillis = 1_000, achievedAtOffsetSeconds = 0)
         val byScore = entry("by-score", score = 90, correctAnswers = 99, totalTimeMillis = 1, achievedAtOffsetSeconds = 0)
-        val byCorrect = entry("by-correct", score = 100, correctAnswers = 9, totalTimeMillis = 1, achievedAtOffsetSeconds = 0)
-        val byTime = entry("by-time", score = 100, correctAnswers = 10, totalTimeMillis = 2_000, achievedAtOffsetSeconds = 0)
+        val byTime = entry("by-time", score = 100, correctAnswers = 99, totalTimeMillis = 2_000, achievedAtOffsetSeconds = 0)
+        val byCorrect = entry("by-correct", score = 100, correctAnswers = 9, totalTimeMillis = 1_000, achievedAtOffsetSeconds = 0)
         val byDate = entry("by-date", score = 100, correctAnswers = 10, totalTimeMillis = 1_000, achievedAtOffsetSeconds = 60)
 
         assertTrue(RankingPolicy.isBetter(champion, byScore))
-        assertTrue(RankingPolicy.isBetter(champion, byCorrect))
         assertTrue(RankingPolicy.isBetter(champion, byTime))
+        assertTrue(RankingPolicy.isBetter(champion, byCorrect))
         assertTrue(RankingPolicy.isBetter(champion, byDate))
     }
 
@@ -77,9 +78,18 @@ class RankingPolicyComparatorTest {
     }
 
     @Test
-    fun `acertos tem prioridade sobre tempo e data`() {
-        val moreCorrect = entry("more", score = 100, correctAnswers = 11, totalTimeMillis = 999_999, achievedAtOffsetSeconds = 999)
-        val lessCorrect = entry("less", score = 100, correctAnswers = 10, totalTimeMillis = 1, achievedAtOffsetSeconds = 0)
+    fun `tempo tem prioridade sobre acertos e data`() {
+        val faster = entry("faster", score = 100, correctAnswers = 10, totalTimeMillis = 1, achievedAtOffsetSeconds = 999)
+        val slowerMoreCorrect = entry("slower", score = 100, correctAnswers = 11, totalTimeMillis = 999_999, achievedAtOffsetSeconds = 0)
+
+        assertTrue(RankingPolicy.isBetter(faster, slowerMoreCorrect))
+        assertFalse(RankingPolicy.isBetter(slowerMoreCorrect, faster))
+    }
+
+    @Test
+    fun `empate no tempo desempata por mais acertos`() {
+        val moreCorrect = entry("more", score = 100, correctAnswers = 11, totalTimeMillis = 1_000, achievedAtOffsetSeconds = 999)
+        val lessCorrect = entry("less", score = 100, correctAnswers = 10, totalTimeMillis = 1_000, achievedAtOffsetSeconds = 0)
 
         assertTrue(RankingPolicy.isBetter(moreCorrect, lessCorrect))
     }

@@ -54,6 +54,7 @@ data class RankEntryDocument(
     val username: String = "",
     val score: Int = 0,
     val correctAnswers: Int = 0,
+    val answeredQuestions: Int = 0,
     val totalTimeMillis: Long = 0,
     val achievedAt: Instant = Instant.EPOCH
 )

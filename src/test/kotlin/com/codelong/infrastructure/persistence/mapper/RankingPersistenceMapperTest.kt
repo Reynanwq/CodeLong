@@ -15,6 +15,7 @@ class RankingPersistenceMapperTest {
             username = "alice",
             score = 250,
             correctAnswers = 7,
+            answeredQuestions = 10,
             totalTimeMillis = 12_345,
             achievedAt = Fixtures.NOW
         )

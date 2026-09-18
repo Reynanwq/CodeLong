@@ -193,6 +193,7 @@ class StateValueObjectsTest {
             username = "alice",
             score = 100,
             correctAnswers = 3,
+            answeredQuestions = 10,
             totalTimeMillis = 5_000,
             achievedAt = now
         )
