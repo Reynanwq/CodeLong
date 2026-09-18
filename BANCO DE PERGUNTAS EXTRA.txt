@@ -46,87 +46,87 @@ COMPUTING_HISTORY|VERY_EASY|Quem criou o sistema operacional Linux?|Linus Torval
 COMPUTING_HISTORY|VERY_EASY|Quem criou a linguagem Python?|Guido van Rossum;James Gosling;Brendan Eich;Anders Hejlsberg|1
 COMPUTING_HISTORY|VERY_EASY|Quem criou a linguagem Java?|James Gosling;Guido van Rossum;Bjarne Stroustrup;Ken Thompson|1
 COMPUTING_HISTORY|VERY_EASY|Quem é considerado o inventor da World Wide Web?|Tim Berners-Lee;Vint Cerf;Bill Gates;Steve Wozniak|1
-COMPUTING_HISTORY|VERY_EASY|Alan Turing é amplamente reconhecido como um dos pais de qual área?|Ciência da Computação;Marketing digital;Design gráfico;Redes sociais|1
-COMPUTING_HISTORY|VERY_EASY|Ada Lovelace é frequentemente citada como:|A primeira programadora de computadores da história;A criadora do Linux;A criadora do HTML;A criadora do Java|1
-COMPUTING_HISTORY|VERY_EASY|Grace Hopper é conhecida por seu trabalho pioneiro em:|Compiladores e na linguagem COBOL;Redes sociais;Design de interfaces;Criptomoedas|1
+COMPUTING_HISTORY|VERY_EASY|Alan Turing, criador do conceito de máquina universal, é amplamente reconhecido como um dos pais de qual área?|Ciência da Computação;Marketing digital;Design gráfico;Redes sociais|1
+COMPUTING_HISTORY|VERY_EASY|Ada Lovelace, que descreveu um algoritmo para a Máquina Analítica de Charles Babbage, é frequentemente citada como:|A primeira programadora de computadores da história;A criadora do Linux;A criadora do HTML;A criadora do Java|1
+COMPUTING_HISTORY|VERY_EASY|Grace Hopper, criadora de um dos primeiros compiladores e responsável por popularizar o termo "bug", é conhecida por seu trabalho pioneiro em:|Compiladores e na linguagem COBOL;Redes sociais;Design de interfaces;Criptomoedas|1
 COMPUTING_HISTORY|VERY_EASY|Quem criou a linguagem C++?|Bjarne Stroustrup;Dennis Ritchie;James Gosling;Ken Thompson|1
 COMPUTING_HISTORY|VERY_EASY|Quem criou a linguagem JavaScript?|Brendan Eich;Guido van Rossum;Anders Hejlsberg;Rasmus Lerdorf|1
 COMPUTING_HISTORY|EASY|Ken Thompson, junto com Dennis Ritchie, é um dos criadores originais do sistema operacional:|Unix;Windows;Linux;macOS|1
 COMPUTING_HISTORY|EASY|Anders Hejlsberg é conhecido por liderar o design de qual linguagem da Microsoft?|C#;Java;Python;Ruby|1
-COMPUTING_HISTORY|EASY|Yukihiro Matsumoto ("Matz") é o criador da linguagem:|Ruby;Python;PHP;Perl|1
-COMPUTING_HISTORY|EASY|Rasmus Lerdorf é conhecido como o criador original da linguagem:|PHP;Perl;Ruby;JavaScript|1
+COMPUTING_HISTORY|EASY|Yukihiro Matsumoto ("Matz") criou, nos anos 1990, uma linguagem de script conhecida pelo foco na produtividade e na felicidade do programador, chamada:|Ruby;Python;PHP;Perl|1
+COMPUTING_HISTORY|EASY|Rasmus Lerdorf criou, em 1994, uma linguagem de script voltada à web, hoje muito usada no desenvolvimento de sites, chamada:|PHP;Perl;Ruby;JavaScript|1
 COMPUTING_HISTORY|EASY|Robert C. Martin, conhecido como "Uncle Bob", é famoso por popularizar os princípios:|SOLID;ACID;CAP;BASE|1
-COMPUTING_HISTORY|EASY|Martin Fowler é amplamente conhecido por seus livros sobre:|Refatoração e padrões de arquitetura;Redes de computadores;Sistemas operacionais;Hardware|1
-COMPUTING_HISTORY|EASY|Donald Knuth é famoso por escrever a extensa obra:|"The Art of Computer Programming";"Clean Code";"Design Patterns";"Refactoring"|1
-COMPUTING_HISTORY|EASY|Vint Cerf é frequentemente chamado de um dos "pais" de qual tecnologia fundamental?|Internet (protocolo TCP/IP);Linguagem Python;Sistema Linux;Banco de dados relacional|1
-COMPUTING_HISTORY|EASY|Edsger Dijkstra é conhecido por contribuições fundamentais em:|Algoritmos e programação estruturada;Design de interfaces gráficas;Marketing de software;Criptomoedas|1
-COMPUTING_HISTORY|EASY|Richard Stallman é o fundador do movimento/projeto:|GNU e da Free Software Foundation;Linux Foundation;Apache Software Foundation;W3C|1
+COMPUTING_HISTORY|EASY|Martin Fowler, autor de livros influentes sobre design de software e figura central do movimento ágil, é amplamente conhecido por seus livros sobre:|Refatoração e padrões de arquitetura;Redes de computadores;Sistemas operacionais;Hardware|1
+COMPUTING_HISTORY|EASY|Donald Knuth, criador do sistema de tipografia TeX, é famoso por escrever a extensa obra em vários volumes:|"The Art of Computer Programming";"Clean Code";"Design Patterns";"Refactoring"|1
+COMPUTING_HISTORY|EASY|Vint Cerf, premiado por seu trabalho no design de protocolos de rede, é frequentemente chamado de um dos "pais" de qual tecnologia fundamental?|Internet (protocolo TCP/IP);Linguagem Python;Sistema Linux;Banco de dados relacional|1
+COMPUTING_HISTORY|EASY|Edsger Dijkstra, criador do algoritmo de caminho mínimo em grafos e autor do ensaio contra o comando GOTO, é conhecido por contribuições fundamentais em:|Algoritmos e programação estruturada;Design de interfaces gráficas;Marketing de software;Criptomoedas|1
+COMPUTING_HISTORY|EASY|Richard Stallman, idealizador do software livre e autor da licença GPL, é o fundador do movimento/projeto:|GNU e da Free Software Foundation;Linux Foundation;Apache Software Foundation;W3C|1
 COMPUTING_HISTORY|EASY_PLUS|Barbara Liskov é homenageada no princípio de substituição presente no acrônimo:|SOLID (o "L");ACID (o "A");CAP (o "C");BASE (o "B")|1
-COMPUTING_HISTORY|EASY_PLUS|Kent Beck é amplamente reconhecido como criador da metodologia:|Extreme Programming (XP);Scrum;Kanban;RUP|1
-COMPUTING_HISTORY|EASY_PLUS|Ward Cunningham é conhecido por criar o primeiro:|Wiki;Compilador C;Sistema operacional;Navegador web|1
-COMPUTING_HISTORY|EASY_PLUS|Erich Gamma é um dos autores do livro clássico:|"Design Patterns" (GoF);"Clean Code";"Refactoring";"The Pragmatic Programmer"|1
-COMPUTING_HISTORY|EASY_PLUS|Alan Kay é frequentemente associado à criação do termo:|"Programação Orientada a Objetos";"Machine Learning";"Cloud Computing";"Big Data"|1
+COMPUTING_HISTORY|EASY_PLUS|Kent Beck, autor de "Test-Driven Development" e figura central do movimento ágil, é reconhecido como criador da metodologia:|Extreme Programming (XP);Scrum;Kanban;RUP|1
+COMPUTING_HISTORY|EASY_PLUS|Ward Cunningham criou, em 1995, o primeiro sistema de edição colaborativa de páginas na web, chamado:|Wiki;Compilador C;Sistema operacional;Navegador web|1
+COMPUTING_HISTORY|EASY_PLUS|Erich Gamma, um dos integrantes do grupo Gang of Four, é um dos autores do livro clássico:|"Design Patterns" (GoF);"Clean Code";"Refactoring";"The Pragmatic Programmer"|1
+COMPUTING_HISTORY|EASY_PLUS|Alan Kay, pioneiro da computação pessoal no Xerox PARC, é frequentemente associado à criação do termo:|"Programação Orientada a Objetos";"Machine Learning";"Cloud Computing";"Big Data"|1
 COMPUTING_HISTORY|EASY_PLUS|Tim Berners-Lee trabalhava em qual instituição quando criou a Web?|CERN;MIT;Stanford;Google|1
 COMPUTING_HISTORY|EASY_PLUS|Margaret Hamilton é conhecida por liderar o desenvolvimento do software de bordo da missão:|Apollo (NASA);Voyager;Mars Rover;Hubble|1
-COMPUTING_HISTORY|EASY_PLUS|Niklaus Wirth é o criador da linguagem de programação:|Pascal;COBOL;Fortran;Lisp|1
-COMPUTING_HISTORY|EASY_PLUS|John von Neumann é amplamente associado à arquitetura de computadores conhecida como:|Arquitetura von Neumann;Arquitetura Harvard exclusivamente;Arquitetura RISC moderna;Arquitetura de microsserviços|1
-COMPUTING_HISTORY|EASY_PLUS|Claude Shannon é considerado o pai de qual campo teórico fundamental para a computação?|Teoria da Informação;Teoria dos Jogos;Teoria da Relatividade;Teoria das Filas|1
-COMPUTING_HISTORY|MEDIUM|Rich Hickey é o criador da linguagem funcional:|Clojure;Elixir;Haskell;Erlang|1
-COMPUTING_HISTORY|MEDIUM|Joe Armstrong é um dos criadores da linguagem:|Erlang;Elixir;Clojure;Go|1
-COMPUTING_HISTORY|MEDIUM|Larry Wall é o criador da linguagem:|Perl;Python;Ruby;PHP|1
-COMPUTING_HISTORY|MEDIUM|Rob Pike e Ken Thompson, junto com Robert Griesemer, criaram a linguagem:|Go;Rust;Swift;Kotlin|1
-COMPUTING_HISTORY|MEDIUM|Chris Lattner é conhecido por criar o compilador/infraestrutura:|LLVM (e também a linguagem Swift);GCC;JVM;.NET Runtime|1
-COMPUTING_HISTORY|MEDIUM|Martin Odersky é o criador da linguagem:|Scala;Kotlin;Groovy;Clojure|1
-COMPUTING_HISTORY|MEDIUM|David Parnas é reconhecido por seu trabalho pioneiro sobre:|Ocultação de informação (information hiding) e modularidade;Redes neurais;Bancos de dados NoSQL;Criptografia moderna|1
-COMPUTING_HISTORY|MEDIUM|Fred Brooks é autor do influente livro sobre gestão de projetos de software:|"The Mythical Man-Month";"Clean Code";"Design Patterns";"Refactoring"|1
-COMPUTING_HISTORY|MEDIUM|Edgar F. Codd é reconhecido por propor o modelo:|Relacional de bancos de dados;De documentos (NoSQL);De grafos;De arquivos planos|1
-COMPUTING_HISTORY|MEDIUM|Michael Stonebraker é um pesquisador influente em sistemas de:|Banco de dados;Compiladores;Sistemas operacionais embarcados;Criptografia|1
+COMPUTING_HISTORY|EASY_PLUS|Niklaus Wirth criou, nos anos 1970, uma linguagem estruturada muito usada no ensino de programação, chamada:|Pascal;COBOL;Fortran;Lisp|1
+COMPUTING_HISTORY|EASY_PLUS|John von Neumann propôs uma arquitetura em que programa e dados ficam na mesma memória, conhecida como:|Arquitetura von Neumann;Arquitetura Harvard exclusivamente;Arquitetura RISC moderna;Arquitetura de microsserviços|1
+COMPUTING_HISTORY|EASY_PLUS|Claude Shannon, que também trabalhou com circuitos de comutação e criptografia, é considerado o pai de qual campo teórico que quantifica a informação?|Teoria da Informação;Teoria dos Jogos;Teoria da Relatividade;Teoria das Filas|1
+COMPUTING_HISTORY|MEDIUM|Rich Hickey criou um dialeto moderno de Lisp para a JVM, com foco em imutabilidade, chamado:|Clojure;Elixir;Haskell;Erlang|1
+COMPUTING_HISTORY|MEDIUM|Joe Armstrong criou, na Ericsson, uma linguagem funcional voltada a sistemas distribuídos tolerantes a falhas, chamada:|Erlang;Elixir;Clojure;Go|1
+COMPUTING_HISTORY|MEDIUM|Larry Wall criou, em 1987, uma linguagem muito usada para processamento de texto e administração de sistemas, chamada:|Perl;Python;Ruby;PHP|1
+COMPUTING_HISTORY|MEDIUM|Rob Pike, Ken Thompson e Robert Griesemer criaram, no Google, uma linguagem com goroutines e compilação rápida, chamada:|Go;Rust;Swift;Kotlin|1
+COMPUTING_HISTORY|MEDIUM|Chris Lattner criou, na Universidade de Illinois, uma infraestrutura de compilador que serve de base para o Clang e o Swift, chamada:|LLVM (e também a linguagem Swift);GCC;JVM;.NET Runtime|1
+COMPUTING_HISTORY|MEDIUM|Martin Odersky criou uma linguagem que roda na JVM e combina programação orientada a objetos e funcional, chamada:|Scala;Kotlin;Groovy;Clojure|1
+COMPUTING_HISTORY|MEDIUM|David Parnas publicou, em 1972, um artigo seminal sobre decomposição modular e:|Ocultação de informação (information hiding) e modularidade;Redes neurais;Bancos de dados NoSQL;Criptografia moderna|1
+COMPUTING_HISTORY|MEDIUM|Fred Brooks escreveu, a partir da experiência no sistema OS/360 da IBM, o clássico livro sobre gestão de projetos de software:|"The Mythical Man-Month";"Clean Code";"Design Patterns";"Refactoring"|1
+COMPUTING_HISTORY|MEDIUM|Edgar F. Codd propôs, em 1970, um modelo de organização de dados baseado em tabelas e álgebra, chamado:|Relacional de bancos de dados;De documentos (NoSQL);De grafos;De arquivos planos|1
+COMPUTING_HISTORY|MEDIUM|Michael Stonebraker, premiado com o Turing Award por sistemas como Ingres e PostgreSQL, é um pesquisador influente em sistemas de:|Banco de dados;Compiladores;Sistemas operacionais embarcados;Criptografia|1
 COMPUTING_HISTORY|MEDIUM_PLUS|Kristen Nygaard e Ole-Johan Dahl são reconhecidos como criadores da linguagem Simula, considerada pioneira em:|Programação orientada a objetos;Programação funcional;Programação lógica;Programação concorrente moderna|1
-COMPUTING_HISTORY|MEDIUM_PLUS|Ivar Jacobson é conhecido por sua contribuição ao desenvolvimento de software através dos:|Casos de uso (use cases) e UML;Padrões de projeto GoF;Princípios SOLID;Extreme Programming|1
+COMPUTING_HISTORY|MEDIUM_PLUS|Ivar Jacobson introduziu, na modelagem orientada a objetos, a técnica que descreve interações entre atores e o sistema, chamada:|Casos de uso (use cases) e UML;Padrões de projeto GoF;Princípios SOLID;Extreme Programming|1
 COMPUTING_HISTORY|MEDIUM_PLUS|James Rumbaugh, junto com Grady Booch e Ivar Jacobson, ajudou a unificar métodos de modelagem no(a):|UML (Unified Modeling Language);SOLID;TDD;BDD|1
-COMPUTING_HISTORY|MEDIUM_PLUS|Whitfield Diffie e Martin Hellman são conhecidos por seu trabalho pioneiro em:|Criptografia de chave pública;Bancos de dados distribuídos;Sistemas operacionais;Redes sociais|1
-COMPUTING_HISTORY|MEDIUM_PLUS|Ron Rivest, Adi Shamir e Leonard Adleman são os criadores do algoritmo de criptografia:|RSA;AES;SHA-256;MD5|1
-COMPUTING_HISTORY|MEDIUM_PLUS|Doug Cutting é reconhecido como um dos criadores do ecossistema:|Hadoop;Kafka;Spark;Kubernetes|1
-COMPUTING_HISTORY|MEDIUM_PLUS|Jeff Dean e Sanjay Ghemawat, ambos do Google, são conhecidos por trabalhos fundamentais como:|MapReduce e Bigtable;Git e GitHub;Kafka e Zookeeper;Docker e Kubernetes|1
-COMPUTING_HISTORY|MEDIUM_PLUS|Radia Perlman é conhecida por sua contribuição fundamental ao criar o protocolo:|Spanning Tree Protocol (redes);HTTP;TCP/IP;DNS|1
+COMPUTING_HISTORY|MEDIUM_PLUS|Whitfield Diffie e Martin Hellman publicaram, em 1976, um trabalho pioneiro que introduziu a:|Criptografia de chave pública;Bancos de dados distribuídos;Sistemas operacionais;Redes sociais|1
+COMPUTING_HISTORY|MEDIUM_PLUS|Ron Rivest, Adi Shamir e Leonard Adleman criaram, em 1977, um dos primeiros algoritmos de criptografia assimétrica, que leva as iniciais dos três, chamado:|RSA;AES;SHA-256;MD5|1
+COMPUTING_HISTORY|MEDIUM_PLUS|Doug Cutting criou, inspirado em artigos do Google, um ecossistema de big data que inclui o HDFS e o MapReduce, chamado:|Hadoop;Kafka;Spark;Kubernetes|1
+COMPUTING_HISTORY|MEDIUM_PLUS|Jeff Dean e Sanjay Ghemawat, do Google, criaram sistemas fundamentais para big data como:|MapReduce e Bigtable;Git e GitHub;Kafka e Zookeeper;Docker e Kubernetes|1
+COMPUTING_HISTORY|MEDIUM_PLUS|Radia Perlman criou, para evitar loops em redes Ethernet, um protocolo de árvore de abrangência conhecido como:|Spanning Tree Protocol (redes);HTTP;TCP/IP;DNS|1
 COMPUTING_HISTORY|MEDIUM_PLUS|John McCarthy é reconhecido como um dos pais da área de Inteligência Artificial e criador da linguagem:|Lisp;Prolog;Python;Fortran|1
-COMPUTING_HISTORY|MEDIUM_PLUS|John Backus liderou o desenvolvimento da linguagem:|Fortran;COBOL;Lisp;Algol|1
-COMPUTING_HISTORY|HARD|Bruce Schneier é amplamente conhecido como um influente escritor e especialista em:|Segurança e criptografia;Bancos de dados;Design de UI/UX;Compiladores|1
-COMPUTING_HISTORY|HARD|Phil Zimmermann é o criador do software de criptografia:|PGP (Pretty Good Privacy);SSH;TLS;VPN genérica|1
-COMPUTING_HISTORY|HARD|Douglas Engelbart é conhecido por inventar o(a):|Mouse de computador e demonstrar interfaces interativas (The Mother of All Demos);Linguagem Java;Protocolo HTTP;Sistema Unix|1
-COMPUTING_HISTORY|HARD|Leslie Lamport é o criador do algoritmo de consenso distribuído:|Paxos;Raft (criado por Diego Ongaro e John Ousterhout);Two-Phase Commit apenas;MapReduce|1
+COMPUTING_HISTORY|MEDIUM_PLUS|John Backus, da IBM, liderou, na década de 1950, o desenvolvimento da primeira linguagem de programação de alto nível amplamente usada, chamada:|Fortran;COBOL;Lisp;Algol|1
+COMPUTING_HISTORY|HARD|Bruce Schneier, autor do livro "Applied Cryptography", é amplamente conhecido como influente escritor e especialista em:|Segurança e criptografia;Bancos de dados;Design de UI/UX;Compiladores|1
+COMPUTING_HISTORY|HARD|Phil Zimmermann criou, em 1991, um software de criptografia de e-mail que gerou disputas legais sobre exportação, chamado:|PGP (Pretty Good Privacy);SSH;TLS;VPN genérica|1
+COMPUTING_HISTORY|HARD|Douglas Engelbart apresentou, na célebre "The Mother of All Demos" de 1968, invenções como o:|Mouse de computador e demonstrar interfaces interativas (The Mother of All Demos);Linguagem Java;Protocolo HTTP;Sistema Unix|1
+COMPUTING_HISTORY|HARD|Leslie Lamport, premiado com o Turing Award por trabalhos em sistemas distribuídos, criou um dos algoritmos de consenso mais influentes, chamado:|Paxos;Raft (criado por Diego Ongaro e John Ousterhout);Two-Phase Commit apenas;MapReduce|1
 COMPUTING_HISTORY|HARD|Werner Vogels é atualmente CTO de qual empresa, sendo referência em sistemas distribuídos escaláveis?|Amazon;Google;Microsoft;Meta|1
-COMPUTING_HISTORY|HARD|Jay Kreps, Neha Narkhede e Jun Rao são os criadores originais do:|Apache Kafka;Apache Spark;Apache Hadoop;Apache Cassandra|1
-COMPUTING_HISTORY|HARD|Eric Evans é reconhecido como o autor do livro fundador sobre:|Domain-Driven Design (DDD);Clean Architecture;Extreme Programming;Microservices Patterns|1
-COMPUTING_HISTORY|HARD|Sam Newman é um autor de referência ao escrever sobre o tema de:|Microservices;Bancos de dados relacionais;Sistemas operacionais;Redes neurais|1
-COMPUTING_HISTORY|HARD|Douglas Crockford é conhecido por popularizar/especificar o formato:|JSON;XML;YAML;BSON|1
-COMPUTING_HISTORY|HARD|Butler Lampson é um cientista da computação premiado com o Turing Award por contribuições em:|Sistemas distribuídos, redes e sistemas operacionais;Redes sociais;Design gráfico;Marketing de tecnologia|1
+COMPUTING_HISTORY|HARD|Jay Kreps, Neha Narkhede e Jun Rao criaram, na LinkedIn, uma plataforma distribuída de streaming de eventos chamada:|Apache Kafka;Apache Spark;Apache Hadoop;Apache Cassandra|1
+COMPUTING_HISTORY|HARD|Eric Evans escreveu, em 2003, o livro que fundou uma abordagem de modelagem de software focada no domínio, chamada:|Domain-Driven Design (DDD);Clean Architecture;Extreme Programming;Microservices Patterns|1
+COMPUTING_HISTORY|HARD|Sam Newman, autor de "Building Microservices", é um autor de referência ao escrever sobre o tema de:|Microservices;Bancos de dados relacionais;Sistemas operacionais;Redes neurais|1
+COMPUTING_HISTORY|HARD|Douglas Crockford popularizou e especificou um formato de intercâmbio de dados derivado da sintaxe do JavaScript, chamado:|JSON;XML;YAML;BSON|1
+COMPUTING_HISTORY|HARD|Butler Lampson, pesquisador do Xerox PARC e da Microsoft Research, recebeu o Turing Award por contribuições em:|Sistemas distribuídos, redes e sistemas operacionais;Redes sociais;Design gráfico;Marketing de tecnologia|1
 COMPUTING_HISTORY|HARD_PLUS|Ralph Johnson e Richard Helm, junto com Erich Gamma e John Vlissides, formam o grupo conhecido como:|Gang of Four (GoF);Big Four da IA;Core Team do Kotlin;Fundadores da Apache Foundation|1
 COMPUTING_HISTORY|HARD_PLUS|Grady Booch, além de contribuir para o UML, é conhecido por popularizar conceitos de:|Design orientado a objetos em larga escala;Criptografia de chave pública;Bancos de dados NoSQL;Redes neurais profundas|1
-COMPUTING_HISTORY|HARD_PLUS|Jose Valim é o criador da linguagem:|Elixir;Erlang;Clojure;Scala|1
-COMPUTING_HISTORY|HARD_PLUS|Robert Tarjan é um cientista da computação premiado por contribuições fundamentais em:|Algoritmos e estruturas de dados em grafos;Interfaces gráficas;Bancos de dados relacionais;Redes sociais|1
+COMPUTING_HISTORY|HARD_PLUS|José Valim criou uma linguagem funcional construída sobre a máquina virtual do Erlang, chamada:|Elixir;Erlang;Clojure;Scala|1
+COMPUTING_HISTORY|HARD_PLUS|Robert Tarjan, premiado com o Turing Award por algoritmos como o de componentes fortemente conexas, é reconhecido por contribuições fundamentais em:|Algoritmos e estruturas de dados em grafos;Interfaces gráficas;Bancos de dados relacionais;Redes sociais|1
 COMPUTING_HISTORY|HARD_PLUS|Guido van Rossum, criador do Python, trabalhou por um período em qual grande empresa de tecnologia relacionada ao design da linguagem?|Dropbox (entre outras, ao longo de sua carreira);Nenhuma empresa, apenas projetos pessoais;Apenas universidades;Apenas start-ups de jogos|1
 COMPUTING_HISTORY|HARD_PLUS|Peter Naur contribuiu significativamente para a notação formal usada para descrever gramáticas de linguagens, conhecida como:|BNF (Backus-Naur Form);UML;EBNF exclusivamente criada por ele sozinho;JSON Schema|1
-COMPUTING_HISTORY|HARD_PLUS|Diego Ongaro e John Ousterhout são os criadores do algoritmo de consenso:|Raft;Paxos;Two-Phase Commit;Byzantine Fault Tolerance clássico|1
-COMPUTING_HISTORY|HARD_PLUS|Roberto Ierusalimschy é um dos criadores da linguagem:|Lua;Ruby;Python;Elixir|1
+COMPUTING_HISTORY|HARD_PLUS|Diego Ongaro e John Ousterhout criaram, com foco em ser mais compreensível que o Paxos, um algoritmo de consenso chamado:|Raft;Paxos;Two-Phase Commit;Byzantine Fault Tolerance clássico|1
+COMPUTING_HISTORY|HARD_PLUS|Roberto Ierusalimschy, da PUC-Rio, liderou a criação de uma linguagem leve muito usada em jogos e sistemas embarcados, chamada:|Lua;Ruby;Python;Elixir|1
 COMPUTING_HISTORY|HARD_PLUS|Anders Hejlsberg, além do C#, também liderou o design de qual linguagem/superset popular para tipagem em JavaScript?|TypeScript;CoffeeScript;Dart;Flow|1
-COMPUTING_HISTORY|HARD_PLUS|Jim Gray é um cientista da computação premiado com o Turing Award por contribuições fundamentais a:|Processamento de transações em bancos de dados;Redes sociais;Criptografia moderna;Interfaces gráficas|1
+COMPUTING_HISTORY|HARD_PLUS|Jim Gray, premiado com o Turing Award em 1998, fez contribuições fundamentais a:|Processamento de transações em bancos de dados;Redes sociais;Criptografia moderna;Interfaces gráficas|1
 COMPUTING_HISTORY|VERY_HARD|O termo "Programação Extrema" (XP) foi formalizado por Kent Beck durante um projeto na empresa:|Chrysler (projeto C3);Google;IBM;Microsoft|1
 COMPUTING_HISTORY|VERY_HARD|Barbara Liskov liderou o desenvolvimento da linguagem CLU, pioneira em:|Tipos abstratos de dados;Programação lógica;Redes neurais;Criptografia de chave pública|1
 COMPUTING_HISTORY|VERY_HARD|Vint Cerf e Bob Kahn são coautores do design original do protocolo:|TCP/IP;HTTP;DNS;SMTP|1
 COMPUTING_HISTORY|VERY_HARD|O algoritmo de Dijkstra, criado por Edsger Dijkstra, resolve o problema de:|Caminho mínimo em grafos;Ordenação de arrays;Compressão de dados;Balanceamento de árvores binárias|1
 COMPUTING_HISTORY|VERY_HARD|Donald Knuth também é conhecido por criar o sistema de tipografia/preparação de documentos:|TeX;LaTeX (criado depois por Leslie Lamport com base no TeX);Markdown;PostScript|1
-COMPUTING_HISTORY|VERY_HARD|John Carmack é amplamente reconhecido por seu trabalho pioneiro em:|Motores gráficos de jogos (game engines) 3D;Bancos de dados distribuídos;Protocolos de rede;Sistemas operacionais embarcados|1
+COMPUTING_HISTORY|VERY_HARD|John Carmack, responsável por motores como Doom e Quake, é amplamente reconhecido por seu trabalho pioneiro em:|Motores gráficos de jogos (game engines) 3D;Bancos de dados distribuídos;Protocolos de rede;Sistemas operacionais embarcados|1
 COMPUTING_HISTORY|VERY_HARD|Robert Griesemer, além de coautor do Go, também trabalhou anteriormente em qual máquina virtual da Google?|V8 (motor JavaScript);JVM;.NET CLR;LLVM|1
-COMPUTING_HISTORY|VERY_HARD|Urs Hölzle é reconhecido por seu papel na construção da infraestrutura técnica em larga escala da:|Google;Amazon;Microsoft;Meta|1
+COMPUTING_HISTORY|VERY_HARD|Urs Hölzle, um dos primeiros engenheiros da Google, é reconhecido por construir a infraestrutura técnica em larga escala da:|Google;Amazon;Microsoft;Meta|1
 COMPUTING_HISTORY|VERY_HARD|O conceito de "Programação Literária" (Literate Programming) foi proposto por:|Donald Knuth;Dennis Ritchie;Ken Thompson;Alan Kay|1
 COMPUTING_HISTORY|VERY_HARD|Alonzo Church é reconhecido por criar o cálculo lambda, base teórica fundamental para:|Linguagens de programação funcional;Redes de computadores;Bancos de dados relacionais;Sistemas operacionais|1
 COMPUTING_HISTORY|EXPERT|O algoritmo de consenso Paxos, criado por Leslie Lamport, foi originalmente apresentado através de um artigo com uma narrativa envolvendo:|Uma ilha grega fictícia chamada Paxos;Um sistema bancário real;Um protocolo militar real;Um jogo de tabuleiro comercial|1
-COMPUTING_HISTORY|EXPERT|Robin Milner é reconhecido por contribuições fundamentais como a criação da linguagem funcional:|ML (MetaLanguage);Haskell;Erlang;Clojure|1
-COMPUTING_HISTORY|EXPERT|Tony Hoare é conhecido por criar o algoritmo de ordenação:|Quicksort;Mergesort;Bubble sort;Heapsort|1
+COMPUTING_HISTORY|EXPERT|Robin Milner, premiado com o Turing Award, criou uma linguagem funcional com sistema de tipos polimórficos, chamada:|ML (MetaLanguage);Haskell;Erlang;Clojure|1
+COMPUTING_HISTORY|EXPERT|Tony Hoare, que chamou a invenção da referência nula de seu "erro de um bilhão de dólares", criou em 1959 um algoritmo de ordenação muito eficiente baseado em divisão e conquista, chamado:|Quicksort;Mergesort;Bubble sort;Heapsort|1
 COMPUTING_HISTORY|EXPERT|Tony Hoare também é famoso por se referir à invenção do valor nulo (null reference) como:|Seu "erro de um bilhão de dólares";Sua maior conquista sem ressalvas;Uma decisão sem impacto prático;Uma ideia de outro pesquisador, não dele|1
 COMPUTING_HISTORY|EXPERT|Edsger Dijkstra é autor do famoso ensaio crítico sobre o uso do comando GOTO, intitulado aproximadamente:|"Go To Statement Considered Harmful";"Clean Code Manifesto";"The Art of Structured Programming";"Refactoring Considered Essential"|1
-COMPUTING_HISTORY|EXPERT|Corrado Böhm e Giuseppe Jacopini contribuíram teoricamente para fundamentar a:|Programação estruturada;Programação orientada a objetos;Programação funcional;Programação lógica|1
+COMPUTING_HISTORY|EXPERT|Corrado Böhm e Giuseppe Jacopini contribuíram teoricamente para fundamentar o teorema que embasa a:|Programação estruturada;Programação orientada a objetos;Programação funcional;Programação lógica|1
 COMPUTING_HISTORY|EXPERT|John Backus, além do Fortran, também é conhecido por uma palestra crítica ao estilo de programação imperativo, defendendo estilo:|Funcional;Orientado a objetos;Procedural clássico;Orientado a eventos|1
 COMPUTING_HISTORY|EXPERT|Niklaus Wirth também é autor da célebre frase relacionando algoritmos e estruturas de dados ao:|Próprio conceito de "programas" ("Algorithms + Data Structures = Programs");Conceito de microserviços;Conceito de containers;Conceito de DevOps|1
 COMPUTING_HISTORY|EXPERT|Whitfield Diffie e Martin Hellman publicaram seu trabalho seminal sobre criptografia de chave pública em qual década?|1970;1950;1990;2000|1
@@ -135,9 +135,9 @@ COMPUTING_HISTORY|MASTER|Stephen Cook é conhecido por formalizar o problema NP-
 COMPUTING_HISTORY|MASTER|Leonid Levin, de forma independente e quase simultânea a Stephen Cook, também contribuiu para a teoria da:|NP-completude;Criptografia de curvas elípticas;Redes neurais convolucionais;Sistemas de arquivos distribuídos|1
 COMPUTING_HISTORY|MASTER|Amir Pnueli é reconhecido por introduzir o uso de qual formalismo lógico para especificação e verificação de sistemas concorrentes?|Lógica Temporal;Álgebra Relacional;Cálculo Lambda;Lógica Difusa|1
 COMPUTING_HISTORY|MASTER|Barbara Liskov e Jeannette Wing formalizaram, em um artigo acadêmico, o conceito hoje conhecido como:|Princípio de Substituição de Liskov (LSP);Teorema CAP;Algoritmo de Paxos;Modelo Relacional|1
-COMPUTING_HISTORY|MASTER|Leslie Lamport recebeu o Turing Award com destaque para contribuições sobre:|Fundamentos teóricos de sistemas distribuídos e concorrentes;Design de compiladores C;Redes sociais em larga escala;Interfaces gráficas modernas|1
-COMPUTING_HISTORY|MASTER|Eric Brewer é reconhecido por formular o que hoje é conhecido como:|Teorema CAP;Princípios SOLID;Algoritmo de Dijkstra;Modelo Ator (Actor Model)|1
-COMPUTING_HISTORY|MASTER|Carl Hewitt é reconhecido por propor originalmente o:|Modelo de Atores (Actor Model), influente em sistemas concorrentes;Modelo Relacional;Algoritmo RSA;Protocolo TCP/IP|1
+COMPUTING_HISTORY|MASTER|Leslie Lamport, criador do algoritmo Paxos, recebeu o Turing Award com destaque para contribuições sobre:|Fundamentos teóricos de sistemas distribuídos e concorrentes;Design de compiladores C;Redes sociais em larga escala;Interfaces gráficas modernas|1
+COMPUTING_HISTORY|MASTER|Eric Brewer formulou, em 2000, um teorema sobre os limites entre consistência, disponibilidade e tolerância a partições em sistemas distribuídos, conhecido como:|Teorema CAP;Princípios SOLID;Algoritmo de Dijkstra;Modelo Ator (Actor Model)|1
+COMPUTING_HISTORY|MASTER|Carl Hewitt propôs, em 1973, um modelo de concorrência em que unidades independentes se comunicam por mensagens, conhecido como:|Modelo de Atores (Actor Model), influente em sistemas concorrentes;Modelo Relacional;Algoritmo RSA;Protocolo TCP/IP|1
 COMPUTING_HISTORY|MASTER|Barbara Liskov recebeu o Turing Award (2008) reconhecendo contribuições práticas e teóricas em:|Design de linguagens de programação e sistemas distribuídos confiáveis;Design gráfico;Marketing digital;Redes sociais|1
 COMPUTING_HISTORY|MASTER|Niklaus Wirth também projetou, além do Pascal, linguagens posteriores como Modula-2 e:|Oberon;Kotlin;Elixir;Swift|1
 COMPUTING_HISTORY|MASTER|O termo "Programação Orientada a Aspectos" (AOP) foi popularizado por um grupo de pesquisa liderado por:|Gregor Kiczales;Kent Beck;Martin Fowler;Robert C. Martin|1
