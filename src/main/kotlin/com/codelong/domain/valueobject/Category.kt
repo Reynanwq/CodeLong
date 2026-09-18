@@ -2,8 +2,6 @@ package com.codelong.domain.valueobject
 
 import com.codelong.domain.exception.Errors
 
-
-
 /**
  * Categorias de conhecimento cobertas pelas perguntas.
  *
@@ -26,7 +24,15 @@ enum class Category {
     GIT,
     DOCKER,
     KAFKA,
-    SYSTEM_DESIGN;
+    SYSTEM_DESIGN,
+    COMPUTING_HISTORY,
+    AWS,
+    SECURITY,
+    ACRONYMS,
+    OBSERVABILITY,
+    CONCURRENCY,
+    RESILIENCE,
+    EVENT_DRIVEN;
 
     companion object {
         fun fromName(name: String): Category =

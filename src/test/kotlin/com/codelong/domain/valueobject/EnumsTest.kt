@@ -40,8 +40,8 @@ class EnumsTest {
     }
 
     @Test
-    fun `Category possui as 16 categorias esperadas`() {
-        assertEquals(16, Category.entries.size)
+    fun `Category possui as 24 categorias esperadas`() {
+        assertEquals(24, Category.entries.size)
     }
 
     @ParameterizedTest
