@@ -1,0 +1,73 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { Observable } from 'rxjs';
+import {
+  AnswerResponse,
+  AuthResponse,
+  GameResponse,
+  PageResponse,
+  QuestionResponse,
+  RankingEntry,
+  RankingResponse,
+  User
+} from './models';
+
+const API_BASE = 'http://localhost:8080/api';
+
+@Injectable({ providedIn: 'root' })
+export class ApiService {
+  private readonly http = inject(HttpClient);
+
+  register(username: string, email: string, password: string): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${API_BASE}/auth/register`, { username, email, password });
+  }
+
+  login(identifier: string, password: string): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${API_BASE}/auth/login`, { identifier, password });
+  }
+
+  me(): Observable<User> {
+    return this.http.get<User>(`${API_BASE}/users/me`);
+  }
+
+  startGame(): Observable<GameResponse> {
+    return this.http.post<GameResponse>(`${API_BASE}/games`, null);
+  }
+
+  inProgressGame(): Observable<GameResponse | null> {
+    return this.http.get<GameResponse | null>(`${API_BASE}/games/in-progress`);
+  }
+
+  game(id: string): Observable<GameResponse> {
+    return this.http.get<GameResponse>(`${API_BASE}/games/${id}`);
+  }
+
+  history(page = 0, size = 10, status?: string): Observable<PageResponse<GameResponse>> {
+    let params = new HttpParams().set('page', page).set('size', size);
+    if (status) {
+      params = params.set('status', status);
+    }
+    return this.http.get<PageResponse<GameResponse>>(`${API_BASE}/games`, { params });
+  }
+
+  currentQuestion(gameId: string): Observable<QuestionResponse> {
+    return this.http.get<QuestionResponse>(`${API_BASE}/games/${gameId}/current-question`);
+  }
+
+  answer(gameId: string, optionId: string): Observable<AnswerResponse> {
+    return this.http.post<AnswerResponse>(`${API_BASE}/games/${gameId}/answers`, { optionId });
+  }
+
+  abandon(gameId: string): Observable<GameResponse> {
+    return this.http.post<GameResponse>(`${API_BASE}/games/${gameId}/abandon`, null);
+  }
+
+  ranking(page = 0, size = 10): Observable<RankingResponse> {
+    const params = new HttpParams().set('page', page).set('size', size);
+    return this.http.get<RankingResponse>(`${API_BASE}/rankings`, { params });
+  }
+
+  myRanking(): Observable<RankingEntry | null> {
+    return this.http.get<RankingEntry | null>(`${API_BASE}/rankings/me`);
+  }
+}
