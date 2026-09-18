@@ -5,6 +5,7 @@ import { ApiService } from '../../core/api.service';
 import { AnswerResponse, GameResponse, QuestionResponse } from '../../core/models';
 
 const TICK_MILLIS = 200;
+const FINISHED_ACTIONS = 3;
 
 @Component({
   selector: 'app-play',
@@ -68,12 +69,33 @@ const TICK_MILLIS = 200;
             {{ current.correctAnswers }} acertos &middot; {{ current.wrongAnswers }} erros
           </p>
           <div class="finished-actions">
-            <button class="primary" (click)="newGame()" [disabled]="loading()">
+            <button
+              class="primary"
+              [class.selected]="finishedAction() === 0"
+              (mouseenter)="finishedAction.set(0)"
+              (click)="newGame()"
+              [disabled]="loading()"
+            >
               {{ loading() ? 'Criando...' : 'Jogar novamente' }}
             </button>
-            <a class="secondary" routerLink="/ranking">Ver ranking</a>
-            <a class="secondary" routerLink="/">Voltar ao inicio</a>
+            <a
+              class="secondary"
+              [class.selected]="finishedAction() === 1"
+              (mouseenter)="finishedAction.set(1)"
+              routerLink="/ranking"
+              >Ver ranking</a
+            >
+            <a
+              class="secondary"
+              [class.selected]="finishedAction() === 2"
+              (mouseenter)="finishedAction.set(2)"
+              routerLink="/"
+              >Voltar ao inicio</a
+            >
           </div>
+          <p class="muted center hint">
+            <kbd>&larr;</kbd> <kbd>&rarr;</kbd> para escolher e <kbd>Enter</kbd> para confirmar
+          </p>
         </section>
       } @else if (question(); as currentQuestion) {
         <section class="panel">
@@ -142,6 +164,7 @@ export class PlayPage implements OnInit, OnDestroy {
   readonly question = signal<QuestionResponse | null>(null);
   readonly feedback = signal<AnswerResponse | null>(null);
   readonly selectedIndex = signal(0);
+  readonly finishedAction = signal(0);
   readonly secondsLeft = signal(0);
   readonly timedOut = signal(false);
   readonly finished = signal(false);
@@ -180,6 +203,7 @@ export class PlayPage implements OnInit, OnDestroy {
     this.question.set(null);
     this.feedback.set(null);
     this.selectedIndex.set(0);
+    this.finishedAction.set(0);
     this.secondsLeft.set(0);
     this.timedOut.set(false);
     this.finished.set(false);
@@ -214,6 +238,18 @@ export class PlayPage implements OnInit, OnDestroy {
   }
 
   onKeydown(event: KeyboardEvent): void {
+    if (this.finished()) {
+      if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+        event.preventDefault();
+        this.moveFinished(event.key === 'ArrowRight' ? 1 : -1);
+        return;
+      }
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        this.activateFinished();
+      }
+      return;
+    }
     if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
       event.preventDefault();
       this.move(event.key === 'ArrowDown' ? 1 : -1);
@@ -222,6 +258,28 @@ export class PlayPage implements OnInit, OnDestroy {
     if (event.key === 'Enter') {
       event.preventDefault();
       this.confirm();
+    }
+  }
+
+  /** Move a selecao entre as acoes da tela de fim (Jogar novamente / Ranking / Inicio). */
+  private moveFinished(delta: number): void {
+    this.finishedAction.set((this.finishedAction() + delta + FINISHED_ACTIONS) % FINISHED_ACTIONS);
+  }
+
+  /** Executa a acao selecionada na tela de fim (Enter). */
+  private activateFinished(): void {
+    if (this.loading()) {
+      return;
+    }
+    switch (this.finishedAction()) {
+      case 0:
+        this.newGame();
+        return;
+      case 1:
+        this.router.navigateByUrl('/ranking');
+        return;
+      default:
+        this.router.navigateByUrl('/');
     }
   }
 

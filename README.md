@@ -167,15 +167,17 @@ Para reencontrar a partida aberta sem guardar o `id`, use `GET /api/games/in-pro
 
 ## 6. Ranking
 
-- Mostra **apenas a melhor pontuação de cada usuário** (uma linha por usuário).
+- Ranking **separado por modo**: `?mode=CLASSIC` ou `?mode=GENOCIDA`. Sem o parâmetro, os dois modos aparecem juntos.
+- Lista **todas as tentativas elegíveis** (concluídas, abandonadas ou derrotadas) — cada partida ocupa uma linha.
+- Mínimo de respostas para entrar: **10 no clássico** e **5 no genocida**.
 - Paginado.
 - **Desempate determinístico**, nesta ordem:
   1. maior pontuação;
-  2. maior número de acertos;
-  3. menor tempo total (duração da partida);
+  2. menor tempo total (duração da partida);
+  3. maior número de acertos;
   4. data de obtenção da pontuação (mais antiga primeiro).
 
-`GET /api/rankings/me` retorna a melhor entrada do usuário autenticado e sua posição (ou **204** se ele ainda não concluiu nenhuma partida).
+`GET /api/rankings/me` retorna a melhor entrada do usuário autenticado e sua posição (ou **204** se ele ainda não concluiu nenhuma partida). Aceita o mesmo `?mode=` para restringir a posição a um modo.
 
 ---
 
@@ -225,8 +227,8 @@ Cabeçalho autenticado: `Authorization: Bearer <token>`.
 | GET | `/api/games/{gameId}/current-question` | dono | Pergunta atual (sem resposta) |
 | POST | `/api/games/{gameId}/answers` | dono | Envia a escolha |
 | POST | `/api/games/{gameId}/abandon` | dono | Abandona a partida |
-| GET | `/api/rankings` | autenticado | Ranking paginado |
-| GET | `/api/rankings/me` | autenticado | Posição do próprio usuário (204 se não ranqueado) |
+| GET | `/api/rankings` | autenticado | Ranking paginado (`mode`, `page`, `size`) |
+| GET | `/api/rankings/me` | autenticado | Posição do próprio usuário (`mode`; 204 se não ranqueado) |
 | POST | `/api/admin/questions` | ADMIN | Cria pergunta |
 | GET | `/api/admin/questions` | ADMIN | Lista paginada/filtrada |
 | GET | `/api/admin/questions/{id}` | ADMIN | Detalhe da pergunta |
@@ -403,7 +405,7 @@ mvn -s .mvn/settings.xml verify
 - **Integração** — Testcontainers com MongoDB 7 real:
   - persistência: round-trip de usuário/pergunta/partida, índices únicos, busca filtrada e paginada, exclusão;
   - **optimistic lock verificado de verdade**: duas cópias da mesma partida, a segunda gravação lança `ConcurrentGameModificationException` (409);
-  - ranking por agregação do Mongo (melhor partida concluída por usuário, partidas em andamento ignoradas, posição individual);
+  - ranking por agregação do Mongo (todas as tentativas elegíveis, separadas por modo clássico/genocida, partidas em andamento ignoradas, posição individual);
   - **E2E via HTTP** (porta aleatória): registro/login, 401 sem token, 403 de usuário na área admin, fluxo completo jogar→responder→concluir→ranking, retomada de partida em andamento (200), histórico com filtro de status, 204 em `/api/rankings/me` e `/api/games/in-progress` sem dados, abandono com 409 depois, 400 de opção inválida, 404 de partida inexistente e o ciclo de vida completo da pergunta e do usuário pelo admin.
 
 ---

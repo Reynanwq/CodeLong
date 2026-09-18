@@ -63,12 +63,16 @@ export class ApiService {
     return this.http.post<GameResponse>(`${API_BASE}/games/${gameId}/abandon`, null);
   }
 
-  ranking(page = 0, size = 10): Observable<RankingResponse> {
-    const params = new HttpParams().set('page', page).set('size', size);
+  ranking(page = 0, size = 10, mode?: string): Observable<RankingResponse> {
+    let params = new HttpParams().set('page', page).set('size', size);
+    if (mode) {
+      params = params.set('mode', mode);
+    }
     return this.http.get<RankingResponse>(`${API_BASE}/rankings`, { params });
   }
 
-  myRanking(): Observable<RankingEntry | null> {
-    return this.http.get<RankingEntry | null>(`${API_BASE}/rankings/me`);
+  myRanking(mode?: string): Observable<RankingEntry | null> {
+    const params = mode ? new HttpParams().set('mode', mode) : undefined;
+    return this.http.get<RankingEntry | null>(`${API_BASE}/rankings/me`, { params });
   }
 }

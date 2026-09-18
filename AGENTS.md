@@ -147,7 +147,7 @@ $login = Invoke-WebRequest http://localhost:8080/api/auth/login -Method Post `
 $login.Headers['Access-Control-Allow-Origin']   # esperado: http://localhost:3000
 ```
 
-Fluxo funcional: entrar com `admin`/`admin12345` → **Nova partida** → responder com **setas ↑ ↓ + Enter** → observar o **cronometro de 20s** → **Ranking**.
+Fluxo funcional: entrar com `admin`/`admin12345` → **Nova partida** → responder com **setas ↑ ↓ + Enter** → observar o **cronometro de 20s** → **Ranking** (abas Classico/Genocida). Na tela de fim/derrota, **Enter** repete a partida e **← →** escolhem entre jogar novamente, ver ranking ou voltar ao inicio.
 
 ---
 
@@ -204,5 +204,5 @@ docker volume rm codelong-mongo-data
 ## Regras de negocio que afetam o uso
 
 - **Tempo por pergunta**: 20 segundos (`GameRules.ANSWER_TIME_LIMIT_SECONDS`). Se o tempo esgotar, a pergunta conta como **erro**, a partida **avanca** e a resposta enviada depois e recusada com **409 `ANSWER_TIME_EXPIRED`**.
-- **Ranking**: entram **todas as partidas** `COMPLETED`, `ABANDONED` e `DEFEATED` com **no minimo 10 respostas (CLASSIC) ou 5 (GENOCIDA)**. Desempate: `score` ↓ → menor tempo → mais acertos → data mais antiga.
+- **Ranking**: entram **todas as partidas** `COMPLETED`, `ABANDONED` e `DEFEATED` com **no minimo 10 respostas (CLASSIC) ou 5 (GENOCIDA)**. O ranking e **separado por modo** (`GET /api/rankings?mode=CLASSIC|GENOCIDA`); sem o parametro, mistura os dois. Desempate: `score` ↓ → menor tempo → mais acertos → data mais antiga.
 - **Uma partida inclui todas as perguntas ativas** (hoje 840). Por isso o minimo de respostas existe: sem ele, ninguem apareceria no ranking.

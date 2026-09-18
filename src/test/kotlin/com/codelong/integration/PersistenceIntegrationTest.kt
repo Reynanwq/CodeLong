@@ -12,6 +12,7 @@ import com.codelong.domain.valueobject.Category
 import com.codelong.domain.valueobject.Difficulty
 import com.codelong.domain.valueobject.Email
 import com.codelong.domain.valueobject.GameId
+import com.codelong.domain.valueobject.GameMode
 import com.codelong.domain.valueobject.QuestionId
 import com.codelong.domain.valueobject.QuestionStatus
 import com.codelong.domain.valueobject.UserId
@@ -183,12 +184,12 @@ class PersistenceIntegrationTest {
         persistCompletedGame(id = "g-2", userId = "u-1", username = "alice", difficulty = Difficulty.MASTER)
         persistCompletedGame(id = "g-3", userId = "u-2", username = "bob", difficulty = Difficulty.EASY)
 
-        val ranking = rankingRepository.findRanking(0, 10)
+        val ranking = rankingRepository.findRanking(0, 10, null)
 
         assertEquals(3, ranking.size)
         assertEquals(listOf("alice", "alice", "bob"), ranking.map { it.username })
         assertEquals(Difficulty.MASTER.points * GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING, ranking.first().score)
-        assertEquals(3L, rankingRepository.countRankedEntries())
+        assertEquals(3L, rankingRepository.countRankedEntries(null))
     }
 
     @Test
@@ -197,25 +198,25 @@ class PersistenceIntegrationTest {
         persistCompletedGame(id = "g-2", userId = "u-2", username = "bob", difficulty = Difficulty.EASY)
         gameRepository.save(Fixtures.game(id = "g-3", userId = "u-3", username = "carol"))
 
-        val ranking = rankingRepository.findRanking(0, 10)
+        val ranking = rankingRepository.findRanking(0, 10, null)
         assertEquals(listOf("alice", "bob"), ranking.map { it.username })
 
-        val bob = rankingRepository.findUserBestScore(UserId("u-2"))!!
-        assertEquals(1L, rankingRepository.countUsersBetterThan(bob))
-        assertEquals(2L, rankingRepository.countRankedEntries())
+        val bob = rankingRepository.findUserBestScore(UserId("u-2"), null)!!
+        assertEquals(1L, rankingRepository.countUsersBetterThan(bob, null))
+        assertEquals(2L, rankingRepository.countRankedEntries(null))
     }
 
     @Test
     fun `ranking inclui partidas abandonadas com o minimo de respostas`() {
         persistAbandonedGame(id = "g-1", userId = "u-1", username = "alice", difficulty = Difficulty.HARD)
 
-        val ranking = rankingRepository.findRanking(0, 10)
+        val ranking = rankingRepository.findRanking(0, 10, null)
 
         assertEquals(1, ranking.size)
         assertEquals("alice", ranking.first().username)
         assertEquals(Difficulty.HARD.points * GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING, ranking.first().score)
         assertEquals(GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING, ranking.first().answeredQuestions)
-        assertEquals(1L, rankingRepository.countRankedEntries())
+        assertEquals(1L, rankingRepository.countRankedEntries(null))
     }
 
     @Test
@@ -231,15 +232,15 @@ class PersistenceIntegrationTest {
         repeat(belowMinimum) { loaded.answer(loaded.currentQuestion().correctOption, Fixtures.NOW) }
         gameRepository.save(loaded)
 
-        assertTrue(rankingRepository.findRanking(0, 10).isEmpty())
-        assertEquals(0L, rankingRepository.countRankedEntries())
+        assertTrue(rankingRepository.findRanking(0, 10, null).isEmpty())
+        assertEquals(0L, rankingRepository.countRankedEntries(null))
     }
 
     @Test
     fun `ranking inclui partida derrotada no modo genocida`() {
         persistDefeatedGame(id = "g-1", userId = "u-1", username = "alice", difficulty = Difficulty.EASY)
 
-        val ranking = rankingRepository.findRanking(0, 10)
+        val ranking = rankingRepository.findRanking(0, 10, null)
 
         assertEquals(1, ranking.size)
         assertEquals("alice", ranking.first().username)
@@ -258,11 +259,28 @@ class PersistenceIntegrationTest {
             correctAnswers = GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING_GENOCIDA - 2
         )
 
-        val ranking = rankingRepository.findRanking(0, 10)
+        val ranking = rankingRepository.findRanking(0, 10, null)
 
         assertEquals(1, ranking.size)
         assertEquals("alice", ranking.first().username)
         assertEquals(GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING_GENOCIDA, ranking.first().answeredQuestions)
+    }
+
+    @Test
+    fun `ranking separa classico e genocida quando o modo e informado`() {
+        persistCompletedGame(id = "g-1", userId = "u-1", username = "alice", difficulty = Difficulty.EASY)
+        persistDefeatedGame(id = "g-2", userId = "u-2", username = "bob", difficulty = Difficulty.EASY)
+
+        val classic = rankingRepository.findRanking(0, 10, GameMode.CLASSIC)
+        val genocida = rankingRepository.findRanking(0, 10, GameMode.GENOCIDA)
+
+        assertEquals(listOf("alice"), classic.map { it.username })
+        assertEquals(listOf("bob"), genocida.map { it.username })
+        assertEquals(1L, rankingRepository.countRankedEntries(GameMode.CLASSIC))
+        assertEquals(1L, rankingRepository.countRankedEntries(GameMode.GENOCIDA))
+        assertEquals(2L, rankingRepository.countRankedEntries(null))
+        assertNull(rankingRepository.findUserBestScore(UserId("u-1"), GameMode.GENOCIDA))
+        assertEquals("alice", rankingRepository.findUserBestScore(UserId("u-1"), GameMode.CLASSIC)?.username)
     }
 
     private fun persistDefeatedGame(

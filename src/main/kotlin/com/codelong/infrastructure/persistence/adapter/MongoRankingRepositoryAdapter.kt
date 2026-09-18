@@ -20,30 +20,32 @@ import org.springframework.stereotype.Repository
 /**
  * Ranking calculado por agregacao no MongoDB.
  *
- * Entram **todas as tentativas** concluidas, abandonadas ou derrotadas (modo
- * classico e genocida misturados) que atendam ao minimo de respostas do seu
- * modo (ver [RankingPolicy.minimumAnswers]). Cada partida ocupa uma linha,
- * ordenada pela politica de desempate do dominio.
+ * Entram **todas as tentativas** concluidas, abandonadas ou derrotadas que
+ * atendam ao minimo de respostas do seu modo (ver
+ * [RankingPolicy.minimumAnswers]). Cada partida ocupa uma linha, ordenada pela
+ * politica de desempate do dominio. Quando um modo e informado, apenas as
+ * partidas daquele modo entram no ranking (classico e genocida sao separados).
  */
 @Repository
 class MongoRankingRepositoryAdapter(
     private val mongoTemplate: MongoTemplate
 ) : RankingRepository {
 
-    override fun findRanking(page: Int, size: Int): List<RankEntry> =
-        rankedEntries().drop(page * size).take(size)
+    override fun findRanking(page: Int, size: Int, mode: GameMode?): List<RankEntry> =
+        rankedEntries(mode).drop(page * size).take(size)
 
-    override fun findUserBestScore(userId: UserId): RankEntry? =
-        rankedEntries().firstOrNull { it.userId == userId }
+    override fun findUserBestScore(userId: UserId, mode: GameMode?): RankEntry? =
+        rankedEntries(mode).firstOrNull { it.userId == userId }
 
-    override fun countUsersBetterThan(entry: RankEntry): Long =
-        rankedEntries().count { RankingPolicy.isBetter(it, entry) }.toLong()
+    override fun countUsersBetterThan(entry: RankEntry, mode: GameMode?): Long =
+        rankedEntries(mode).count { RankingPolicy.isBetter(it, entry) }.toLong()
 
-    override fun countRankedEntries(): Long = rankedEntries().size.toLong()
+    override fun countRankedEntries(mode: GameMode?): Long = rankedEntries(mode).size.toLong()
 
-    private fun rankedEntries(): List<RankEntry> {
-        val stages = listOf(
+    private fun rankedEntries(mode: GameMode?): List<RankEntry> {
+        val stages = listOfNotNull(
             Aggregation.match(Criteria.where(MongoSchema.Field.STATUS).`in`(rankedStatuses())),
+            mode?.let { Aggregation.match(Criteria.where(MongoSchema.Field.MODE).`is`(it.name)) },
             Aggregation.addFields()
                 .addField(MongoSchema.Field.ANSWERED_QUESTIONS)
                 .withValue(Document(OPERATOR_SIZE, DOCUMENT_ANSWERS))

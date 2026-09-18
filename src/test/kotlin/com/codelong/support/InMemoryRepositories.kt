@@ -18,6 +18,7 @@ import com.codelong.domain.port.UserSearch
 import com.codelong.domain.service.RankingPolicy
 import com.codelong.domain.valueobject.Email
 import com.codelong.domain.valueobject.GameId
+import com.codelong.domain.valueobject.GameMode
 import com.codelong.domain.valueobject.QuestionId
 import com.codelong.domain.valueobject.RankEntry
 import com.codelong.domain.valueobject.UserId
@@ -148,18 +149,19 @@ class InMemoryRankingRepository(
         entries.add(entry)
     }
 
-    override fun findRanking(page: Int, size: Int): List<RankEntry> =
-        ranked().drop(page * size).take(size)
+    override fun findRanking(page: Int, size: Int, mode: GameMode?): List<RankEntry> =
+        ranked(mode).drop(page * size).take(size)
 
-    override fun findUserBestScore(userId: UserId): RankEntry? =
-        ranked().firstOrNull { it.userId == userId }
+    override fun findUserBestScore(userId: UserId, mode: GameMode?): RankEntry? =
+        ranked(mode).firstOrNull { it.userId == userId }
 
-    override fun countUsersBetterThan(entry: RankEntry): Long =
-        ranked().count { RankingPolicy.isBetter(it, entry) }.toLong()
+    override fun countUsersBetterThan(entry: RankEntry, mode: GameMode?): Long =
+        ranked(mode).count { RankingPolicy.isBetter(it, entry) }.toLong()
 
-    override fun countRankedEntries(): Long = ranked().size.toLong()
+    override fun countRankedEntries(mode: GameMode?): Long = ranked(mode).size.toLong()
 
-    private fun ranked(): List<RankEntry> = entries
+    private fun ranked(mode: GameMode?): List<RankEntry> = entries
         .filter(RankingPolicy::isEligible)
+        .filter { mode == null || it.mode == mode }
         .sortedWith(RankingPolicy.comparator)
 }

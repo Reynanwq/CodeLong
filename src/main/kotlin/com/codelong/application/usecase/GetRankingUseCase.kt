@@ -5,9 +5,10 @@ import com.codelong.domain.exception.Errors
 
 import com.codelong.application.result.RankingPage
 import com.codelong.domain.port.RankingRepository
+import com.codelong.domain.valueobject.GameMode
 
 interface GetRankingUseCase {
-    fun ranking(page: Int, size: Int): RankingPage
+    fun ranking(page: Int, size: Int, mode: GameMode?): RankingPage
 }
 
 
@@ -16,7 +17,7 @@ class GetRankingUseCaseImpl(
 ) : GetRankingUseCase {
 
 
-    override fun ranking(page: Int, size: Int): RankingPage {
+    override fun ranking(page: Int, size: Int, mode: GameMode?): RankingPage {
         (page < 0).takeIf { it }?.let {
             throw Errors.invalidPage()
         }
@@ -24,14 +25,14 @@ class GetRankingUseCaseImpl(
             throw Errors.invalidPageSize(MIN_SIZE, MAX_SIZE)
         }
 
-        val entries = rankingRepository.findRanking(page, size)
+        val entries = rankingRepository.findRanking(page, size, mode)
         val positioned = entries.mapIndexed { index, entry ->
             entry.copy(position = page * size + index + 1)
         }
 
         return RankingPage(
             entries = positioned,
-            totalElements = rankingRepository.countRankedEntries(),
+            totalElements = rankingRepository.countRankedEntries(mode),
             page = page,
             size = size
         )

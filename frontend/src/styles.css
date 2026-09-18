@@ -253,6 +253,44 @@ button, .primary, .link {
   color: var(--brand-dark);
 }
 
+/* Destaque da acao selecionada por teclado na tela de fim de partida */
+.finished-actions .selected {
+  outline: 3px solid #c7d2fe;
+  outline-offset: 2px;
+}
+
+/* Abas de alternancia (ranking classico x genocida) */
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.tab {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.45rem 1rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.tab:hover {
+  border-color: var(--brand);
+  color: var(--brand-dark);
+}
+
+.tab.active {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: #fff;
+}
+
+.tab.danger.active {
+  background: var(--bad);
+  border-color: var(--bad);
+}
+
 .bar {
   height: 10px;
   border-radius: 999px;

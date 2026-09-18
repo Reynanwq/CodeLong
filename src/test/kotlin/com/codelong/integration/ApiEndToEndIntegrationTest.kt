@@ -177,6 +177,22 @@ class ApiEndToEndIntegrationTest {
         assertEquals(1L, ranking.json().long("totalElements"))
         assertEquals("alice", ranking.json().arr("entries").first().str("username"))
         assertEquals(questions.size, ranking.json().arr("entries").first().int("answeredQuestions"))
+
+        val classic = api.get("/api/rankings?mode=CLASSIC", playerToken)
+        assertEquals(200, classic.status)
+        assertEquals(1L, classic.json().long("totalElements"))
+        assertEquals("alice", classic.json().arr("entries").first().str("username"))
+
+        val genocida = api.get("/api/rankings?mode=GENOCIDA", playerToken)
+        assertEquals(200, genocida.status)
+        assertEquals(0L, genocida.json().long("totalElements"))
+
+        val mineGenocida = api.get("/api/rankings/me?mode=GENOCIDA", playerToken)
+        assertEquals(204, mineGenocida.status)
+
+        val invalidMode = api.get("/api/rankings?mode=INVALIDO", playerToken)
+        assertEquals(400, invalidMode.status)
+        assertEquals("game.mode.invalid", invalidMode.json().str("code"))
     }
 
     @Test

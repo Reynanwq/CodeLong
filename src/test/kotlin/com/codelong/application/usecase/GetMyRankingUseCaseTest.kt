@@ -21,14 +21,15 @@ class GetMyRankingUseCaseTest {
         score: Int,
         correctAnswers: Int = 1,
         totalTimeMillis: Long = 1_000,
-        achievedAtOffsetSeconds: Long = 0
+        achievedAtOffsetSeconds: Long = 0,
+        mode: GameMode = GameMode.CLASSIC
     ) = RankEntry(
         userId = UserId(id),
         username = id,
         score = score,
         correctAnswers = correctAnswers,
         wrongAnswers = 0,
-        mode = GameMode.CLASSIC,
+        mode = mode,
         answeredQuestions = 10,
         totalTimeMillis = totalTimeMillis,
         achievedAt = Fixtures.NOW.plusSeconds(achievedAtOffsetSeconds)
@@ -44,19 +45,19 @@ class GetMyRankingUseCaseTest {
     fun `retorna nulo quando o usuario nao concluiu partida`() {
         repository.add(entry("outro", score = 100))
 
-        assertNull(useCase.myRanking(UserId("u-1")))
+        assertNull(useCase.myRanking(UserId("u-1"), null))
     }
 
     @Test
     fun `retorna nulo em ranking vazio`() {
-        assertNull(useCase.myRanking(UserId("u-1")))
+        assertNull(useCase.myRanking(UserId("u-1"), null))
     }
 
     @Test
     fun `retorna posicao um quando ninguem e melhor`() {
         repository.add(entry("u-1", score = 500))
 
-        val rank = useCase.myRanking(UserId("u-1"))
+        val rank = useCase.myRanking(UserId("u-1"), null)
 
         assertEquals(1, rank?.position)
         assertEquals(500, rank?.score)
@@ -69,7 +70,7 @@ class GetMyRankingUseCaseTest {
         repository.add(entry("melhor-2", score = 400))
         repository.add(entry("u-1", score = 300))
 
-        assertEquals(3, useCase.myRanking(UserId("u-1"))?.position)
+        assertEquals(3, useCase.myRanking(UserId("u-1"), null)?.position)
     }
 
     @Test
@@ -78,7 +79,7 @@ class GetMyRankingUseCaseTest {
         repository.add(entry("u-1", score = 900))
         repository.add(entry("u-1", score = 400))
 
-        val rank = useCase.myRanking(UserId("u-1"))
+        val rank = useCase.myRanking(UserId("u-1"), null)
 
         assertEquals(900, rank?.score)
         assertEquals(1, rank?.position)
@@ -90,7 +91,7 @@ class GetMyRankingUseCaseTest {
             entry("u-1", score = 250, correctAnswers = 7, totalTimeMillis = 4_000, achievedAtOffsetSeconds = 30)
         )
 
-        val rank = useCase.myRanking(UserId("u-1"))
+        val rank = useCase.myRanking(UserId("u-1"), null)
 
         assertEquals(250, rank?.score)
         assertEquals(7, rank?.correctAnswers)
@@ -102,18 +103,38 @@ class GetMyRankingUseCaseTest {
     fun `nao altera a entrada armazenada`() {
         repository.add(entry("u-1", score = 100))
 
-        useCase.myRanking(UserId("u-1"))
+        useCase.myRanking(UserId("u-1"), null)
 
-        assertEquals(null, repository.findUserBestScore(UserId("u-1"))?.position)
+        assertEquals(null, repository.findUserBestScore(UserId("u-1"), null)?.position)
+    }
+
+    @Test
+    fun `filtra a posicao individual por modo`() {
+        repository.add(entry("u-1", score = 100, mode = GameMode.CLASSIC))
+        repository.add(entry("u-1", score = 300, mode = GameMode.GENOCIDA))
+        repository.add(entry("u-2", score = 900, mode = GameMode.GENOCIDA))
+
+        val classic = useCase.myRanking(UserId("u-1"), GameMode.CLASSIC)
+        val genocida = useCase.myRanking(UserId("u-1"), GameMode.GENOCIDA)
+
+        assertEquals(1, classic?.position)
+        assertEquals(2, genocida?.position)
+    }
+
+    @Test
+    fun `retorna nulo quando o usuario nao tem partida no modo informado`() {
+        repository.add(entry("u-1", score = 100, mode = GameMode.CLASSIC))
+
+        assertNull(useCase.myRanking(UserId("u-1"), GameMode.GENOCIDA))
     }
 
     @Test
     fun `posicao e recalculada a cada chamada`() {
         repository.add(entry("u-1", score = 100))
-        assertEquals(1, useCase.myRanking(UserId("u-1"))?.position)
+        assertEquals(1, useCase.myRanking(UserId("u-1"), null)?.position)
 
         repository.add(entry("novo-lider", score = 999))
-        assertEquals(2, useCase.myRanking(UserId("u-1"))?.position)
+        assertEquals(2, useCase.myRanking(UserId("u-1"), null)?.position)
     }
 
     @Test
@@ -121,7 +142,7 @@ class GetMyRankingUseCaseTest {
         repository.add(entry("u-1", score = 100, correctAnswers = 1))
         repository.add(entry("u-2", score = 100, correctAnswers = 5))
 
-        assertEquals(2, useCase.myRanking(UserId("u-1"))?.position)
-        assertEquals(1, useCase.myRanking(UserId("u-2"))?.position)
+        assertEquals(2, useCase.myRanking(UserId("u-1"), null)?.position)
+        assertEquals(1, useCase.myRanking(UserId("u-2"), null)?.position)
     }
 }

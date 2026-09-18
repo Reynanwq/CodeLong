@@ -73,7 +73,7 @@ class MongoRankingRepositoryAdapterTest {
     fun `findRanking devolve as entradas mapeadas`() {
         stubAggregation(listOf(document("a", score = 300), document("b", score = 200)))
 
-        val ranking = adapter.findRanking(page = 0, size = 10)
+        val ranking = adapter.findRanking(page = 0, size = 10, mode = null)
 
         assertEquals(2, ranking.size)
         assertEquals("a", ranking.first().userId.value)
@@ -85,8 +85,8 @@ class MongoRankingRepositoryAdapterTest {
     fun `findRanking aplica paginacao`() {
         stubAggregation((1..5).map { document("u-$it", score = 100 - it) })
 
-        val firstPage = adapter.findRanking(page = 0, size = 2)
-        val secondPage = adapter.findRanking(page = 1, size = 2)
+        val firstPage = adapter.findRanking(page = 0, size = 2, mode = null)
+        val secondPage = adapter.findRanking(page = 1, size = 2, mode = null)
 
         assertEquals(listOf("u-1", "u-2"), firstPage.map { it.userId.value })
         assertEquals(listOf("u-3", "u-4"), secondPage.map { it.userId.value })
@@ -96,21 +96,31 @@ class MongoRankingRepositoryAdapterTest {
     fun `findRanking devolve lista vazia quando nao ha partidas concluidas`() {
         stubAggregation(emptyList())
 
-        assertEquals(0, adapter.findRanking(page = 0, size = 10).size)
+        assertEquals(0, adapter.findRanking(page = 0, size = 10, mode = null).size)
     }
 
     @Test
     fun `findRanking alem do total devolve lista vazia`() {
         stubAggregation(listOf(document("a")))
 
-        assertEquals(0, adapter.findRanking(page = 5, size = 10).size)
+        assertEquals(0, adapter.findRanking(page = 5, size = 10, mode = null).size)
+    }
+
+    @Test
+    fun `findRanking por modo executa a agregacao filtrada`() {
+        stubAggregation(listOf(document("a")))
+
+        val ranking = adapter.findRanking(page = 0, size = 10, mode = GameMode.GENOCIDA)
+
+        assertEquals(1, ranking.size)
+        assertEquals("a", ranking.first().userId.value)
     }
 
     @Test
     fun `findUserBestScore devolve a entrada do usuario`() {
         stubAggregation(listOf(document("a", score = 300), document("b", score = 200)))
 
-        val entry = adapter.findUserBestScore(UserId("b"))
+        val entry = adapter.findUserBestScore(UserId("b"), null)
 
         assertEquals("b", entry?.userId?.value)
         assertEquals(200, entry?.score)
@@ -120,7 +130,16 @@ class MongoRankingRepositoryAdapterTest {
     fun `findUserBestScore devolve nulo quando o usuario nao tem pontuacao`() {
         stubAggregation(listOf(document("a")))
 
-        assertNull(adapter.findUserBestScore(UserId("inexistente")))
+        assertNull(adapter.findUserBestScore(UserId("inexistente"), null))
+    }
+
+    @Test
+    fun `findUserBestScore por modo executa a agregacao filtrada`() {
+        stubAggregation(listOf(document("a", score = 300)))
+
+        val entry = adapter.findUserBestScore(UserId("a"), GameMode.GENOCIDA)
+
+        assertEquals("a", entry?.userId?.value)
     }
 
     @Test
@@ -133,37 +152,49 @@ class MongoRankingRepositoryAdapterTest {
             )
         )
 
-        val meia = document("meio", score = 200)
-
-        assertEquals(1L, adapter.countUsersBetterThan(entry("meio", score = 200)))
+        assertEquals(1L, adapter.countUsersBetterThan(entry("meio", score = 200), null))
     }
 
     @Test
     fun `countUsersBetterThan e zero para o lider`() {
         stubAggregation(listOf(document("lider", score = 500), document("outro", score = 100)))
 
-        assertEquals(0L, adapter.countUsersBetterThan(entry("lider", score = 500)))
+        assertEquals(0L, adapter.countUsersBetterThan(entry("lider", score = 500), null))
     }
 
     @Test
     fun `countUsersBetterThan considera todos quando o usuario e o pior`() {
         stubAggregation(listOf(document("a", score = 300), document("b", score = 200)))
 
-        assertEquals(2L, adapter.countUsersBetterThan(entry("c", score = 10)))
+        assertEquals(2L, adapter.countUsersBetterThan(entry("c", score = 10), null))
+    }
+
+    @Test
+    fun `countUsersBetterThan por modo executa a agregacao filtrada`() {
+        stubAggregation(listOf(document("a", score = 300), document("b", score = 100)))
+
+        assertEquals(1L, adapter.countUsersBetterThan(entry("b", score = 100), GameMode.CLASSIC))
     }
 
     @Test
     fun `countRankedUsers conta as entradas`() {
         stubAggregation((1..4).map { document("u-$it") })
 
-        assertEquals(4L, adapter.countRankedEntries())
+        assertEquals(4L, adapter.countRankedEntries(null))
+    }
+
+    @Test
+    fun `countRankedUsers por modo conta as entradas filtradas`() {
+        stubAggregation((1..3).map { document("u-$it") })
+
+        assertEquals(3L, adapter.countRankedEntries(GameMode.GENOCIDA))
     }
 
     @Test
     fun `countRankedUsers e zero sem partidas concluidas`() {
         stubAggregation(emptyList())
 
-        assertEquals(0L, adapter.countRankedEntries())
+        assertEquals(0L, adapter.countRankedEntries(null))
     }
 
     @Test
@@ -175,7 +206,7 @@ class MongoRankingRepositoryAdapterTest {
             )
         )
 
-        assertEquals(1L, adapter.countUsersBetterThan(entry("menos-acertos", score = 100, correctAnswers = 2)))
+        assertEquals(1L, adapter.countUsersBetterThan(entry("menos-acertos", score = 100, correctAnswers = 2), null))
     }
 
     @Test
@@ -187,6 +218,6 @@ class MongoRankingRepositoryAdapterTest {
             )
         )
 
-        assertEquals(1L, adapter.countUsersBetterThan(entry("mais-lento", score = 100, correctAnswers = 3, totalTimeMillis = 9_000)))
+        assertEquals(1L, adapter.countUsersBetterThan(entry("mais-lento", score = 100, correctAnswers = 3, totalTimeMillis = 9_000), null))
     }
 }

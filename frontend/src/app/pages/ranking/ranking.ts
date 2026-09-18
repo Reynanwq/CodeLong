@@ -4,6 +4,8 @@ import { RouterLink } from '@angular/router';
 import { ApiService } from '../../core/api.service';
 import { RankingEntry } from '../../core/models';
 
+type RankingMode = 'CLASSIC' | 'GENOCIDA';
+
 @Component({
   selector: 'app-ranking',
   imports: [RouterLink, DatePipe],
@@ -14,8 +16,27 @@ import { RankingEntry } from '../../core/models';
         <a class="link" routerLink="/">Voltar</a>
       </div>
 
+      <div class="tabs">
+        <button
+          type="button"
+          class="tab"
+          [class.active]="mode() === 'CLASSIC'"
+          (click)="setMode('CLASSIC')"
+        >
+          Classico
+        </button>
+        <button
+          type="button"
+          class="tab danger"
+          [class.active]="mode() === 'GENOCIDA'"
+          (click)="setMode('GENOCIDA')"
+        >
+          Genocida
+        </button>
+      </div>
+
       @if (entries().length === 0) {
-        <p class="muted">Ninguem concluiu uma partida ainda.</p>
+        <p class="muted">Ninguem concluiu uma partida no modo {{ label() }} ainda.</p>
       } @else {
         <table>
           <thead>
@@ -26,7 +47,6 @@ import { RankingEntry } from '../../core/models';
               <th>Acertos</th>
               <th>Erros</th>
               <th>Perguntas</th>
-              <th>Modo</th>
               <th>Tempo</th>
               <th>Quando</th>
             </tr>
@@ -40,11 +60,6 @@ import { RankingEntry } from '../../core/models';
                 <td>{{ entry.correctAnswers }}</td>
                 <td class="errors">{{ entry.wrongAnswers }}</td>
                 <td>{{ entry.answeredQuestions }}</td>
-                <td>
-                  <span class="pill" [class.danger]="entry.mode === 'GENOCIDA'">
-                    {{ entry.mode === 'GENOCIDA' ? 'Genocida' : 'Classico' }}
-                  </span>
-                </td>
                 <td>{{ duration(entry) }}</td>
                 <td>{{ entry.achievedAt | date: 'dd/MM HH:mm' }}</td>
               </tr>
@@ -69,9 +84,22 @@ export class RankingPage implements OnInit {
   readonly entries = signal<RankingEntry[]>([]);
   readonly page = signal(0);
   readonly totalPages = signal(0);
+  readonly mode = signal<RankingMode>('CLASSIC');
 
   ngOnInit(): void {
     this.load(0);
+  }
+
+  setMode(mode: RankingMode): void {
+    if (this.mode() === mode) {
+      return;
+    }
+    this.mode.set(mode);
+    this.load(0);
+  }
+
+  label(): string {
+    return this.mode() === 'GENOCIDA' ? 'Genocida' : 'Classico';
   }
 
   goTo(page: number): void {
@@ -84,7 +112,7 @@ export class RankingPage implements OnInit {
   }
 
   private load(page: number): void {
-    this.api.ranking(page, 10).subscribe({
+    this.api.ranking(page, 10, this.mode()).subscribe({
       next: (response) => {
         this.entries.set(response.entries);
         this.page.set(response.page);
