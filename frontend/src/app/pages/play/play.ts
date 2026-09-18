@@ -51,11 +51,13 @@ const TICK_MILLIS = 200;
           <p class="muted">
             {{ current.correctAnswers }} acertos &middot; {{ current.wrongAnswers }} erros
           </p>
-          <button class="primary" (click)="newGame()" [disabled]="loading()">
-            {{ loading() ? 'Criando...' : 'Jogar novamente' }}
-          </button>
-          <a class="link" routerLink="/ranking">Ver ranking</a>
-          <a class="link" routerLink="/">Voltar ao inicio</a>
+          <div class="finished-actions">
+            <button class="primary" (click)="newGame()" [disabled]="loading()">
+              {{ loading() ? 'Criando...' : 'Jogar novamente' }}
+            </button>
+            <a class="secondary" routerLink="/ranking">Ver ranking</a>
+            <a class="secondary" routerLink="/">Voltar ao inicio</a>
+          </div>
         </section>
       } @else if (question(); as currentQuestion) {
         <section class="panel">
