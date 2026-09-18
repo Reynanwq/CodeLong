@@ -51,7 +51,10 @@ const TICK_MILLIS = 200;
           <p class="muted">
             {{ current.correctAnswers }} acertos &middot; {{ current.wrongAnswers }} erros
           </p>
-          <a class="primary" routerLink="/ranking">Ver ranking</a>
+          <button class="primary" (click)="newGame()" [disabled]="loading()">
+            {{ loading() ? 'Criando...' : 'Jogar novamente' }}
+          </button>
+          <a class="link" routerLink="/ranking">Ver ranking</a>
           <a class="link" routerLink="/">Voltar ao inicio</a>
         </section>
       } @else if (question(); as currentQuestion) {
@@ -113,8 +116,8 @@ export class PlayPage implements OnInit, OnDestroy {
   private readonly api = inject(ApiService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly gameId = signal('');
 
-  private readonly gameId = this.route.snapshot.paramMap.get('id') ?? '';
   private timer?: ReturnType<typeof setInterval>;
 
   readonly game = signal<GameResponse | null>(null);
@@ -133,7 +136,15 @@ export class PlayPage implements OnInit, OnDestroy {
   });
 
   ngOnInit(): void {
-    this.api.game(this.gameId).subscribe({
+    this.route.paramMap.subscribe((params) => {
+      this.gameId.set(params.get('id') ?? '');
+      this.reset();
+      this.loadGame();
+    });
+  }
+
+  private loadGame(): void {
+    this.api.game(this.gameId()).subscribe({
       next: (game) => {
         this.game.set(game);
         this.finished.set(game.status !== 'IN_PROGRESS');
@@ -142,6 +153,31 @@ export class PlayPage implements OnInit, OnDestroy {
         }
       },
       error: () => this.error.set('Partida nao encontrada.')
+    });
+  }
+
+  private reset(): void {
+    this.stopTimer();
+    this.game.set(null);
+    this.question.set(null);
+    this.feedback.set(null);
+    this.selectedIndex.set(0);
+    this.secondsLeft.set(0);
+    this.timedOut.set(false);
+    this.finished.set(false);
+    this.loading.set(false);
+    this.error.set(null);
+  }
+
+  /** Cria/retoma uma partida no mesmo modo e navega para ela. */
+  newGame(): void {
+    this.loading.set(true);
+    this.api.startGame(this.game()?.mode).subscribe({
+      next: (game) => this.router.navigate(['/play', game.id]),
+      error: (response: HttpErrorResponse) => {
+        this.loading.set(false);
+        this.error.set(response.error?.message ?? 'Nao foi possivel iniciar uma nova partida.');
+      }
     });
   }
 
@@ -174,7 +210,7 @@ export class PlayPage implements OnInit, OnDestroy {
   choose(optionId: string): void {
     this.loading.set(true);
     this.timedOut.set(false);
-    this.api.answer(this.gameId, optionId).subscribe({
+    this.api.answer(this.gameId(), optionId).subscribe({
       next: (result) => {
         this.loading.set(false);
         this.stopTimer();
@@ -206,7 +242,7 @@ export class PlayPage implements OnInit, OnDestroy {
 
   abandon(): void {
     this.loading.set(true);
-    this.api.abandon(this.gameId).subscribe({
+    this.api.abandon(this.gameId()).subscribe({
       next: () => {
         this.stopTimer();
         this.router.navigateByUrl('/');
@@ -238,7 +274,7 @@ export class PlayPage implements OnInit, OnDestroy {
   }
 
   private loadQuestion(): void {
-    this.api.currentQuestion(this.gameId).subscribe({
+    this.api.currentQuestion(this.gameId()).subscribe({
       next: (question) => this.startQuestion(question),
       error: () => {
         this.finished.set(true);
@@ -286,7 +322,7 @@ export class PlayPage implements OnInit, OnDestroy {
     this.loading.set(true);
     const previousId = this.question()?.id;
 
-    this.api.currentQuestion(this.gameId).subscribe({
+    this.api.currentQuestion(this.gameId()).subscribe({
       next: (question) => {
         this.loading.set(false);
         if (question.id !== previousId) {
@@ -320,6 +356,6 @@ export class PlayPage implements OnInit, OnDestroy {
       return;
     }
 
-    this.api.game(this.gameId).subscribe({ next: (game) => this.game.set(game) });
+    this.api.game(this.gameId()).subscribe({ next: (game) => this.game.set(game) });
   }
 }
