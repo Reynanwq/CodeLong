@@ -204,5 +204,5 @@ docker volume rm codelong-mongo-data
 ## Regras de negocio que afetam o uso
 
 - **Tempo por pergunta**: 20 segundos (`GameRules.ANSWER_TIME_LIMIT_SECONDS`). Se o tempo esgotar, a pergunta conta como **erro**, a partida **avanca** e a resposta enviada depois e recusada com **409 `ANSWER_TIME_EXPIRED`**.
-- **Ranking**: entram partidas **`COMPLETED` e `ABANDONED`** com **no minimo 10 respostas**; vale a **melhor partida de cada usuario**. Desempate: `score` ↓ → menor tempo → mais acertos → data mais antiga.
-- **Uma partida inclui todas as perguntas ativas** (hoje 350). Por isso o minimo de 10 respostas existe: sem ele, ninguem apareceria no ranking.
+- **Ranking**: entram **todas as partidas** `COMPLETED`, `ABANDONED` e `DEFEATED` com **no minimo 10 respostas (CLASSIC) ou 5 (GENOCIDA)**. Desempate: `score` ↓ → menor tempo → mais acertos → data mais antiga.
+- **Uma partida inclui todas as perguntas ativas** (hoje 790). Por isso o minimo de respostas existe: sem ele, ninguem apareceria no ranking.
