@@ -8,6 +8,8 @@ import { AnswerResponse, GameResponse, QuestionResponse } from '../../core/model
 
 const TICK_MILLIS = 200;
 const FINISHED_ACTIONS = 3;
+const CODE_MARK = 'Código:\n';
+const CODE_SEP = '\n---\n';
 
 @Component({
   selector: 'app-play',
@@ -106,7 +108,10 @@ const FINISHED_ACTIONS = 3;
           }
 
           <p class="pill">{{ currentQuestion.category }} &middot; {{ currentQuestion.difficulty }}</p>
-          <h2>{{ currentQuestion.statement }}</h2>
+          @if (codeOf(currentQuestion.statement); as code) {
+            <pre class="code-block"><code>{{ code }}</code></pre>
+          }
+          <h2>{{ promptOf(currentQuestion.statement) }}</h2>
 
           <div class="options">
             @for (option of currentQuestion.options; track option.id; let i = $index) {
@@ -263,6 +268,26 @@ export class PlayPage implements OnInit, OnDestroy {
   /** Rotulo da alternativa pela POSICAO (as alternativas vem embaralhadas). */
   letter(index: number): string {
     return String.fromCharCode(65 + index);
+  }
+
+  /** Extrai o bloco de codigo do enunciado (quando existir). */
+  codeOf(statement: string): string | null {
+    if (!statement.startsWith(CODE_MARK)) {
+      return null;
+    }
+    const rest = statement.slice(CODE_MARK.length);
+    const index = rest.indexOf(CODE_SEP);
+    return index >= 0 ? rest.slice(0, index) : rest;
+  }
+
+  /** Texto da pergunta, sem o bloco de codigo. */
+  promptOf(statement: string): string {
+    if (!statement.startsWith(CODE_MARK)) {
+      return statement;
+    }
+    const rest = statement.slice(CODE_MARK.length);
+    const index = rest.indexOf(CODE_SEP);
+    return index >= 0 ? rest.slice(index + CODE_SEP.length) : '';
   }
 
   onKeydown(event: KeyboardEvent): void {

@@ -365,6 +365,27 @@ button, .primary, .link {
   font-size: 0.9rem;
 }
 
+/* Bloco de codigo nos enunciados */
+.code-block {
+  background: #0f172a;
+  color: #e2e8f0;
+  border: 1px solid #1e293b;
+  border-radius: 10px;
+  padding: 0.9rem 1rem;
+  margin: 0.75rem 0;
+  overflow-x: auto;
+  font-family: 'Cascadia Code', 'Fira Code', Consolas, 'Courier New', monospace;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  white-space: pre;
+  tab-size: 4;
+}
+
+.code-block code {
+  font-family: inherit;
+  white-space: inherit;
+}
+
 .options {
   display: flex;
   flex-direction: column;
