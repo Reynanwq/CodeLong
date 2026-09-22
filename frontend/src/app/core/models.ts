@@ -25,6 +25,8 @@ export interface GameResponse {
   wrongAnswers: number;
   startedAt: string;
   completedAt: string | null;
+  theme: string | null;
+  questionId: string | null;
 }
 
 export interface OptionResponse {

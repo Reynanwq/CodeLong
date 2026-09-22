@@ -3,6 +3,7 @@ package com.codelong.infrastructure.web.dto
 import com.codelong.domain.GameRules
 import com.codelong.domain.model.Game
 import com.codelong.domain.valueobject.AnswerResult
+import com.codelong.domain.valueobject.GameMode
 import com.codelong.domain.valueobject.QuestionOption
 import com.codelong.domain.valueobject.QuestionPublic
 import jakarta.validation.constraints.NotBlank
@@ -53,23 +54,35 @@ data class GameResponse(
     val correctAnswers: Int,
     val wrongAnswers: Int,
     val startedAt: Instant,
-    val completedAt: Instant?
+    val completedAt: Instant?,
+    val theme: String?,
+    val questionId: String?
 ) {
     companion object {
-        fun from(game: Game) = GameResponse(
-            id = game.idText,
-            status = game.statusName,
-            mode = game.mode.name,
-            currentQuestionIndex = game.currentQuestionIndex,
-            currentQuestionDeadline = game.currentQuestionDeadline,
-            totalQuestions = game.totalQuestions,
-            remainingQuestions = game.remainingQuestions,
-            score = game.score,
-            correctAnswers = game.correctAnswers,
-            wrongAnswers = game.wrongAnswers,
-            startedAt = game.startedAt,
-            completedAt = game.completedAt
-        )
+        /**
+         * [theme] e [questionId] so vem preenchidos no modo APRENDIZADO, para
+         * permitir repetir a mesma partida (tema inteiro ou pergunta unica).
+         */
+        fun from(game: Game): GameResponse {
+            val learning = game.mode == GameMode.APRENDIZADO
+            val first = game.questions.firstOrNull()
+            return GameResponse(
+                id = game.idText,
+                status = game.statusName,
+                mode = game.mode.name,
+                currentQuestionIndex = game.currentQuestionIndex,
+                currentQuestionDeadline = game.currentQuestionDeadline,
+                totalQuestions = game.totalQuestions,
+                remainingQuestions = game.remainingQuestions,
+                score = game.score,
+                correctAnswers = game.correctAnswers,
+                wrongAnswers = game.wrongAnswers,
+                startedAt = game.startedAt,
+                completedAt = game.completedAt,
+                theme = if (learning) first?.categoryName else null,
+                questionId = if (learning && first != null && game.questions.size == 1) first.idText else null
+            )
+        }
     }
 }
 

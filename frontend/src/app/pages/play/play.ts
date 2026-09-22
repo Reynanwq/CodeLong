@@ -244,10 +244,11 @@ export class PlayPage implements OnInit, OnDestroy {
     this.recordChecked = false;
   }
 
-  /** Cria/retoma uma partida no mesmo modo e navega para ela. */
+  /** Cria/retoma uma partida no mesmo modo (e tema/pergunta) e navega para ela. */
   newGame(): void {
     this.loading.set(true);
-    this.api.startGame(this.game()?.mode).subscribe({
+    const game = this.game();
+    this.api.startGame(game?.mode, game?.theme ?? undefined, game?.questionId ?? undefined).subscribe({
       next: (game) => this.router.navigate(['/play', game.id]),
       error: (response: HttpErrorResponse) => {
         this.loading.set(false);

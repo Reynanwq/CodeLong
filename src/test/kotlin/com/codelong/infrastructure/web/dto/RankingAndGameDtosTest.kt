@@ -165,6 +165,52 @@ class RankingAndGameDtosTest {
     }
 
     @Test
+    fun `GameResponse fora do aprendizado nao tem tema nem pergunta`() {
+        val response = GameResponse.from(Fixtures.game(id = "g-1"))
+
+        assertNull(response.theme)
+        assertNull(response.questionId)
+    }
+
+    @Test
+    fun `GameResponse do aprendizado carrega o tema`() {
+        val game = Fixtures.game(
+            id = "g-1",
+            difficulties = listOf(Difficulty.EASY, Difficulty.HARD),
+            mode = GameMode.APRENDIZADO
+        )
+
+        val response = GameResponse.from(game)
+
+        assertEquals("OOP", response.theme)
+        assertNull(response.questionId)
+    }
+
+    @Test
+    fun `GameResponse de pergunta unica carrega o questionId`() {
+        val game = Fixtures.game(
+            id = "g-1",
+            difficulties = listOf(Difficulty.EASY),
+            mode = GameMode.APRENDIZADO
+        )
+
+        val response = GameResponse.from(game)
+
+        assertEquals("OOP", response.theme)
+        assertEquals("q-0", response.questionId)
+    }
+
+    @Test
+    fun `GameResponse de aprendizado sem perguntas nao tem tema`() {
+        val game = Fixtures.game(id = "g-1", difficulties = emptyList(), mode = GameMode.APRENDIZADO)
+
+        val response = GameResponse.from(game)
+
+        assertNull(response.theme)
+        assertNull(response.questionId)
+    }
+
+    @Test
     fun `GameResponse converte partida abandonada`() {
         val game = Fixtures.game(id = "g-1")
         game.abandon(Fixtures.NOW)
