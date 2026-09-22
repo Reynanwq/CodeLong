@@ -167,7 +167,7 @@ Para reencontrar a partida aberta sem guardar o `id`, use `GET /api/games/in-pro
 
 ## 6. Ranking
 
-- Ranking **separado por modo**: `?mode=CLASSIC` ou `?mode=GENOCIDA`. Sem o parâmetro, os dois modos aparecem juntos.
+- Ranking **separado por modo**: `?mode=CLASSIC`, `?mode=GENOCIDA` ou `?mode=APRENDIZADO&theme=KOTLIN`. Sem `mode`, o ranking global considera apenas Clássico e Genocida.
 - Lista **todas as tentativas elegíveis** (concluídas, abandonadas ou derrotadas) — cada partida ocupa uma linha.
 - Mínimo de respostas para entrar: **10 no clássico** e **5 no genocida**.
 - Paginado.
@@ -220,15 +220,17 @@ Cabeçalho autenticado: `Authorization: Bearer <token>`.
 | POST | `/api/auth/login` | público | Autentica e emite o JWT |
 | GET | `/api/users/me` | autenticado | Dados do próprio usuário |
 | PATCH | `/api/users/me/password` | autenticado | Troca a própria senha (204) |
-| POST | `/api/games` | autenticado | Inicia uma partida (201) ou retoma a em andamento (200) |
+| POST | `/api/games` | autenticado | Inicia uma partida (201) ou retoma a em andamento (200); `mode=CLASSIC\|GENOCIDA\|APRENDIZADO` (`category`/`questionId` no Aprendizado) |
 | GET | `/api/games` | autenticado | Histórico paginado (`status`, `page`, `size`) |
 | GET | `/api/games/in-progress` | autenticado | Partida em andamento (204 se não houver) |
 | GET | `/api/games/{gameId}` | dono | Detalhes da partida |
 | GET | `/api/games/{gameId}/current-question` | dono | Pergunta atual (sem resposta) |
 | POST | `/api/games/{gameId}/answers` | dono | Envia a escolha |
 | POST | `/api/games/{gameId}/abandon` | dono | Abandona a partida |
-| GET | `/api/rankings` | autenticado | Ranking paginado (`mode`, `page`, `size`) |
-| GET | `/api/rankings/me` | autenticado | Posição do próprio usuário (`mode`; 204 se não ranqueado) |
+| GET | `/api/rankings` | autenticado | Ranking paginado (`mode`, `theme`, `page`, `size`) |
+| GET | `/api/rankings/me` | autenticado | Posição do próprio usuário (`mode`, `theme`; 204 se não ranqueado) |
+| GET | `/api/learning/themes` | autenticado | Temas (categorias) com contagem de perguntas ativas |
+| GET | `/api/learning/themes/{category}/questions` | autenticado | Perguntas ativas de um tema |
 | POST | `/api/admin/questions` | ADMIN | Cria pergunta |
 | GET | `/api/admin/questions` | ADMIN | Lista paginada/filtrada |
 | GET | `/api/admin/questions/{id}` | ADMIN | Detalhe da pergunta |

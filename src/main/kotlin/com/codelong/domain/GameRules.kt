@@ -26,4 +26,10 @@ object GameRules {
      * [MIN_ANSWERED_QUESTIONS_FOR_RANKING_GENOCIDA] - 1 vezes para se qualificar.
      */
     const val MIN_ANSWERED_QUESTIONS_FOR_RANKING_GENOCIDA = 5
+
+    /**
+     * Minimo de perguntas respondidas para uma partida APRENDIZADO disputar o
+     * ranking do seu tema. Igual ao genocida: o modo tambem e de morte subita.
+     */
+    const val MIN_ANSWERED_QUESTIONS_FOR_RANKING_APRENDIZADO = 5
 }

@@ -68,6 +68,7 @@ class RankingPolicyTest {
     fun `minimo de respostas e menor no modo genocida`() {
         assertEquals(10, RankingPolicy.minimumAnswers(GameMode.CLASSIC))
         assertEquals(5, RankingPolicy.minimumAnswers(GameMode.GENOCIDA))
+        assertEquals(5, RankingPolicy.minimumAnswers(GameMode.APRENDIZADO))
     }
 
     @Test

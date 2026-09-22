@@ -11,11 +11,13 @@ import com.codelong.domain.port.GameSearch
 import com.codelong.domain.port.QuestionPage
 import com.codelong.domain.port.QuestionRepository
 import com.codelong.domain.port.QuestionSearch
+import com.codelong.domain.port.RankingFilter
 import com.codelong.domain.port.RankingRepository
 import com.codelong.domain.port.UserPage
 import com.codelong.domain.port.UserRepository
 import com.codelong.domain.port.UserSearch
 import com.codelong.domain.service.RankingPolicy
+import com.codelong.domain.valueobject.Category
 import com.codelong.domain.valueobject.Email
 import com.codelong.domain.valueobject.GameId
 import com.codelong.domain.valueobject.GameMode
@@ -76,6 +78,9 @@ class InMemoryQuestionRepository : QuestionRepository {
     override fun findById(id: QuestionId): Question? = store[id.value]
 
     override fun findAllActive(): List<Question> = store.values.filter { it.isActive }
+
+    override fun findActiveByCategory(category: Category): List<Question> =
+        store.values.filter { it.isActive && it.category == category }
 
     override fun countActive(): Long = store.values.count { it.isActive }.toLong()
 
@@ -149,19 +154,20 @@ class InMemoryRankingRepository(
         entries.add(entry)
     }
 
-    override fun findRanking(page: Int, size: Int, mode: GameMode?): List<RankEntry> =
-        ranked(mode).drop(page * size).take(size)
+    override fun findRanking(page: Int, size: Int, filter: RankingFilter): List<RankEntry> =
+        ranked(filter).drop(page * size).take(size)
 
-    override fun findUserBestScore(userId: UserId, mode: GameMode?): RankEntry? =
-        ranked(mode).firstOrNull { it.userId == userId }
+    override fun findUserBestScore(userId: UserId, filter: RankingFilter): RankEntry? =
+        ranked(filter).firstOrNull { it.userId == userId }
 
-    override fun countUsersBetterThan(entry: RankEntry, mode: GameMode?): Long =
-        ranked(mode).count { RankingPolicy.isBetter(it, entry) }.toLong()
+    override fun countUsersBetterThan(entry: RankEntry, filter: RankingFilter): Long =
+        ranked(filter).count { RankingPolicy.isBetter(it, entry) }.toLong()
 
-    override fun countRankedEntries(mode: GameMode?): Long = ranked(mode).size.toLong()
+    override fun countRankedEntries(filter: RankingFilter): Long = ranked(filter).size.toLong()
 
-    private fun ranked(mode: GameMode?): List<RankEntry> = entries
+    private fun ranked(filter: RankingFilter): List<RankEntry> = entries
         .filter(RankingPolicy::isEligible)
-        .filter { mode == null || it.mode == mode }
+        .filter { entry -> filter.mode?.let { entry.mode == it } ?: (entry.mode != GameMode.APRENDIZADO) }
+        .filter { entry -> filter.theme?.let { entry.theme == it } ?: true }
         .sortedWith(RankingPolicy.comparator)
 }

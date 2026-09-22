@@ -2,9 +2,9 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ApiService } from '../../core/api.service';
-import { RankingEntry } from '../../core/models';
+import { RankingEntry, Theme } from '../../core/models';
 
-type RankingMode = 'CLASSIC' | 'GENOCIDA';
+type RankingMode = 'CLASSIC' | 'GENOCIDA' | 'APRENDIZADO';
 
 @Component({
   selector: 'app-ranking',
@@ -33,7 +33,30 @@ type RankingMode = 'CLASSIC' | 'GENOCIDA';
         >
           Genocida
         </button>
+        <button
+          type="button"
+          class="tab"
+          [class.active]="mode() === 'APRENDIZADO'"
+          (click)="setMode('APRENDIZADO')"
+        >
+          Aprendizado
+        </button>
       </div>
+
+      @if (mode() === 'APRENDIZADO') {
+        <div class="row">
+          <label class="muted" for="theme">Tema:</label>
+          <select
+            id="theme"
+            [value]="theme() ?? ''"
+            (change)="setTheme($any($event.target).value)"
+          >
+            @for (item of themes(); track item.category) {
+              <option [value]="item.category">{{ item.category }} ({{ item.totalQuestions }})</option>
+            }
+          </select>
+        </div>
+      }
 
       @if (entries().length === 0) {
         <p class="muted">Ninguem concluiu uma partida no modo {{ label() }} ainda.</p>
@@ -85,8 +108,19 @@ export class RankingPage implements OnInit {
   readonly page = signal(0);
   readonly totalPages = signal(0);
   readonly mode = signal<RankingMode>('CLASSIC');
+  readonly themes = signal<Theme[]>([]);
+  readonly theme = signal<string | null>(null);
 
   ngOnInit(): void {
+    this.api.learningThemes().subscribe({
+      next: (response) => {
+        this.themes.set(response.themes);
+        if (this.mode() === 'APRENDIZADO' && !this.theme() && response.themes.length > 0) {
+          this.theme.set(response.themes[0].category);
+          this.load(0);
+        }
+      }
+    });
     this.load(0);
   }
 
@@ -95,11 +129,22 @@ export class RankingPage implements OnInit {
       return;
     }
     this.mode.set(mode);
+    if (mode === 'APRENDIZADO' && !this.theme() && this.themes().length > 0) {
+      this.theme.set(this.themes()[0].category);
+    }
+    this.load(0);
+  }
+
+  setTheme(category: string): void {
+    this.theme.set(category);
     this.load(0);
   }
 
   label(): string {
-    return this.mode() === 'GENOCIDA' ? 'Genocida' : 'Classico';
+    if (this.mode() === 'GENOCIDA') {
+      return 'Genocida';
+    }
+    return this.mode() === 'APRENDIZADO' ? 'Aprendizado' : 'Classico';
   }
 
   goTo(page: number): void {
@@ -112,7 +157,14 @@ export class RankingPage implements OnInit {
   }
 
   private load(page: number): void {
-    this.api.ranking(page, 10, this.mode()).subscribe({
+    const theme = this.mode() === 'APRENDIZADO' ? this.theme() ?? undefined : undefined;
+    if (this.mode() === 'APRENDIZADO' && !theme) {
+      this.entries.set([]);
+      this.page.set(0);
+      this.totalPages.set(0);
+      return;
+    }
+    this.api.ranking(page, 10, this.mode(), theme).subscribe({
       next: (response) => {
         this.entries.set(response.entries);
         this.page.set(response.page);

@@ -1,5 +1,6 @@
 package com.codelong.infrastructure.persistence.mapper
 
+import com.codelong.domain.valueobject.Category
 import com.codelong.domain.valueobject.GameMode
 import com.codelong.domain.valueobject.RankEntry
 import com.codelong.domain.valueobject.UserId
@@ -16,6 +17,9 @@ object RankingPersistenceMapper {
         answeredQuestions = document.answeredQuestions,
         mode = document.mode.takeIf { it.isNotBlank() }?.let(GameMode::fromName) ?: GameMode.CLASSIC,
         totalTimeMillis = document.totalTimeMillis,
-        achievedAt = document.achievedAt
+        achievedAt = document.achievedAt,
+        theme = document.theme
+            ?.takeIf { document.mode == GameMode.APRENDIZADO.name }
+            ?.let(Category::fromName)
     )
 }

@@ -303,8 +303,22 @@ button, .primary, .link {
 /* Abas de alternancia (ranking classico x genocida) */
 .tabs {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
   margin: 1rem 0;
+}
+
+/* Lista de perguntas do modo Aprendizado: preserva quebras do codigo */
+.statement-cell {
+  white-space: pre-line;
+}
+
+select {
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ink);
 }
 
 .tab {

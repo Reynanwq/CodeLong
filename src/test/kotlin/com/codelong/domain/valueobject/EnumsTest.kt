@@ -167,7 +167,7 @@ class EnumsTest {
     }
 
     @Test
-    fun `GameMode possui os dois modos esperados`() {
-        assertEquals(listOf(GameMode.CLASSIC, GameMode.GENOCIDA), GameMode.entries)
+    fun `GameMode possui os tres modos esperados`() {
+        assertEquals(listOf(GameMode.CLASSIC, GameMode.GENOCIDA, GameMode.APRENDIZADO), GameMode.entries)
     }
 }

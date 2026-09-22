@@ -536,6 +536,64 @@ class ApiEndToEndIntegrationTest {
         assertTrue(answered.json().bool("correct"))
     }
 
+    @Test
+    fun `modo aprendizado lista temas, joga um tema e ranqueia por tema`() {
+        val adminToken = loginAdmin()
+        val minimum = GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING_APRENDIZADO
+        (1..minimum).forEach { index -> createQuestion(adminToken, "Pergunta Kotlin ($index)", "EASY") }
+        val playerToken = registerPlayer("alice")
+
+        val themes = api.get("/api/learning/themes", playerToken)
+        assertEquals(200, themes.status)
+        assertEquals(1, themes.json().arr("themes").size)
+        assertEquals("KOTLIN", themes.json().arr("themes").first().str("category"))
+        assertEquals(minimum, themes.json().arr("themes").first().int("totalQuestions"))
+
+        val questions = api.get("/api/learning/themes/KOTLIN/questions", playerToken)
+        assertEquals(200, questions.status)
+        assertEquals(minimum, questions.json().arr("questions").size)
+        assertFalse(questions.json().arr("questions").first().containsKey("correctOption"))
+
+        val invalidTheme = api.get("/api/learning/themes/INVALIDO/questions", playerToken)
+        assertEquals(400, invalidTheme.status)
+        assertEquals("category.invalid", invalidTheme.json().str("code"))
+
+        val missingTheme = api.post("/api/games?mode=APRENDIZADO", null, playerToken)
+        assertEquals(400, missingTheme.status)
+        assertEquals("learning.theme.required", missingTheme.json().str("code"))
+
+        val created = api.post("/api/games?mode=APRENDIZADO&category=KOTLIN", null, playerToken)
+        assertEquals(201, created.status)
+        assertEquals("APRENDIZADO", created.json().str("mode"))
+        assertEquals(minimum, created.json().int("totalQuestions"))
+        val gameId = created.json().str("id")
+
+        repeat(minimum) { index ->
+            val response = api.post("/api/games/$gameId/answers", mapOf("optionId" to "a"), playerToken)
+            assertEquals(200, response.status)
+            assertTrue(response.json().bool("correct"))
+            if (index == minimum - 1) {
+                assertTrue(response.json().bool("gameCompleted"))
+            }
+        }
+
+        val themeRanking = api.get("/api/rankings?mode=APRENDIZADO&theme=KOTLIN", playerToken)
+        assertEquals(200, themeRanking.status)
+        assertEquals(1L, themeRanking.json().long("totalElements"))
+        assertEquals("alice", themeRanking.json().arr("entries").first().str("username"))
+
+        val otherTheme = api.get("/api/rankings?mode=APRENDIZADO&theme=REST", playerToken)
+        assertEquals(0L, otherTheme.json().long("totalElements"))
+
+        val global = api.get("/api/rankings", playerToken)
+        assertEquals(0L, global.json().long("totalElements"))
+
+        val questionId = questions.json().arr("questions").first().str("id")
+        val single = api.post("/api/games?mode=APRENDIZADO&questionId=$questionId", null, playerToken)
+        assertEquals(201, single.status)
+        assertEquals(1, single.json().int("totalQuestions"))
+    }
+
     private fun expireCurrentQuestion(gameId: String) {
         mongoTemplate.updateFirst(
             Query.query(Criteria.where("_id").`is`(gameId)),

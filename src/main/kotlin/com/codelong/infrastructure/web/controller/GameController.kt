@@ -9,10 +9,12 @@ import com.codelong.application.usecase.GetCurrentQuestionUseCase
 import com.codelong.application.usecase.GetGameUseCase
 import com.codelong.application.usecase.GetInProgressGameUseCase
 import com.codelong.application.usecase.ListGamesUseCase
+import com.codelong.domain.valueobject.Category
 import com.codelong.domain.valueobject.GameId
 import com.codelong.domain.valueobject.GameMode
 import com.codelong.domain.valueobject.GameStatus
 import com.codelong.domain.valueobject.OptionId
+import com.codelong.domain.valueobject.QuestionId
 import com.codelong.infrastructure.security.AuthenticatedUser
 import com.codelong.infrastructure.web.dto.AnswerRequest
 import com.codelong.infrastructure.web.dto.AnswerResponse
@@ -59,9 +61,16 @@ class GameController(
     @PostMapping
     fun create(
         @RequestParam(required = false) mode: String?,
+        @RequestParam(required = false) category: String?,
+        @RequestParam(required = false) questionId: String?,
         @AuthenticationPrincipal principal: AuthenticatedUser
     ): ResponseEntity<GameResponse> {
-        val result = createGameUseCase.create(principal.userId, modeOf(mode))
+        val result = createGameUseCase.create(
+            principal.userId,
+            modeOf(mode),
+            category?.let(Category::fromName),
+            questionId?.let(::QuestionId)
+        )
         return ResponseEntity.status(statusByCreation.getValue(result.created)).body(GameResponse.from(result.game))
     }
 

@@ -32,6 +32,8 @@ object MongoSchema {
         const val DIFFICULTY = "difficulty"
         const val TOTAL_TIME_MILLIS = "totalTimeMillis"
         const val ACHIEVED_AT = "achievedAt"
+        const val QUESTIONS = "questions"
+        const val THEME = "theme"
     }
 
     object Index {
@@ -47,5 +49,7 @@ object MongoSchema {
         const val SUBTRACT = "\$subtract"
         const val COMPLETED_AT = "\$completedAt"
         const val STARTED_AT = "\$startedAt"
+        const val ARRAY_ELEM_AT = "\$arrayElemAt"
+        const val QUESTIONS_CATEGORY = "\$questions.category"
     }
 }

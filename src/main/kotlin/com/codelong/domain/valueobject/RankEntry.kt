@@ -7,7 +7,7 @@ import java.time.Instant
  *
  * [answeredQuestions] mostra ate onde o jogador foi, [wrongAnswers] quantos
  * erros cometeu, [mode] o modo jogado e [totalTimeMillis] a duracao, usada como
- * desempate.
+ * desempate. [theme] so e preenchido no modo APRENDIZADO (ranking por tema).
  */
 data class RankEntry(
     val userId: UserId,
@@ -19,7 +19,8 @@ data class RankEntry(
     val mode: GameMode,
     val totalTimeMillis: Long,
     val achievedAt: Instant,
-    val position: Int? = null
+    val position: Int? = null,
+    val theme: Category? = null
 ) {
     val userIdText: String get() = userId.value
 }

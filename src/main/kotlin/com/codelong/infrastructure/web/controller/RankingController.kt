@@ -2,6 +2,8 @@ package com.codelong.infrastructure.web.controller
 
 import com.codelong.application.usecase.GetMyRankingUseCase
 import com.codelong.application.usecase.GetRankingUseCase
+import com.codelong.domain.port.RankingFilter
+import com.codelong.domain.valueobject.Category
 import com.codelong.domain.valueobject.GameMode
 import com.codelong.infrastructure.security.AuthenticatedUser
 import com.codelong.infrastructure.web.dto.RankingEntryResponse
@@ -25,20 +27,28 @@ class RankingController(
     private val getMyRankingUseCase: GetMyRankingUseCase
 ) {
 
+    private fun filterOf(mode: String?, theme: String?): RankingFilter =
+        RankingFilter(
+            mode = mode?.let(GameMode::fromName),
+            theme = theme?.let(Category::fromName)
+        )
+
     @GetMapping
     fun ranking(
         @RequestParam(required = false) mode: String?,
+        @RequestParam(required = false) theme: String?,
         @RequestParam(defaultValue = DEFAULT_PAGE) page: Int,
         @RequestParam(defaultValue = DEFAULT_SIZE) size: Int
     ): RankingResponse =
-        RankingResponse.from(getRankingUseCase.ranking(page, size, mode?.let(GameMode::fromName)))
+        RankingResponse.from(getRankingUseCase.ranking(page, size, filterOf(mode, theme)))
 
     @GetMapping(ME_PATH)
     fun me(
         @AuthenticationPrincipal principal: AuthenticatedUser,
-        @RequestParam(required = false) mode: String?
+        @RequestParam(required = false) mode: String?,
+        @RequestParam(required = false) theme: String?
     ): ResponseEntity<RankingEntryResponse> {
-        val entry = getMyRankingUseCase.myRanking(principal.userId, mode?.let(GameMode::fromName))
+        val entry = getMyRankingUseCase.myRanking(principal.userId, filterOf(mode, theme))
             ?: return ResponseEntity.noContent().build()
         return ResponseEntity.ok(RankingEntryResponse.from(entry))
     }

@@ -28,7 +28,7 @@ class GameSequencer(private val random: Random) {
 
     private fun ordered(active: List<Question>, mode: GameMode): List<Question> = when (mode) {
         GameMode.GENOCIDA -> active.shuffled(random)
-        GameMode.CLASSIC -> active
+        GameMode.CLASSIC, GameMode.APRENDIZADO -> active
             .groupBy { it.difficulty }
             .toSortedMap()
             .values

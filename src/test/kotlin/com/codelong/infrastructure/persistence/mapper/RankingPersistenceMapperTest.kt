@@ -1,5 +1,6 @@
 package com.codelong.infrastructure.persistence.mapper
 
+import com.codelong.domain.valueobject.Category
 import com.codelong.domain.valueobject.GameMode
 
 import com.codelong.infrastructure.persistence.document.RankEntryDocument
@@ -41,6 +42,28 @@ class RankingPersistenceMapperTest {
         val entry = RankingPersistenceMapper.toDomain(RankEntryDocument(userId = "u-1"))
 
         assertNull(entry.position)
+    }
+
+    @Test
+    fun `toDomain preenche o tema apenas no modo aprendizado`() {
+        val learning = RankingPersistenceMapper.toDomain(
+            RankEntryDocument(userId = "u-1", mode = "APRENDIZADO", theme = "KOTLIN")
+        )
+        val classic = RankingPersistenceMapper.toDomain(
+            RankEntryDocument(userId = "u-1", mode = "CLASSIC", theme = "KOTLIN")
+        )
+
+        assertEquals(Category.KOTLIN, learning.theme)
+        assertNull(classic.theme)
+    }
+
+    @Test
+    fun `toDomain sem tema no aprendizado fica nulo`() {
+        val entry = RankingPersistenceMapper.toDomain(
+            RankEntryDocument(userId = "u-1", mode = "APRENDIZADO", theme = null)
+        )
+
+        assertNull(entry.theme)
     }
 
     @Test

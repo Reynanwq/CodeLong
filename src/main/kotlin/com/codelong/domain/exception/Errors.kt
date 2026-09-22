@@ -40,6 +40,7 @@ object Errors {
     const val NO_ACTIVE_QUESTIONS = "NO_ACTIVE_QUESTIONS"
     const val ANSWER_TIME_EXPIRED = "ANSWER_TIME_EXPIRED"
     const val GAME_MODE_INVALID = "game.mode.invalid"
+    const val LEARNING_THEME_REQUIRED = "learning.theme.required"
 
     // --- Fabricas de falha ---
     fun emailInvalid(): DomainException =
@@ -158,4 +159,9 @@ object Errors {
 
     fun noActiveQuestions(): DomainException =
         DomainException.conflict(NO_ACTIVE_QUESTIONS, "There are no active questions available to start a game")
+
+    fun learningThemeRequired(): DomainException = DomainException.invalidInput(
+        LEARNING_THEME_REQUIRED,
+        "A learning game requires a theme (category) or a specific questionId"
+    )
 }

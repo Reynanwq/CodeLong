@@ -4,11 +4,13 @@ import { LoginPage } from './pages/login/login';
 import { HomePage } from './pages/home/home';
 import { PlayPage } from './pages/play/play';
 import { RankingPage } from './pages/ranking/ranking';
+import { LearningPage } from './pages/learning/learning';
 
 export const routes: Routes = [
   { path: 'login', component: LoginPage },
   { path: '', component: HomePage, canActivate: [authGuard] },
   { path: 'play/:id', component: PlayPage, canActivate: [authGuard] },
   { path: 'ranking', component: RankingPage, canActivate: [authGuard] },
+  { path: 'learning', component: LearningPage, canActivate: [authGuard] },
   { path: '**', redirectTo: '' }
 ];

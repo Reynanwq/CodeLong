@@ -175,7 +175,8 @@ class Game private constructor(
         val isLast = answeredIndex >= questions.size - 1
         currentQuestionIndex++
 
-        val defeated = mode == GameMode.GENOCIDA && !correct
+        val suddenDeath = mode == GameMode.GENOCIDA || mode == GameMode.APRENDIZADO
+        val defeated = suddenDeath && !correct
         (defeated || isLast).takeIf { it }?.let {
             status = mapOf(true to GameStatus.DEFEATED, false to GameStatus.COMPLETED).getValue(defeated)
             completedAt = answeredAt

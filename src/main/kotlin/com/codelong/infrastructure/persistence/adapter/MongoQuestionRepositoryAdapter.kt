@@ -6,6 +6,7 @@ import com.codelong.domain.model.Question
 import com.codelong.domain.port.QuestionPage
 import com.codelong.domain.port.QuestionRepository
 import com.codelong.domain.port.QuestionSearch
+import com.codelong.domain.valueobject.Category
 import com.codelong.domain.valueobject.QuestionId
 import com.codelong.domain.valueobject.QuestionStatus
 import com.codelong.infrastructure.persistence.document.QuestionDocument
@@ -32,6 +33,10 @@ class MongoQuestionRepositoryAdapter(
 
     override fun findAllActive(): List<Question> =
         repository.findByStatus(QuestionStatus.ACTIVE.name).map(QuestionPersistenceMapper::toDomain)
+
+    override fun findActiveByCategory(category: Category): List<Question> =
+        repository.findByStatusAndCategory(QuestionStatus.ACTIVE.name, category.name)
+            .map(QuestionPersistenceMapper::toDomain)
 
     override fun countActive(): Long =
         repository.countByStatus(QuestionStatus.ACTIVE.name)

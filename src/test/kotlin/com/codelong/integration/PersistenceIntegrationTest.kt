@@ -6,6 +6,7 @@ import com.codelong.domain.port.GameRepository
 import com.codelong.domain.port.QuestionRepository
 import com.codelong.domain.port.QuestionSearch
 import com.codelong.domain.GameRules
+import com.codelong.domain.port.RankingFilter
 import com.codelong.domain.port.RankingRepository
 import com.codelong.domain.port.UserRepository
 import com.codelong.domain.valueobject.Category
@@ -64,6 +65,8 @@ class PersistenceIntegrationTest {
 
     @Autowired
     private lateinit var mongoTemplate: MongoTemplate
+
+    private fun filter(mode: GameMode? = null) = RankingFilter(mode, null)
 
     @BeforeEach
     fun cleanDatabase() {
@@ -184,12 +187,12 @@ class PersistenceIntegrationTest {
         persistCompletedGame(id = "g-2", userId = "u-1", username = "alice", difficulty = Difficulty.MASTER)
         persistCompletedGame(id = "g-3", userId = "u-2", username = "bob", difficulty = Difficulty.EASY)
 
-        val ranking = rankingRepository.findRanking(0, 10, null)
+        val ranking = rankingRepository.findRanking(0, 10, filter())
 
         assertEquals(3, ranking.size)
         assertEquals(listOf("alice", "alice", "bob"), ranking.map { it.username })
         assertEquals(Difficulty.MASTER.points * GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING, ranking.first().score)
-        assertEquals(3L, rankingRepository.countRankedEntries(null))
+        assertEquals(3L, rankingRepository.countRankedEntries(filter()))
     }
 
     @Test
@@ -198,25 +201,25 @@ class PersistenceIntegrationTest {
         persistCompletedGame(id = "g-2", userId = "u-2", username = "bob", difficulty = Difficulty.EASY)
         gameRepository.save(Fixtures.game(id = "g-3", userId = "u-3", username = "carol"))
 
-        val ranking = rankingRepository.findRanking(0, 10, null)
+        val ranking = rankingRepository.findRanking(0, 10, filter())
         assertEquals(listOf("alice", "bob"), ranking.map { it.username })
 
-        val bob = rankingRepository.findUserBestScore(UserId("u-2"), null)!!
-        assertEquals(1L, rankingRepository.countUsersBetterThan(bob, null))
-        assertEquals(2L, rankingRepository.countRankedEntries(null))
+        val bob = rankingRepository.findUserBestScore(UserId("u-2"), filter())!!
+        assertEquals(1L, rankingRepository.countUsersBetterThan(bob, filter()))
+        assertEquals(2L, rankingRepository.countRankedEntries(filter()))
     }
 
     @Test
     fun `ranking inclui partidas abandonadas com o minimo de respostas`() {
         persistAbandonedGame(id = "g-1", userId = "u-1", username = "alice", difficulty = Difficulty.HARD)
 
-        val ranking = rankingRepository.findRanking(0, 10, null)
+        val ranking = rankingRepository.findRanking(0, 10, filter())
 
         assertEquals(1, ranking.size)
         assertEquals("alice", ranking.first().username)
         assertEquals(Difficulty.HARD.points * GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING, ranking.first().score)
         assertEquals(GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING, ranking.first().answeredQuestions)
-        assertEquals(1L, rankingRepository.countRankedEntries(null))
+        assertEquals(1L, rankingRepository.countRankedEntries(filter()))
     }
 
     @Test
@@ -232,15 +235,15 @@ class PersistenceIntegrationTest {
         repeat(belowMinimum) { loaded.answer(loaded.currentQuestion().correctOption, Fixtures.NOW) }
         gameRepository.save(loaded)
 
-        assertTrue(rankingRepository.findRanking(0, 10, null).isEmpty())
-        assertEquals(0L, rankingRepository.countRankedEntries(null))
+        assertTrue(rankingRepository.findRanking(0, 10, filter()).isEmpty())
+        assertEquals(0L, rankingRepository.countRankedEntries(filter()))
     }
 
     @Test
     fun `ranking inclui partida derrotada no modo genocida`() {
         persistDefeatedGame(id = "g-1", userId = "u-1", username = "alice", difficulty = Difficulty.EASY)
 
-        val ranking = rankingRepository.findRanking(0, 10, null)
+        val ranking = rankingRepository.findRanking(0, 10, filter())
 
         assertEquals(1, ranking.size)
         assertEquals("alice", ranking.first().username)
@@ -259,7 +262,7 @@ class PersistenceIntegrationTest {
             correctAnswers = GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING_GENOCIDA - 2
         )
 
-        val ranking = rankingRepository.findRanking(0, 10, null)
+        val ranking = rankingRepository.findRanking(0, 10, filter())
 
         assertEquals(1, ranking.size)
         assertEquals("alice", ranking.first().username)
@@ -271,16 +274,16 @@ class PersistenceIntegrationTest {
         persistCompletedGame(id = "g-1", userId = "u-1", username = "alice", difficulty = Difficulty.EASY)
         persistDefeatedGame(id = "g-2", userId = "u-2", username = "bob", difficulty = Difficulty.EASY)
 
-        val classic = rankingRepository.findRanking(0, 10, GameMode.CLASSIC)
-        val genocida = rankingRepository.findRanking(0, 10, GameMode.GENOCIDA)
+        val classic = rankingRepository.findRanking(0, 10, filter(GameMode.CLASSIC))
+        val genocida = rankingRepository.findRanking(0, 10, filter(GameMode.GENOCIDA))
 
         assertEquals(listOf("alice"), classic.map { it.username })
         assertEquals(listOf("bob"), genocida.map { it.username })
-        assertEquals(1L, rankingRepository.countRankedEntries(GameMode.CLASSIC))
-        assertEquals(1L, rankingRepository.countRankedEntries(GameMode.GENOCIDA))
-        assertEquals(2L, rankingRepository.countRankedEntries(null))
-        assertNull(rankingRepository.findUserBestScore(UserId("u-1"), GameMode.GENOCIDA))
-        assertEquals("alice", rankingRepository.findUserBestScore(UserId("u-1"), GameMode.CLASSIC)?.username)
+        assertEquals(1L, rankingRepository.countRankedEntries(filter(GameMode.CLASSIC)))
+        assertEquals(1L, rankingRepository.countRankedEntries(filter(GameMode.GENOCIDA)))
+        assertEquals(2L, rankingRepository.countRankedEntries(filter()))
+        assertNull(rankingRepository.findUserBestScore(UserId("u-1"), filter(GameMode.GENOCIDA)))
+        assertEquals("alice", rankingRepository.findUserBestScore(UserId("u-1"), filter(GameMode.CLASSIC))?.username)
     }
 
     private fun persistDefeatedGame(

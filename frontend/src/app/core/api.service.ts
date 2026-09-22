@@ -9,6 +9,8 @@ import {
   QuestionResponse,
   RankingEntry,
   RankingResponse,
+  ThemeQuestionsResponse,
+  ThemesResponse,
   User
 } from './models';
 
@@ -30,8 +32,19 @@ export class ApiService {
     return this.http.get<User>(`${API_BASE}/users/me`);
   }
 
-  startGame(mode?: string): Observable<GameResponse> {
-    const url = mode ? `${API_BASE}/games?mode=${mode}` : `${API_BASE}/games`;
+  startGame(mode?: string, category?: string, questionId?: string): Observable<GameResponse> {
+    let params = new HttpParams();
+    if (mode) {
+      params = params.set('mode', mode);
+    }
+    if (category) {
+      params = params.set('category', category);
+    }
+    if (questionId) {
+      params = params.set('questionId', questionId);
+    }
+    const query = params.toString();
+    const url = query ? `${API_BASE}/games?${query}` : `${API_BASE}/games`;
     return this.http.post<GameResponse>(url, null);
   }
 
@@ -63,12 +76,23 @@ export class ApiService {
     return this.http.post<GameResponse>(`${API_BASE}/games/${gameId}/abandon`, null);
   }
 
-  ranking(page = 0, size = 10, mode?: string): Observable<RankingResponse> {
+  ranking(page = 0, size = 10, mode?: string, theme?: string): Observable<RankingResponse> {
     let params = new HttpParams().set('page', page).set('size', size);
     if (mode) {
       params = params.set('mode', mode);
     }
+    if (theme) {
+      params = params.set('theme', theme);
+    }
     return this.http.get<RankingResponse>(`${API_BASE}/rankings`, { params });
+  }
+
+  learningThemes(): Observable<ThemesResponse> {
+    return this.http.get<ThemesResponse>(`${API_BASE}/learning/themes`);
+  }
+
+  learningThemeQuestions(category: string): Observable<ThemeQuestionsResponse> {
+    return this.http.get<ThemeQuestionsResponse>(`${API_BASE}/learning/themes/${category}/questions`);
   }
 
   myRanking(mode?: string): Observable<RankingEntry | null> {

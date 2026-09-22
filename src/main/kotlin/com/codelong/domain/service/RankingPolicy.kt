@@ -29,6 +29,7 @@ object RankingPolicy {
     /** Minimo de respostas exigido para o modo informado. */
     fun minimumAnswers(mode: GameMode): Int = when (mode) {
         GameMode.GENOCIDA -> GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING_GENOCIDA
+        GameMode.APRENDIZADO -> GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING_APRENDIZADO
         GameMode.CLASSIC -> GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING
     }
 

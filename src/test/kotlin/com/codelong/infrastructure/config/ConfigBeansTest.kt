@@ -21,6 +21,8 @@ import com.codelong.application.usecase.GetQuestionUseCase
 import com.codelong.application.usecase.GetRankingUseCase
 import com.codelong.application.usecase.ListGamesUseCase
 import com.codelong.application.usecase.ListQuestionsUseCase
+import com.codelong.application.usecase.ListThemeQuestionsUseCase
+import com.codelong.application.usecase.ListThemesUseCase
 import com.codelong.application.usecase.ListUsersUseCase
 import com.codelong.application.usecase.LoginUserUseCase
 import com.codelong.application.usecase.RegisterUserUseCase
@@ -151,6 +153,8 @@ class ConfigBeansTest {
         assertInstanceOf(GetQuestionUseCase::class.java, config.getQuestionUseCase(questions))
         assertInstanceOf(ListQuestionsUseCase::class.java, config.listQuestionsUseCase(questions))
         assertInstanceOf(DeleteQuestionUseCase::class.java, config.deleteQuestionUseCase(questions))
+        assertInstanceOf(ListThemesUseCase::class.java, config.listThemesUseCase(questions))
+        assertInstanceOf(ListThemeQuestionsUseCase::class.java, config.listThemeQuestionsUseCase(questions))
     }
 
     @Test

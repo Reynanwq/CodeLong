@@ -377,6 +377,35 @@ class GameAggregateTest {
     }
 
     @Test
+    fun `no modo aprendizado errar encerra a partida como derrota`() {
+        val game = Fixtures.game(
+            difficulties = listOf(Difficulty.EASY, Difficulty.HARD),
+            mode = GameMode.APRENDIZADO
+        )
+        val question = game.currentQuestion()
+        val wrong = question.options.first { it.id != question.correctOption }.id
+
+        val eval = game.answer(wrong, Fixtures.NOW)
+
+        assertEquals(GameStatus.DEFEATED, game.status)
+        assertTrue(eval.gameCompleted)
+        assertEquals(Fixtures.NOW, game.completedAt)
+    }
+
+    @Test
+    fun `no modo aprendizado acertar mantem a partida em andamento`() {
+        val game = Fixtures.game(
+            difficulties = listOf(Difficulty.EASY, Difficulty.HARD),
+            mode = GameMode.APRENDIZADO
+        )
+
+        val eval = game.answer(game.currentQuestion().correctOption, Fixtures.NOW)
+
+        assertTrue(game.isInProgress)
+        assertFalse(eval.gameCompleted)
+    }
+
+    @Test
     fun `no modo classico errar nao encerra a partida`() {
         val game = Fixtures.game(difficulties = listOf(Difficulty.EASY, Difficulty.HARD))
         val question = game.currentQuestion()

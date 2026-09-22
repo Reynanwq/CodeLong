@@ -27,6 +27,7 @@ import { GameResponse, RankingEntry } from '../../core/models';
               Modo Genocida
             </button>
           }
+          <a class="secondary" routerLink="/learning">Modo Aprendizado</a>
         </div>
       </div>
 

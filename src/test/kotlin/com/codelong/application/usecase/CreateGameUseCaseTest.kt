@@ -5,8 +5,10 @@ import com.codelong.application.service.DefaultGameFactory
 import com.codelong.application.service.GameFactory
 import com.codelong.domain.exception.DomainException
 import com.codelong.domain.service.GameSequencer
+import com.codelong.domain.valueobject.Category
 import com.codelong.domain.valueobject.Difficulty
 import com.codelong.domain.valueobject.GameMode
+import com.codelong.domain.valueobject.QuestionId
 import com.codelong.domain.valueobject.UserId
 import com.codelong.support.Fixtures
 import com.codelong.support.InMemoryGameRepository
@@ -47,7 +49,7 @@ class CreateGameUseCaseTest {
         questionRepository.save(Fixtures.question(id = "q-1", difficulty = Difficulty.EASY))
         questionRepository.save(Fixtures.question(id = "q-2", difficulty = Difficulty.HARD))
 
-        val result = useCase.create(UserId("u-1"), GameMode.CLASSIC)
+        val result = useCase.create(UserId("u-1"), GameMode.CLASSIC, null, null)
         val game = result.game
 
         assertTrue(result.created)
@@ -63,9 +65,9 @@ class CreateGameUseCaseTest {
     fun `retoma a partida em andamento em vez de criar outra`() {
         userRepository.save(Fixtures.user(id = "u-1"))
         questionRepository.save(Fixtures.question(id = "q-1", difficulty = Difficulty.EASY))
-        val first = useCase.create(UserId("u-1"), GameMode.CLASSIC)
+        val first = useCase.create(UserId("u-1"), GameMode.CLASSIC, null, null)
 
-        val second = useCase.create(UserId("u-1"), GameMode.CLASSIC)
+        val second = useCase.create(UserId("u-1"), GameMode.CLASSIC, null, null)
 
         assertFalse(second.created)
         assertEquals(first.game.id, second.game.id)
@@ -81,7 +83,7 @@ class CreateGameUseCaseTest {
                 .deactivate(TestClock.fixed.instant())
         )
 
-        val game = useCase.create(UserId("u-1"), GameMode.CLASSIC).game
+        val game = useCase.create(UserId("u-1"), GameMode.CLASSIC, null, null).game
 
         assertEquals(1, game.totalQuestions)
     }
@@ -90,7 +92,7 @@ class CreateGameUseCaseTest {
     fun `sem perguntas ativas nao inicia partida`() {
         userRepository.save(Fixtures.user(id = "u-1"))
 
-        val error = assertThrows<DomainException> { useCase.create(UserId("u-1"), GameMode.CLASSIC) }
+        val error = assertThrows<DomainException> { useCase.create(UserId("u-1"), GameMode.CLASSIC, null, null) }
 
         assertEquals("NO_ACTIVE_QUESTIONS", error.code)
     }
@@ -99,7 +101,7 @@ class CreateGameUseCaseTest {
     fun `usuario inexistente nao inicia partida`() {
         questionRepository.save(Fixtures.question(id = "q-1"))
 
-        assertThrows<DomainException> { useCase.create(UserId("ninguem"), GameMode.CLASSIC) }
+        assertThrows<DomainException> { useCase.create(UserId("ninguem"), GameMode.CLASSIC, null, null) }
     }
 
     @Test
@@ -107,6 +109,80 @@ class CreateGameUseCaseTest {
         userRepository.save(Fixtures.user(id = "u-1").deactivate(TestClock.fixed.instant()))
         questionRepository.save(Fixtures.question(id = "q-1"))
 
-        assertThrows<DomainException> { useCase.create(UserId("u-1"), GameMode.CLASSIC) }
+        assertThrows<DomainException> { useCase.create(UserId("u-1"), GameMode.CLASSIC, null, null) }
+    }
+
+    @Test
+    fun `aprendizado inicia apenas com as perguntas do tema`() {
+        userRepository.save(Fixtures.user(id = "u-1"))
+        questionRepository.save(Fixtures.question(id = "k-1", category = Category.KOTLIN))
+        questionRepository.save(Fixtures.question(id = "k-2", category = Category.KOTLIN))
+        questionRepository.save(Fixtures.question(id = "r-1", category = Category.REST))
+
+        val game = useCase.create(UserId("u-1"), GameMode.APRENDIZADO, Category.KOTLIN, null).game
+
+        assertEquals(2, game.totalQuestions)
+        assertTrue(game.questions.all { it.category == Category.KOTLIN })
+    }
+
+    @Test
+    fun `aprendizado exige tema ou pergunta`() {
+        userRepository.save(Fixtures.user(id = "u-1"))
+        questionRepository.save(Fixtures.question(id = "k-1", category = Category.KOTLIN))
+
+        val error = assertThrows<DomainException> {
+            useCase.create(UserId("u-1"), GameMode.APRENDIZADO, null, null)
+        }
+
+        assertEquals("learning.theme.required", error.code)
+    }
+
+    @Test
+    fun `aprendizado com uma pergunta especifica monta partida de uma pergunta`() {
+        userRepository.save(Fixtures.user(id = "u-1"))
+        questionRepository.save(Fixtures.question(id = "k-1", category = Category.KOTLIN))
+        questionRepository.save(Fixtures.question(id = "k-2", category = Category.KOTLIN))
+
+        val game = useCase.create(UserId("u-1"), GameMode.APRENDIZADO, null, QuestionId("k-2")).game
+
+        assertEquals(1, game.totalQuestions)
+        assertEquals("k-2", game.currentQuestion().idText)
+    }
+
+    @Test
+    fun `aprendizado com pergunta inexistente falha`() {
+        userRepository.save(Fixtures.user(id = "u-1"))
+
+        val error = assertThrows<DomainException> {
+            useCase.create(UserId("u-1"), GameMode.APRENDIZADO, null, QuestionId("nao-existe"))
+        }
+
+        assertEquals("QUESTION_NOT_FOUND", error.code)
+    }
+
+    @Test
+    fun `aprendizado com pergunta inativa nao inicia`() {
+        userRepository.save(Fixtures.user(id = "u-1"))
+        questionRepository.save(
+            Fixtures.question(id = "k-1", category = Category.KOTLIN).deactivate(TestClock.fixed.instant())
+        )
+
+        val error = assertThrows<DomainException> {
+            useCase.create(UserId("u-1"), GameMode.APRENDIZADO, null, QuestionId("k-1"))
+        }
+
+        assertEquals("NO_ACTIVE_QUESTIONS", error.code)
+    }
+
+    @Test
+    fun `aprendizado sem perguntas no tema nao inicia`() {
+        userRepository.save(Fixtures.user(id = "u-1"))
+        questionRepository.save(Fixtures.question(id = "r-1", category = Category.REST))
+
+        val error = assertThrows<DomainException> {
+            useCase.create(UserId("u-1"), GameMode.APRENDIZADO, Category.KOTLIN, null)
+        }
+
+        assertEquals("NO_ACTIVE_QUESTIONS", error.code)
     }
 }

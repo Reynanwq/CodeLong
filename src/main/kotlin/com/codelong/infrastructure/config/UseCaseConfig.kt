@@ -22,6 +22,8 @@ import com.codelong.application.usecase.GetQuestionUseCaseImpl
 import com.codelong.application.usecase.GetRankingUseCaseImpl
 import com.codelong.application.usecase.ListGamesUseCaseImpl
 import com.codelong.application.usecase.ListQuestionsUseCaseImpl
+import com.codelong.application.usecase.ListThemeQuestionsUseCaseImpl
+import com.codelong.application.usecase.ListThemesUseCaseImpl
 import com.codelong.application.usecase.ListUsersUseCaseImpl
 import com.codelong.application.usecase.LoginUserUseCaseImpl
 import com.codelong.application.usecase.RegisterUserUseCaseImpl
@@ -46,6 +48,8 @@ import com.codelong.application.usecase.GetQuestionUseCase
 import com.codelong.application.usecase.GetRankingUseCase
 import com.codelong.application.usecase.ListGamesUseCase
 import com.codelong.application.usecase.ListQuestionsUseCase
+import com.codelong.application.usecase.ListThemeQuestionsUseCase
+import com.codelong.application.usecase.ListThemesUseCase
 import com.codelong.application.usecase.ListUsersUseCase
 import com.codelong.application.usecase.LoginUserUseCase
 import com.codelong.application.usecase.RegisterUserUseCase
@@ -190,4 +194,12 @@ class UseCaseConfig {
     @Bean
     fun deleteQuestionUseCase(questionRepository: QuestionRepository) =
         DeleteQuestionUseCaseImpl(questionRepository)
+
+    @Bean
+    fun listThemesUseCase(questionRepository: QuestionRepository) =
+        ListThemesUseCaseImpl(questionRepository)
+
+    @Bean
+    fun listThemeQuestionsUseCase(questionRepository: QuestionRepository) =
+        ListThemeQuestionsUseCaseImpl(questionRepository)
 }

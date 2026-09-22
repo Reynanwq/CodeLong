@@ -85,6 +85,17 @@ class GameSequencerOrderingTest {
     }
 
     @Test
+    fun `modo aprendizado ordena por dificuldade crescente`() {
+        val questions = Difficulty.entries.reversed().flatMap { difficulty -> questionsOf(difficulty, 2) }
+
+        val sequence = GameSequencer(Random(7)).sequence(questions, GameMode.APRENDIZADO)
+
+        val levels = sequence.map { it.difficulty.level }
+        assertEquals(levels.sorted(), levels)
+        assertEquals(20, sequence.size)
+    }
+
+    @Test
     fun `mesma semente produz o mesmo embaralhamento de alternativas`() {
         val question = Fixtures.question(id = "q-1", difficulty = Difficulty.EASY)
 

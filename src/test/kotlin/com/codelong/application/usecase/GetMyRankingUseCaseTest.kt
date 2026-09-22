@@ -1,7 +1,9 @@
 package com.codelong.application.usecase
 
+import com.codelong.domain.valueobject.Category
 import com.codelong.domain.valueobject.GameMode
 
+import com.codelong.domain.port.RankingFilter
 import com.codelong.domain.valueobject.RankEntry
 import com.codelong.domain.valueobject.UserId
 import com.codelong.support.Fixtures
@@ -16,13 +18,16 @@ class GetMyRankingUseCaseTest {
     private lateinit var repository: InMemoryRankingRepository
     private lateinit var useCase: GetMyRankingUseCase
 
+    private fun filter(mode: GameMode? = null, theme: Category? = null) = RankingFilter(mode, theme)
+
     private fun entry(
         id: String,
         score: Int,
         correctAnswers: Int = 1,
         totalTimeMillis: Long = 1_000,
         achievedAtOffsetSeconds: Long = 0,
-        mode: GameMode = GameMode.CLASSIC
+        mode: GameMode = GameMode.CLASSIC,
+        theme: Category? = null
     ) = RankEntry(
         userId = UserId(id),
         username = id,
@@ -32,7 +37,8 @@ class GetMyRankingUseCaseTest {
         mode = mode,
         answeredQuestions = 10,
         totalTimeMillis = totalTimeMillis,
-        achievedAt = Fixtures.NOW.plusSeconds(achievedAtOffsetSeconds)
+        achievedAt = Fixtures.NOW.plusSeconds(achievedAtOffsetSeconds),
+        theme = theme
     )
 
     @BeforeEach
@@ -45,19 +51,19 @@ class GetMyRankingUseCaseTest {
     fun `retorna nulo quando o usuario nao concluiu partida`() {
         repository.add(entry("outro", score = 100))
 
-        assertNull(useCase.myRanking(UserId("u-1"), null))
+        assertNull(useCase.myRanking(UserId("u-1"), filter()))
     }
 
     @Test
     fun `retorna nulo em ranking vazio`() {
-        assertNull(useCase.myRanking(UserId("u-1"), null))
+        assertNull(useCase.myRanking(UserId("u-1"), filter()))
     }
 
     @Test
     fun `retorna posicao um quando ninguem e melhor`() {
         repository.add(entry("u-1", score = 500))
 
-        val rank = useCase.myRanking(UserId("u-1"), null)
+        val rank = useCase.myRanking(UserId("u-1"), filter())
 
         assertEquals(1, rank?.position)
         assertEquals(500, rank?.score)
@@ -70,7 +76,7 @@ class GetMyRankingUseCaseTest {
         repository.add(entry("melhor-2", score = 400))
         repository.add(entry("u-1", score = 300))
 
-        assertEquals(3, useCase.myRanking(UserId("u-1"), null)?.position)
+        assertEquals(3, useCase.myRanking(UserId("u-1"), filter())?.position)
     }
 
     @Test
@@ -79,7 +85,7 @@ class GetMyRankingUseCaseTest {
         repository.add(entry("u-1", score = 900))
         repository.add(entry("u-1", score = 400))
 
-        val rank = useCase.myRanking(UserId("u-1"), null)
+        val rank = useCase.myRanking(UserId("u-1"), filter())
 
         assertEquals(900, rank?.score)
         assertEquals(1, rank?.position)
@@ -91,7 +97,7 @@ class GetMyRankingUseCaseTest {
             entry("u-1", score = 250, correctAnswers = 7, totalTimeMillis = 4_000, achievedAtOffsetSeconds = 30)
         )
 
-        val rank = useCase.myRanking(UserId("u-1"), null)
+        val rank = useCase.myRanking(UserId("u-1"), filter())
 
         assertEquals(250, rank?.score)
         assertEquals(7, rank?.correctAnswers)
@@ -103,9 +109,27 @@ class GetMyRankingUseCaseTest {
     fun `nao altera a entrada armazenada`() {
         repository.add(entry("u-1", score = 100))
 
-        useCase.myRanking(UserId("u-1"), null)
+        useCase.myRanking(UserId("u-1"), filter())
 
-        assertEquals(null, repository.findUserBestScore(UserId("u-1"), null)?.position)
+        assertEquals(null, repository.findUserBestScore(UserId("u-1"), filter())?.position)
+    }
+
+    @Test
+    fun `posicao e recalculada a cada chamada`() {
+        repository.add(entry("u-1", score = 100))
+        assertEquals(1, useCase.myRanking(UserId("u-1"), filter())?.position)
+
+        repository.add(entry("novo-lider", score = 999))
+        assertEquals(2, useCase.myRanking(UserId("u-1"), filter())?.position)
+    }
+
+    @Test
+    fun `empate na pontuacao pode deixar o usuario em segunda posicao`() {
+        repository.add(entry("u-1", score = 100, correctAnswers = 1))
+        repository.add(entry("u-2", score = 100, correctAnswers = 5))
+
+        assertEquals(2, useCase.myRanking(UserId("u-1"), filter())?.position)
+        assertEquals(1, useCase.myRanking(UserId("u-2"), filter())?.position)
     }
 
     @Test
@@ -114,8 +138,8 @@ class GetMyRankingUseCaseTest {
         repository.add(entry("u-1", score = 300, mode = GameMode.GENOCIDA))
         repository.add(entry("u-2", score = 900, mode = GameMode.GENOCIDA))
 
-        val classic = useCase.myRanking(UserId("u-1"), GameMode.CLASSIC)
-        val genocida = useCase.myRanking(UserId("u-1"), GameMode.GENOCIDA)
+        val classic = useCase.myRanking(UserId("u-1"), filter(GameMode.CLASSIC))
+        val genocida = useCase.myRanking(UserId("u-1"), filter(GameMode.GENOCIDA))
 
         assertEquals(1, classic?.position)
         assertEquals(2, genocida?.position)
@@ -125,24 +149,17 @@ class GetMyRankingUseCaseTest {
     fun `retorna nulo quando o usuario nao tem partida no modo informado`() {
         repository.add(entry("u-1", score = 100, mode = GameMode.CLASSIC))
 
-        assertNull(useCase.myRanking(UserId("u-1"), GameMode.GENOCIDA))
+        assertNull(useCase.myRanking(UserId("u-1"), filter(GameMode.GENOCIDA)))
     }
 
     @Test
-    fun `posicao e recalculada a cada chamada`() {
-        repository.add(entry("u-1", score = 100))
-        assertEquals(1, useCase.myRanking(UserId("u-1"), null)?.position)
+    fun `posicao por tema considera apenas aquele tema`() {
+        repository.add(entry("u-1", score = 100, mode = GameMode.APRENDIZADO, theme = Category.KOTLIN))
+        repository.add(entry("u-2", score = 500, mode = GameMode.APRENDIZADO, theme = Category.REST))
 
-        repository.add(entry("novo-lider", score = 999))
-        assertEquals(2, useCase.myRanking(UserId("u-1"), null)?.position)
-    }
+        val kotlin = useCase.myRanking(UserId("u-1"), filter(GameMode.APRENDIZADO, Category.KOTLIN))
 
-    @Test
-    fun `empate na pontuacao pode deixar o usuario em segunda posicao`() {
-        repository.add(entry("u-1", score = 100, correctAnswers = 1))
-        repository.add(entry("u-2", score = 100, correctAnswers = 5))
-
-        assertEquals(2, useCase.myRanking(UserId("u-1"), null)?.position)
-        assertEquals(1, useCase.myRanking(UserId("u-2"), null)?.position)
+        assertEquals(1, kotlin?.position)
+        assertEquals(Category.KOTLIN, kotlin?.theme)
     }
 }

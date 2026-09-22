@@ -5,5 +5,6 @@ import org.springframework.data.mongodb.repository.MongoRepository
 
 interface SpringQuestionDataRepository : MongoRepository<QuestionDocument, String> {
     fun findByStatus(status: String): List<QuestionDocument>
+    fun findByStatusAndCategory(status: String, category: String): List<QuestionDocument>
     fun countByStatus(status: String): Long
 }

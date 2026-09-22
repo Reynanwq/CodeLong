@@ -29,6 +29,7 @@ interface QuestionRepository {
     fun save(question: Question): Question
     fun findById(id: QuestionId): Question?
     fun findAllActive(): List<Question>
+    fun findActiveByCategory(category: Category): List<Question>
     fun countActive(): Long
     fun search(search: QuestionSearch): QuestionPage
     fun deleteById(id: QuestionId)

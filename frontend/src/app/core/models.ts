@@ -87,3 +87,23 @@ export interface RankingResponse {
   size: number;
   totalPages: number;
 }
+
+export interface Theme {
+  category: string;
+  totalQuestions: number;
+}
+
+export interface ThemesResponse {
+  themes: Theme[];
+}
+
+export interface LearningQuestion {
+  id: string;
+  statement: string;
+  category: string;
+  difficulty: string;
+}
+
+export interface ThemeQuestionsResponse {
+  questions: LearningQuestion[];
+}

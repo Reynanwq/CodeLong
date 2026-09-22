@@ -147,7 +147,7 @@ $login = Invoke-WebRequest http://localhost:8080/api/auth/login -Method Post `
 $login.Headers['Access-Control-Allow-Origin']   # esperado: http://localhost:3000
 ```
 
-Fluxo funcional: entrar com `admin`/`admin12345` → **Nova partida** → responder com **setas ↑ ↓ + Enter** → observar o **cronometro de 20s** → **Ranking** (abas Classico/Genocida). Na tela de fim/derrota, **Enter** repete a partida e **← →** escolhem entre jogar novamente, ver ranking ou voltar ao inicio.
+Fluxo funcional: entrar com `admin`/`admin12345` → **Nova partida** (Classico), **Modo Genocida** ou **Modo Aprendizado** (por tema) → responder com **setas ↑ ↓ + Enter** → observar o **cronometro de 20s** → **Ranking** (abas Classico/Genocida/Aprendizado). Na tela de fim/derrota, **Enter** repete a partida e **← →** escolhem entre jogar novamente, ver ranking ou voltar ao inicio.
 
 ---
 
@@ -204,5 +204,7 @@ docker volume rm codelong-mongo-data
 ## Regras de negocio que afetam o uso
 
 - **Tempo por pergunta**: 20 segundos (`GameRules.ANSWER_TIME_LIMIT_SECONDS`). Se o tempo esgotar, a pergunta conta como **erro**, a partida **avanca** e a resposta enviada depois e recusada com **409 `ANSWER_TIME_EXPIRED`**.
-- **Ranking**: entram **todas as partidas** `COMPLETED`, `ABANDONED` e `DEFEATED` com **no minimo 10 respostas (CLASSIC) ou 5 (GENOCIDA)**. O ranking e **separado por modo** (`GET /api/rankings?mode=CLASSIC|GENOCIDA`); sem o parametro, mistura os dois. Desempate: `score` ↓ → menor tempo → mais acertos → data mais antiga.
-- **Uma partida inclui todas as perguntas ativas** (hoje 980). Por isso o minimo de respostas existe: sem ele, ninguem apareceria no ranking.
+- **Modos**: `CLASSIC` (todas as perguntas, dificuldade crescente), `GENOCIDA` (todas, ordem aleatoria, morte subita) e `APRENDIZADO` (perguntas de um **tema/categoria**, dificuldade crescente, morte subita). Nos modos de morte subita a resposta errada encerra a partida como `DEFEATED`.
+- **Ranking**: entram **todas as partidas** `COMPLETED`, `ABANDONED` e `DEFEATED` com **no minimo 10 respostas (CLASSIC) ou 5 (GENOCIDA/APRENDIZADO)**. O ranking e **separado por modo** (`GET /api/rankings?mode=CLASSIC|GENOCIDA|APRENDIZADO`); o Aprendizado ainda exige o tema (`&theme=KOTLIN`). Sem `mode`, o ranking global considera **apenas Classico e Genocida**. Desempate: `score` ↓ → menor tempo → mais acertos → data mais antiga.
+- **Aprendizado**: `GET /api/learning/themes` lista os temas (categorias com perguntas ativas) e `GET /api/learning/themes/{category}/questions` lista as perguntas do tema. Para jogar: `POST /api/games?mode=APRENDIZADO&category=KOTLIN` (tema inteiro) ou `&questionId=<id>` (pergunta unica).
+- **Uma partida inclui todas as perguntas ativas** (hoje 980) no Classico/Genocida; no Aprendizado, apenas as do tema. Por isso o minimo de respostas existe: sem ele, ninguem apareceria no ranking.
