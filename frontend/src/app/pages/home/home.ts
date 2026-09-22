@@ -26,6 +26,9 @@ import { GameResponse, RankingEntry } from '../../core/models';
             <button class="genocide" (click)="start('GENOCIDA')" [disabled]="loading()">
               Modo Genocida
             </button>
+            <button class="secondary" (click)="start('GUBEE')" [disabled]="loading()">
+              Modo Gubee
+            </button>
           }
           <a class="secondary" routerLink="/learning">Modo Aprendizado</a>
         </div>

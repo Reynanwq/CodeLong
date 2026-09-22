@@ -35,7 +35,8 @@ enum class Category {
     EVENT_DRIVEN,
     AI,
     CLAUDE_CODE,
-    ALGORITHMS;
+    ALGORITHMS,
+    GUBEE;
 
     companion object {
         fun fromName(name: String): Category =

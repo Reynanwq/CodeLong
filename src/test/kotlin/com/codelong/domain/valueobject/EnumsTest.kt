@@ -40,8 +40,8 @@ class EnumsTest {
     }
 
     @Test
-    fun `Category possui as 27 categorias esperadas`() {
-        assertEquals(27, Category.entries.size)
+    fun `Category possui as 28 categorias esperadas`() {
+        assertEquals(28, Category.entries.size)
     }
 
     @ParameterizedTest
@@ -167,7 +167,10 @@ class EnumsTest {
     }
 
     @Test
-    fun `GameMode possui os tres modos esperados`() {
-        assertEquals(listOf(GameMode.CLASSIC, GameMode.GENOCIDA, GameMode.APRENDIZADO), GameMode.entries)
+    fun `GameMode possui os quatro modos esperados`() {
+        assertEquals(
+            listOf(GameMode.CLASSIC, GameMode.GENOCIDA, GameMode.APRENDIZADO, GameMode.GUBEE),
+            GameMode.entries
+        )
     }
 }

@@ -138,6 +138,28 @@ class GetRankingUseCaseTest {
     }
 
     @Test
+    fun `ranking global ignora o modo gubee`() {
+        add("u-1", "alice", score = 100, mode = GameMode.CLASSIC)
+        add("u-2", "bob", score = 900, mode = GameMode.GUBEE)
+
+        val global = useCase.ranking(0, 10, filter())
+
+        assertEquals(listOf("alice"), global.entries.map { it.username })
+        assertEquals(1L, global.totalElements)
+    }
+
+    @Test
+    fun `ranking do modo gubee lista apenas gubee`() {
+        add("u-1", "alice", score = 100, mode = GameMode.GUBEE)
+        add("u-2", "bob", score = 200, mode = GameMode.CLASSIC)
+
+        val gubee = useCase.ranking(0, 10, filter(GameMode.GUBEE))
+
+        assertEquals(listOf("alice"), gubee.entries.map { it.username })
+        assertEquals(1L, gubee.totalElements)
+    }
+
+    @Test
     fun `ranking por tema filtra aprendizado pela categoria`() {
         add("u-1", "alice", score = 100, mode = GameMode.APRENDIZADO, theme = Category.KOTLIN)
         add("u-2", "bob", score = 200, mode = GameMode.APRENDIZADO, theme = Category.KOTLIN)

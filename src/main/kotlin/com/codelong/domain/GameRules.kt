@@ -32,4 +32,10 @@ object GameRules {
      * ranking do seu tema. Igual ao genocida: o modo tambem e de morte subita.
      */
     const val MIN_ANSWERED_QUESTIONS_FOR_RANKING_APRENDIZADO = 5
+
+    /**
+     * Minimo de perguntas respondidas para uma partida GUBEE disputar o seu
+     * ranking. Igual ao classico: o modo nao e de morte subita.
+     */
+    const val MIN_ANSWERED_QUESTIONS_FOR_RANKING_GUBEE = 10
 }

@@ -67,7 +67,9 @@ class CreateGameUseCaseImpl(
     private fun questionsFor(mode: GameMode, category: Category?, questionId: QuestionId?): List<Question> =
         when (mode) {
             GameMode.APRENDIZADO -> learningQuestions(category, questionId)
+            GameMode.GUBEE -> questionRepository.findActiveByCategory(Category.GUBEE)
             GameMode.CLASSIC, GameMode.GENOCIDA -> questionRepository.findAllActive()
+                .filterNot { it.category == Category.GUBEE }
         }
 
     /** Um tema inteiro (dificuldade crescente) ou uma unica pergunta do tema. */
@@ -75,9 +77,11 @@ class CreateGameUseCaseImpl(
         questionId?.let { id ->
             val question = questionRepository.findById(id) ?: throw Errors.questionNotFound()
             question.isActive.takeUnless { it }?.let { throw Errors.noActiveQuestions() }
+            question.category.takeIf { it == Category.GUBEE }?.let { throw Errors.noActiveQuestions() }
             return listOf(question)
         }
         val theme = category ?: throw Errors.learningThemeRequired()
+        theme.takeIf { it == Category.GUBEE }?.let { throw Errors.noActiveQuestions() }
         return questionRepository.findActiveByCategory(theme)
     }
 }

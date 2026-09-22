@@ -30,6 +30,7 @@ object RankingPolicy {
     fun minimumAnswers(mode: GameMode): Int = when (mode) {
         GameMode.GENOCIDA -> GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING_GENOCIDA
         GameMode.APRENDIZADO -> GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING_APRENDIZADO
+        GameMode.GUBEE -> GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING_GUBEE
         GameMode.CLASSIC -> GameRules.MIN_ANSWERED_QUESTIONS_FOR_RANKING
     }
 

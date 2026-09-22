@@ -4,7 +4,7 @@ import { RouterLink } from '@angular/router';
 import { ApiService } from '../../core/api.service';
 import { RankingEntry, Theme } from '../../core/models';
 
-type RankingMode = 'CLASSIC' | 'GENOCIDA' | 'APRENDIZADO';
+type RankingMode = 'CLASSIC' | 'GENOCIDA' | 'APRENDIZADO' | 'GUBEE';
 
 @Component({
   selector: 'app-ranking',
@@ -40,6 +40,14 @@ type RankingMode = 'CLASSIC' | 'GENOCIDA' | 'APRENDIZADO';
           (click)="setMode('APRENDIZADO')"
         >
           Aprendizado
+        </button>
+        <button
+          type="button"
+          class="tab"
+          [class.active]="mode() === 'GUBEE'"
+          (click)="setMode('GUBEE')"
+        >
+          Gubee
         </button>
       </div>
 
@@ -144,7 +152,10 @@ export class RankingPage implements OnInit {
     if (this.mode() === 'GENOCIDA') {
       return 'Genocida';
     }
-    return this.mode() === 'APRENDIZADO' ? 'Aprendizado' : 'Classico';
+    if (this.mode() === 'APRENDIZADO') {
+      return 'Aprendizado';
+    }
+    return this.mode() === 'GUBEE' ? 'Gubee' : 'Classico';
   }
 
   goTo(page: number): void {

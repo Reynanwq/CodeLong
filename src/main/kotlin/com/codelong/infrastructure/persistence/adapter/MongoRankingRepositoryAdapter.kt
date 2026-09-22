@@ -87,13 +87,17 @@ class MongoRankingRepositoryAdapter(
 
     /**
      * Quando um modo e informado, restringe a ele. Sem modo (ranking global),
-     * considera apenas CLASSIC e GENOCIDA — Aprendizado so aparece por tema.
+     * considera apenas CLASSIC e GENOCIDA — Aprendizado e Gubee tem rankings
+     * proprios.
      */
     private fun modeStage(mode: GameMode?): MatchOperation =
         if (mode != null) {
             Aggregation.match(Criteria.where(MongoSchema.Field.MODE).`is`(mode.name))
         } else {
-            Aggregation.match(Criteria.where(MongoSchema.Field.MODE).nin(GameMode.APRENDIZADO.name))
+            Aggregation.match(
+                Criteria.where(MongoSchema.Field.MODE)
+                    .nin(GameMode.APRENDIZADO.name, GameMode.GUBEE.name)
+            )
         }
 
     /** O minimo de respostas depende do modo (genocida/aprendizado exigem menos). */
@@ -104,7 +108,11 @@ class MongoRankingRepositoryAdapter(
         Criteria.where(MongoSchema.Field.MODE).`is`(GameMode.APRENDIZADO.name)
             .and(MongoSchema.Field.ANSWERED_QUESTIONS)
             .gte(RankingPolicy.minimumAnswers(GameMode.APRENDIZADO)),
-        Criteria.where(MongoSchema.Field.MODE).nin(GameMode.GENOCIDA.name, GameMode.APRENDIZADO.name)
+        Criteria.where(MongoSchema.Field.MODE).`is`(GameMode.GUBEE.name)
+            .and(MongoSchema.Field.ANSWERED_QUESTIONS)
+            .gte(RankingPolicy.minimumAnswers(GameMode.GUBEE)),
+        Criteria.where(MongoSchema.Field.MODE)
+            .nin(GameMode.GENOCIDA.name, GameMode.APRENDIZADO.name, GameMode.GUBEE.name)
             .and(MongoSchema.Field.ANSWERED_QUESTIONS)
             .gte(RankingPolicy.minimumAnswers(GameMode.CLASSIC))
     )

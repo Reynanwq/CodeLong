@@ -69,6 +69,7 @@ class RankingPolicyTest {
         assertEquals(10, RankingPolicy.minimumAnswers(GameMode.CLASSIC))
         assertEquals(5, RankingPolicy.minimumAnswers(GameMode.GENOCIDA))
         assertEquals(5, RankingPolicy.minimumAnswers(GameMode.APRENDIZADO))
+        assertEquals(10, RankingPolicy.minimumAnswers(GameMode.GUBEE))
     }
 
     @Test

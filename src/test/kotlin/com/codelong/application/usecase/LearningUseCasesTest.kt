@@ -52,6 +52,14 @@ class LearningUseCasesTest {
     }
 
     @Test
+    fun `nao lista gubee como tema`() {
+        repository.save(Fixtures.question(id = "g-1", category = Category.GUBEE))
+        repository.save(Fixtures.question(id = "k-1", category = Category.KOTLIN))
+
+        assertEquals(listOf(Category.KOTLIN), themes.themes().map { it.category })
+    }
+
+    @Test
     fun `tema sem perguntas devolve lista vazia`() {
         assertEquals(emptyList<Category>(), themes.themes().map { it.category })
         assertEquals(emptyList<String>(), questions.questions(Category.KOTLIN).map { it.idText })

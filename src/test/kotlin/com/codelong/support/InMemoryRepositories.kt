@@ -167,7 +167,10 @@ class InMemoryRankingRepository(
 
     private fun ranked(filter: RankingFilter): List<RankEntry> = entries
         .filter(RankingPolicy::isEligible)
-        .filter { entry -> filter.mode?.let { entry.mode == it } ?: (entry.mode != GameMode.APRENDIZADO) }
+        .filter { entry ->
+            filter.mode?.let { entry.mode == it }
+                ?: (entry.mode != GameMode.APRENDIZADO && entry.mode != GameMode.GUBEE)
+        }
         .filter { entry -> filter.theme?.let { entry.theme == it } ?: true }
         .sortedWith(RankingPolicy.comparator)
 }

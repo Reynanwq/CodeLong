@@ -167,7 +167,7 @@ Para reencontrar a partida aberta sem guardar o `id`, use `GET /api/games/in-pro
 
 ## 6. Ranking
 
-- Ranking **separado por modo**: `?mode=CLASSIC`, `?mode=GENOCIDA` ou `?mode=APRENDIZADO&theme=KOTLIN`. Sem `mode`, o ranking global considera apenas Clássico e Genocida.
+- Ranking **separado por modo**: `?mode=CLASSIC`, `?mode=GENOCIDA`, `?mode=APRENDIZADO&theme=KOTLIN` ou `?mode=GUBEE`. Sem `mode`, o ranking global considera apenas Clássico e Genocida.
 - Lista **todas as tentativas elegíveis** (concluídas, abandonadas ou derrotadas) — cada partida ocupa uma linha.
 - Mínimo de respostas para entrar: **10 no clássico** e **5 no genocida**.
 - Paginado.
@@ -220,7 +220,7 @@ Cabeçalho autenticado: `Authorization: Bearer <token>`.
 | POST | `/api/auth/login` | público | Autentica e emite o JWT |
 | GET | `/api/users/me` | autenticado | Dados do próprio usuário |
 | PATCH | `/api/users/me/password` | autenticado | Troca a própria senha (204) |
-| POST | `/api/games` | autenticado | Inicia uma partida (201) ou retoma a em andamento (200); `mode=CLASSIC\|GENOCIDA\|APRENDIZADO` (`category`/`questionId` no Aprendizado) |
+| POST | `/api/games` | autenticado | Inicia uma partida (201) ou retoma a em andamento (200); `mode=CLASSIC\|GENOCIDA\|APRENDIZADO\|GUBEE` (`category`/`questionId` no Aprendizado) |
 | GET | `/api/games` | autenticado | Histórico paginado (`status`, `page`, `size`) |
 | GET | `/api/games/in-progress` | autenticado | Partida em andamento (204 se não houver) |
 | GET | `/api/games/{gameId}` | dono | Detalhes da partida |

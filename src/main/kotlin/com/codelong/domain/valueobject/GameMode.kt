@@ -10,11 +10,14 @@ import com.codelong.domain.exception.Errors
  * - [GENOCIDA]: ordem totalmente aleatoria, sem respeitar dificuldade.
  * - [APRENDIZADO]: perguntas de um unico tema (categoria), em dificuldade
  *   crescente; morte subita como no genocida (resposta errada encerra).
+ * - [GUBEE]: perguntas exclusivas da categoria GUBEE (nao usadas nos demais
+ *   modos), em dificuldade crescente, sem morte subita. Ranking proprio.
  */
 enum class GameMode {
     CLASSIC,
     GENOCIDA,
-    APRENDIZADO;
+    APRENDIZADO,
+    GUBEE;
 
     companion object {
         fun fromName(name: String): GameMode =

@@ -185,4 +185,64 @@ class CreateGameUseCaseTest {
 
         assertEquals("NO_ACTIVE_QUESTIONS", error.code)
     }
+
+    @Test
+    fun `modo gubee usa apenas as perguntas da categoria gubee`() {
+        userRepository.save(Fixtures.user(id = "u-1"))
+        questionRepository.save(Fixtures.question(id = "g-1", category = Category.GUBEE))
+        questionRepository.save(Fixtures.question(id = "k-1", category = Category.KOTLIN))
+
+        val game = useCase.create(UserId("u-1"), GameMode.GUBEE, null, null).game
+
+        assertEquals(1, game.totalQuestions)
+        assertEquals(Category.GUBEE, game.currentQuestion().category)
+    }
+
+    @Test
+    fun `modo gubee sem perguntas nao inicia`() {
+        userRepository.save(Fixtures.user(id = "u-1"))
+        questionRepository.save(Fixtures.question(id = "k-1", category = Category.KOTLIN))
+
+        val error = assertThrows<DomainException> {
+            useCase.create(UserId("u-1"), GameMode.GUBEE, null, null)
+        }
+
+        assertEquals("NO_ACTIVE_QUESTIONS", error.code)
+    }
+
+    @Test
+    fun `classico ignora as perguntas gubee`() {
+        userRepository.save(Fixtures.user(id = "u-1"))
+        questionRepository.save(Fixtures.question(id = "g-1", category = Category.GUBEE))
+        questionRepository.save(Fixtures.question(id = "k-1", category = Category.KOTLIN))
+
+        val game = useCase.create(UserId("u-1"), GameMode.CLASSIC, null, null).game
+
+        assertEquals(1, game.totalQuestions)
+        assertEquals(Category.KOTLIN, game.currentQuestion().category)
+    }
+
+    @Test
+    fun `aprendizado nao aceita o tema gubee`() {
+        userRepository.save(Fixtures.user(id = "u-1"))
+        questionRepository.save(Fixtures.question(id = "g-1", category = Category.GUBEE))
+
+        val error = assertThrows<DomainException> {
+            useCase.create(UserId("u-1"), GameMode.APRENDIZADO, Category.GUBEE, null)
+        }
+
+        assertEquals("NO_ACTIVE_QUESTIONS", error.code)
+    }
+
+    @Test
+    fun `aprendizado nao aceita pergunta gubee`() {
+        userRepository.save(Fixtures.user(id = "u-1"))
+        questionRepository.save(Fixtures.question(id = "g-1", category = Category.GUBEE))
+
+        val error = assertThrows<DomainException> {
+            useCase.create(UserId("u-1"), GameMode.APRENDIZADO, null, QuestionId("g-1"))
+        }
+
+        assertEquals("NO_ACTIVE_QUESTIONS", error.code)
+    }
 }

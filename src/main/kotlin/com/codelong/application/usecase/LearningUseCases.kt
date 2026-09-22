@@ -18,6 +18,7 @@ class ListThemesUseCaseImpl(
 
     override fun themes(): List<ThemeSummary> =
         questionRepository.findAllActive()
+            .filterNot { it.category == Category.GUBEE }
             .groupingBy { it.category }
             .eachCount()
             .map { (category, count) -> ThemeSummary(category, count) }
